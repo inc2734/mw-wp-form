@@ -1,0 +1,297 @@
+@charset "utf-8";
+
+/**
+ * 投稿ステータス等
+ */
+#minor-publishing-actions,
+#misc-publishing-actions {
+	display: none;
+}
+
+/**
+ * 更新時の記事リンク
+ */
+.post-php #message a {
+	display: none;
+}
+
+/**
+ * クイック編集リンク
+ */
+.wp-list-table .post-title span.hide-if-no-js {
+	display: none;
+}
+
+/**
+ * 抜粋表示の続きを読む
+ */
+.wp-list-table .post-title span.more-link {
+	display: none;
+}
+
+/**
+ * フォーム識別子
+ */
+span#formkey_field {
+	background-color: #fff;
+	border: #dfdfdf solid 1px;
+	border-radius: 3px;
+	color: #333;
+	display: block;
+	margin: 1px;
+	padding: 3px;
+}
+
+/**
+ * URL設定
+ */
+#mw-wp-form_url table {
+	width: 100%;
+}
+#mw-wp-form_url table th {
+	padding-right: 10px;
+	text-align: left;
+	width: 33%;
+}
+#mw-wp-form_url table td input {
+	width: 100%;
+}
+
+/**
+ * メール設定
+ */
+#mw-wp-form_mail textarea,
+#mw-wp-form_admin_mail textarea {
+	width: 100%;
+}
+
+/**
+ * バリデーションルール
+ */
+#mw-wp-form_validation .validation-box {
+	border: #ddd solid 1px;
+	border-radius: 5px;
+	margin: 10px 0;
+	padding: 10px;
+}
+#mw-wp-form_validation .validation-box .validation-content {
+	border-top: #ddd solid 1px;
+	margin: 10px 0 0;
+	padding: 10px 0 0;
+	display: none;
+}
+#mw-wp-form_validation .validation-box table {
+	margin: 10px 0 0;
+}
+#mw-wp-form_validation .validation-box table td {
+	padding: 0 10px 5px 0;
+	overflow: hidden;
+	zoom: 1;
+}
+#mw-wp-form_validation .validation-box table td label {
+	margin: 0 10px 5px 0;
+	display: block;
+	float: left;
+}
+#mw-wp-form_validation .validation-box table td label input {
+	margin: 0 2px 0 0;
+}
+
+/**
+ * 設定
+ */
+#mw-wp-form_settings p {
+	border-bottom: #dfdfdf solid 1px;
+	margin: 0 0 15px;
+	padding: 0 0 15px;
+}
+#mw-wp-form_settings table td {
+	padding: 0 5px 0 0;
+	text-align: left;
+	vertical-align: middle;
+}
+#mw-wp-form_settings table td input {
+	width: 100%;
+}
+#mw-wp-form_settings table.akismet th {
+	font-weight: normal;
+	padding: 0 0 5px;
+	text-align: left;
+}
+
+/**
+ * バリデーションルールを追加
+ */
+#mw-wp-form_validation b#add-validation-btn {
+	cursor: pointer;
+	margin: 2px 1px 4px;
+	line-height: 18px;
+	display: inline-block;
+	min-width: 26px;
+	padding: 2px 4px;
+	color: #464646;
+	border: 1px solid #c3c3c3;
+	border-radius: 3px;
+	background: #f5f5f5;
+}
+#mw-wp-form_validation b#add-validation-btn:hover {
+	background: #eee;
+}
+
+/**
+ * 開閉ボタン
+ */
+#mw-wp-form_validation .validation-box .validation-btn {
+	overflow: hidden;
+	zoom: 1;
+}
+#mw-wp-form_validation .validation-box .validation-btn span {
+	font-weight: bold;
+}
+#mw-wp-form_validation .validation-box .validation-btn b {
+	cursor: pointer;
+	display: block;
+	float: right;
+	margin: 0 0 0 10px;
+}
+
+/**
+ * 削除ボタン
+ */
+#mw-wp-form_validation .validation-box .validation-remove {
+	float: left;
+	margin: 0 5px 0 0;
+}
+#mw-wp-form_validation .validation-box .validation-remove b {
+	cursor: pointer;
+	display: block;
+}
+
+/**
+ * DB保存データのカスタムフィールド
+ */
+#mw-wp-form_custom_fields table,
+#mw-wp-form_data_custom_fields table {
+	border-top: #dfdfdf solid 1px;
+	border-right: #dfdfdf solid 1px;
+	width: 100%;
+}
+#mw-wp-form_custom_fields table th,
+#mw-wp-form_custom_fields table td,
+#mw-wp-form_data_custom_fields table th,
+#mw-wp-form_data_custom_fields table td {
+	border-bottom: #dfdfdf solid 1px;
+	border-left: #dfdfdf solid 1px;
+	padding: 5px 10px;
+	text-align: left;
+	vertical-align: top;
+	width: 30%;
+}
+#mw-wp-form_custom_fields table td,
+#mw-wp-form_data_custom_fields table td {
+	background-color: #fff;
+	width: 70%;
+}
+#mw-wp-form_data_custom_fields textarea {
+	width: 100%;
+}
+
+/**
+ * 注釈
+ */
+.mwf_note {
+	color: #666;
+	font-size: 93%;
+}
+
+/**
+ * CSVダウンロードボタン
+ */
+#wpbody-content {
+	padding-bottom: 85px; /* default: 65px */;
+}
+#mw-wp-form_csv {
+	position: absolute;
+	left: 0;
+	top: -34px;
+}
+#mw-wp-form_csv .button-primary {
+}
+
+/**
+ * 寄付ボタン
+ */
+.wp-admin li.donation {
+	color: #ffffe0;
+	display: block;
+	margin: -8px 0 0;
+	overflow: hidden;
+	zoom: 1;
+}
+.wp-admin li.donation div.donation {
+	background-color: #ffffe0;
+	border: #e6db55 solid 1px;
+	color: #000;
+	float: left;
+	padding: 0 10px;
+	margin: 0 -5px 10px 0;
+	border-radius: 3px;
+}
+.wp-admin li.donation div.donation p {
+	margin: 3px 0;
+}
+
+/**
+ * .mwform-dialog
+ */
+.mwform-dialog {
+	display: none;
+	font-size: 12px;
+}
+.mwform-dialog form p {
+	margin: 0 0 10px;
+	padding: 0;
+}
+.mwform-dialog form p strong {
+	display: block;
+	font-weight: bold;
+	margin: 0 0 5px;
+}
+.mwform-dialog input[type="text"],
+.mwform-dialog textarea {
+	width: 100%;
+}
+
+.mwform-dialog table {
+	margin: 0;
+	width: 100%;
+}
+.mwform-dialog table th,
+.mwform-dialog table td {
+	font-weight: normal;
+	text-align: left;
+	vertical-align: top;
+	padding: 3px 8px;
+}
+.mwform-dialog table th {
+	width: 30%;
+}
+.mwform-dialog input[type="text"],
+.mwform-dialog textarea {
+	width: 100%;
+}
+.mwform-dialog textarea {
+	height: 100px;
+}
+.mwform-dialog .mwf_note {
+	display: block;
+}
+
+/**
+ * .mw-wp-form-table
+ */
+.mw-wp-form-table-count,
+.mw-wp-form-table-date {
+	width: 20%;
+}
+
