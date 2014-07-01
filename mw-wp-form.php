@@ -3,11 +3,11 @@
  * Plugin Name: MW WP Form
  * Plugin URI: http://plugins.2inc.org/mw-wp-form/
  * Description: MW WP Form can create mail form with a confirmation screen.
- * Version: 1.7.0
+ * Version: 1.7.1
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : September 25, 2012
- * Modified: April 29, 2014
+ * Modified: June 30, 2014
  * Text Domain: mw-wp-form
  * Domain Path: /languages/
  * License: GPL2
@@ -228,6 +228,28 @@ class mw_wp_form {
 	}
 
 	/**
+	 * get_shortcode
+	 * MW WP Form のショートコードが含まれていればそのショートコードを返す
+	 * @param string $content
+	 * @return string $_shortcode
+	 */
+	private function get_shortcode( $content ) {
+		preg_match_all( '/' . get_shortcode_regex() . '/s', $content, $matches, PREG_SET_ORDER );
+		if ( $matches ) {
+			foreach ( $matches as $shortcode ) {
+				if ( in_array( $shortcode[2], array( 'mwform', 'mwform_formkey' ) ) ) {
+					return $shortcode;
+				} else {
+					$_shortcode = $this->get_shortcode( $shortcode[5] );
+					if ( $_shortcode ) {
+						return $_shortcode;
+					}
+				}
+			}
+		}
+	}
+
+	/**
 	 * main
 	 * 表示画面でのプラグインの処理等。
 	 * @param string $template
@@ -242,19 +264,14 @@ class mw_wp_form {
 		add_shortcode( 'mwform_formkey', array( $this, '_meta_mwform_formkey' ) );
 
 		if ( is_singular() && !empty( $post->ID ) ) {
-			preg_match_all( '/' . get_shortcode_regex() . '/s', $post->post_content, $matches, PREG_SET_ORDER );
+			$shortcode = $this->get_shortcode( $post->post_content );
 		}
-		if ( empty( $matches ) && !( defined( 'MWFORM_NOT_USE_TEMPLATE' ) && MWFORM_NOT_USE_TEMPLATE === true ) ) {
+		if ( empty( $shortcode ) && !( defined( 'MWFORM_NOT_USE_TEMPLATE' ) && MWFORM_NOT_USE_TEMPLATE === true ) ) {
 			$template_data = @file_get_contents( $template );
-			preg_match_all( '/' . get_shortcode_regex() . '/s', $template_data, $matches, PREG_SET_ORDER );
+			$shortcode = $this->get_shortcode( $template_data );
 		}
-		if ( !empty( $matches ) ) {
-			foreach ( $matches as $shortcode ) {
-				if ( in_array( $shortcode[2], array( 'mwform', 'mwform_formkey' ) ) ) {
-					do_shortcode( $shortcode[0] );
-					break;
-				}
-			}
+		if ( is_array( $shortcode ) && !empty( $shortcode[0] ) ) {
+			do_shortcode( $shortcode[0] );
 		}
 		remove_shortcode( 'mwform' );
 		remove_shortcode( 'mwform_formkey' );

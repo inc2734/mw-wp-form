@@ -3,8 +3,8 @@ Contributors: inc2734, ryu263
 Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail
 Requires at least: 3.5
-Tested up to: 3.9.0
-Stable tag: 1.7.0
+Tested up to: 3.9.1
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,9 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 1. screenshot-1.png
 
 == Changelog ==
+
+= 1.7.1 =
+* Bug fix : Fixed a bug that MW WP Form's shortcodes doesn't parse in the nested shortcode.
 
 = 1.7.0 =
 * Added   : X-Accel-Expires param in header.
