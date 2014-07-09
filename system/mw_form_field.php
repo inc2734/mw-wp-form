@@ -213,7 +213,7 @@ abstract class mw_form_field {
 	 */
 	protected function getChildren( $_children ) {
 		$children = array();
-		if ( !empty( $_children) && !is_array( $_children ) ) {
+		if ( !empty( $_children ) && !is_array( $_children ) ) {
 			$_children = explode( ',', $_children );
 		}
 		if ( is_array( $_children ) ) {

@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 1.7.0\n"
+"Project-Id-Version: MW WP Form 1.7.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/mw-wp-form\n"
-"POT-Creation-Date: 2014-06-14 09:43:39+00:00\n"
-"PO-Revision-Date: 2014-06-14 18:45+0900\n"
+"POT-Creation-Date: 2014-07-09 08:56:20+00:00\n"
+"PO-Revision-Date: 2014-07-09 17:58+0900\n"
 "Last-Translator: Takashi Kitajima <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.6.5\n"
+"X-Generator: Poedit 1.6.6\n"
 "X-Poedit-KeywordsList: __;_e;_x\n"
 "X-Poedit-SearchPath-0: ..\n"
 
@@ -240,83 +240,83 @@ msgstr "テキストエリア"
 msgid "Zip Code"
 msgstr "郵便番号"
 
-#: mw-wp-form.php:468
+#: mw-wp-form.php:485
 msgid "Validation Object is not a MW Validation Class."
 msgstr ""
 
-#: system/mw_validation.php:81
+#: system/mw_validation.php:68
 msgid "This is required."
 msgstr "必須項目です。"
 
-#: system/mw_validation.php:98 system/mw_validation.php:116
+#: system/mw_validation.php:85 system/mw_validation.php:103
 msgid "Please enter."
 msgstr "未入力です。"
 
-#: system/mw_validation.php:138
+#: system/mw_validation.php:122
 msgid "Please enter with a half-width alphabetic character."
 msgstr "半角英字で入力してください。"
 
-#: system/mw_validation.php:161
+#: system/mw_validation.php:142
 msgid "Please enter with a half-width number."
 msgstr "半角数字で入力してください。"
 
-#: system/mw_validation.php:184
+#: system/mw_validation.php:162
 msgid "Please enter with a half-width alphanumeric character."
 msgstr "半角英数字で入力してください。"
 
-#: system/mw_validation.php:207
+#: system/mw_validation.php:182
 msgid "Please enter with a Japanese Katakana."
 msgstr "カタカナで入力してください。"
 
-#: system/mw_validation.php:230
+#: system/mw_validation.php:202
 msgid "Please enter with a Japanese Hiragana."
 msgstr "ひらがなで入力してください。"
 
-#: system/mw_validation.php:249
+#: system/mw_validation.php:221
 msgid "This is not the format of a zip code."
 msgstr "郵便番号の形式ではありません。"
 
-#: system/mw_validation.php:272
+#: system/mw_validation.php:241
 msgid "This is not the format of a tel number."
 msgstr "電話番号の形式ではありません。"
 
-#: system/mw_validation.php:305
+#: system/mw_validation.php:268
 msgid "This is not the format of a mail address."
 msgstr "メールアドレスの形式ではありません。"
 
-#: system/mw_validation.php:328
+#: system/mw_validation.php:288
 msgid "This is not the format of a url."
 msgstr "URLの形式ではありません。"
 
-#: system/mw_validation.php:348
+#: system/mw_validation.php:308
 msgid "This is not in agreement."
 msgstr "一致しません。"
 
-#: system/mw_validation.php:374
+#: system/mw_validation.php:331
 msgid "The number of characters is invalid."
 msgstr "文字数が正しくありません。"
 
-#: system/mw_validation.php:411
+#: system/mw_validation.php:365
 msgid "The number of characters is a few."
 msgstr "文字数が足りません。"
 
-#: system/mw_validation.php:436
+#: system/mw_validation.php:387
 msgid "This value is invalid."
 msgstr "値が不正です。"
 
-#: system/mw_validation.php:459
+#: system/mw_validation.php:407
 msgid "This is not the format of a date."
 msgstr "日付の形式ではありません。"
 
-#: system/mw_validation.php:488
+#: system/mw_validation.php:433
 msgid "This file is invalid."
 msgstr "許可されたファイルではありません。"
 
-#: system/mw_validation.php:517
+#: system/mw_validation.php:462
 msgid "This file size is too big."
 msgstr "ファイルサイズが大きすぎます。"
 
-#: system/mw_validation.php:536
+#: system/mw_validation.php:481
 msgid "The contents which you input were judged with spam."
 msgstr "あなたの入力した内容はスパムと判定されました。"
 
@@ -593,49 +593,66 @@ msgstr "スタイルを選択"
 msgid "Add form tag"
 msgstr "フォームタグを追加"
 
-#: system/mw_wp_form_contact_data_page.php:93
+#: system/mw_wp_form_contact_data_page.php:51
+msgid "Not supported"
+msgstr "未対応"
+
+#: system/mw_wp_form_contact_data_page.php:52
+msgid "Reservation"
+msgstr "保留"
+
+#: system/mw_wp_form_contact_data_page.php:53
+msgid "Supported"
+msgstr "対応済み"
+
+#: system/mw_wp_form_contact_data_page.php:100
 msgid "Edit "
 msgstr "編集"
 
-#: system/mw_wp_form_contact_data_page.php:94
+#: system/mw_wp_form_contact_data_page.php:101
 msgid "View"
 msgstr "表示"
 
-#: system/mw_wp_form_contact_data_page.php:95
+#: system/mw_wp_form_contact_data_page.php:102
 msgid "Search"
 msgstr "検索"
 
-#: system/mw_wp_form_contact_data_page.php:96
+#: system/mw_wp_form_contact_data_page.php:103
 msgid "No data found"
 msgstr "データがありません"
 
-#: system/mw_wp_form_contact_data_page.php:97
+#: system/mw_wp_form_contact_data_page.php:104
 msgid "No data found in Trash"
 msgstr "ゴミ箱にデータはありません"
 
-#: system/mw_wp_form_contact_data_page.php:137
+#: system/mw_wp_form_contact_data_page.php:144
 msgid "CSV Download"
 msgstr "CSVダウンロード"
 
-#: system/mw_wp_form_contact_data_page.php:228
+#: system/mw_wp_form_contact_data_page.php:254
 msgid "Custom Fields"
 msgstr "カスタムフィールド"
 
-#: system/mw_wp_form_contact_data_page.php:252
+#: system/mw_wp_form_contact_data_page.php:278
 msgid "Registed Date"
 msgstr "登録日時"
 
-#: system/mw_wp_form_contact_data_page.php:346
+#: system/mw_wp_form_contact_data_page.php:279
+#: system/mw_wp_form_contact_data_page.php:382
+msgid "Response Status"
+msgstr "対応状況"
+
+#: system/mw_wp_form_contact_data_page.php:394
 msgid "Memo"
 msgstr "メモ"
 
-#: system/mw_wp_form_contact_data_page.php:386
-#: system/mw_wp_form_contact_data_page.php:387
-#: system/mw_wp_form_contact_data_page.php:401
+#: system/mw_wp_form_contact_data_page.php:440
+#: system/mw_wp_form_contact_data_page.php:441
+#: system/mw_wp_form_contact_data_page.php:455
 msgid "Inquiry data"
 msgstr "問い合わせデータ"
 
-#: system/mw_wp_form_contact_data_page.php:403
+#: system/mw_wp_form_contact_data_page.php:457
 msgid ""
 "You can see the inquiry data that are saved in the database by clicking on "
 "the link below."
@@ -643,23 +660,23 @@ msgstr ""
 "リンクをクリックすることでデータベースに保存された問い合わせデータを見ること"
 "ができます。"
 
-#: system/mw_wp_form_contact_data_page.php:407
+#: system/mw_wp_form_contact_data_page.php:461
 msgid "Form title"
 msgstr "フォーム名"
 
-#: system/mw_wp_form_contact_data_page.php:408
+#: system/mw_wp_form_contact_data_page.php:462
 msgid "The number of inquiries"
 msgstr "問い合わせ件数"
 
-#: system/mw_wp_form_contact_data_page.php:409
+#: system/mw_wp_form_contact_data_page.php:463
 msgid "Updated date"
 msgstr "更新日"
 
-#: system/mw_wp_form_contact_data_page.php:410
+#: system/mw_wp_form_contact_data_page.php:464
 msgid "Created date"
 msgstr "作成日"
 
-#: system/mw_wp_form_contact_data_page.php:417
+#: system/mw_wp_form_contact_data_page.php:471
 msgid "cases"
 msgstr "件"
 

@@ -3,11 +3,11 @@
  * Name: MW WP Form Contact Data Page
  * URI: http://2inc.org
  * Description: DB保存データを扱うクラス
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : October 10, 2013
- * Modified: June 13, 2014
+ * Modified: July 9, 2014
  * License: GPL2
  *
  * Copyright 2014 Takashi Kitajima (email : inc@2inc.org)
@@ -29,6 +29,7 @@ class MW_WP_Form_Contact_Data_Page {
 
 	private $POST_DATA_NAME;
 	private $postdata;
+	private $response_statuses = array();
 	private $form_post_type = array();	// DB登録使用時のカスタム投稿タイプ名
 
 	/**
@@ -45,6 +46,12 @@ class MW_WP_Form_Contact_Data_Page {
 		add_action( 'in_admin_footer', array( $this, 'add_csv_download_button' ) );
 		add_action( 'wp_loaded', array( $this, 'csv_download' ) );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+
+		$this->response_statuses = array(
+			'not-supported' => esc_html__( 'Not supported', MWF_Config::DOMAIN ),
+			'reservation' => esc_html__( 'Reservation', MWF_Config::DOMAIN ),
+			'supported' => esc_html__( 'Supported', MWF_Config::DOMAIN ),
+		);
 	}
 
 	/**
@@ -159,7 +166,7 @@ class MW_WP_Form_Contact_Data_Page {
 				$csv = '';
 
 				// 見出しを追加
-				$rows[] = array( 'ID', 'post_date', 'post_modified', 'post_title' );
+				$rows[] = array( 'ID', 'Response Status', 'post_date', 'post_modified', 'post_title' );
 				foreach ( $posts_mwf as $post ) {
 					setup_postdata( $post );
 					$columns = array();
@@ -176,6 +183,7 @@ class MW_WP_Form_Contact_Data_Page {
 					$rows[0] = array_merge( $rows[0], $columns );
 				}
 				wp_reset_postdata();
+				$rows[0] = array_merge( $rows[0], array( 'Memo' ) );
 
 				// 各データを追加
 				foreach ( $posts_mwf as $post ) {
@@ -183,7 +191,11 @@ class MW_WP_Form_Contact_Data_Page {
 					$column = array();
 					foreach ( $rows[0] as $key => $value ) {
 						$column[$key] = '';
-						if ( isset( $post->$value ) ) {
+						if ( $value === 'Response Status' ) {
+							$column[$key] = $this->escape_double_quote( $this->get_post_data_value( 'response_status', $post->ID ) );
+						} elseif ( $value === 'Memo' ) {
+							$column[$key] = $this->escape_double_quote( $this->get_post_data_value( 'memo', $post->ID ) );
+						} elseif ( isset( $post->$value ) ) {
 							$post_meta = $post->$value;
 							if ( $this->is_upload_file_key( $post, $value ) ) {
 								$column[$key] = wp_get_attachment_url( $post_meta );
@@ -197,7 +209,15 @@ class MW_WP_Form_Contact_Data_Page {
 				wp_reset_postdata();
 
 				// エンコード
-				foreach ( $rows as $row ) {
+				foreach ( $rows as $key => $row ) {
+					if ( $key === 0 ) {
+						foreach ( $row as $row_key => $column_name ) {
+							if ( in_array( $column_name, array( 'Response Status', 'Memo' ) ) ) {
+								$column_name = esc_html__( $column_name, MWF_Config::DOMAIN );
+							}
+							$row[$row_key] = $column_name;
+						}
+					}
 					$csv .= implode( ',', $row ) . "\r\n";
 				}
 				$csv = mb_convert_encoding( $csv, 'sjis-win', get_option( 'blog_charset' ) );
@@ -250,6 +270,7 @@ class MW_WP_Form_Contact_Data_Page {
 		global $posts;
 		unset( $columns['date'] );
 		$columns['post_date'] = __( 'Registed Date', MWF_Config::DOMAIN );
+		$columns['response_status'] = __( 'Response Status', MWF_Config::DOMAIN );
 		foreach ( $posts as $post ) {
 			$post_custom_keys = get_post_custom_keys( $post->ID );
 			if ( ! empty( $post_custom_keys ) && is_array( $post_custom_keys ) ) {
@@ -265,10 +286,14 @@ class MW_WP_Form_Contact_Data_Page {
 	public function add_form_columns( $column, $post_id ) {
 		global $post;
 		$post_custom_keys = get_post_custom_keys( $post_id );
+		$post_data = get_post_meta( $post_id, $this->POST_DATA_NAME, true );
 
 		if ( $column == 'post_date' ) {
 			$post = get_post( $post_id );
 			echo esc_html( $post->post_date );
+		}
+		elseif ( $column == 'response_status' ) {
+			echo $this->get_post_data_value( 'response_status', $post_id );
 		}
 		elseif ( !empty( $post_custom_keys ) && is_array( $post_custom_keys ) && in_array( $column, $post_custom_keys ) ) {
 			$post_meta = get_post_meta( $post_id, $column, true );
@@ -343,6 +368,18 @@ class MW_WP_Form_Contact_Data_Page {
 				</tr>
 				<?php endforeach; ?>
 				<tr>
+					<th><?php esc_html_e( 'Response Status', MWF_Config::DOMAIN ); ?></th>
+					<td>
+						<select name="<?php echo $this->POST_DATA_NAME; ?>[response_status]">
+							<?php foreach ( $this->response_statuses as $key => $value ) : ?>
+							<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $key, $this->get_post_data( 'response_status' ) ); ?>>
+								<?php echo esc_html( $value ); ?>
+							</option>
+							<?php endforeach; ?>
+						</select>
+					</td>
+				</tr>
+				<tr>
 					<th><?php esc_html_e( 'Memo', MWF_Config::DOMAIN ); ?></th>
 					<td><textarea name="<?php echo $this->POST_DATA_NAME; ?>[memo]" cols="50" rows="5"><?php echo $this->get_post_data( 'memo' ); ?></textarea></td>
 				</tr>
@@ -364,13 +401,19 @@ class MW_WP_Form_Contact_Data_Page {
 			return $post_ID;
 
 		// 保存可能なキー
-		$permit_keys = array( 'memo' );
+		$permit_keys = array( 'memo', 'response_status' );
 		$data = array();
 		foreach ( $permit_keys as $key ) {
-			if ( isset( $_POST[$this->POST_DATA_NAME][$key] ) )
-				$data[$key] = $_POST[$this->POST_DATA_NAME][$key];
+			if ( isset( $_POST[$this->POST_DATA_NAME][$key] ) ) {
+				$value = $_POST[$this->POST_DATA_NAME][$key];
+				if ( $key === 'response_status' ) {
+					if ( !array_key_exists( $value, $this->response_statuses ) )
+						continue;
+				}
+				$data[$key] = $value;
+			}
 		}
-		update_post_meta( $post_ID, $this->POST_DATA_NAME, $data, $this->postdata );
+		update_post_meta( $post_ID, $this->POST_DATA_NAME, $data );
 	}
 
 	/**
@@ -508,5 +551,28 @@ class MW_WP_Form_Contact_Data_Page {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * get_post_data_value
+	 * DB保存データの編集画面で付け足した項目の値を取得（翻訳済み）
+	 * @param string $key 項目名
+	 * @param numeric $post_id
+	 * @return string
+	 */
+	private function get_post_data_value( $key, $post_id ) {
+		$post_data = get_post_meta( $post_id, $this->POST_DATA_NAME, true );
+
+		if ( $key === 'response_status' ) {
+			if ( is_array( $post_data ) && isset( $post_data[$key] ) && array_key_exists( $post_data[$key], $this->response_statuses ) ) {
+				return esc_html__( $this->response_statuses[$post_data[$key]], MWF_Config::DOMAIN );
+			} else {
+				return esc_html__( $this->response_statuses['not-supported'], MWF_Config::DOMAIN );
+			}
+		}
+
+		if ( is_array( $post_data ) && isset( $post_data[$key] ) ) {
+			return $post_data[$key];
+		}
 	}
 }
