@@ -653,26 +653,11 @@ class mw_wp_form {
 	 * 第2引数でDB保存するか判定
 	 */
 	protected function parse_mail_body( $matches, $doUpdate = false ) {
-		$match = $this->Data->getValue( $matches[1] );
-		if ( $match === null )
-			return;
-		if ( is_array( $match ) ) {
-			if ( !array_key_exists( 'data', $match ) )
-				return;
-			if ( is_array( $match['data'] ) ) {
-				$value = $this->Form->getZipValue( $matches[1] );
-				if ( $doUpdate )
-					update_post_meta( $this->insert_id, $matches[1], $value );
-				return $value;
-			}
-			if ( $doUpdate )
-				update_post_meta( $this->insert_id, $matches[1], $match['data'] );
-			return $match['data'];
-		} else {
-			if ( $doUpdate )
-				update_post_meta( $this->insert_id, $matches[1], $match );
-			return $match;
+		$value = $this->Data->get( $matches[1] );
+		if ( $value !== null && $doUpdate ) {
+			update_post_meta( $this->insert_id, $matches[1], $value );
 		}
+		return $value;
 	}
 
 	/**

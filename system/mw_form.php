@@ -3,11 +3,11 @@
  * Name: MW Form
  * URI: http://2inc.org
  * Description: フォームクラス
- * Version: 1.4.0
+ * Version: 1.4.1
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : September 25, 2012
- * Modified: June 13, 2014
+ * Modified: July 9, 2014
  * License: GPL2
  *
  * Copyright 2014 Takashi Kitajima (email : inc@2inc.org)
@@ -210,16 +210,7 @@ class MW_Form {
 	 * @return string データ
 	 */
 	public function getZipValue( $key ) {
-		$separator = $this->getSeparatorValue( $key );
-		// すべて空のからのときはimplodeしないように（---がいってしまうため）
-		$value = $this->getValue( $key );
-		if ( is_array( $value ) && isset( $value['data'] ) && is_array( $value['data'] ) && !empty( $separator ) ) {
-			foreach ( $value['data'] as $child ) {
-				if ( $child !== '' && $child !== null ) {
-					return implode( $separator, $value['data'] );
-				}
-			}
-		}
+		return $this->Data->getSeparatedValue( $key );
 	}
 
 	/**
@@ -240,17 +231,7 @@ class MW_Form {
 	 * @return string データ
 	 */
 	public function getCheckedValue( $key, Array $data ) {
-		$separator = $this->getSeparatorValue( $key );
-		$value = $this->getValue( $key );
-		if ( is_array( $value ) && isset( $value['data'] ) && is_array( $value['data'] ) && !empty( $separator ) ) {
-			$rightData = array();
-			foreach ( $value['data'] as $child ) {
-				if ( isset( $data[$child] ) && !in_array( $data[$child], $rightData ) ) {
-					$rightData[] = $data[$child];
-				}
-			}
-			return implode( $separator, $rightData );
-		}
+		return $this->Data->getSeparatedValue( $key, $data );
 	}
 
 	/**
@@ -304,10 +285,7 @@ class MW_Form {
 	 * @return string
 	 */
 	public function getSeparatorValue( $key ) {
-		$value = $this->getValue( $key );
-		if ( is_array( $value ) && isset( $value['separator'] ) ) {
-			return $value['separator'];
-		}
+		return $this->Data->getSeparatorValue( $key );
 	}
 
 	/**
@@ -387,10 +365,6 @@ class MW_Form {
 	 * @return string HTML
 	 */
 	public function hidden( $name, $value ) {
-		$_value = $this->getValue( $name );
-		if ( !is_null( $_value ) ) {
-			$value = $_value;
-		}
 		if ( is_array( $value ) ) {
 			$value = $this->getZipValue( $name );
 		}

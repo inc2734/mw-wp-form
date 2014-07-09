@@ -3,11 +3,11 @@
  * Name: MW WP Form Data
  * URI: http://2inc.org
  * Description: mw_wp_form のデータ操作用
- * Version: 1.0.3
+ * Version: 1.1.0
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : October 10, 2013
- * Modified: June 13, 2014
+ * Modified: July 9, 2014
  * License: GPL2
  *
  * Copyright 2014 Takashi Kitajima (email : inc@2inc.org)
@@ -119,5 +119,70 @@ class mw_wp_form_data {
 	public function pushValue( $key, $value ) {
 		$this->data[$key][] = $value;
 		$this->Session->pushValue( $key, $value );
+	}
+
+	/**
+	 * get
+	 * 整形済み（メール送信可能な）データを取得
+	 * @param string $key データのキー
+	 * @return string データ
+	 */
+	public function get( $key ) {
+		if ( isset( $this->data[$key] ) ) {
+			if ( is_array( $this->data[$key] ) ) {
+				if ( !array_key_exists( 'data', $this->data[$key] ) )
+					return;
+				if ( is_array( $this->data[$key]['data'] ) ) {
+					return $this->getSeparatedValue( $key );
+				} else {
+					return $this->data[$key]['data'];
+				}
+			} else {
+				return $this->data[$key];
+			}
+		}
+	}
+
+	/**
+	 * getSeparatorValue
+	 * 送られてきたseparatorを返す
+	 * @param string $key name属性
+	 * @return string
+	 */
+	public function getSeparatorValue( $key ) {
+		$value = $this->getValue( $key );
+		if ( is_array( $value ) && isset( $value['separator'] ) ) {
+			return $value['separator'];
+		}
+	}
+
+	/**
+	 * getSeparatedValue
+	 * 配列データを整形して返す ( 郵便番号等用 )
+	 * @param string $key name属性
+	 * @param array $children 選択肢
+	 * @return string データ
+	 */
+	public function getSeparatedValue( $key, array $children = array() ) {
+		$separator = $this->getSeparatorValue( $key );
+		$value = $this->getValue( $key );
+		if ( is_array( $value ) && isset( $value['data'] ) && is_array( $value['data'] ) && !empty( $separator ) ) {
+			if ( $children ) {
+				$rightData = array();
+				foreach ( $value['data'] as $child ) {
+					if ( isset( $children[$child] ) && !in_array( $children[$child], $rightData ) ) {
+						$rightData[] = $children[$child];
+					}
+				}
+				return implode( $separator, $rightData );
+			} else {
+				// すべて空のからのときはimplodeしないように（---がいってしまうため）
+				foreach ( $value['data'] as $child ) {
+					if ( $child !== '' && $child !== null ) {
+						return implode( $separator, $value['data'] );
+					}
+				}
+			}
+		}
 	}
 }
