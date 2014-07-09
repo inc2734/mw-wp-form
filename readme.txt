@@ -4,7 +4,7 @@ Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail
 Requires at least: 3.5
 Tested up to: 3.9.1
-Stable tag: 1.7.1
+Stable tag: 1.7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,11 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 1. screenshot-1.png
 
 == Changelog ==
+
+= 1.7.2 =
+* Added   : Add API to get the data for mail.
+* Added   : Add setting of response status in contact data saved.
+* Added   : Add response status and memo in csv.
 
 = 1.7.1 =
 * Bug fix : Fixed a bug that MW WP Form's shortcodes doesn't parse in the nested shortcode.
