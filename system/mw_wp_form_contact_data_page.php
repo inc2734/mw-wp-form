@@ -7,7 +7,7 @@
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : October 10, 2013
- * Modified: July 9, 2014
+ * Modified: July 17, 2014
  * License: GPL2
  *
  * Copyright 2014 Takashi Kitajima (email : inc@2inc.org)
@@ -46,6 +46,7 @@ class MW_WP_Form_Contact_Data_Page {
 		add_action( 'in_admin_footer', array( $this, 'add_csv_download_button' ) );
 		add_action( 'wp_loaded', array( $this, 'csv_download' ) );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
+		add_action( 'edit_form_top', array( $this, 'display_returning_link' ) );
 
 		$this->response_statuses = array(
 			'not-supported' => esc_html__( 'Not supported', MWF_Config::DOMAIN ),
@@ -466,6 +467,23 @@ class MW_WP_Form_Contact_Data_Page {
 			</table>
 		<!-- end .wrap --></div>
 		<?php
+	}
+
+	/**
+	 * display_returning_link
+	 * 問い合わせデータ詳細画面で一覧に戻るリンクを表示
+	 * @param object $post
+	 */
+	public function display_returning_link( $post ) {
+		$post_type = get_post_type();
+		if ( in_array( $post_type, $this->form_post_type ) ) {
+			$link = admin_url( '/edit.php?post_type=' . $post_type );
+			?>
+			<p>
+				<a href="<?php echo $link; ?>"><?php esc_html_e( '&laquo; Back to the list', MWF_Config::DOMAIN ); ?></a>
+			</p>
+			<?php
+		}
 	}
 
 	/**

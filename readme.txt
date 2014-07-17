@@ -58,6 +58,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Add API to get the data for mail.
 * Added   : Add setting of response status in saved contact data.
 * Added   : Add response status and memo in csv.
+* Added   : Add returning link from detail of database saving data to list page.
 * Changed : WordPress 3.7 higher is required.
 
 = 1.7.1 =
