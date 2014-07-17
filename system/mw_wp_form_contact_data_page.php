@@ -39,7 +39,7 @@ class MW_WP_Form_Contact_Data_Page {
 		$this->POST_DATA_NAME = '_' . MWF_Config::NAME . '_data';
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_style' ) );
-		add_action( 'admin_head', array( $this, 'cpt_public_false' ) );
+		add_action( 'admin_head', array( $this, 'add_style' ) );
 		add_action( 'admin_head', array( $this, 'add_forms_columns' ) );
 		add_action( 'admin_head', array( $this, 'add_meta_box' ) );
 		add_action( 'save_post', array( $this, 'save_post' ) );
@@ -115,13 +115,17 @@ class MW_WP_Form_Contact_Data_Page {
 	}
 
 	/**
-	 * cpt_public_false
+	 * add_style
 	 * DB登録データの一覧、詳細画面で新規追加のリンクを消す
+	 * 詳細画面でタイトル下の空白を消す
 	 */
-	public function cpt_public_false() {
+	public function add_style() {
 		if ( in_array( get_post_type(), $this->form_post_type ) ) : ?>
 		<style type="text/css">
 		h2 a.add-new-h2 {
+			display: none;
+		}
+		#normal-sortables {
 			display: none;
 		}
 		</style>
