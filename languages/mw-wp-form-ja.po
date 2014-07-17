@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MW WP Form 1.7.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/mw-wp-form\n"
-"POT-Creation-Date: 2014-07-09 08:56:20+00:00\n"
-"PO-Revision-Date: 2014-07-09 17:58+0900\n"
+"POT-Creation-Date: 2014-07-17 05:46:56+00:00\n"
+"PO-Revision-Date: 2014-07-17 14:48+0900\n"
 "Last-Translator: Takashi Kitajima <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -593,66 +593,66 @@ msgstr "スタイルを選択"
 msgid "Add form tag"
 msgstr "フォームタグを追加"
 
-#: system/mw_wp_form_contact_data_page.php:51
+#: system/mw_wp_form_contact_data_page.php:52
 msgid "Not supported"
 msgstr "未対応"
 
-#: system/mw_wp_form_contact_data_page.php:52
+#: system/mw_wp_form_contact_data_page.php:53
 msgid "Reservation"
 msgstr "保留"
 
-#: system/mw_wp_form_contact_data_page.php:53
+#: system/mw_wp_form_contact_data_page.php:54
 msgid "Supported"
 msgstr "対応済み"
 
-#: system/mw_wp_form_contact_data_page.php:100
+#: system/mw_wp_form_contact_data_page.php:101
 msgid "Edit "
 msgstr "編集"
 
-#: system/mw_wp_form_contact_data_page.php:101
+#: system/mw_wp_form_contact_data_page.php:102
 msgid "View"
 msgstr "表示"
 
-#: system/mw_wp_form_contact_data_page.php:102
+#: system/mw_wp_form_contact_data_page.php:103
 msgid "Search"
 msgstr "検索"
 
-#: system/mw_wp_form_contact_data_page.php:103
+#: system/mw_wp_form_contact_data_page.php:104
 msgid "No data found"
 msgstr "データがありません"
 
-#: system/mw_wp_form_contact_data_page.php:104
+#: system/mw_wp_form_contact_data_page.php:105
 msgid "No data found in Trash"
 msgstr "ゴミ箱にデータはありません"
 
-#: system/mw_wp_form_contact_data_page.php:144
+#: system/mw_wp_form_contact_data_page.php:149
 msgid "CSV Download"
 msgstr "CSVダウンロード"
 
-#: system/mw_wp_form_contact_data_page.php:254
+#: system/mw_wp_form_contact_data_page.php:253
 msgid "Custom Fields"
 msgstr "カスタムフィールド"
 
-#: system/mw_wp_form_contact_data_page.php:278
+#: system/mw_wp_form_contact_data_page.php:277
 msgid "Registed Date"
 msgstr "登録日時"
 
-#: system/mw_wp_form_contact_data_page.php:279
-#: system/mw_wp_form_contact_data_page.php:382
+#: system/mw_wp_form_contact_data_page.php:278
+#: system/mw_wp_form_contact_data_page.php:376
 msgid "Response Status"
 msgstr "対応状況"
 
-#: system/mw_wp_form_contact_data_page.php:394
+#: system/mw_wp_form_contact_data_page.php:388
 msgid "Memo"
 msgstr "メモ"
 
-#: system/mw_wp_form_contact_data_page.php:440
-#: system/mw_wp_form_contact_data_page.php:441
-#: system/mw_wp_form_contact_data_page.php:455
+#: system/mw_wp_form_contact_data_page.php:434
+#: system/mw_wp_form_contact_data_page.php:435
+#: system/mw_wp_form_contact_data_page.php:449
 msgid "Inquiry data"
 msgstr "問い合わせデータ"
 
-#: system/mw_wp_form_contact_data_page.php:457
+#: system/mw_wp_form_contact_data_page.php:451
 msgid ""
 "You can see the inquiry data that are saved in the database by clicking on "
 "the link below."
@@ -660,25 +660,29 @@ msgstr ""
 "リンクをクリックすることでデータベースに保存された問い合わせデータを見ること"
 "ができます。"
 
-#: system/mw_wp_form_contact_data_page.php:461
+#: system/mw_wp_form_contact_data_page.php:455
 msgid "Form title"
 msgstr "フォーム名"
 
-#: system/mw_wp_form_contact_data_page.php:462
+#: system/mw_wp_form_contact_data_page.php:456
 msgid "The number of inquiries"
 msgstr "問い合わせ件数"
 
-#: system/mw_wp_form_contact_data_page.php:463
+#: system/mw_wp_form_contact_data_page.php:457
 msgid "Updated date"
 msgstr "更新日"
 
-#: system/mw_wp_form_contact_data_page.php:464
+#: system/mw_wp_form_contact_data_page.php:458
 msgid "Created date"
 msgstr "作成日"
 
-#: system/mw_wp_form_contact_data_page.php:471
+#: system/mw_wp_form_contact_data_page.php:465
 msgid "cases"
 msgstr "件"
+
+#: system/mw_wp_form_contact_data_page.php:487
+msgid "&laquo; Back to the list"
+msgstr "&laquo; 一覧に戻る"
 
 #: system/mw_wp_form_file.php:163
 msgid "Uploaded from "
