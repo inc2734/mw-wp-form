@@ -3,27 +3,13 @@
  * Name: MW WP Form Data
  * URI: http://2inc.org
  * Description: mw_wp_form のデータ操作用
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : October 10, 2013
- * Modified: July 9, 2014
- * License: GPL2
- *
- * Copyright 2014 Takashi Kitajima (email : inc@2inc.org)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Modified: July 23, 2014
+ * License: GPLv2
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class mw_wp_form_data {
 	private static $Instance;
@@ -36,6 +22,7 @@ class mw_wp_form_data {
 	 */
 	private function __construct( $key ) {
 		$this->Session = MW_Session::start( $key );
+		$this->data = $this->Session->getValues();
 	}
 
 	public static function getInstance( $key ) {
