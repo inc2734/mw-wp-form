@@ -3,32 +3,19 @@
  * Name: MW WP Form Admin Page
  * URI: http://2inc.org
  * Description: 管理画面クラス
- * Version: 1.9.2
+ * Version: 1.10.0
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : February 21, 2013
  * Modified: June 14, 2014
- * License: GPL2
- *
- * Copyright 2014 Takashi Kitajima (email : inc@2inc.org)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * License: GPLv2
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Admin_Page {
 
 	private $styles = array();
 	private $postdata;
+	private $validation_rules = array();
 	const SHORTCODE_BUTTON_NAME = 'mw_wp_form_button';
 
 	/**
@@ -137,7 +124,7 @@ class MW_WP_Form_Admin_Page {
 			add_meta_box(
 				MWF_Config::NAME . '_validation',
 				__( 'Validation Rule', MWF_Config::DOMAIN ),
-				array( $this, 'add_validation_rule' ),
+				array( $this, 'display_validation_rule' ),
 				MWF_Config::NAME, 'normal'
 			);
 			// フォーム識別子
@@ -480,32 +467,27 @@ class MW_WP_Form_Admin_Page {
 
 	/**
 	 * add_validation_rule
+	 * 各バリデーションルールクラスのインスタンスをセット
+	 */
+	public function add_validation_rule( $rule_name, $instance ) {
+		$this->validation_rules[$rule_name] = $instance;
+	}
+
+	/**
+	 * display_validation_rule
 	 * バリデーションルール設定フォームを表示
 	 */
-	public function add_validation_rule() {
+	public function display_validation_rule() {
 		global $post;
 		if ( ! $postdata = $this->get_post_data( 'validation' ) )
 			$postdata = array();
 		$validation_keys = array(
-			'target'       => '',
-			'noempty'      => '',
-			'required'     => '',
-			'numeric'      => '',
-			'alpha'        => '',
-			'alphanumeric' => '',
-			'katakana'     => '',
-			'hiragana'     => '',
-			'zip'          => '',
-			'tel'          => '',
-			'mail'         => '',
-			'url'         => '',
-			'date'         => '',
-			'eq'           => array(),
-			'between'      => array(),
-			'minlength'    => array(),
-			'fileType'     => array(),
-			'fileSize'     => array(),
+			'target' => '',
 		);
+		foreach ( $this->validation_rules as $validation_rule ) {
+			$validation_keys[$validation_rule->get_name()] = '';
+		}
+
 		// 空の隠れバリデーションフィールド（コピー元）を挿入
 		array_unshift( $postdata, $validation_keys );
 		?>
@@ -519,43 +501,10 @@ class MW_WP_Form_Admin_Page {
 				<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
 						<td colspan="2">
-							<label><input type="checkbox" <?php checked( $value['noempty'], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][noempty]" value="1" /><?php esc_html_e( 'No empty', MWF_Config::DOMAIN ); ?></label>
-							<label><input type="checkbox" <?php checked( $value['required'], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][required]" value="1" /><?php esc_html_e( 'No empty( with checkbox )', MWF_Config::DOMAIN ); ?></label>
-							<label><input type="checkbox" <?php checked( $value['numeric'], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][numeric]" value="1" /><?php esc_html_e( 'Numeric', MWF_Config::DOMAIN ); ?></label>
-							<label><input type="checkbox" <?php checked( $value['alpha'], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][alpha]" value="1" /><?php esc_html_e( 'Alphabet', MWF_Config::DOMAIN ); ?></label>
-							<label><input type="checkbox" <?php checked( $value['alphanumeric'], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][alphanumeric]" value="1" /><?php esc_html_e( 'Alphabet and Numeric', MWF_Config::DOMAIN ); ?></label>
-							<label><input type="checkbox" <?php checked( $value['katakana'], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][katakana]" value="1" /><?php esc_html_e( 'Japanese Katakana', MWF_Config::DOMAIN ); ?></label>
-							<label><input type="checkbox" <?php checked( $value['hiragana'], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][hiragana]" value="1" /><?php esc_html_e( 'Japanese Hiragana', MWF_Config::DOMAIN ); ?></label>
-							<label><input type="checkbox" <?php checked( $value['zip'], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][zip]" value="1" /><?php esc_html_e( 'Zip Code', MWF_Config::DOMAIN ); ?></label>
-							<label><input type="checkbox" <?php checked( $value['tel'], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][tel]" value="1" /><?php esc_html_e( 'Tel', MWF_Config::DOMAIN ); ?></label>
-							<label><input type="checkbox" <?php checked( $value['mail'], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][mail]" value="1" /><?php esc_html_e( 'E-mail', MWF_Config::DOMAIN ); ?></label>
-							<label><input type="checkbox" <?php checked( $value['url'], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][url]" value="1" /><?php esc_html_e( 'URL', MWF_Config::DOMAIN ); ?></label>
-							<label><input type="checkbox" <?php checked( $value['date'], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][date]" value="1" /><?php esc_html_e( 'Date', MWF_Config::DOMAIN ); ?></label>
+							<?php foreach ( $this->validation_rules as $validation_rule ) : ?>
+								<?php $validation_rule->admin( $key, $value ); ?>
+							<?php endforeach; ?>
 						</td>
-					</tr>
-					<tr>
-						<td style="width:20%"><?php esc_html_e( 'The key at same value', MWF_Config::DOMAIN ); ?></td>
-						<td><input type="text" value="<?php echo esc_attr( @$value['eq']['target'] ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][eq][target]" /></td>
-					</tr>
-					<tr>
-						<td><?php esc_html_e( 'The range of the number of characters', MWF_Config::DOMAIN ); ?></td>
-						<td>
-							<input type="text" value="<?php echo esc_attr( @$value['between']['min'] ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][between][min]" />
-							〜
-							<input type="text" value="<?php echo esc_attr( @$value['between']['max'] ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][between][max]" />
-						</td>
-					</tr>
-					<tr>
-						<td><?php esc_html_e( 'The number of the minimum characters', MWF_Config::DOMAIN ); ?></td>
-						<td><input type="text" value="<?php echo esc_attr( @$value['minlength']['min'] ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][minlength][min]" /></td>
-					</tr>
-					<tr>
-						<td><?php esc_html_e( 'Permitted Extension', MWF_Config::DOMAIN ); ?></td>
-						<td><input type="text" value="<?php echo esc_attr( @$value['fileType']['types'] ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][fileType][types]" /> <span class="mwf_note"><?php esc_html_e( 'Example:jpg or jpg,txt,…', MWF_Config::DOMAIN ); ?></span></td>
-					</tr>
-					<tr>
-						<td><?php esc_html_e( 'Permitted file size', MWF_Config::DOMAIN ); ?></td>
-						<td><input type="text" value="<?php echo esc_attr( @$value['fileSize']['bytes'] ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][fileSize][bytes]" /> <span class="mwf_note"><?php esc_html_e( 'bytes', MWF_Config::DOMAIN ); ?></span></td>
 					</tr>
 				</table>
 			<!-- end .validation-content --></div>

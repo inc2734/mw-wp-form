@@ -3,29 +3,15 @@
  * Plugin Name: MW WP Form
  * Plugin URI: http://plugins.2inc.org/mw-wp-form/
  * Description: MW WP Form can create mail form with a confirmation screen.
- * Version: 1.7.2
+ * Version: 1.8.0
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : September 25, 2012
  * Modified: July 9, 2014
  * Text Domain: mw-wp-form
  * Domain Path: /languages/
- * License: GPL2
- *
- * Copyright 2014 Takashi Kitajima (email : inc@2inc.org)
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as
- * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * License: GPLv2
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 include_once( plugin_dir_path( __FILE__ ) . 'system/mwf_functions.php' );
 include_once( plugin_dir_path( __FILE__ ) . 'system/mwf_config.php' );
@@ -47,6 +33,25 @@ class mw_wp_form {
 	protected $MW_WP_Form_Contact_Data_Page;
 	protected $options_by_formkey;
 	protected $insert_id;
+	private $validation_rules = array(
+		'noempty' => '',
+		'required' => '',
+		'numeric' => '',
+		'alpha' => '',
+		'alphanumeric' => '',
+		'katakana' => '',
+		'hiragana' => '',
+		'zip' => '',
+		'tel' => '',
+		'mail' => '',
+		'date' => '',
+		'url' => '',
+		'eq' => '',
+		'between' => '',
+		'minlength' => '',
+		'filetype' => '',
+		'filesize' => '',
+	);
 	private $defaults = array(
 		'mail_subject' => '',
 		'mail_from' => '',
@@ -98,6 +103,8 @@ class mw_wp_form {
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_contact_data_page.php' );
 		$this->MW_WP_Form_Contact_Data_Page = new MW_WP_Form_Contact_Data_Page();
 		add_action( 'init', array( $this, 'register_post_type' ) );
+		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_session.php' );
+		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_data.php' );
 
 		// フォームフィールドの読み込み、インスタンス化
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_form_field.php' );
@@ -109,15 +116,31 @@ class mw_wp_form {
 			}
 		}
 
+		// バリデーションルールの読み込み、インスタンス化
+		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_validation_rule.php' );
+		foreach ( glob( plugin_dir_path( __FILE__ ) . 'validation_rules/*.php' ) as $validation_rule ) {
+			include_once $validation_rule;
+			$className = basename( $validation_rule, '.php' );
+			if ( class_exists( $className ) ) {
+				$instance = new $className();
+				$this->validation_rules[$instance->get_name()] = $instance;
+			}
+		}
+		$this->validation_rules = apply_filters( 'mwform_validation_rules', $this->validation_rules );
+		foreach ( $this->validation_rules as $validation_name => $validation_rule ) {
+			if ( empty( $validation_name ) ) {
+				unset( $this->validation_rules[$validation_name] );
+			}
+			$this->MW_WP_Form_Admin_Page->add_validation_rule( $validation_rule->get_name(), $validation_rule );
+		}
+
 		if ( is_admin() ) return;
 
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_akismet.php' );
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_error.php' );
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_form.php' );
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_mail.php' );
-		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_session.php' );
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_validation.php' );
-		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_data.php' );
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_file.php' );
 		add_action( 'nocache_headers' , array( $this, 'nocache_headers' ) , 1 );
 		add_filter( 'template_include', array( $this, 'main' ), 10000 );
@@ -285,11 +308,11 @@ class mw_wp_form {
 			return $template;
 
 		// セッション初期化
-		$this->Session = MW_Session::start( $this->key );
-		// $_POSTがあるときは$_POST、無いときは$this->Session->getValues()
-		$_data = ( !empty( $_POST ) ) ? $_POST : $this->Session->getValues();
 		$this->Data = MW_WP_Form_Data::getInstance( $this->key );
-		$this->Data->setValues( $_data );
+		// $_POSTがあるときは$_POST
+		if ( !empty( $_POST ) ) {
+			$this->Data->setValues( $_POST );
+		}
 
 		// $_FILESがあるときは$this->dataに統合
 		$files = array();
@@ -313,6 +336,9 @@ class mw_wp_form {
 
 		// バリデーションオブジェクト生成
 		$this->Validation = new MW_Validation( $this->key );
+		foreach ( $this->validation_rules as $validation_rule ) {
+			$this->Validation->add_validation_rule( $validation_rule->get_name(), $validation_rule );
+		}
 		// バリデーション実行（Validation->dataに値がないと$Errorは返さない（true））
 		$this->apply_filters_mwform_validation();
 
