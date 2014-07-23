@@ -46,6 +46,7 @@ span#formkey_field {
  * URL設定
  */
 #mw-wp-form_url table {
+	font-size: 100%;
 	width: 100%;
 }
 #mw-wp-form_url table th {
@@ -81,6 +82,7 @@ span#formkey_field {
 	display: none;
 }
 #mw-wp-form_validation .validation-box table {
+	font-size: 100%;
 	margin: 10px 0 0;
 }
 #mw-wp-form_validation .validation-box table td {
@@ -95,6 +97,13 @@ span#formkey_field {
 }
 #mw-wp-form_validation .validation-box table td label input {
 	margin: 0 2px 0 0;
+}
+#mw-wp-form_validation .validation-box table td table {
+	clear: both;
+	margin: 0;
+}
+#mw-wp-form_validation .validation-box table td table td {
+	padding-bottom: 0;
 }
 
 /**
