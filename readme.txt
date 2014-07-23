@@ -4,8 +4,8 @@ Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail
 Requires at least: 3.7
 Tested up to: 3.9.1
-Stable tag: 1.7.2
-License: GPLv2 or later
+Stable tag: 1.8.0
+License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 MW WP Form can create mail form with a confirmation screen using shortcode.
@@ -54,7 +54,8 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 == Changelog ==
 
-= 1.7.2 =
+= 1.8.0 =
+* Added   : Add mwform_validation_rules filter hook.
 * Added   : Add API to get the data for mail.
 * Added   : Add setting of response status in saved contact data.
 * Added   : Add response status and memo in csv.
