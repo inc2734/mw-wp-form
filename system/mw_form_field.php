@@ -11,7 +11,7 @@
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-abstract class mw_form_field {
+abstract class MW_Form_Field {
 
 	/**
 	 * string $shortcode_name
@@ -93,7 +93,7 @@ abstract class mw_form_field {
 	 * @param string $arg2 終了タグ（ショートコード）
 	 */
 	protected function set_qtags( $id, $display, $arg1, $arg2 = '' ) {
-		MWF_Functions::deprecated_message( 'mw_form_field::set_qtags', 'mw_form_field::set_names' );
+		MWF_Functions::deprecated_message( 'MW_Form_Field::set_qtags', 'MW_Form_Field::set_names' );
 		$this->qtags = array(
 			'id' => $id,
 			'display' => $display,
