@@ -156,7 +156,12 @@ class MW_WP_Form_Contact_Data_Page {
 				$csv = '';
 
 				// 見出しを追加
-				$rows[] = array( 'ID', 'Response Status', 'post_date', 'post_modified', 'post_title' );
+				$raw_default_headings = array( 'ID', 'Response Status', 'post_date', 'post_modified', 'post_title' );
+				$default_headings = array();
+				foreach ( $raw_default_headings as $heading ) {
+					$default_headings[] = $this->escape_double_quote( $heading );
+				}
+				$rows[] = $default_headings;
 				foreach ( $posts_mwf as $post ) {
 					setup_postdata( $post );
 					$columns = array();
@@ -166,7 +171,7 @@ class MW_WP_Form_Contact_Data_Page {
 							foreach ( $post_custom_keys as $key ) {
 								if ( preg_match( '/^_/', $key ) )
 									continue;
-								$columns[$key] = $key;
+								$columns[$key] = $this->escape_double_quote( $key );
 							}
 						}
 					}
