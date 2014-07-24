@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule Url
- * URI: http://2inc.org
  * Description: 値がURL
  * Version: 1.0.0
  * Author: Takashi Kitajima

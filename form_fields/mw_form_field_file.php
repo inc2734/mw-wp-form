@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Form Field File
- * URI: http://2inc.org
  * Description: 画像アップロードフィールドを出力。
  * Version: 1.4.2
  * Author: Takashi Kitajima

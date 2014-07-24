@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Form Field Tel
- * URI: http://2inc.org
  * Description: 電話番号フィールドを出力。
  * Version: 1.4.1
  * Author: Takashi Kitajima

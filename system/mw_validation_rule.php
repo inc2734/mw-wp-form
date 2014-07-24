@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule
- * URI: http://2inc.org
  * Description: バリデーションルールの抽象クラス
  * Version: 1.0.0
  * Author: Takashi Kitajima

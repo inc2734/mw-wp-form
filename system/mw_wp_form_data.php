@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW WP Form Data
- * URI: http://2inc.org
  * Description: mw_wp_form のデータ操作用
  * Version: 1.2.0
  * Author: Takashi Kitajima

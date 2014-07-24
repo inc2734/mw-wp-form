@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule In
- * URI: http://2inc.org
  * Description: 値が、配列で指定された中に含まれている
  * Version: 1.0.0
  * Author: Takashi Kitajima

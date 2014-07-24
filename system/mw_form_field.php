@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Form Field
- * URI: http://2inc.org
  * Description: フォームフィールドの抽象クラス
  * Version: 1.6.2
  * Author: Takashi Kitajima

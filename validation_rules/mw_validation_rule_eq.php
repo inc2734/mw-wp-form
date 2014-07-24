@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule Eq
- * URI: http://2inc.org
  * Description: 値が一致している
  * Version: 1.0.0
  * Author: Takashi Kitajima

@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule Alpha
- * URI: http://2inc.org
  * Description: 値がアルファベット
  * Version: 1.0.0
  * Author: Takashi Kitajima

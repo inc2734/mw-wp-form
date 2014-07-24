@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Form Field Zip
- * URI: http://2inc.org
  * Description: 郵便番号フィールドを出力。
  * Version: 1.4.1
  * Author: Takashi Kitajima

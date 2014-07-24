@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule FileType
- * URI: http://2inc.org
  * Description: ファイル名が指定した拡張子を含む。types は , 区切り
  * Version: 1.0.0
  * Author: Takashi Kitajima

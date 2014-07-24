@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Form Field Akismet Error
- * URI: http://2inc.org
  * Description: Akismetのエラーを出力。
  * Version: 1.3.1
  * Author: Takashi Kitajima

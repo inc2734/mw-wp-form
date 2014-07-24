@@ -1,14 +1,13 @@
 <?php
 /**
  * Name: MW Session
- * URI: http://2inc.org
  * Description: セッションクラス
  * Version: 2.0.1
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : July 17, 2012
  * Modified: June 23, 2014
- * License: GPL2
+ * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_Session {

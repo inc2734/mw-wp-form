@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Form Field Error
- * URI: http://2inc.org
  * Description: エラーを出力。
  * Version: 1.4.1
  * Author: Takashi Kitajima

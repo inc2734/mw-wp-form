@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Form Field Back Button
- * URI: http://2inc.org
  * Description: 戻るボタンを出力。
  * Version: 1.4.1
  * Author: Takashi Kitajima

@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule Required
- * URI: http://2inc.org
  * Description: 値が存在する
  * Version: 1.0.0
  * Author: Takashi Kitajima

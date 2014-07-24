@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule Date
- * URI: http://2inc.org
  * Description: 日付が正しいかどうか
  * Version: 1.0.0
  * Author: Takashi Kitajima

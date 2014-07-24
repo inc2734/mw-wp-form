@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Form Field TextArea
- * URI: http://2inc.org
  * Description: テキストエリアを出力。
  * Version: 1.4.2
  * Author: Takashi Kitajima

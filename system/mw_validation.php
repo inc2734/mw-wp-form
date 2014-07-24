@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation
- * URI: http://2inc.org
  * Description: バリデーションクラス
  * Version: 1.7.0
  * Author: Takashi Kitajima

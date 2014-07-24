@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule Between
- * URI: http://2inc.org
  * Description: 値の文字数が範囲内
  * Version: 1.0.0
  * Author: Takashi Kitajima

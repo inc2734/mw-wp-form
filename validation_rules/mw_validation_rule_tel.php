@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule Tel
- * URI: http://2inc.org
  * Description: 値が電話番号
  * Version: 1.0.0
  * Author: Takashi Kitajima

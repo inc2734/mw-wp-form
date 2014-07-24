@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule noFalse
- * URI: http://2inc.org
  * Description: 値が空ではない（0も不可）
  * Version: 1.0.0
  * Author: Takashi Kitajima

@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule Katakana
- * URI: http://2inc.org
  * Description: 値がカタカナ
  * Version: 1.0.0
  * Author: Takashi Kitajima

@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Form Field Text
- * URI: http://2inc.org
  * Description: テキストフィールドを出力。
  * Version: 1.4.2
  * Author: Takashi Kitajima

@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule Akismet Check
- * URI: http://2inc.org
  * Description: Akismetのエラー。常にtrue。
  * Version: 1.0.0
  * Author: Takashi Kitajima

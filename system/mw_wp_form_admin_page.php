@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW WP Form Admin Page
- * URI: http://2inc.org
  * Description: 管理画面クラス
  * Version: 1.10.0
  * Author: Takashi Kitajima

@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Form Field Submit Button
- * URI: http://2inc.org
  * Description: 送信ボタンを出力。
  * Version: 1.4.1
  * Author: Takashi Kitajima

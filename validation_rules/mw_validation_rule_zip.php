@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule Zip
- * URI: http://2inc.org
  * Description: 値が郵便番号
  * Version: 1.0.0
  * Author: Takashi Kitajima

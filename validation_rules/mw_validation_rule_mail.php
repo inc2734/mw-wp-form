@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule Mail
- * URI: http://2inc.org
  * Description: 値がメールアドレス
  * Version: 1.0.0
  * Author: Takashi Kitajima

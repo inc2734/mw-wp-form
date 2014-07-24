@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Form Field Radio
- * URI: http://2inc.org
  * Description: ラジオボタンを出力。
  * Version: 1.4.1
  * Author: Takashi Kitajima

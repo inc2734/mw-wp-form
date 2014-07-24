@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Form
- * URI: http://2inc.org
  * Description: フォームクラス
  * Version: 1.4.2
  * Author: Takashi Kitajima

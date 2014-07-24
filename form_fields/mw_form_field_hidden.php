@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Form Field Hidden
- * URI: http://2inc.org
  * Description: hiddenフィールドを出力。
  * Version: 1.5.1
  * Author: Takashi Kitajima
