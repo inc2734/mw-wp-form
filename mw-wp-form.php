@@ -123,7 +123,7 @@ class mw_wp_form {
 			$className = basename( $validation_rule, '.php' );
 			if ( class_exists( $className ) ) {
 				$instance = new $className();
-				$this->validation_rules[$instance->get_name()] = $instance;
+				$this->validation_rules[$instance->getName()] = $instance;
 			}
 		}
 		$this->validation_rules = apply_filters( 'mwform_validation_rules', $this->validation_rules );
@@ -131,7 +131,7 @@ class mw_wp_form {
 			if ( empty( $validation_name ) ) {
 				unset( $this->validation_rules[$validation_name] );
 			}
-			$this->MW_WP_Form_Admin_Page->add_validation_rule( $validation_rule->get_name(), $validation_rule );
+			$this->MW_WP_Form_Admin_Page->add_validation_rule( $validation_rule->getName(), $validation_rule );
 		}
 
 		if ( is_admin() ) return;
@@ -337,7 +337,7 @@ class mw_wp_form {
 		// バリデーションオブジェクト生成
 		$this->Validation = new MW_Validation( $this->key );
 		foreach ( $this->validation_rules as $validation_rule ) {
-			$this->Validation->add_validation_rule( $validation_rule->get_name(), $validation_rule );
+			$this->Validation->add_validation_rule( $validation_rule->getName(), $validation_rule );
 		}
 		// バリデーション実行（Validation->dataに値がないと$Errorは返さない（true））
 		$this->apply_filters_mwform_validation();

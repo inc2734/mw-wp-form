@@ -11,7 +11,7 @@
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-class MW_Validation_Rule_FileSize extends mw_validation_rule {
+class MW_Validation_Rule_FileSize extends MW_Validation_Rule {
 
 	/**
 	 * バリデーションルール名を指定
@@ -20,12 +20,12 @@ class MW_Validation_Rule_FileSize extends mw_validation_rule {
 
 	/**
 	 * rule
-	 * @param mw_wp_form_data $Data
+	 * @param MW_WP_Form_Data $Data
 	 * @param string $key name属性
 	 * @param array $option
 	 * @return string エラーメッセージ
 	 */
-	public function rule( mw_wp_form_data $Data, $key, $options = array() ) {
+	public function rule( MW_WP_Form_Data $Data, $key, $options = array() ) {
 		$data = $Data->getValue( MWF_Config::UPLOAD_FILES );
 		if ( !is_null( $data ) && is_array( $data ) && array_key_exists( $key, $data ) ) {
 			$file = $data[$key];

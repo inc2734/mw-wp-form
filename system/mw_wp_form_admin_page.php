@@ -485,7 +485,7 @@ class MW_WP_Form_Admin_Page {
 			'target' => '',
 		);
 		foreach ( $this->validation_rules as $validation_rule ) {
-			$validation_keys[$validation_rule->get_name()] = '';
+			$validation_keys[$validation_rule->getName()] = '';
 		}
 
 		// 空の隠れバリデーションフィールド（コピー元）を挿入

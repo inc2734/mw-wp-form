@@ -11,9 +11,11 @@
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-abstract class mw_validation_rule {
-	private $key;
-	protected $Data;
+abstract class MW_Validation_Rule {
+
+	/**
+	 * 文字コード
+	 */
 	protected $ENCODE = 'utf-8';
 
 	/**
@@ -21,24 +23,28 @@ abstract class mw_validation_rule {
 	 */
 	protected $name;
 
+	/**
+	 * __construct
+	 */
 	public function __construct() {
 		if ( !$this->name )
 			exit;
 	}
 
-	public function get_name() {
+	/**
+	 * getName
+	 * バリデーションルール名を返す
+	 * @return string $this->name バリデーションルール名
+	 */
+	public function getName() {
 		return $this->name;
-	}
-
-	public function set_data(  ) {
-		$this->Data = $Data;
 	}
 
 	/**
 	 * isEmpty
 	 * 値が空（0は許可）
-	 * @param	Mixed
-	 * @return	Boolean
+	 * @param mixed
+	 * @return bool
 	 */
 	protected function isEmpty( $value ) {
 		if ( $value === array() || $value === '' || $value === null ) {
@@ -50,12 +56,12 @@ abstract class mw_validation_rule {
 
 	/**
 	 * rule
-	 * @param mw_wp_form_data $Data
+	 * @param MW_WP_Form_Data $Data
 	 * @param string $key name属性
 	 * @param array $option
 	 * @return string エラーメッセージ
 	 */
-	abstract public function rule( mw_wp_form_data $Data, $key, $options = array() );
+	abstract public function rule( MW_WP_Form_Data $Data, $key, $options = array() );
 
 	/**
 	 * admin
