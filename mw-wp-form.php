@@ -600,7 +600,7 @@ class mw_wp_form {
 
 			if ( isset( $this->options_by_formkey['automatic_reply_email'] ) ) {
 				$automatic_reply_email = $this->Data->getValue( $this->options_by_formkey['automatic_reply_email'] );
-				if ( $automatic_reply_email && !$this->Validation->mail( $automatic_reply_email ) ) {
+				if ( $automatic_reply_email && !$this->validation_rules['mail']->rule( $this->Data, $automatic_reply_email ) ) {
 					$Mail_raw = $this->set_reply_mail_raw_params( $Mail_raw );
 
 					// 自動返信メールからは添付ファイルを削除
@@ -1079,7 +1079,7 @@ class mw_wp_form {
 		$Mail->bcc = '';
 		if ( $this->options_by_formkey ) {
 			$automatic_reply_email = $this->Data->getValue( $this->options_by_formkey['automatic_reply_email'] );
-			if ( $automatic_reply_email && !$this->Validation->mail( $automatic_reply_email ) ) {
+			if ( $automatic_reply_email && !$this->validation_rules['mail']->rule( $this->Data, $automatic_reply_email ) ) {
 				// 送信先を指定
 				$Mail->to = $automatic_reply_email;
 
