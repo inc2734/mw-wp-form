@@ -32,7 +32,7 @@ class MW_Session {
 	 * __construct
 	 * @param string $name 識別子
 	 */
-	private function __construct( $name ) {
+	public function __construct( $name ) {
 		$this->name = MWF_Config::NAME . '_session_' . $name;
 		if ( isset( $_COOKIE[$this->name] ) ) {
 			$session_id = $_COOKIE[$this->name];
