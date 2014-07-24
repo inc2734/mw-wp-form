@@ -15,17 +15,16 @@ class MW_Validation_Rule_MinLength extends MW_Validation_Rule {
 	/**
 	 * バリデーションルール名を指定
 	 */
-	protected $name = 'minlength';
+	protected static $name = 'minlength';
 
 	/**
 	 * rule
-	 * @param MW_WP_Form_Data $Data
 	 * @param string $key name属性
 	 * @param array $option
 	 * @return string エラーメッセージ
 	 */
-	public function rule( MW_WP_Form_Data $Data, $key, $options = array() ) {
-		$value = $Data->get( $key );
+	public function rule( $key, array $options = array() ) {
+		$value = $this->Data->get( $key );
 		if ( !is_null( $value ) && !MWF_Functions::is_empty( $value ) ) {
 			$defaults = array(
 				'min' => 0,
@@ -44,12 +43,12 @@ class MW_Validation_Rule_MinLength extends MW_Validation_Rule {
 	 * @param numeric $key バリデーションルールセットの識別番号
 	 * @param array $value バリデーションルールセットの内容
 	 */
-	public function admin( $key, $value ) {
+	public static function admin( $key, $value ) {
 		?>
 		<table>
 			<tr>
 				<td><?php esc_html_e( 'The number of the minimum characters', MWF_Config::DOMAIN ); ?></td>
-				<td><input type="text" value="<?php echo esc_attr( @$value[$this->name]['min'] ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->name ); ?>][min]" /></td>
+				<td><input type="text" value="<?php echo esc_attr( @$value[self::getName()]['min'] ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( self::getName() ); ?>][min]" /></td>
 			</tr>
 		</table>
 		<?php

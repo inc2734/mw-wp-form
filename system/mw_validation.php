@@ -89,8 +89,8 @@ class MW_Validation {
 					if ( isset( $ruleSet['options'] ) ) {
 						$options = $ruleSet['options'];
 					}
-					if ( method_exists( $this->validation_rules[$rule], 'rule' ) ) {
-						$message = $this->validation_rules[$rule]->rule( $Data, $key, $options );
+					if ( is_callable( array( $this->validation_rules[$rule], 'rule' ) ) ) {
+						$message = $this->validation_rules[$rule]->rule( $key, $options );
 						if ( !empty( $message ) ) {
 							$this->Error->setError( $key, $rule, $message );
 						}

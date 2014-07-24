@@ -15,14 +15,20 @@ abstract class MW_Validation_Rule {
 	/**
 	 * バリデーションルール名を指定
 	 */
-	protected $name;
+	protected static $name;
+
+	/*
+	 * MW_WP_Form_Data オブジェクト
+	 */
+	protected $Data;
 
 	/**
 	 * __construct
 	 */
-	public function __construct() {
-		if ( !$this->name )
-			exit;
+	public function __construct( $key ) {
+		if ( !self::getName() )
+			exit( 'MW_Validation_Rule::$name must override.' );
+		$this->Data = MW_WP_Form_Data::getInstance( $key );
 	}
 
 	/**
@@ -30,23 +36,25 @@ abstract class MW_Validation_Rule {
 	 * バリデーションルール名を返す
 	 * @return string $this->name バリデーションルール名
 	 */
-	public function getName() {
-		return $this->name;
+	public static function getName() {
+		$class = get_called_class();
+		return $class::$name;
 	}
 
 	/**
 	 * rule
-	 * @param MW_WP_Form_Data $Data
 	 * @param string $key name属性
 	 * @param array $option
 	 * @return string エラーメッセージ
 	 */
-	abstract public function rule( MW_WP_Form_Data $Data, $key, $options = array() );
+	abstract public function rule( $key, array $options = array() );
 
 	/**
 	 * admin
 	 * @param numeric $key バリデーションルールセットの識別番号
 	 * @param array $value バリデーションルールセットの内容
 	 */
-	abstract public function admin( $key, $value );
+	public static function admin( $key, $value ) {
+		exit( 'MW_Validation_Rule::admin must override.' );
+	}
 }
