@@ -13,39 +13,34 @@
  */
 class MW_Session {
 
-	private static $name; // セッション名
-	private $session_id; // セッションID
-	private $expiration = 1440; // Transient の生存時間
-
-	private function __construct( $name ) {
-		$this->setSessionName( $name );
-	}
+	/**
+	 * セッション名
+	 */
+	private $name;
 
 	/**
-	 * start
-	 * インスタンス化
+	 * セッションID
+	 */
+	private $session_id;
+
+	/**
+	 * Transient の生存時間
+	 */
+	private $expiration = 1440;
+
+	/**
+	 * __construct
 	 * @param string $name 識別子
-	 * @return Session Sessionオブジェクト
 	 */
-	public static function start( $name ) {
-		self::$name = MWF_Config::NAME . '_session_' . $name;
-		if ( isset( $_COOKIE[self::$name] ) ) {
-			$session_id = $_COOKIE[self::$name];
+	private function __construct( $name ) {
+		$this->name = MWF_Config::NAME . '_session_' . $name;
+		if ( isset( $_COOKIE[$this->name] ) ) {
+			$session_id = $_COOKIE[$this->name];
 		} else {
-			$session_id = sha1( wp_create_nonce( self::$name ) . ip2long( $_SERVER['REMOTE_ADDR'] ) . uniqid() );
+			$session_id = sha1( wp_create_nonce( $this->name ) . ip2long( $_SERVER['REMOTE_ADDR'] ) . uniqid() );
 			$secure = apply_filters( 'mwform_secure_cookie', is_ssl() );
-			setcookie( self::$name, $session_id, 0, COOKIEPATH, COOKIE_DOMAIN, $secure, true );
+			setcookie( $this->name, $session_id, 0, COOKIEPATH, COOKIE_DOMAIN, $secure, true );
 		}
-		$Session = new MW_Session( $session_id );
-		return $Session;
-	}
-
-	/**
-	 * setSessionName
-	 * セッション名を設定
-	 * @param string $session_id
-	 */
-	private function setSessionName( $session_id ) {
 		$this->session_id = $session_id;
 	}
 
