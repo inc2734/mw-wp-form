@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule FileType
- * URI: http://2inc.org
  * Description: ファイル名が指定した拡張子を含む。types は , 区切り
  * Version: 1.0.0
  * Author: Takashi Kitajima
@@ -11,22 +10,21 @@
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-class MW_Validation_Rule_FileSize extends mw_validation_rule {
+class MW_Validation_Rule_FileSize extends MW_Validation_Rule {
 
 	/**
 	 * バリデーションルール名を指定
 	 */
-	protected $name = 'filesize';
+	protected static $name = 'filesize';
 
 	/**
 	 * rule
-	 * @param mw_wp_form_data $Data
 	 * @param string $key name属性
 	 * @param array $option
 	 * @return string エラーメッセージ
 	 */
-	public function rule( mw_wp_form_data $Data, $key, $options = array() ) {
-		$data = $Data->getValue( MWF_Config::UPLOAD_FILES );
+	public function rule( $key, array $options = array() ) {
+		$data = $this->Data->getValue( MWF_Config::UPLOAD_FILES );
 		if ( !is_null( $data ) && is_array( $data ) && array_key_exists( $key, $data ) ) {
 			$file = $data[$key];
 			if ( !empty( $file['size'] ) ) {
@@ -47,12 +45,12 @@ class MW_Validation_Rule_FileSize extends mw_validation_rule {
 	 * @param numeric $key バリデーションルールセットの識別番号
 	 * @param array $value バリデーションルールセットの内容
 	 */
-	public function admin( $key, $value ) {
+	public static function admin( $key, $value ) {
 		?>
 		<table>
 			<tr>
 				<td><?php esc_html_e( 'Permitted file size', MWF_Config::DOMAIN ); ?></td>
-				<td><input type="text" value="<?php echo esc_attr( @$value[$this->name]['bytes'] ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->name ); ?>][bytes]" /> <span class="mwf_note"><?php esc_html_e( 'bytes', MWF_Config::DOMAIN ); ?></span></td>
+				<td><input type="text" value="<?php echo esc_attr( @$value[self::getName()]['bytes'] ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( self::getName() ); ?>][bytes]" /> <span class="mwf_note"><?php esc_html_e( 'bytes', MWF_Config::DOMAIN ); ?></span></td>
 			</tr>
 		</table>
 		<?php

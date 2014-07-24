@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation Rule
- * URI: http://2inc.org
  * Description: バリデーションルールの抽象クラス
  * Version: 1.0.0
  * Author: Takashi Kitajima
@@ -11,56 +10,51 @@
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-abstract class mw_validation_rule {
-	private $key;
-	protected $Data;
-	protected $ENCODE = 'utf-8';
+abstract class MW_Validation_Rule {
 
 	/**
 	 * バリデーションルール名を指定
 	 */
-	protected $name;
+	protected static $name;
 
-	public function __construct() {
-		if ( !$this->name )
-			exit;
-	}
+	/*
+	 * MW_WP_Form_Data オブジェクト
+	 */
+	protected $Data;
 
-	public function get_name() {
-		return $this->name;
-	}
-
-	public function set_data(  ) {
-		$this->Data = $Data;
+	/**
+	 * __construct
+	 */
+	public function __construct( $key ) {
+		if ( !self::getName() )
+			exit( 'MW_Validation_Rule::$name must override.' );
+		$this->Data = MW_WP_Form_Data::getInstance( $key );
 	}
 
 	/**
-	 * isEmpty
-	 * 値が空（0は許可）
-	 * @param	Mixed
-	 * @return	Boolean
+	 * getName
+	 * バリデーションルール名を返す
+	 * @return string $this->name バリデーションルール名
 	 */
-	protected function isEmpty( $value ) {
-		if ( $value === array() || $value === '' || $value === null ) {
-			return true;
-		} else {
-			return false;
-		}
+	public static function getName() {
+		$class = get_called_class();
+		return $class::$name;
 	}
 
 	/**
 	 * rule
-	 * @param mw_wp_form_data $Data
 	 * @param string $key name属性
 	 * @param array $option
 	 * @return string エラーメッセージ
 	 */
-	abstract public function rule( mw_wp_form_data $Data, $key, $options = array() );
+	abstract public function rule( $key, array $options = array() );
 
 	/**
 	 * admin
 	 * @param numeric $key バリデーションルールセットの識別番号
 	 * @param array $value バリデーションルールセットの内容
 	 */
-	abstract public function admin( $key, $value );
+	public static function admin( $key, $value ) {
+		exit( 'MW_Validation_Rule::admin must override.' );
+	}
 }

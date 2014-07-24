@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW WP Form Data
- * URI: http://2inc.org
  * Description: mw_wp_form のデータ操作用
  * Version: 1.2.0
  * Author: Takashi Kitajima
@@ -11,7 +10,7 @@
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-class mw_wp_form_data {
+class MW_WP_Form_Data {
 	private static $Instance;
 	private $data = array();
 	private $Session;
@@ -21,7 +20,7 @@ class mw_wp_form_data {
 	 * @param string $key データのキー
 	 */
 	private function __construct( $key ) {
-		$this->Session = MW_Session::start( $key );
+		$this->Session = new MW_Session( $key );
 		$this->data = $this->Session->getValues();
 	}
 

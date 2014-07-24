@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW WP Form Admin Page
- * URI: http://2inc.org
  * Description: 管理画面クラス
  * Version: 1.10.0
  * Author: Takashi Kitajima
@@ -468,9 +467,10 @@ class MW_WP_Form_Admin_Page {
 	/**
 	 * add_validation_rule
 	 * 各バリデーションルールクラスのインスタンスをセット
+	 * @param string $rule_name バリデーションルールの $name
 	 */
-	public function add_validation_rule( $rule_name, $instance ) {
-		$this->validation_rules[$rule_name] = $instance;
+	public function add_validation_rule( $rule_name ) {
+		$this->validation_rules[] = $rule_name;
 	}
 
 	/**
@@ -485,7 +485,7 @@ class MW_WP_Form_Admin_Page {
 			'target' => '',
 		);
 		foreach ( $this->validation_rules as $validation_rule ) {
-			$validation_keys[$validation_rule->get_name()] = '';
+			$validation_keys[$validation_rule::getName()] = '';
 		}
 
 		// 空の隠れバリデーションフィールド（コピー元）を挿入
@@ -502,7 +502,7 @@ class MW_WP_Form_Admin_Page {
 					<tr>
 						<td colspan="2">
 							<?php foreach ( $this->validation_rules as $validation_rule ) : ?>
-								<?php $validation_rule->admin( $key, $value ); ?>
+								<?php $validation_rule::admin( $key, $value ); ?>
 							<?php endforeach; ?>
 						</td>
 					</tr>

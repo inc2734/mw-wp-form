@@ -1,7 +1,6 @@
 <?php
 /**
  * Name: MW Validation
- * URI: http://2inc.org
  * Description: バリデーションクラス
  * Version: 1.7.0
  * Author: Takashi Kitajima
@@ -90,8 +89,8 @@ class MW_Validation {
 					if ( isset( $ruleSet['options'] ) ) {
 						$options = $ruleSet['options'];
 					}
-					if ( method_exists( $this->validation_rules[$rule], 'rule' ) ) {
-						$message = $this->validation_rules[$rule]->rule( $Data, $key, $options );
+					if ( is_callable( array( $this->validation_rules[$rule], 'rule' ) ) ) {
+						$message = $this->validation_rules[$rule]->rule( $key, $options );
 						if ( !empty( $message ) ) {
 							$this->Error->setError( $key, $rule, $message );
 						}
@@ -100,15 +99,5 @@ class MW_Validation {
 			}
 		}
 		return $this->isValid();
-	}
-
-	/**
-	 * array_clean
-	 * 配列内の値の重複を消す
-	 * @param	Array
-	 * @return	Array
-	 */
-	protected function array_clean( $array ) {
-		return array_merge( array_diff( $array, array( '' ) ) );
 	}
 }

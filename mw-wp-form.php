@@ -30,7 +30,6 @@ class mw_wp_form {
 	protected $File;
 	protected $viewFlg = 'input';
 	protected $MW_WP_Form_Admin_Page;
-	protected $MW_WP_Form_Contact_Data_Page;
 	protected $options_by_formkey;
 	protected $insert_id;
 	private $validation_rules = array(
@@ -97,14 +96,16 @@ class mw_wp_form {
 	public function init() {
 		load_plugin_textdomain( MWF_Config::DOMAIN, false, basename( dirname( __FILE__ ) ) . '/languages' );
 
-		// 管理画面の実行
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_admin_page.php' );
-		$this->MW_WP_Form_Admin_Page = new MW_WP_Form_Admin_Page();
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_contact_data_page.php' );
-		$this->MW_WP_Form_Contact_Data_Page = new MW_WP_Form_Contact_Data_Page();
-		add_action( 'init', array( $this, 'register_post_type' ) );
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_session.php' );
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_data.php' );
+		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_validation_rule.php' );
+
+		// 管理画面の実行
+		$this->MW_WP_Form_Admin_Page = new MW_WP_Form_Admin_Page();
+		$MW_WP_Form_Contact_Data_Page = new MW_WP_Form_Contact_Data_Page();
+		add_action( 'init', array( $this, 'register_post_type' ) );
 
 		// フォームフィールドの読み込み、インスタンス化
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_form_field.php' );
@@ -117,22 +118,21 @@ class mw_wp_form {
 		}
 
 		// バリデーションルールの読み込み、インスタンス化
-		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_validation_rule.php' );
+		$validation_rules = $this->validation_rules;
 		foreach ( glob( plugin_dir_path( __FILE__ ) . 'validation_rules/*.php' ) as $validation_rule ) {
 			include_once $validation_rule;
 			$className = basename( $validation_rule, '.php' );
 			if ( class_exists( $className ) ) {
-				$instance = new $className();
-				$this->validation_rules[$instance->get_name()] = $instance;
+				$validation_rules[$className::getName()] = $className;
 			}
 		}
-		$this->validation_rules = apply_filters( 'mwform_validation_rules', $this->validation_rules );
-		foreach ( $this->validation_rules as $validation_name => $validation_rule ) {
-			if ( empty( $validation_name ) ) {
-				unset( $this->validation_rules[$validation_name] );
+		$validation_rules = apply_filters( 'mwform_validation_rules', $validation_rules );
+		foreach ( $validation_rules as $validation_name => $className ) {
+			if ( is_callable( array( $className, 'admin' ) ) ) {
+				$this->MW_WP_Form_Admin_Page->add_validation_rule( $className );
 			}
-			$this->MW_WP_Form_Admin_Page->add_validation_rule( $validation_rule->get_name(), $validation_rule );
 		}
+		$this->validation_rules = $validation_rules;
 
 		if ( is_admin() ) return;
 
@@ -336,8 +336,11 @@ class mw_wp_form {
 
 		// バリデーションオブジェクト生成
 		$this->Validation = new MW_Validation( $this->key );
-		foreach ( $this->validation_rules as $validation_rule ) {
-			$this->Validation->add_validation_rule( $validation_rule->get_name(), $validation_rule );
+		foreach ( $this->validation_rules as $validation_name => $className ) {
+			if ( is_callable( array( $className, 'rule' ) ) ) {
+				$instance = new $className( $this->key );
+				$this->Validation->add_validation_rule( $className::getName(), $instance );
+			}
 		}
 		// バリデーション実行（Validation->dataに値がないと$Errorは返さない（true））
 		$this->apply_filters_mwform_validation();
@@ -600,7 +603,7 @@ class mw_wp_form {
 
 			if ( isset( $this->options_by_formkey['automatic_reply_email'] ) ) {
 				$automatic_reply_email = $this->Data->getValue( $this->options_by_formkey['automatic_reply_email'] );
-				if ( $automatic_reply_email && !$this->Validation->mail( $automatic_reply_email ) ) {
+				if ( $automatic_reply_email && !$this->validation_rules['mail']->rule( $automatic_reply_email ) ) {
 					$Mail_raw = $this->set_reply_mail_raw_params( $Mail_raw );
 
 					// 自動返信メールからは添付ファイルを削除
@@ -1079,7 +1082,7 @@ class mw_wp_form {
 		$Mail->bcc = '';
 		if ( $this->options_by_formkey ) {
 			$automatic_reply_email = $this->Data->getValue( $this->options_by_formkey['automatic_reply_email'] );
-			if ( $automatic_reply_email && !$this->Validation->mail( $automatic_reply_email ) ) {
+			if ( $automatic_reply_email && !$this->validation_rules['mail']->rule( $automatic_reply_email ) ) {
 				// 送信先を指定
 				$Mail->to = $automatic_reply_email;
 
