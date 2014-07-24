@@ -100,14 +100,4 @@ class MW_Validation {
 		}
 		return $this->isValid();
 	}
-
-	/**
-	 * array_clean
-	 * 配列内の値の重複を消す
-	 * @param	Array
-	 * @return	Array
-	 */
-	protected function array_clean( $array ) {
-		return array_merge( array_diff( $array, array( '' ) ) );
-	}
 }

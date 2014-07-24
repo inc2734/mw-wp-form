@@ -26,6 +26,30 @@ class MWF_Functions {
 	}
 
 	/**
+	 * array_clean
+	 * 配列の空要素を削除
+	 * @param array $array
+	 * @return array
+	 */
+	public static function array_clean( $array ) {
+		return array_merge( array_diff( $array, array( '' ) ) );
+	}
+
+	/**
+	 * is_empty
+	 * 値が空（0は許可）
+	 * @param mixed
+	 * @return bool
+	 */
+	public static function is_empty( $value ) {
+		if ( $value === array() || $value === '' || $value === null ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
 	 * fileurl_to_path
 	 * ファイルURLをファイルパスに変換
 	 * @param string $fileurl

@@ -13,11 +13,6 @@
 abstract class MW_Validation_Rule {
 
 	/**
-	 * 文字コード
-	 */
-	protected $ENCODE = 'utf-8';
-
-	/**
 	 * バリデーションルール名を指定
 	 */
 	protected $name;
@@ -37,20 +32,6 @@ abstract class MW_Validation_Rule {
 	 */
 	public function getName() {
 		return $this->name;
-	}
-
-	/**
-	 * isEmpty
-	 * 値が空（0は許可）
-	 * @param mixed
-	 * @return bool
-	 */
-	protected function isEmpty( $value ) {
-		if ( $value === array() || $value === '' || $value === null ) {
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 	/**

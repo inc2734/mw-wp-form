@@ -26,7 +26,7 @@ class MW_Validation_Rule_noEmpty extends MW_Validation_Rule {
 	 */
 	public function rule( MW_WP_Form_Data $Data, $key, $options = array() ) {
 		$value = $Data->get( $key );
-		if ( !is_null( $value ) && $this->isEmpty( $value ) ) {
+		if ( !is_null( $value ) && MWF_Functions::is_empty( $value ) ) {
 			$defaults = array(
 				'message' => __( 'Please enter.', MWF_Config::DOMAIN )
 			);

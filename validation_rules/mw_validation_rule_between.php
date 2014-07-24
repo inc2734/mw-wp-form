@@ -26,14 +26,14 @@ class MW_Validation_Rule_Between extends MW_Validation_Rule {
 	 */
 	public function rule( MW_WP_Form_Data $Data, $key, $options = array() ) {
 		$value = $Data->get( $key );
-		if ( !is_null( $value ) && !$this->isEmpty( $value ) ) {
+		if ( !is_null( $value ) && !MWF_Functions::is_empty( $value ) ) {
 			$defaults = array(
 				'min' => 0,
 				'max' => 0,
 				'message' => __( 'The number of characters is invalid.', MWF_Config::DOMAIN )
 			);
 			$options = array_merge( $defaults, $options );
-			$length = mb_strlen( $value, $this->ENCODE );
+			$length = mb_strlen( $value, get_bloginfo( 'charset' ) );
 			if ( MWF_Functions::is_numeric( $options['min'] ) ) {
 				if ( MWF_Functions::is_numeric( $options['max'] ) ) {
 					if ( !( $options['min'] <= $length && $length <= $options['max'] ) ) {

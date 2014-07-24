@@ -26,7 +26,7 @@ class MW_Validation_Rule_Alpha extends MW_Validation_Rule {
 	 */
 	public function rule( MW_WP_Form_Data $Data, $key, $options = array() ) {
 		$value = $Data->get( $key );
-		if ( !is_null( $value ) && !$this->isEmpty( $value ) ) {
+		if ( !is_null( $value ) && !MWF_Functions::is_empty( $value ) ) {
 			if ( !preg_match( '/^[A-Za-z]+$/', $value ) ) {
 				$defaults = array(
 					'message' => __( 'Please enter with a half-width alphabetic character.', MWF_Config::DOMAIN )

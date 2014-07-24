@@ -26,7 +26,7 @@ class MW_Validation_Rule_FileType extends MW_Validation_Rule {
 	 */
 	public function rule( MW_WP_Form_Data $Data, $key, $options = array() ) {
 		$value = $Data->get( $key );
-		if ( !is_null( $value ) && !$this->isEmpty( $value ) ) {
+		if ( !is_null( $value ) && !MWF_Functions::is_empty( $value ) ) {
 			$defaults = array(
 				'types' => '',
 				'message' => __( 'This file is invalid.', MWF_Config::DOMAIN )
@@ -36,7 +36,7 @@ class MW_Validation_Rule_FileType extends MW_Validation_Rule {
 			foreach ( $_types as $type ) {
 				$types[] = preg_quote( trim( $type ) );
 			}
-			$types = implode( '|', $this->array_clean( $types ) );
+			$types = implode( '|', MWF_Functions::array_clean( $types ) );
 			$pattern = '/\.(' . $types . ')$/';
 			if ( !preg_match( $pattern, $value ) ) {
 				return $options['message'];
