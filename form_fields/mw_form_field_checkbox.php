@@ -79,7 +79,7 @@ class mw_form_field_checkbox extends mw_form_field {
 	protected function confirmPage() {
 		$children = $this->getChildren( $this->atts['children'] );
 		$value = $this->Form->getCheckedValue( $this->atts['name'], $children );
-		$_ret  = $value;
+		$_ret  = esc_html( $value );
 		$_ret .= $this->Form->hidden( $this->atts['name'] . '[data]', $value );
 		$_ret .= $this->Form->separator( $this->atts['name'] );
 		return $_ret;

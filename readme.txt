@@ -55,9 +55,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 == Changelog ==
 
 = 1.7.2 =
-* Added   : Add API to get the data for mail.
-* Added   : Add setting of response status in contact data saved.
-* Added   : Add response status and memo in csv.
+* Bug fix : XSS vulnerability fix.
 
 = 1.7.1 =
 * Bug fix : Fixed a bug that MW WP Form's shortcodes doesn't parse in the nested shortcode.
