@@ -47,7 +47,7 @@ class MW_Form_Field_Hidden extends MW_Form_Field {
 		if ( $this->atts['echo'] === 'true' ) {
 			$echo_value = $this->atts['value'];
 		}
-		return $echo_value . $this->Form->hidden( $this->atts['name'], $this->atts['value'] );
+		return esc_html( $echo_value ) . $this->Form->hidden( $this->atts['name'], $this->atts['value'] );
 	}
 
 	/**

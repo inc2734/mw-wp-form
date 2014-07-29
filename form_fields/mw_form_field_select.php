@@ -63,7 +63,7 @@ class MW_Form_Field_Select extends MW_Form_Field {
 	protected function confirmPage() {
 		$children = $this->getChildren( $this->atts['children'] );
 		$value = $this->Form->getSelectedValue( $this->atts['name'], $children );
-		$_ret  = $value;
+		$_ret  = esc_html( $value );
 		$_ret .= $this->Form->hidden( $this->atts['name'], $value );
 		return $_ret;
 	}

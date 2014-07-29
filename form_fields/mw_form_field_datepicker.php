@@ -87,7 +87,7 @@ class MW_Form_Field_Datepicker extends MW_Form_Field {
 	 */
 	protected function confirmPage() {
 		$value = $this->Form->getValue( $this->atts['name'] );
-		$_ret  = $value;
+		$_ret  = esc_html( $value );
 		$_ret .= $this->Form->hidden( $this->atts['name'], $value );
 		return $_ret;
 	}

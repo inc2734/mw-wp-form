@@ -60,7 +60,7 @@ class MW_Form_Field_Zip extends MW_Form_Field {
 	 */
 	protected function confirmPage() {
 		$value = $this->Form->getZipValue( $this->atts['name'] );
-		$_ret  = $value;
+		$_ret  = esc_html( $value );
 		$_ret .= $this->Form->hidden( $this->atts['name'].'[data]', $value );
 		$_ret .= $this->Form->separator( $this->atts['name'] );
 		return $_ret;

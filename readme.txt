@@ -62,6 +62,9 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Add returning link from detail of database saving data to list page.
 * Changed : WordPress 3.7 higher is required.
 
+= 1.7.2 =
+* Bug fix : XSS vulnerability fix.
+
 = 1.7.1 =
 * Bug fix : Fixed a bug that MW WP Form's shortcodes doesn't parse in the nested shortcode.
 
