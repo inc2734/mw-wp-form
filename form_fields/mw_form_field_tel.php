@@ -75,7 +75,7 @@ class mw_form_field_tel extends mw_form_field {
 	 */
 	protected function confirmPage() {
 		$value = $this->Form->getTelValue( $this->atts['name'] );
-		$_ret  = $value;
+		$_ret  = esc_html( $value );
 		$_ret .= $this->Form->hidden( $this->atts['name'].'[data]', $value );
 		$_ret .= $this->Form->separator( $this->atts['name'] );
 		return $_ret;
