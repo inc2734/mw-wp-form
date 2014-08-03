@@ -82,11 +82,25 @@ class mw_wp_form {
 	 * __construct
 	 */
 	public function __construct() {
-		add_action( 'plugins_loaded', array( $this, 'init' ) );
+		add_action( 'plugins_loaded', array( $this, 'load_init_files' ), 9 );
+		add_action( 'plugins_loaded', array( $this, 'init' ), 11 );
 		// 有効化した時の処理
 		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
 		// アンインストールした時の処理
 		register_uninstall_hook( __FILE__, array( __CLASS__, 'uninstall' ) );
+	}
+
+	/**
+	 * load_init_files
+	 * init に必要なファイルをロード
+	 */
+	public function load_init_files() {
+		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_admin_page.php' );
+		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_contact_data_page.php' );
+		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_session.php' );
+		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_data.php' );
+		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_validation_rule.php' );
+		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_form_field.php' );
 	}
 
 	/**
@@ -96,19 +110,12 @@ class mw_wp_form {
 	public function init() {
 		load_plugin_textdomain( MWF_Config::DOMAIN, false, basename( dirname( __FILE__ ) ) . '/languages' );
 
-		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_admin_page.php' );
-		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_contact_data_page.php' );
-		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_session.php' );
-		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_data.php' );
-		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_validation_rule.php' );
-
 		// 管理画面の実行
 		$this->MW_WP_Form_Admin_Page = new MW_WP_Form_Admin_Page();
 		$MW_WP_Form_Contact_Data_Page = new MW_WP_Form_Contact_Data_Page();
 		add_action( 'init', array( $this, 'register_post_type' ) );
 
 		// フォームフィールドの読み込み、インスタンス化
-		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_form_field.php' );
 		foreach ( glob( plugin_dir_path( __FILE__ ) . 'form_fields/*.php' ) as $form_field ) {
 			include_once $form_field;
 			$className = basename( $form_field, '.php' );
