@@ -315,9 +315,12 @@ class MW_Form {
 			'placeholder' => '',
 		);
 		$options = array_merge( $defaults, $options );
-		$value = $this->getValue( $name );
-		if ( is_null( $value ) ) {
-			$value = $options['value'];
+		$value = $options['value'];
+		if ( !is_null( $value ) ) {
+			$value = $this->getValue( $name );
+			if ( is_null( $value ) ) {
+				$value = $options['value'];
+			}
 		}
 		$placeholder = $this->get_attr_placeholder( $options['placeholder'] );
 		$dataConvHalfAlphanumeric = null;
@@ -366,9 +369,12 @@ class MW_Form {
 			'placeholder' => '',
 		);
 		$options = array_merge( $defaults, $options );
-		$value = $this->getValue( $name );
-		if ( is_null( $value ) ) {
-			$value = $options['value'];
+		$value = $options['value'];
+		if ( !is_null( $value ) ) {
+			$value = $this->getValue( $name );
+			if ( is_null( $value ) ) {
+				$value = $options['value'];
+			}
 		}
 		$placeholder = $this->get_attr_placeholder( $options['placeholder'] );
 		$id = $this->get_attr_id( $options['id'] );
@@ -503,9 +509,12 @@ class MW_Form {
 			'placeholder' => '',
 		);
 		$options = array_merge( $defaults, $options );
-		$value = $this->getValue( $name );
-		if ( is_null( $value ) ) {
-			$value = $options['value'];
+		$value = $options['value'];
+		if ( !is_null( $value ) ) {
+			$value = $this->getValue( $name );
+			if ( is_null( $value ) ) {
+				$value = $options['value'];
+			}
 		}
 		$placeholder = $this->get_attr_placeholder( $options['placeholder'] );
 		$id = $this->get_attr_id( $options['id'] );
@@ -533,9 +542,12 @@ class MW_Form {
 			'value' => ''
 		);
 		$options = array_merge( $defaults, $options );
-		$value = $this->getValue( $name );
-		if ( is_null( $value ) ) {
-			$value = $options['value'];
+		$value = $options['value'];
+		if ( !is_null( $value ) ) {
+			$value = $this->getValue( $name );
+			if ( is_null( $value ) ) {
+				$value = $options['value'];
+			}
 		}
 		$id = $this->get_attr_id( $options['id'] );
 		$_ret = sprintf( '<select name="%s" %s>', esc_attr( $name ), $id );
@@ -563,9 +575,12 @@ class MW_Form {
 			'value' => ''
 		);
 		$options = array_merge( $defaults, $options );
-		$value = $this->getValue( $name );
-		if ( is_null( $value ) ) {
-			$value = $options['value'];
+		$value = $options['value'];
+		if ( !is_null( $value ) ) {
+			$value = $this->getValue( $name );
+			if ( is_null( $value ) ) {
+				$value = $options['value'];
+			}
 		}
 
 		$i = 0;
@@ -602,15 +617,17 @@ class MW_Form {
 			'value' => array()
 		);
 		$options = array_merge( $defaults, $options );
-
-		$value = $this->getValue( $name );
-		if ( is_array( $value ) && isset( $value['data'] ) ) {
-			$value = $value['data'];
-		} else {
-			$value = $options['value'];
-		}
-		if ( !is_array( $value ) ) {
-			$value = explode( $separator, $value );
+		$value = $options['value'];
+		if ( !is_null( $value ) ) {
+			$value = $this->getValue( $name );
+			if ( is_array( $value ) && isset( $value['data'] ) ) {
+				$value = $value['data'];
+			} else {
+				$value = $options['value'];
+			}
+			if ( !is_array( $value ) ) {
+				$value = explode( $separator, $value );
+			}
 		}
 
 		$i = 0;
@@ -670,9 +687,12 @@ class MW_Form {
 			'value' => '',
 		);
 		$options = array_merge( $defaults, $options );
-		$value = $this->getValue( $name );
-		if ( is_null( $value ) ) {
-			$value = $options['value'];
+		$value = $options['value'];
+		if ( !is_null( $value ) ) {
+			$value = $this->getValue( $name );
+			if ( is_null( $value ) ) {
+				$value = $options['value'];
+			}
 		}
 		$id = $this->get_attr_id( $options['id'] );
 		$_ret = sprintf( '<input type="text" name="%s" value="%s" size="%d" %s />',

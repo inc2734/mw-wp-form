@@ -53,11 +53,11 @@ class MW_Form_Field_Text extends MW_Form_Field {
 			$conv_half_alphanumeric = true;
 		}
 		$_ret = $this->Form->text( $this->atts['name'], array(
-			'id'        => $this->atts['id'],
-			'size'      => $this->atts['size'],
-			'maxlength' => $this->atts['maxlength'],
-			'value'     => $this->atts['value'],
-			'placeholder'     => $this->atts['placeholder'],
+			'id'          => $this->atts['id'],
+			'size'        => $this->atts['size'],
+			'maxlength  ' => $this->atts['maxlength'],
+			'value'       => $this->atts['value'],
+			'placeholder' => $this->atts['placeholder'],
 			'conv-half-alphanumeric' => $conv_half_alphanumeric,
 		) );
 		if ( $this->atts['show_error'] !== 'false' )
