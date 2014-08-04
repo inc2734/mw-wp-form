@@ -228,9 +228,9 @@ abstract class MW_Form_Field {
 	public function add_mwform_tag_generator() {
 		?>
 		<div id="dialog-<?php echo esc_attr( $this->shortcode_name ); ?>" class="mwform-dialog" title="<?php echo esc_attr( $this->shortcode_name ); ?>">
-			<form>
+			<div class="form">
 				<?php $this->mwform_tag_generator_dialog(); ?>
-			</form>
+			</div>
 		</div>
 		<?php
 	}

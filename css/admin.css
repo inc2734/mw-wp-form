@@ -257,11 +257,11 @@ span#formkey_field {
 	display: none;
 	font-size: 12px;
 }
-.mwform-dialog form p {
+.mwform-dialog .form p {
 	margin: 0 0 10px;
 	padding: 0;
 }
-.mwform-dialog form p strong {
+.mwform-dialog .form p strong {
 	display: block;
 	font-weight: bold;
 	margin: 0 0 5px;
