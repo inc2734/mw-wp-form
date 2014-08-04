@@ -12,6 +12,9 @@
  */
 class MW_Error {
 
+	/**
+	 * エラー格納用の配列 array( 'key' => 'rule' => 'message' )
+	 */
 	private $errors = array();
 
 	/**

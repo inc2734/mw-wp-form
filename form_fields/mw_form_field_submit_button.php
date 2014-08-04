@@ -27,7 +27,7 @@ class MW_Form_Field_Submit_Button extends MW_Form_Field {
 	/**
 	 * setDefaults
 	 * $this->defaultsを設定し返す
-	 * @return	Array	defaults
+	 * @return array defaults
 	 */
 	protected function setDefaults() {
 		return array(
@@ -40,7 +40,7 @@ class MW_Form_Field_Submit_Button extends MW_Form_Field {
 	/**
 	 * inputPage
 	 * 入力ページでのフォーム項目を返す
-	 * @return	String	HTML
+	 * @return string HTML
 	 */
 	protected function inputPage() {
 		if ( !empty( $this->atts['confirm_value'] ) ) {
@@ -52,7 +52,7 @@ class MW_Form_Field_Submit_Button extends MW_Form_Field {
 	/**
 	 * confirmPage
 	 * 確認ページでのフォーム項目を返す
-	 * @return	String	HTML
+	 * @return string HTML
 	 */
 	protected function confirmPage() {
 		return $this->Form->submit( $this->atts['name'], $this->atts['submit_value'] );

@@ -27,7 +27,7 @@ class MW_Form_Field_Checkbox extends MW_Form_Field {
 	/**
 	 * setDefaults
 	 * $this->defaultsを設定し返す
-	 * @return	Array	defaults
+	 * @return array defaults
 	 */
 	protected function setDefaults() {
 		return array(
@@ -59,7 +59,7 @@ class MW_Form_Field_Checkbox extends MW_Form_Field {
 	/**
 	 * confirmPage
 	 * 確認ページでのフォーム項目を返す
-	 * @return	String	HTML
+	 * @return string HTML
 	 */
 	protected function confirmPage() {
 		$children = $this->getChildren( $this->atts['children'] );

@@ -995,7 +995,7 @@ class mw_wp_form {
 		$admin_mail_sender = get_bloginfo( 'name' );
 
 		if ( !$Mail->to ) {
-			$Mail->to = $admin_mail_to;;
+			$Mail->to = $admin_mail_to;
 		}
 		if ( !$Mail->from ) {
 			$Mail->from = $admin_mail_from;;

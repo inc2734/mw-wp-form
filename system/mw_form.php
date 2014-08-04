@@ -2,7 +2,7 @@
 /**
  * Name: MW Form
  * Description: フォームクラス
- * Version: 1.4.2
+ * Version: 1.4.1
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : September 25, 2012
@@ -42,10 +42,19 @@ class MW_Form {
 	 */
 	protected $backButton = 'submitBack';
 
+	/**
+	 * 現在のモード
+	 */
 	protected $modeCheck = 'input';
-	protected $method = 'post';
-	private $ENCODE = 'utf-8';
 
+	/**
+	 * フォームの method
+	 */
+	protected $method = 'post';
+
+	/**
+	 * 完了画面の判定用
+	 */
 	const COMPLETE_TWICE = '__complete_twice_flg';
 
 	/**

@@ -133,15 +133,15 @@ abstract class MW_Form_Field {
 	/**
 	 * setDefaults
 	 * $this->defaultsを設定し返す
-	 * @return	Array	defaults
+	 * @return array defaults
 	 */
 	abstract protected function setDefaults();
 
 	/**
 	 * inputPage
 	 * 入力ページでのフォーム項目を返す
-	 * @param	Array	$atts
-	 * @return	String	HTML
+	 * @param array $atts
+	 * @return string HTML
 	 */
 	abstract protected function inputPage();
 	public function _inputPage( $atts ) {
@@ -155,8 +155,8 @@ abstract class MW_Form_Field {
 	/**
 	 * confirmPage
 	 * 確認ページでのフォーム項目を返す
-	 * @param	Array	$atts
-	 * @return	String	HTML
+	 * @param array $atts
+	 * @return string HTML
 	 */
 	abstract protected function confirmPage();
 	public function _confirmPage( $atts ) {
@@ -167,12 +167,12 @@ abstract class MW_Form_Field {
 	/**
 	 * add_short_code
 	 * フォーム項目を返す
-	 * @param	MW_Form		$Form
-	 * 			String		$viewFlg
-	 * 			MW_Error	$Error
-	 * 			String		$key
+	 * @param MW_Form $Form
+	 * @param string $viewFlg
+	 * @param MW_Error $Error
+	 * @param string $key
 	 */
-	public function add_shortcode( mw_form $Form, $viewFlg, mw_error $Error, $key ) {
+	public function add_shortcode( MW_Form $Form, $viewFlg, MW_Error $Error, $key ) {
 		if ( !empty( $this->shortcode_name ) ) {
 			$this->Form = $Form;
 			$this->Error = $Error;
@@ -254,6 +254,3 @@ abstract class MW_Form_Field {
 		<?php
 	}
 }
-
-
-

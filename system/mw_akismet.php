@@ -11,9 +11,11 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_Akismet {
-	public function __construct() {
-	}
 
+	/**
+	 * is_enable
+	 * @return string APIキー
+	 */
 	private function is_enable() {
 		if ( is_callable( array( 'Akismet', 'get_api_key' ) ) ) {
 			return Akismet::get_api_key();
@@ -24,7 +26,15 @@ class MW_Akismet {
 		return false;
 	}
 
-	public function check( $akismet_author, $akismet_author_email, $akismet_author_url, $data ) {
+	/**
+	 * check
+	 * @param string $akismet_author
+	 * @param string $akismet_author_email
+	 * @param string $akismet_author_url
+	 * @param MW_WP_Form_Data $Data
+	 * @return bool
+	 */
+	public function check( $akismet_author, $akismet_author_email, $akismet_author_url, $Data ) {
 		global $akismet_api_host, $akismet_api_port;
 
 		if ( !$this->is_enable() )
@@ -91,4 +101,3 @@ class MW_Akismet {
 		}
 	}
 }
-?>

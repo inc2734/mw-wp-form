@@ -12,10 +12,20 @@
  */
 class MW_WP_Form_Admin_Page {
 
+	/**
+	 * 登録済みのフォームスタイルの一覧
+	 */
 	private $styles = array();
+
+	/**
+	 * フォームの設定データ
+	 */
 	private $postdata;
+
+	/**
+	 * バリデーションルールの一覧
+	 */
 	private $validation_rules = array();
-	const SHORTCODE_BUTTON_NAME = 'mw_wp_form_button';
 
 	/**
 	 * __construct
@@ -34,6 +44,7 @@ class MW_WP_Form_Admin_Page {
 	/**
 	 * current_screen
 	 * 寄付リンクを表示
+	 * @param WP_Screen $screen
 	 */
 	public function current_screen( $screen ) {
 		if ( $screen->id === 'edit-' . MWF_Config::NAME )
@@ -48,6 +59,8 @@ class MW_WP_Form_Admin_Page {
 	/**
 	 * get_post_data
 	 * フォームの設定データを返す
+	 * @param string $key 設定データのキー
+	 * @return mixed 設定データ
 	 */
 	protected function get_post_data( $key ) {
 		global $post;
@@ -65,6 +78,8 @@ class MW_WP_Form_Admin_Page {
 	/**
 	 * default_content
 	 * 本文の初期値を設定
+	 * @param string $content
+	 * @return string
 	 */
 	public function default_content( $content ) {
 		global $typenow;
@@ -214,7 +229,7 @@ class MW_WP_Form_Admin_Page {
 
 	/**
 	 * save_post
-	 * @param	$post_ID
+	 * @param int $post_ID
 	 */
 	public function save_post( $post_ID ) {
 		if ( !( isset( $_POST['post_type'] ) && $_POST['post_type'] === MWF_Config::NAME ) )
@@ -534,6 +549,7 @@ class MW_WP_Form_Admin_Page {
 	/**
 	 * disable_visual_editor
 	 * ビジュアルエディタを無効に
+	 * @return bool;
 	 */
 	public function disable_visual_editor() {
 		if ( MWF_Config::NAME == get_post_type() ) {
@@ -561,4 +577,3 @@ class MW_WP_Form_Admin_Page {
 		<?php
 	}
 }
-?>

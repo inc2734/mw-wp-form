@@ -2,7 +2,7 @@
 /**
  * Name: MW WP Form Contact Data Page
  * Description: DB保存データを扱うクラス
- * Version: 1.2.1
+ * Version: 1.2.0
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : October 10, 2013
@@ -12,10 +12,25 @@
  */
 class MW_WP_Form_Contact_Data_Page {
 
+	/**
+	 * DB保存データ独自の項目（メモとか）の配列のキー
+	 */
 	private $POST_DATA_NAME;
+
+	/**
+	 * DB保存データ独自の項目（メモとか）
+	 */
 	private $postdata;
+
+	/**
+	 * 対応状況種別の一覧
+	 */
 	private $response_statuses = array();
-	private $form_post_type = array();	// DB登録使用時のカスタム投稿タイプ名
+
+	/**
+	 * DB登録使用時のカスタム投稿タイプ名
+	 */
+	private $form_post_type = array();
 
 	/**
 	 * __construct
@@ -43,6 +58,8 @@ class MW_WP_Form_Contact_Data_Page {
 	/**
 	 * get_post_data
 	 * フォームの設定データを返す
+	 * @param string $key 項目名
+	 * @return string
 	 */
 	protected function get_post_data( $key ) {
 		if ( isset( $this->postdata[$key] ) ) {
@@ -143,86 +160,97 @@ class MW_WP_Form_Contact_Data_Page {
 	 * CSVを生成、出力
 	 */
 	public function csv_download() {
-		if ( isset( $_GET['post_type'] ) ) {
-			$post_type = $_GET['post_type'];
-			if ( in_array( $post_type, $this->form_post_type ) && !empty( $_POST ) ) {
-				check_admin_referer( MWF_Config::NAME );
+		if ( !isset( $_GET['post_type'] ) )
+			return ;
 
-				$posts_mwf = get_posts( array(
-					'post_type' => $post_type,
-					'posts_per_page' => -1,
-					'post_status' => 'any',
-				) );
-				$csv = '';
+		$post_type = $_GET['post_type'];
 
-				// 見出しを追加
-				$raw_default_headings = array( 'ID', 'Response Status', 'post_date', 'post_modified', 'post_title' );
-				$default_headings = array();
-				foreach ( $raw_default_headings as $heading ) {
-					$default_headings[] = $this->escape_double_quote( $heading );
-				}
-				$rows[] = $default_headings;
+		if ( in_array( $post_type, $this->form_post_type ) && !empty( $_POST ) ) {
+			check_admin_referer( MWF_Config::NAME );
+
+			$posts_mwf = get_posts( array(
+				'post_type' => $post_type,
+				'posts_per_page' => -1,
+				'post_status' => 'any',
+			) );
+			$csv = '';
+
+			// 見出しを追加
+			$default_headings = array(
+				'ID',
+				__( 'Response Status', MWF_Config::DOMAIN ),
+				'post_date',
+				'post_modified',
+				'post_title'
+			);
+			$rows[] = $default_headings;
+			foreach ( $posts_mwf as $post ) {
+				setup_postdata( $post );
+				$columns = array();
 				foreach ( $posts_mwf as $post ) {
-					setup_postdata( $post );
-					$columns = array();
-					foreach ( $posts_mwf as $post ) {
-						$post_custom_keys = get_post_custom_keys( $post->ID );
-						if ( ! empty( $post_custom_keys ) && is_array( $post_custom_keys ) ) {
-							foreach ( $post_custom_keys as $key ) {
-								if ( preg_match( '/^_/', $key ) )
-									continue;
-								$columns[$key] = $this->escape_double_quote( $key );
-							}
+					$post_custom_keys = get_post_custom_keys( $post->ID );
+					if ( ! empty( $post_custom_keys ) && is_array( $post_custom_keys ) ) {
+						foreach ( $post_custom_keys as $key ) {
+							if ( preg_match( '/^_/', $key ) )
+								continue;
+							$columns[$key] = $key;
 						}
 					}
-					$rows[0] = array_merge( $rows[0], $columns );
 				}
-				wp_reset_postdata();
-				$rows[0] = array_merge( $rows[0], array( 'Memo' ) );
-
-				// 各データを追加
-				foreach ( $posts_mwf as $post ) {
-					setup_postdata( $post );
-					$column = array();
-					foreach ( $rows[0] as $key => $value ) {
-						$column[$key] = '';
-						if ( $value === 'Response Status' ) {
-							$column[$key] = $this->escape_double_quote( $this->get_post_data_value( 'response_status', $post->ID ) );
-						} elseif ( $value === 'Memo' ) {
-							$column[$key] = $this->escape_double_quote( $this->get_post_data_value( 'memo', $post->ID ) );
-						} elseif ( isset( $post->$value ) ) {
-							$post_meta = $post->$value;
-							if ( $this->is_upload_file_key( $post, $value ) ) {
-								$column[$key] = wp_get_attachment_url( $post_meta );
-							} else {
-								$column[$key] = ( $post_meta ) ? $this->escape_double_quote( $post_meta ) : '';
-							}
-						}
-					}
-					$rows[] = $column;
-				}
-				wp_reset_postdata();
-
-				// エンコード
-				foreach ( $rows as $key => $row ) {
-					if ( $key === 0 ) {
-						foreach ( $row as $row_key => $column_name ) {
-							if ( in_array( $column_name, array( 'Response Status', 'Memo' ) ) ) {
-								$column_name = esc_html__( $column_name, MWF_Config::DOMAIN );
-							}
-							$row[$row_key] = $column_name;
-						}
-					}
-					$csv .= implode( ',', $row ) . "\r\n";
-				}
-				$csv = mb_convert_encoding( $csv, 'sjis-win', get_option( 'blog_charset' ) );
-
-				$file_name = 'mw_wp_form_' . date( 'YmdHis' ) . '.csv';
-				header( 'Content-Type: application/octet-stream' );
-				header( 'Content-Disposition: attachment; filename=' . $file_name );
-				echo $csv;
-				exit;
+				$rows[0] = array_merge( $rows[0], $columns );
 			}
+			wp_reset_postdata();
+			$rows[0] = array_merge( $rows[0], array(
+				__( 'Memo', MWF_Config::DOMAIN )
+			) );
+
+			// 各データを追加
+			foreach ( $posts_mwf as $post ) {
+				setup_postdata( $post );
+				$column = array();
+				foreach ( $rows[0] as $key => $value ) {
+					$_column = '';
+					if ( $value === __( 'Response Status', MWF_Config::DOMAIN ) ) {
+						$_column = $this->get_post_data_value( 'response_status', $post->ID );
+					} elseif ( $value === __( 'Memo', MWF_Config::DOMAIN ) ) {
+						$_column = $this->get_post_data_value( 'memo', $post->ID );
+					} elseif ( isset( $post->$value ) ) {
+						$post_meta = $post->$value;
+						if ( $this->is_upload_file_key( $post, $value ) ) {
+							$_column = wp_get_attachment_url( $post_meta );
+						} else {
+							$_column = ( $post_meta ) ? $post_meta : '';
+						}
+					}
+					$column[$key] = $this->escape_double_quote( $_column );
+				}
+				$rows[] = $column;
+			}
+			// 見出し行をエスケープ
+			foreach ( $rows[0] as $key => $value ) {
+				$rows[0][$key] = $this->escape_double_quote( $value );
+			}
+			wp_reset_postdata();
+
+			// エンコード
+			foreach ( $rows as $key => $row ) {
+				if ( $key === 0 ) {
+					foreach ( $row as $row_key => $column_name ) {
+						if ( in_array( $column_name, array( 'Response Status', 'Memo' ) ) ) {
+							$column_name = esc_html__( $column_name, MWF_Config::DOMAIN );
+						}
+						$row[$row_key] = $column_name;
+					}
+				}
+				$csv .= implode( ',', $row ) . "\r\n";
+			}
+			$csv = mb_convert_encoding( $csv, 'sjis-win', get_option( 'blog_charset' ) );
+
+			$file_name = 'mw_wp_form_' . date( 'YmdHis' ) . '.csv';
+			header( 'Content-Type: application/octet-stream' );
+			header( 'Content-Disposition: attachment; filename=' . $file_name );
+			echo $csv;
+			exit;
 		}
 	}
 	private function escape_double_quote( $value ) {
@@ -281,7 +309,6 @@ class MW_WP_Form_Contact_Data_Page {
 	public function add_form_columns( $column, $post_id ) {
 		global $post;
 		$post_custom_keys = get_post_custom_keys( $post_id );
-		$post_data = get_post_meta( $post_id, $this->POST_DATA_NAME, true );
 
 		if ( $column == 'post_date' ) {
 			$post = get_post( $post_id );
@@ -385,7 +412,7 @@ class MW_WP_Form_Contact_Data_Page {
 
 	/**
 	 * save_post
-	 * @param	$post_ID
+	 * @param int $post_ID
 	 */
 	public function save_post( $post_ID ) {
 		if ( !( isset( $_POST['post_type'] ) && in_array( $_POST['post_type'], $this->form_post_type ) ) )

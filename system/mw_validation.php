@@ -12,9 +12,24 @@
  */
 class MW_Validation {
 
+	/**
+	 * フォーム識別子
+	 */
 	private $key;
+
+	/**
+	 * MW_Error オブジェクト
+	 */
 	protected $Error;
+
+	/**
+	 * バリデートをかける項目とかけるバリデーションの種類の一覧
+	 */
 	public $validate = array();
+
+	/**
+	 * バリデーションルールの一覧
+	 */
 	private $validation_rules = array();
 
 	/**
@@ -29,6 +44,8 @@ class MW_Validation {
 	/**
 	 * add_validation_rule
 	 * 各バリデーションルールクラスのインスタンスをセット
+	 * @param string $rule_name
+	 * @param MW_Validation_Rule $instance
 	 */
 	public function add_validation_rule( $rule_name, $instance ) {
 		$this->validation_rules[$rule_name] = $instance;
@@ -37,7 +54,7 @@ class MW_Validation {
 	/**
 	 * Error
 	 * エラーオブジェクトを返す
-	 * @return	Error	エラーオブジェクト
+	 * @return MW_Error エラーオブジェクト
 	 */
 	public function Error() {
 		return $this->Error;
@@ -46,7 +63,7 @@ class MW_Validation {
 	/**
 	 * isValid
 	 * バリデートが通っているかチェック
-	 * @return	Boolean
+	 * @return bool
 	 */
 	protected function isValid() {
 		$errors = $this->Error->getErrors();

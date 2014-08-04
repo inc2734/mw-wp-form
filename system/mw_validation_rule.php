@@ -24,6 +24,7 @@ abstract class MW_Validation_Rule {
 
 	/**
 	 * __construct
+	 * @param string $key 識別子
 	 */
 	public function __construct( $key ) {
 		if ( !self::getName() )

@@ -12,15 +12,45 @@
  */
 class MW_Mail {
 
-	public $to;				// 宛先
-	public $cc;				// CC
-	public $bcc;			// BCC
-	public $from;			// 送信元
-	public $sender;			// 送信者
-	public $subject;		// 題名
-	public $body;			// 本文
-	public $attachments;	// 添付
-	private $ENCODE = 'utf-8';
+	/**
+	 * 宛先
+	 */
+	public $to;
+
+	/**
+	 * CC
+	 */
+	public $cc;
+
+	/**
+	 * BCC
+	 */
+	public $bcc;
+
+	/**
+	 * 送信元
+	 */
+	public $from;
+
+	/**
+	 * 送信者
+	 */
+	public $sender;
+
+	/**
+	 * 件名
+	 */
+	public $subject;
+
+	/**
+	 * 本文
+	 */
+	public $body;
+
+	/**
+	 * 添付
+	 */
+	public $attachments;
 
 	/**
 	 * send
@@ -63,10 +93,11 @@ class MW_Mail {
 	/**
 	 * createBody
 	 * 配列からbodyを生成
-	 * @param	Array ( 見出し => 内容, … )
-	 * 			Array ( 'exclude' => array( 除外したいキー1, … ) )
+	 * @param array ( 見出し => 内容, … )
+	 * @param array ( 'exclude' => array( 除外したいキー1, … ) )
+	 * @return string メール本文
 	 */
-	public function createBody( Array $array, Array $options = array() ) {
+	public function createBody( array $array, array $options = array() ) {
 		$_ret = '';
 		$defaults = array(
 			'exclude' => array()
@@ -95,4 +126,3 @@ class MW_Mail {
 		return $_ret;
 	}
 }
-?>

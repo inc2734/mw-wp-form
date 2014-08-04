@@ -11,8 +11,20 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Data {
+
+	/**
+	 * MW_WP_Form_Data オブジェクト
+	 */
 	private static $Instance;
+
+	/**
+	 * フォームから送信された内容を保存した配列
+	 */
 	private $data = array();
+
+	/**
+	 * MW_Sesion オブジェクト
+	 */
 	private $Session;
 
 	/**

@@ -27,7 +27,7 @@ class MW_Form_Field_Error extends MW_Form_Field {
 	/**
 	 * setDefaults
 	 * $this->defaultsを設定し返す
-	 * @return	Array	defaults
+	 * @return array defaults
 	 */
 	protected function setDefaults() {
 		return array(
@@ -38,7 +38,7 @@ class MW_Form_Field_Error extends MW_Form_Field {
 	/**
 	 * inputPage
 	 * 入力ページでのフォーム項目を返す
-	 * @return	String	HTML
+	 * @return string HTML
 	 */
 	protected function inputPage() {
 		$keys = explode( ',', $this->atts['keys'] );
@@ -52,7 +52,7 @@ class MW_Form_Field_Error extends MW_Form_Field {
 	/**
 	 * confirmPage
 	 * 確認ページでのフォーム項目を返す
-	 * @return	String	HTML
+	 * @return string HTML
 	 */
 	protected function confirmPage() {
 	}

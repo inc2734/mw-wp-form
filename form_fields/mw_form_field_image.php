@@ -27,7 +27,7 @@ class MW_Form_Field_Image extends MW_Form_Field {
 	/**
 	 * setDefaults
 	 * $this->defaultsを設定し返す
-	 * @return	Array	defaults
+	 * @return array defaults
 	 */
 	protected function setDefaults() {
 		return array(
