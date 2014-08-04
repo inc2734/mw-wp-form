@@ -481,8 +481,8 @@ class MW_WP_Form_Admin_Page {
 
 	/**
 	 * add_validation_rule
-	 * 各バリデーションルールクラスのインスタンスをセット
-	 * @param string $rule_name バリデーションルールの $name
+	 * 各バリデーションルールクラスのクラス名をセット
+	 * @param string $rule_name バリデーションルールのクラス名
 	 */
 	public function add_validation_rule( $rule_name ) {
 		$this->validation_rules[] = $rule_name;
