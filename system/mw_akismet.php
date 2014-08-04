@@ -33,32 +33,28 @@ class MW_Akismet {
 		$doAkismet = false;
 
 		$author = '';
-		if ( !empty( $data[ $akismet_author ] ) ) {
-			$author = $data[ $akismet_author ];
+		if ( $Data->getValue( $akismet_author ) ) {
+			$author = $Data->getValue( $akismet_author );
 			$doAkismet = true;
 		}
 
 		$author_email = '';
-		if ( !empty( $data[ $akismet_author_email ] ) ) {
-			$author_email = $data[ $akismet_author_email ];
+		if ( $Data->getValue( $akismet_author_email ) ) {
+			$author_email = $Data->getValue( $akismet_author_email );
 			$doAkismet = true;
 		}
 
 		$author_url = '';
-		if ( !empty( $data[ $akismet_author_url ] ) ) {
-			$author_url = $data[ $akismet_author_url ];
+		if ( $Data->getValue( $akismet_author_url ) ) {
+			$author_url = $Data->getValue( $akismet_author_url );
 			$doAkismet = true;
 		}
 
 		if ( $doAkismet ) {
 			$content = '';
-			foreach ( $data as $value ) {
-				if ( is_array( $value ) && isset( $value['data'] ) && is_array( $value['data'] ) ) {
-					$value = implode( $value['separator'], $value['data'] );
-				}
-				if ( !is_array( $value ) ) {
-					$content .= $value . "\n\n";
-				}
+			foreach ( $Data->getValues() as $key => $value ) {
+				$value = $Data->get( $key );
+				$content .= $value . "\n\n";
 			}
 			$permalink = get_permalink();
 			$akismet = array();

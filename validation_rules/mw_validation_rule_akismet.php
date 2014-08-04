@@ -1,6 +1,6 @@
 <?php
 /**
- * Name: MW Validation Rule Akismet Check
+ * Name: MW Validation Rule Akismet
  * Description: Akismetのエラー。常にtrue。
  * Version: 1.0.0
  * Author: Takashi Kitajima
@@ -10,7 +10,7 @@
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-class MW_Validation_Rule_Akismet_Check extends MW_Validation_Rule {
+class MW_Validation_Rule_Akismet extends MW_Validation_Rule {
 
 	/**
 	 * バリデーションルール名を指定

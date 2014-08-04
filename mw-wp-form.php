@@ -33,6 +33,7 @@ class mw_wp_form {
 	protected $options_by_formkey;
 	protected $insert_id;
 	private $validation_rules = array(
+		'akismet_check' => '',
 		'noempty' => '',
 		'required' => '',
 		'numeric' => '',
@@ -510,7 +511,7 @@ class mw_wp_form {
 			$this->options_by_formkey['akismet_author'],
 			$this->options_by_formkey['akismet_author_email'],
 			$this->options_by_formkey['akismet_author_url'],
-			$this->Data->getValues()
+			$this->Data
 		);
 		if ( $akismet_check ) {
 			$this->Validation->setRule( MWF_Config::AKISMET, 'akismet_check' );
