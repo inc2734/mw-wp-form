@@ -180,6 +180,7 @@ class MW_WP_Form_Data {
 						return implode( $separator, $value['data'] );
 					}
 				}
+				return '';
 			}
 		}
 	}
