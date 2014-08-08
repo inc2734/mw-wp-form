@@ -2,11 +2,11 @@
 /**
  * Name: MW WP Form Data
  * Description: mw_wp_form のデータ操作用
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : October 10, 2013
- * Modified: July 23, 2014
+ * Modified: August 8, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
