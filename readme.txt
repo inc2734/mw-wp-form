@@ -57,6 +57,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 = 1.8.1 =
 * Bug fix : Fix PHP error under PHP 5.3.0
 * Bug fix : Fix bug that are not validated of noEmpty in zip and tel field.
+* Bug fix : Fix bug that error is displayed if the validation that was registered is disabled.
 
 = 1.8.0 =
 * Added   : Add mwform_validation_rules filter hook.
