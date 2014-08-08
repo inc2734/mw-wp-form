@@ -2,11 +2,11 @@
 /**
  * Name: MW WP Form Admin Page
  * Description: 管理画面クラス
- * Version: 1.10.0
+ * Version: 1.10.1
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : February 21, 2013
- * Modified: June 14, 2014
+ * Modified: August 8, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -481,11 +481,12 @@ class MW_WP_Form_Admin_Page {
 
 	/**
 	 * add_validation_rule
-	 * 各バリデーションルールクラスのクラス名をセット
-	 * @param string $rule_name バリデーションルールのクラス名
+	 * 各バリデーションルールクラスのインスタンスをセット
+	 * @param string $rule_name
+	 * @param MW_Validation_Rule $instance
 	 */
-	public function add_validation_rule( $rule_name ) {
-		$this->validation_rules[] = $rule_name;
+	public function add_validation_rule( $rule_name, $instance ) {
+		$this->validation_rules[$rule_name] = $instance;
 	}
 
 	/**
@@ -499,8 +500,8 @@ class MW_WP_Form_Admin_Page {
 		$validation_keys = array(
 			'target' => '',
 		);
-		foreach ( $this->validation_rules as $validation_rule ) {
-			$validation_keys[$validation_rule::getName()] = '';
+		foreach ( $this->validation_rules as $validation_rule => $instance ) {
+			$validation_keys[$instance->getName()] = '';
 		}
 
 		// 空の隠れバリデーションフィールド（コピー元）を挿入
@@ -516,8 +517,8 @@ class MW_WP_Form_Admin_Page {
 				<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
 						<td colspan="2">
-							<?php foreach ( $this->validation_rules as $validation_rule ) : ?>
-								<?php $validation_rule::admin( $key, $value ); ?>
+							<?php foreach ( $this->validation_rules as $validation_rule => $instance ) : ?>
+								<?php $instance->admin( $key, $value ); ?>
 							<?php endforeach; ?>
 						</td>
 					</tr>

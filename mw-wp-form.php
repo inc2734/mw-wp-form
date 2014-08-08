@@ -3,11 +3,11 @@
  * Plugin Name: MW WP Form
  * Plugin URI: http://plugins.2inc.org/mw-wp-form/
  * Description: MW WP Form can create mail form with a confirmation screen.
- * Version: 1.8.0
+ * Version: 1.8.1
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : September 25, 2012
- * Modified: July 29, 2014
+ * Modified: August 8, 2014
  * Text Domain: mw-wp-form
  * Domain Path: /languages/
  * License: GPLv2
@@ -131,13 +131,14 @@ class mw_wp_form {
 			include_once $validation_rule;
 			$className = basename( $validation_rule, '.php' );
 			if ( class_exists( $className ) ) {
-				$validation_rules[$className::getName()] = new $className( $this->key );
+				$instance = new $className( $this->key );
+				$validation_rules[$instance->getName()] = $instance;
 			}
 		}
 		$validation_rules = apply_filters( 'mwform_validation_rules', $validation_rules, $this->key );
 		foreach ( $validation_rules as $validation_name => $instance ) {
 			if ( is_callable( array( $instance, 'admin' ) ) ) {
-				$this->MW_WP_Form_Admin_Page->add_validation_rule( get_class( $instance ) );
+				$this->MW_WP_Form_Admin_Page->add_validation_rule( $instance->getName(), $instance );
 			}
 		}
 		$this->validation_rules = $validation_rules;
@@ -346,7 +347,7 @@ class mw_wp_form {
 		$this->Validation = new MW_Validation( $this->key );
 		foreach ( $this->validation_rules as $validation_name => $instance ) {
 			if ( is_callable( array( $instance, 'rule' ) ) ) {
-				$this->Validation->add_validation_rule( $instance::getName(), $instance );
+				$this->Validation->add_validation_rule( $instance->getName(), $instance );
 			}
 		}
 		// バリデーション実行（Validation->dataに値がないと$Errorは返さない（true））

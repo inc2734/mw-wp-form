@@ -2,11 +2,11 @@
 /**
  * Name: MW Validation Rule FileType
  * Description: ファイル名が指定した拡張子を含む。types は , 区切り
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : July 21, 2014
- * Modified:
+ * Modified: August 8, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -15,7 +15,7 @@ class MW_Validation_Rule_FileType extends MW_Validation_Rule {
 	/**
 	 * バリデーションルール名を指定
 	 */
-	protected static $name = 'filetype';
+	protected $name = 'filetype';
 
 	/**
 	 * rule
@@ -48,12 +48,12 @@ class MW_Validation_Rule_FileType extends MW_Validation_Rule {
 	 * @param numeric $key バリデーションルールセットの識別番号
 	 * @param array $value バリデーションルールセットの内容
 	 */
-	public static function admin( $key, $value ) {
+	public function admin( $key, $value ) {
 		?>
 		<table>
 			<tr>
 				<td><?php esc_html_e( 'Permitted Extension', MWF_Config::DOMAIN ); ?></td>
-				<td><input type="text" value="<?php echo esc_attr( @$value[self::getName()]['types'] ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( self::getName() ); ?>][types]" /> <span class="mwf_note"><?php esc_html_e( 'Example:jpg or jpg,txt,…', MWF_Config::DOMAIN ); ?></span></td>
+				<td><input type="text" value="<?php echo esc_attr( @$value[$this->getName()]['types'] ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][types]" /> <span class="mwf_note"><?php esc_html_e( 'Example:jpg or jpg,txt,…', MWF_Config::DOMAIN ); ?></span></td>
 			</tr>
 		</table>
 		<?php

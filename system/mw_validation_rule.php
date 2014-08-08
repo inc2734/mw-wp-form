@@ -2,11 +2,11 @@
 /**
  * Name: MW Validation Rule
  * Description: バリデーションルールの抽象クラス
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : July 19, 2014
- * Modified:
+ * Modified: August 8, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -15,7 +15,7 @@ abstract class MW_Validation_Rule {
 	/**
 	 * バリデーションルール名を指定
 	 */
-	protected static $name;
+	protected $name;
 
 	/*
 	 * MW_WP_Form_Data オブジェクト
@@ -27,7 +27,7 @@ abstract class MW_Validation_Rule {
 	 * @param string $key 識別子
 	 */
 	public function __construct( $key ) {
-		if ( !self::getName() )
+		if ( !$this->getName() )
 			exit( 'MW_Validation_Rule::$name must override.' );
 		$this->Data = MW_WP_Form_Data::getInstance( $key );
 	}
@@ -37,9 +37,8 @@ abstract class MW_Validation_Rule {
 	 * バリデーションルール名を返す
 	 * @return string $this->name バリデーションルール名
 	 */
-	public static function getName() {
-		$class = get_called_class();
-		return $class::$name;
+	public function getName() {
+		return $this->name;
 	}
 
 	/**
@@ -55,7 +54,5 @@ abstract class MW_Validation_Rule {
 	 * @param numeric $key バリデーションルールセットの識別番号
 	 * @param array $value バリデーションルールセットの内容
 	 */
-	public static function admin( $key, $value ) {
-		exit( 'MW_Validation_Rule::admin must override.' );
-	}
+	abstract public function admin( $key, $value );
 }
