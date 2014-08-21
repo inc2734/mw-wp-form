@@ -33,7 +33,7 @@ class MW_Validation_Rule_FileType extends MW_Validation_Rule {
 			$options = array_merge( $defaults, $options );
 			$_types = explode( ',', $options['types'] );
 			foreach ( $_types as $type ) {
-				$types[] = preg_quote( trim( $type ) );
+				$types[] = preg_quote( trim( $type ), '/' );
 			}
 			$types = implode( '|', MWF_Functions::array_clean( $types ) );
 			$pattern = '/\.(' . $types . ')$/';
