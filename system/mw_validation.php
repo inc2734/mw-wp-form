@@ -94,29 +94,59 @@ class MW_Validation {
 	/**
 	 * check
 	 * validate実行
-	 * @return bool
+	 * @return bool エラーがなければ true
 	 */
 	public function check() {
 		$Data = MW_WP_Form_Data::getInstance( $this->key );
 		foreach ( $this->validate as $key => $rules ) {
-			foreach ( $rules as $ruleSet ) {
-				if ( isset( $ruleSet['rule'] ) ) {
-					$rule = $ruleSet['rule'];
-					$options = array();
-					if ( isset( $ruleSet['options'] ) ) {
-						$options = $ruleSet['options'];
-					}
-					if ( isset( $this->validation_rules[$rule] )
-						 && is_callable( array( $this->validation_rules[$rule], 'rule' ) ) ) {
+			$this->_check( $key, $rules );
+		}
+		return $this->isValid();
+	}
 
-						$message = $this->validation_rules[$rule]->rule( $key, $options );
-						if ( !empty( $message ) ) {
-							$this->Error->setError( $key, $rule, $message );
-						}
+	/**
+	 * singleCheck
+	 * 特定の項目のvalidate実行
+	 * @param string $key
+	 * @return bool エラーがなければ true
+	 */
+	public function singleCheck( $key ) {
+		$Data = MW_WP_Form_Data::getInstance( $this->key );
+		$rules = array();
+		if ( is_array( $this->validate ) && isset( $this->validate[$key] ) ) {
+			$rules = $this->validate[$key];
+			if ( $this->_check( $key, $rules ) ) {
+				return false;
+			}
+			return true;
+		}
+	}
+
+	/**
+	 * _check
+	 * validate実行の実態
+	 * @param string $key
+	 * @param array $rules
+	 * @return bool エラーがあれば true
+	 */
+	protected function _check( $key, array $rules ) {
+		foreach ( $rules as $ruleSet ) {
+			if ( isset( $ruleSet['rule'] ) ) {
+				$rule = $ruleSet['rule'];
+				$options = array();
+				if ( isset( $ruleSet['options'] ) ) {
+					$options = $ruleSet['options'];
+				}
+				if ( isset( $this->validation_rules[$rule] )
+					 && is_callable( array( $this->validation_rules[$rule], 'rule' ) ) ) {
+
+					$message = $this->validation_rules[$rule]->rule( $key, $options );
+					if ( !empty( $message ) ) {
+						$this->Error->setError( $key, $rule, $message );
+						return true;
 					}
 				}
 			}
 		}
-		return $this->isValid();
 	}
 }

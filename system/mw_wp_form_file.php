@@ -97,7 +97,7 @@ class MW_WP_Form_File {
 
 	/**
 	 * fileUpload
-	 * ファイルアップロード処理。$this->data[$key] にファイルの URL を入れる
+	 * ファイルアップロード処理。
 	 * @return array ( name属性値 => アップロードできたファイルのURL, … )
 	 */
 	public function fileUpload() {
@@ -106,22 +106,53 @@ class MW_WP_Form_File {
 
 		$uploadedFiles = array();
 		foreach ( $_FILES as $key => $file ) {
-			if ( empty( $file['tmp_name'] ) )
-				continue;
-
-			if ( $this->checkFileType( $file['tmp_name'], $file['name'] )
-				 && $file['error'] == UPLOAD_ERR_OK
-				 && is_uploaded_file( $file['tmp_name'] ) ) {
-
-				$extension = pathinfo( $file['name'], PATHINFO_EXTENSION );
-				$uploadfile = $this->setUploadFileName( $extension );
-
-				$is_uploaded = move_uploaded_file( $file['tmp_name'], $uploadfile['file'] );
-				if ( $is_uploaded )
-					$uploadedFiles[$key] = $uploadfile['url'];
-			}
+			$upload_file_url = $this->_fileUpload( $file );
+			if ( $upload_file_url )
+				$uploadedFiles[$key] = $upload_file_url;
 		}
 		return $uploadedFiles;
+	}
+
+	/**
+	 * singleFileUpload
+	 * ファイルアップロード処理。
+	 * @param string $key アップロードしたいファイルの name 属性
+	 * @return string アップロードできたファイルのURL
+	 */
+	public function singleFileUpload( $key ) {
+		$this->createTempDir();
+		$this->cleanTempDir();
+
+		$file = '';
+		if ( is_array( $_FILES ) && isset( $_FILES[$key] ) ) {
+			$file = $_FILES[$key];
+			return $this->_fileUpload( $file );
+		}
+	}
+
+	/**
+	 * _fileUpload
+	 * ファイルアップロードの実処理。
+	 * @param arary $file $_FILES['hoge'] の配列
+	 * @return アップロードしたファイルの URL
+	 */
+	protected function _fileUpload( $file ) {
+		if ( empty( $file['tmp_name'] ) )
+			return;
+
+		$is_uploaded = false;
+		if ( $this->checkFileType( $file['tmp_name'], $file['name'] )
+			 && $file['error'] == UPLOAD_ERR_OK
+			 && is_uploaded_file( $file['tmp_name'] ) ) {
+
+			$extension = pathinfo( $file['name'], PATHINFO_EXTENSION );
+			$uploadfile = $this->setUploadFileName( $extension );
+
+			$is_uploaded = move_uploaded_file( $file['tmp_name'], $uploadfile['file'] );
+			if ( $is_uploaded ) {
+				return $uploadfile['url'];
+			}
+		}
 	}
 
 	/**

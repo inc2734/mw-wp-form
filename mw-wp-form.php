@@ -326,13 +326,15 @@ class mw_wp_form {
 		// $_FILESがあるときは$this->dataに統合
 		$files = array();
 		foreach ( $_FILES as $key => $file ) {
-			if ( !isset( $_POST[$key] ) ) {
+			if ( !isset( $_POST[$key] ) || !empty( $file['name'] ) ) {
 				if ( $file['error'] == UPLOAD_ERR_OK && is_uploaded_file( $file['tmp_name'] ) ) {
 					$this->Data->setValue( $key, $file['name'] );
 				} else {
 					$this->Data->setValue( $key, '' );
 				}
-				$files[$key] = $file;
+				if ( !empty( $file['name'] ) ) {
+					$files[$key] = $file;
+				}
 			}
 		}
 		// この条件判定がないと fileSize チェックが正しく動作しない
@@ -362,9 +364,9 @@ class mw_wp_form {
 		}
 		// 確認画面のとき
 		elseif ( $this->Form->isConfirm() ) {
+			$this->fileUpload();
 			if ( $this->Validation->check() ) {
 				$this->viewFlg = 'confirm';
-				$this->fileUpload();
 				$this->redirect( $this->confirm );
 			} else {
 				if ( !empty( $this->validation_error ) ) {
@@ -376,9 +378,9 @@ class mw_wp_form {
 		}
 		// 完了画面のとき
 		elseif ( $this->Form->isComplete() ) {
+			$this->fileUpload();
 			if ( $this->Validation->check() ) {
 				$this->viewFlg = 'complete';
-				$this->fileUpload();
 
 				if ( $this->Data->getValue( $this->Form->getTokenName() ) ) {
 					$this->apply_filters_mwform_mail();
@@ -943,34 +945,34 @@ class mw_wp_form {
 	 * ファイルアップロード処理。実際のアップロード状況に合わせてフォームデータも再生成する。
 	 */
 	protected function fileupload() {
-		$uploadedFiles = $this->File->fileupload();
+		$uploadedFiles = array();
 		$files = $this->Data->getValue( MWF_Config::UPLOAD_FILES );
 		if ( !is_array( $files ) ) {
 			$files = array();
 		}
-		$excludedFiles = array_diff_key( $files, $uploadedFiles );
+		foreach ( $files as $key => $file ) {
+			if ( $this->Validation->singleCheck( $key ) ) {
+				$uploadedFile = $this->File->singleFileupload( $key );
+				if ( $uploadedFile ) {
+					$uploadedFiles[$key] = $uploadedFile;
+				}
+			}
+		}
+
+		// 時間切れなどで削除されたファイルのキーを削除
 		$upload_file_keys = $this->Data->getValue( MWF_Config::UPLOAD_FILE_KEYS );
 		if ( !$upload_file_keys )
 			$upload_file_keys = array();
 
-		// 確認 => 入力 => 確認のときに空の $_FILES が送られアップ済みのも $excludesFiles に入ってしまうので消す
 		$wp_upload_dir = wp_upload_dir();
 		foreach ( $upload_file_keys as $upload_file_key ) {
 			$upload_file_url = $this->Data->getValue( $upload_file_key );
 			if ( $upload_file_url ) {
 				$filepath = MWF_Functions::fileurl_to_path( $upload_file_url );
-				if ( file_exists( $filepath ) ) {
-					unset( $excludedFiles[$upload_file_key] );
+				if ( !file_exists( $filepath ) ) {
+					unset( $upload_file_keys[$upload_file_key] );
 				}
 			}
-		}
-
-		// アップロードに失敗したファイルのキーは削除
-		foreach ( $excludedFiles as $key => $excludedFile ) {
-			$this->Data->clearValue( $key );
-			$delete_key = array_search( $key, $upload_file_keys );
-			if ( $delete_key !== false )
-				unset( $upload_file_keys[$delete_key] );
 		}
 		$this->Data->setValue( MWF_Config::UPLOAD_FILE_KEYS, $upload_file_keys );
 
