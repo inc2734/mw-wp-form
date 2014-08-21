@@ -2,11 +2,11 @@
 /**
  * Name: MW Validation Rule Between
  * Description: 値の文字数が範囲内
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : July 21, 2014
- * Modified: August 8, 2014
+ * Modified: August 18, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -57,14 +57,24 @@ class MW_Validation_Rule_Between extends MW_Validation_Rule {
 	 * @param array $value バリデーションルールセットの内容
 	 */
 	public function admin( $key, $value ) {
+		$min = '';
+		$max = '';
+		if ( is_array( $value[$this->getName()] ) ) {
+			if ( isset( $value[$this->getName()]['min'] ) ) {
+				$min = $value[$this->getName()]['min'];
+			}
+			if ( isset( $value[$this->getName()]['max'] ) ) {
+				$max = $value[$this->getName()]['max'];
+			}
+		}
 		?>
 		<table>
 			<tr>
 				<td><?php esc_html_e( 'The range of the number of characters', MWF_Config::DOMAIN ); ?></td>
 				<td>
-					<input type="text" value="<?php echo esc_attr( @$value[$this->getName()]['min'] ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][min]" />
+					<input type="text" value="<?php echo esc_attr( $min ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][min]" />
 					〜
-					<input type="text" value="<?php echo esc_attr( @$value[$this->getName()]['max'] ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][max]" />
+					<input type="text" value="<?php echo esc_attr( $max ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][max]" />
 				</td>
 			</tr>
 		</table>
