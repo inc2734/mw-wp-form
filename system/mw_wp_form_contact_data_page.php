@@ -39,6 +39,7 @@ class MW_WP_Form_Contact_Data_Page {
 		$this->POST_DATA_NAME = '_' . MWF_Config::NAME . '_data';
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_style' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_script' ) );
 		add_action( 'admin_head', array( $this, 'add_style' ) );
 		add_action( 'admin_head', array( $this, 'add_forms_columns' ) );
 		add_action( 'admin_head', array( $this, 'add_meta_box' ) );
@@ -77,6 +78,19 @@ class MW_WP_Form_Contact_Data_Page {
 			$url = plugin_dir_url( __FILE__ );
 			wp_register_style( MWF_Config::DOMAIN . '-admin', $url . '../css/admin.css' );
 			wp_enqueue_style( MWF_Config::DOMAIN . '-admin' );
+		}
+	}
+
+	/**
+	 * admin_script
+	 * JS適用
+	 */
+	public function admin_script() {
+		$post_type = get_post_type();
+		if ( in_array( $post_type, $this->form_post_type ) ) {
+			$url = plugin_dir_url( __FILE__ );
+			wp_register_script( MWF_Config::DOMAIN . '-admin-data', $url . '../js/admin-data.js' );
+			wp_enqueue_script( MWF_Config::DOMAIN . '-admin-data' );
 		}
 	}
 

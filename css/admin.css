@@ -304,3 +304,17 @@ span#formkey_field {
 	width: 20%;
 }
 
+/**
+ * .wp-list-table
+ */
+.mw-wp-form-wp-list-table {
+	overflow: auto;
+}
+.mw-wp-form-wp-list-table .wp-list-table {
+	table-layout: auto;
+	width: 100%;
+}
+.mw-wp-form-wp-list-table .wp-list-table th {
+	white-space: nowrap;
+}
+
