@@ -4,7 +4,7 @@ Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail
 Requires at least: 3.7
 Tested up to: 3.9.1
-Stable tag: 1.8.1
+Stable tag: 1.8.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,12 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 1. screenshot-1.png
 
 == Changelog ==
+
+= 1.8.2 =
+* Bug fix : Fix bug that PHP error is displayed in file type validation.
+* Bug fix : Fix bug that PHP error is displayed in admin page.
+* Changed : Change to upload file even if there is a validation error in other fields.
+* Changed : Change to display by scrolling when width of list of stored data is wide.
 
 = 1.8.1 =
 * Bug fix : Fix PHP error under PHP 5.3.0
