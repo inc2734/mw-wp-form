@@ -2,11 +2,11 @@
 /**
  * Name: MW Validation
  * Description: バリデーションクラス
- * Version: 1.7.0
+ * Version: 1.7.1
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : July 20, 2012
- * Modified: July 23, 2014
+ * Modified: August 26, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -118,8 +118,8 @@ class MW_Validation {
 			if ( $this->_check( $key, $rules ) ) {
 				return false;
 			}
-			return true;
 		}
+		return true;
 	}
 
 	/**
