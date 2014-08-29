@@ -67,6 +67,9 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Add chart function.
 * Added   : Add separator attribute in checkbox tag generator.
 
+= 1.8.4 =
+* Bug fix : Fix bug that can not be set maxlength in mwform_text shortcode.
+
 = 1.8.3 =
 * Bug fix : Fix bug that file is not uploaded when validation is not set in the file field.
 
