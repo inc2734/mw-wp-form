@@ -205,8 +205,8 @@ class MW_WP_Form_Admin_Page {
 		$post_type = get_post_type();
 		if ( isset( $_GET['post_type'] ) && MWF_Config::NAME === $_GET['post_type'] || MWF_Config::NAME == $post_type ) {
 			$url = plugin_dir_url( __FILE__ );
-			wp_register_style( MWF_Config::DOMAIN . '-admin', $url . '../css/admin.css' );
-			wp_enqueue_style( MWF_Config::DOMAIN . '-admin' );
+			wp_register_style( MWF_Config::NAME . '-admin', $url . '../css/admin.css' );
+			wp_enqueue_style( MWF_Config::NAME . '-admin' );
 		}
 	}
 
@@ -217,8 +217,10 @@ class MW_WP_Form_Admin_Page {
 	public function admin_scripts() {
 		if ( MWF_Config::NAME == get_post_type() ) {
 			$url = plugin_dir_url( __FILE__ );
-			wp_register_script( MWF_Config::DOMAIN . '-admin', $url . '../js/admin.js' );
-			wp_enqueue_script( MWF_Config::DOMAIN . '-admin' );
+			wp_register_script( MWF_Config::NAME . '-repeatable', $url . '../js/mw-wp-form-repeatable.js' );
+			wp_enqueue_script( MWF_Config::NAME . '-repeatable' );
+			wp_register_script( MWF_Config::NAME . '-admin', $url . '../js/admin.js' );
+			wp_enqueue_script( MWF_Config::NAME . '-admin' );
 			wp_enqueue_script( 'jquery-ui-dialog' );
 
 			global $wp_scripts;
@@ -507,12 +509,12 @@ class MW_WP_Form_Admin_Page {
 		// 空の隠れバリデーションフィールド（コピー元）を挿入
 		array_unshift( $postdata, $validation_keys );
 		?>
-		<b id="add-validation-btn"><?php esc_html_e( 'Add Validation rule', MWF_Config::DOMAIN ); ?></b>
+		<b class="add-btn"><?php esc_html_e( 'Add Validation rule', MWF_Config::DOMAIN ); ?></b>
 		<?php foreach ( $postdata as $key => $value ) : $value = array_merge( $validation_keys, $value ); ?>
-		<div class="validation-box"<?php if ( $key === 0 ) : ?> style="display:none"<?php endif; ?>>
-			<div class="validation-remove"><b>×</b></div>
-			<div class="validation-btn"><span><?php echo esc_attr( $value['target'] ); ?></span><b>▼</b></div>
-			<div class="validation-content">
+		<div class="repeatable-box"<?php if ( $key === 0 ) : ?> style="display:none"<?php endif; ?>>
+			<div class="remove-btn"><b>×</b></div>
+			<div class="open-btn"><span><?php echo esc_attr( $value['target'] ); ?></span><b>▼</b></div>
+			<div class="repeatable-box-content">
 				<?php esc_html_e( 'The key which applies validation', MWF_Config::DOMAIN ); ?>：<input type="text" class="targetKey" value="<?php echo esc_attr( $value['target'] ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][target]" />
 				<table border="0" cellpadding="0" cellspacing="0">
 					<tr>
@@ -523,8 +525,8 @@ class MW_WP_Form_Admin_Page {
 						</td>
 					</tr>
 				</table>
-			<!-- end .validation-content --></div>
-		<!-- end .validatioin-box --></div>
+			<!-- end .repeatable-box-content --></div>
+		<!-- end .repeatable-box --></div>
 		<?php endforeach; ?>
 		<?php
 	}

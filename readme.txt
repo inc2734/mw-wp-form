@@ -30,6 +30,11 @@ MW WP Form はショートコードを使って確認画面付きのメールフ
 
 http://plugins.2inc.org/mw-wp-form/
 
+== The following third-party resources ==
+
+Google Charts
+Source: https://developers.google.com/chart/
+
 = Contributors =
 
 * [Takashi Kitajima](http://2inc.org) ( [inc2734](http://profiles.wordpress.org/inc2734) )
@@ -53,6 +58,10 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 1. screenshot-1.png
 
 == Changelog ==
+
+= 1.9.0 =
+* Added   : Add chart function.
+* Added   : Add separator attribute in checkbox tag generator.
 
 = 1.8.3 =
 * Bug fix : Fix bug that file is not uploaded when validation is not set in the file field.

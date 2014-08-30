@@ -102,6 +102,7 @@ class mw_wp_form {
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_data.php' );
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_validation_rule.php' );
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_form_field.php' );
+		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_chart_page.php' );
 	}
 
 	/**
@@ -114,6 +115,7 @@ class mw_wp_form {
 		// 管理画面の実行
 		$this->MW_WP_Form_Admin_Page = new MW_WP_Form_Admin_Page();
 		$MW_WP_Form_Contact_Data_Page = new MW_WP_Form_Contact_Data_Page();
+		$MW_WP_Form_Chart_Page = new MW_WP_Form_Chart_Page();
 		add_action( 'init', array( $this, 'register_post_type' ) );
 
 		// フォームフィールドの読み込み、インスタンス化
@@ -221,6 +223,8 @@ class mw_wp_form {
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_file.php' );
 		$File = new MW_WP_Form_File();
 		$File->removeTempDir();
+
+		delete_option( MWF_Config::NAME );
 	}
 
 	/**
