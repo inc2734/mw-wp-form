@@ -2,11 +2,11 @@
 /**
  * Name: MW Form Field Checkbox
  * Description: チェックボックスを出力。
- * Version: 1.4.1
+ * Version: 1.4.2
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : December 14, 2012
- * Modified: July 24, 2014
+ * Modified: August 31, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -94,6 +94,10 @@ class MW_Form_Field_Checkbox extends MW_Form_Field {
 		<p>
 			<strong><?php esc_html_e( 'Default value', MWF_Config::DOMAIN ); ?>(<?php esc_html_e( 'option', MWF_Config::DOMAIN ); ?>)</strong>
 			<input type="text" name="value" />
+		</p>
+		<p>
+			<strong><?php esc_html_e( 'Separator string', MWF_Config::DOMAIN ); ?></strong>
+			<input type="text" name="separator" value="" size="10" />
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'Dsiplay error', MWF_Config::DOMAIN ); ?></strong>
