@@ -235,58 +235,21 @@ class MW_WP_Form_Chart_Page {
 		}
 		$chart_data[$postdata_key] = array(
 			'chart' => $chart['chart'],
-			'count' => count( $raw_data ),
-			'data'  => json_encode( $data ),
+			'data'  => $data,
 		);
 	}
 	?>
-
 	<script>
 	google.load( 'visualization', 1, { packages:['corechart'] } );
 	google.setOnLoadCallback( mwformDrawCharts );
 	function mwformDrawCharts() {
 		jQuery( function( $ ) {
 			<?php foreach ( $chart_data as $postdata_key => $chart ) : ?>
-			var data = google.visualization.arrayToDataTable( <?php echo $chart['data']; ?> );
-			var target = $( '.<?php echo esc_js( MWF_Config::NAME . "-chart-div-" . $postdata_key ); ?>' ).get( 0 );
-			<?php if ( $chart['chart'] === 'pie' ) : ?>
-			var options = {
-				colors: <?php echo $this->getColors( $chart['count'] ); ?>,
-				backgroundColor: 'transparent',
-				chartArea: {
-					top   : 0,
-					left  : 0,
-					height: '100%'
-				},
-				legend: {
-					alignment: 'center'
-				},
-				height: 260
-			};
-			var chart = new google.visualization.PieChart( target );
-			<?php elseif ( $chart['chart'] === 'bar' ) : ?>
-			data = new google.visualization.DataView( data );
-			data.setColumns( [0, 1, {
-				calc: 'stringify',
-				sourceColumn: 1,
-				type: 'string',
-				role: 'annotation'
-			}] );
-			var options = {
-				colors: <?php echo $this->getColors( $chart['count'] ); ?>,
-				backgroundColor: 'transparent',
-				chartArea: {
-					top   : 0,
-					height: '100%'
-				},
-				legend: {
-					position: 'none'
-				},
-				height: <?php echo esc_js( $chart['count'] * 50 ); ?>
-			};
-			var chart = new google.visualization.BarChart( target );
-			<?php endif; ?>
-			chart.draw( data, options );
+			$( '.<?php echo esc_js( MWF_Config::NAME . '-chart-div-' . $postdata_key ); ?>' )
+				.mw_wp_form_google_chart( {
+					chart: <?php echo json_encode( $chart['chart'] ); ?>,
+					data : <?php echo json_encode( $chart['data'] ); ?>
+				} );
 			<?php endforeach; ?>
 		} );
 	}
@@ -323,48 +286,6 @@ class MW_WP_Form_Chart_Page {
 			}
 		}
 		return $new_input;
-	}
-
-	/**
-	 * getColors
-	 * 色の配列を返す
-	 * @param int $count 要素数
-	 * @return json
-	 */
-	protected function getColors( $count ) {
-		$color_code = '2ea2cc';
-		$colors = array();
-		$red = hexdec( substr( $color_code, 0, 2 ) );
-		$green = hexdec( substr( $color_code, 2, 2 ) );
-		$blue = hexdec( substr( $color_code, 4, 2 ) );
-		for ( $i = 0; $i <= $count; $i ++ ) {
-			$red += 15;
-			if ( $red > 240 ) {
-				$red = 240;
-			}
-			$green += 10;
-			if ( $green > 240 ) {
-				$green = 240;
-			}
-			$blue += 5;
-			if ( $blue > 240 ) {
-				$blue = 240;
-			}
-			$hred = dechex( $red );
-			if ( strlen( $hred ) < 2 ) {
-				$hred .= $hred;
-			}
-			$hgreen = dechex( $green );
-			if ( strlen( $hgreen ) < 2 ) {
-				$hgreen .= $hgreen;
-			}
-			$hblue = dechex( $blue );
-			if ( strlen( $hblue ) < 2 ) {
-				$hblue .= $hblue;
-			}
-			$colors[] = '#' . $hred . $hgreen . $hblue;
-		}
-		return json_encode( $colors );
 	}
 
 	/**
