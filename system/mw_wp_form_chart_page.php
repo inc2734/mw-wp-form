@@ -13,6 +13,11 @@
 class MW_WP_Form_Chart_Page {
 
 	/**
+	 * formkey
+	 */
+	private $formkey;
+
+	/**
 	 * フォームの設定データ
 	 */
 	private $postdata = array();
@@ -29,6 +34,22 @@ class MW_WP_Form_Chart_Page {
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
 		add_action( 'admin_init', array( $this, 'register_setting' ) );
 		$this->option_group = MWF_Config::NAME . '-' . 'chart-group';
+		if ( !empty( $_GET['formkey'] ) ) {
+			$this->formkey = $_GET['formkey'];
+		}
+	}
+
+	/**
+	 * admin_print_styles
+	 */
+	public function admin_print_styles() {
+		?>
+		<style>
+		#menu-posts-mw-wp-form .wp-submenu li:last-child {
+			display: none;
+		}
+		</style>
+		<?php
 	}
 
 	/**
@@ -36,7 +57,7 @@ class MW_WP_Form_Chart_Page {
 	 */
 	public function add_menu() {
 		$submenu_page = add_submenu_page(
-			'edit.php?post_type=mw-wp-form',
+			'edit.php?post_type=' . MWF_Config::NAME,
 			esc_html__( 'Chart', MWF_Config::DOMAIN ),
 			esc_html__( 'Chart', MWF_Config::DOMAIN ),
 			MWF_Config::CAPABILITY,
@@ -262,11 +283,18 @@ class MW_WP_Form_Chart_Page {
 	 * register_setting
 	 */
 	public function register_setting() {
-		register_setting(
-			$this->option_group,
-			MWF_Config::NAME,
-			array( $this, 'sanitize' )
-		);
+		if ( !empty( $this->formkey ) ) {
+			$formkey = $this->formkey;
+		} elseif ( !empty( $_POST[MWF_Config::NAME . '-formkey'] ) ) {
+			$formkey = $_POST[MWF_Config::NAME . '-formkey'];
+		}
+		if ( !empty( $formkey ) ) {
+			register_setting(
+				$this->option_group,
+				MWF_Config::NAME . '-chart-' . $formkey,
+				array( $this, 'sanitize' )
+			);
+		}
 	}
 
 	/**
@@ -276,12 +304,10 @@ class MW_WP_Form_Chart_Page {
 	 */
 	public function sanitize( $input ) {
 		$new_input = array();
-		if ( is_array( $input ) && isset( $input['chart'] ) ) {
-			if ( is_array( $input['chart'] ) ) {
-				foreach ( $input['chart'] as $key => $chart_setting ) {
-					if ( !empty( $chart_setting['target'] ) ) {
-						$new_input['chart'][$key] = $chart_setting;
-					}
+		if ( is_array( $input ) && isset( $input['chart'] ) && is_array( $input['chart'] ) ) {
+			foreach ( $input['chart'] as $key => $value ) {
+				if ( !empty( $value['target'] ) ) {
+					$new_input['chart'][$key] = $value;
 				}
 			}
 		}
@@ -295,7 +321,7 @@ class MW_WP_Form_Chart_Page {
 	 * @return mixed 設定データ
 	 */
 	protected function get_option_data( $key ) {
-		$option = get_option( MWF_Config::NAME );
+		$option = get_option( MWF_Config::NAME . '-chart-' . $this->formkey );
 		if ( is_array( $option ) && isset( $option[$key] ) ) {
 			return $option[$key];
 		}
