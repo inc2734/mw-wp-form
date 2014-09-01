@@ -34,7 +34,7 @@ class MW_WP_Form_File {
 	 * checkFileType
 	 * @param string $filepath アップロードされたファイルのパス
 	 * @param string $filename ファイル名（未アップロード時の$_FILEの検査の場合、temp_nameは乱数になっているため）
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function checkFileType( $filepath, $filename = '' ) {
 		// WordPress( get_allowed_mime_types ) で許可されたファイルタイプ限定
@@ -134,7 +134,7 @@ class MW_WP_Form_File {
 	 * _fileUpload
 	 * ファイルアップロードの実処理。
 	 * @param arary $file $_FILES['hoge'] の配列
-	 * @return アップロードしたファイルの URL
+	 * @return string アップロードしたファイルの URL
 	 */
 	protected function _fileUpload( $file ) {
 		if ( empty( $file['tmp_name'] ) )
@@ -196,8 +196,8 @@ class MW_WP_Form_File {
 	/**
 	 * setUploadFileName
 	 * 一時ファイル名を生成。Tempディレクトリの生成に失敗していた場合はUploadディレクトリを使用
-	 * @param   String  拡張子 ( ex: jpg )
-	 * @return  Array   ( file =>, url => )
+	 * @param string 拡張子 ( ex: jpg )
+	 * @return array ( file =>, url => )
 	 */
 	protected function setUploadFileName( $extension ) {
 		$count      = 0;
@@ -225,7 +225,7 @@ class MW_WP_Form_File {
 	/**
 	 * getTempDir
 	 * Tempディレクトリ名（パス、URL）を返す。ディレクトリの存在可否は関係なし
-	 * @return  Array  ( dir => Tempディレクトリのパス, url => Tempディレクトリのurl )
+	 * @return array ( dir => Tempディレクトリのパス, url => Tempディレクトリのurl )
 	 */
 	protected function getTempDir() {
 		$wp_upload_dir = wp_upload_dir();
@@ -238,7 +238,7 @@ class MW_WP_Form_File {
 	/**
 	 * createTempDir
 	 * Tempディレクトリを作成
-	 * @return  Boolean
+	 * @return bool
 	 */
 	protected function createTempDir() {
 		$_ret = false;
@@ -255,6 +255,7 @@ class MW_WP_Form_File {
 	/**
 	 * removeTempDir
 	 * Tempディレクトリを削除
+	 * @param string $sub_dir サブディレクトリ名
 	 */
 	public function removeTempDir( $sub_dir = '' ) {
 		$temp_dir = $this->getTempDir();

@@ -3,7 +3,7 @@
  * Plugin Name: MW WP Form
  * Plugin URI: http://plugins.2inc.org/mw-wp-form/
  * Description: MW WP Form can create mail form with a confirmation screen.
- * Version: 1.8.3
+ * Version: 1.9.0
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : September 25, 2012
@@ -707,7 +707,7 @@ class mw_wp_form {
 	/**
 	 * redirect
 	 * 現在のURLと引数で渡されたリダイレクトURLが同じであればリダイレクトしない
-	 * @param	String	リダイレクトURL
+	 * @param string リダイレクトURL
 	 */
 	private function redirect( $url ) {
 		$redirect = ( empty( $url ) ) ? $this->get_request_uri() : $url;
@@ -858,8 +858,8 @@ class mw_wp_form {
 	/**
 	 * replace_user_property
 	 * ユーザーがログイン中の場合、{ユーザー情報のプロパティ}を置換する。
-	 * @param	String	フォーム内容
-	 * @return	String	フォーム内容
+	 * @param string フォーム内容
+	 * @return string フォーム内容
 	 */
 	protected function replace_user_property( $content ) {
 		$user = wp_get_current_user();
@@ -889,8 +889,8 @@ class mw_wp_form {
 	/**
 	 * get_post_property_from_querystring
 	 * 引数 post_id が有効の場合、投稿情報を取得するために preg_replace_callback から呼び出される。
-	 * @param	Array	$matches
-	 * @return	String
+	 * @param array $matches
+	 * @return string
 	 */
 	public function get_post_property_from_querystring( $matches ) {
 		if ( isset( $this->options_by_formkey['querystring'] ) )
@@ -914,8 +914,8 @@ class mw_wp_form {
 	/**
 	 * get_post_property_from_this
 	 * 引数 post_id が無効の場合、投稿情報を取得するために preg_replace_callback から呼び出される。
-	 * @param	Array	$matches
-	 * @return	String
+	 * @param array $matches
+	 * @return string
 	 */
 	public function get_post_property_from_this( $matches ) {
 		global $post;
@@ -994,7 +994,7 @@ class mw_wp_form {
 	 * set_admin_mail_reaquire_params
 	 * 管理者メールに必須の項目を設定
 	 * @param MW_Mail $Mail
-	 * @return  MW_Mail $Mail
+	 * @return MW_Mail $Mail
 	 */
 	private function set_admin_mail_reaquire_params( MW_Mail $Mail ) {
 		$admin_mail_to = get_bloginfo( 'admin_email' );
@@ -1017,7 +1017,7 @@ class mw_wp_form {
 	 * set_reply_mail_reaquire_params
 	 * 自動返信メールに必須の項目を設定
 	 * @param MW_Mail $Mail
-	 * @return  MW_Mail $Mail
+	 * @return MW_Mail $Mail
 	 */
 	private function set_reply_mail_reaquire_params( MW_Mail $Mail ) {
 		$reply_mail_from = get_bloginfo( 'admin_email' );
@@ -1036,7 +1036,7 @@ class mw_wp_form {
 	 * set_admin_mail_raw_params
 	 * 管理者メールに項目を設定
 	 * @param MW_Mail $Mail
-	 * @return  MW_Mail $Mail
+	 * @return MW_Mail $Mail
 	 */
 	private function set_admin_mail_raw_params( MW_Mail $Mail ) {
 		if ( $this->options_by_formkey ) {
@@ -1089,7 +1089,7 @@ class mw_wp_form {
 	 * set_reply_mail_raw_params
 	 * 自動返信メールに項目を設定
 	 * @param MW_Mail $Mail
-	 * @return  MW_Mail $Mail
+	 * @return MW_Mail $Mail
 	 */
 	private function set_reply_mail_raw_params( MW_Mail $Mail ) {
 		$Mail->to = '';
