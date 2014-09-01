@@ -212,8 +212,10 @@ class MW_WP_Form_Chart_Page {
 			continue;
 		}
 		printf(
-			'<h3>%s</h3><div class="%s" style="width: 100%%; max-width: 800px"></div>',
+			'<h3>%s ( %s: %d )</h3><div class="%s" style="width: 100%%; max-width: 800px"></div>',
 			esc_html( $chart['target'] ),
+			esc_html__( 'The number of inquiries', MWF_Config::DOMAIN ),
+			count( $form_posts ),
 			esc_attr( MWF_Config::NAME . '-chart-div-' . $postdata_key )
 		);
 	}
