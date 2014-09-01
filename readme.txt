@@ -66,6 +66,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 = 1.9.0 =
 * Added   : Add chart function.
 * Added   : Add separator attribute in checkbox tag generator.
+* Bug fix : Fix bug that can not change display option in saving contact data list page.
 * Bug fix : Fix bug that display wrong number of inquiries.
 
 = 1.8.4 =

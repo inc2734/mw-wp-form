@@ -163,6 +163,7 @@ class MW_WP_Form_Contact_Data_Page {
 			?>
 			<form id="mw-wp-form_csv" method="post" action="<?php echo esc_url( $action ); ?>">
 				<input type="submit" value="<?php esc_attr_e( 'CSV Download', MWF_Config::DOMAIN ); ?>" class="button-primary" />
+				<input type="hidden" name="<?php echo esc_attr( MWF_Config::NAME . '-csv-download' ); ?>" value="1" />
 				<?php wp_nonce_field( MWF_Config::NAME ); ?>
 			</form>
 			<?php
@@ -179,8 +180,10 @@ class MW_WP_Form_Contact_Data_Page {
 
 		$post_type = $_GET['post_type'];
 
-		if ( in_array( $post_type, $this->form_post_type ) && !empty( $_POST ) ) {
-			check_admin_referer( MWF_Config::NAME );
+		if ( in_array( $post_type, $this->form_post_type ) &&
+			!empty( $_POST ) &&
+			isset( $_POST[MWF_Config::NAME . '-csv-download'] ) &&
+			check_admin_referer( MWF_Config::NAME ) ) {
 
 			$posts_mwf = get_posts( array(
 				'post_type' => $post_type,
