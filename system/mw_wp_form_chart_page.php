@@ -225,7 +225,7 @@ class MW_WP_Form_Chart_Page {
 		$data = array();
 		$raw_data = array();
 		foreach ( $custom_keys[$chart['target']] as $item => $values ) {
-			if ( $chart['separator'] ) {
+			if ( $chart['separator'] && strstr( $item, $chart['separator'] ) ) {
 				$item = explode( $chart['separator'] , $item );
 			}
 			if ( is_array( $item ) ) {
@@ -252,9 +252,14 @@ class MW_WP_Form_Chart_Page {
 		}
 		$data[] = array( '', '' );
 		foreach ( $raw_data as $raw_data_key => $raw_data_value ) {
+			if ( $chart['chart'] === 'bar' ) {
+				$value = $raw_data_value / count( $form_posts );
+			} else {
+				$value = $raw_data_value;
+			}
 			$data[] = array(
 				$raw_data_key,
-				$raw_data_value,
+				$value,
 			);
 		}
 		$chart_data[$postdata_key] = array(
