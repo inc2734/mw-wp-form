@@ -152,7 +152,7 @@ class MW_WP_Form_Chart_Page {
 		array_unshift( $postdata, $default_keys );
 		?>
 <div class="wrap">
-	<h2><?php esc_html_e( 'Chart', MWF_Config::DOMAIN ); ?></h2>
+	<h2><?php esc_html_e( 'Chart', MWF_Config::DOMAIN ); ?> : <?php echo esc_html( get_the_title( preg_replace( '/^(.+_)(\d+)$/', '$2', $this->formkey ) ) ); ?></h2>
 	<form method="post" action="options.php">
 		<?php
 		settings_fields( $this->option_group );
