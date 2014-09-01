@@ -53,33 +53,57 @@ class MW_WP_Form_Chart_Page {
 	 * admin_enqueue_scripts
 	 */
 	public function admin_enqueue_scripts() {
-		$url = plugin_dir_url( __FILE__ );
-		wp_register_script( 'jsapi', 'https://www.google.com/jsapi' );
-		wp_enqueue_script( 'jsapi' );
-		wp_register_script( MWF_Config::NAME . '-repeatable', $url . '../js/mw-wp-form-repeatable.js' );
-		wp_enqueue_script( MWF_Config::NAME . '-repeatable' );
-		wp_register_script( MWF_Config::NAME . '-admin-chart', $url . '../js/admin-chart.js' );
-		wp_enqueue_script( MWF_Config::NAME . '-admin-chart' );
-		wp_enqueue_script( 'jquery-ui-dialog' );
-
 		global $wp_scripts;
 		$ui = $wp_scripts->query( 'jquery-ui-core' );
+		wp_enqueue_style( 'jquery.ui', '//ajax.googleapis.com/ajax/libs/jqueryui/' . $ui->ver . '/themes/smoothness/jquery-ui.min.css', array( 'jquery' ), $ui->ver );
+		wp_enqueue_script( 'jquery-ui-sortable' );
+
+		$url = plugin_dir_url( __FILE__ );
+
+		wp_register_script( 'jsapi', 'https://www.google.com/jsapi' );
+		wp_enqueue_script( 'jsapi' );
+
+		wp_register_script(
+			MWF_Config::NAME . '-repeatable',
+			$url . '../js/mw-wp-form-repeatable.js',
+			array( 'jquery' ),
+			null,
+			true
+		);
+		wp_enqueue_script( MWF_Config::NAME . '-repeatable' );
+
+		wp_register_script(
+			MWF_Config::NAME . '-google-chart',
+			$url . '../js/mw-wp-form-google-chart.js',
+			array( 'jquery' ),
+			null,
+			true
+		);
+		wp_enqueue_script( MWF_Config::NAME . '-google-chart' );
+
+		wp_register_script(
+			MWF_Config::NAME . '-admin-chart',
+			$url . '../js/admin-chart.js',
+			array( 'jquery', 'jquery-ui-sortable' ),
+			null,
+			true
+		);
+		wp_enqueue_script( MWF_Config::NAME . '-admin-chart' );
 	}
 
 	/**
 	 * display
 	 */
 	public function display() {
-		if ( isset( $_GET['formkey'] ) ) {
-			$formkey = $_GET['formkey'];
+		if ( !empty( $this->formkey ) ) {
+			$this->formkey = $_GET['formkey'];
 			$form_posts = get_posts( array(
-				'post_type' => $formkey,
+				'post_type' => $this->formkey,
 				'posts_per_page' => -1,
 			) );
 		} else {
 			exit;
 		}
-
 		$custom_keys = array();
 		foreach ( $form_posts as $post ) {
 			setup_postdata( $post );
@@ -114,43 +138,46 @@ class MW_WP_Form_Chart_Page {
 		?>
 		<div id="<?php echo esc_attr( MWF_Config::NAME . '_chart' ); ?>" class="postbox">
 			<div class="inside">
-				<b class="add-btn">グラフを追加</b>
-				<?php foreach ( $postdata as $key => $value ) :  ?>
-				<div class="repeatable-box"<?php if ( $key === 0 ) : ?> style="display:none"<?php endif; ?>>
-					<div class="remove-btn"><b>×</b></div>
-					<div class="open-btn"><span><?php echo esc_attr( $value['target'] ); ?></span><b>▼</b></div>
-					<div class="repeatable-box-content">
-						<?php esc_html_e( 'Item that create chart', MWF_Config::DOMAIN ); ?>
-						<select class="targetKey" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[chart][<?php echo $key; ?>][target]">
-							<option value=""><?php esc_html_e( 'Select this.', MWF_Config::DOMAIN ); ?></option>
-							<?php foreach ( $custom_keys as $custom_key_name => $custom_key_value ) : ?>
-							<option value="<?php echo esc_attr( $custom_key_name ); ?>" <?php selected( $value['target'], $custom_key_name ); ?>><?php echo esc_html( $custom_key_name ); ?></option>
-							<?php endforeach; ?>
-						</select>
-						<br />
-						<?php esc_html_e( 'Chart type', MWF_Config::DOMAIN ); ?>
-						<select name="<?php echo esc_attr( MWF_Config::NAME ); ?>[chart][<?php echo $key; ?>][chart]">
-							<?php
-							$chart_options = array(
-								'pie' => esc_html__( 'Pie chart', MWF_Config::DOMAIN ),
-								'bar' => esc_html__( 'Bar chart', MWF_Config::DOMAIN ),
-							);
-							foreach ( $chart_options as $chart_option_key => $chart_option ) {
-								printf(
-									'<option value="%s" %s>%s</option>',
-									esc_attr( $chart_option_key ),
-									selected( $value['chart'], $chart_option_key, false ),
-									esc_html( $chart_option )
+				<b class="add-btn"><?php esc_html_e( 'Add Chart', MWF_Config::DOMAIN ); ?></b>
+				<div class="repeatable-boxes">
+					<?php foreach ( $postdata as $key => $value ) :  ?>
+					<div class="repeatable-box"<?php if ( $key === 0 ) : ?> style="display:none"<?php endif; ?>>
+						<div class="remove-btn"><b>×</b></div>
+						<div class="open-btn"><span><?php echo esc_attr( $value['target'] ); ?></span><b>▼</b></div>
+						<div class="repeatable-box-content">
+							<?php esc_html_e( 'Item that create chart', MWF_Config::DOMAIN ); ?>
+							<select class="targetKey" name="<?php echo esc_attr( sprintf( '%s-chart-%s[chart][%s][target]', MWF_Config::NAME, $this->formkey, $key ) ); ?>">
+								<option value=""><?php esc_html_e( 'Select this.', MWF_Config::DOMAIN ); ?></option>
+								<?php foreach ( $custom_keys as $custom_key_name => $custom_key_value ) : ?>
+								<option value="<?php echo esc_attr( $custom_key_name ); ?>" <?php selected( $value['target'], $custom_key_name ); ?>><?php echo esc_html( $custom_key_name ); ?></option>
+								<?php endforeach; ?>
+							</select>
+							<br />
+							<?php esc_html_e( 'Chart type', MWF_Config::DOMAIN ); ?>
+							<select name="<?php echo esc_attr( sprintf( '%s-chart-%s[chart][%s][chart]', MWF_Config::NAME, $this->formkey, $key ) ); ?>">
+								<?php
+								$chart_options = array(
+									'pie' => esc_html__( 'Pie chart', MWF_Config::DOMAIN ),
+									'bar' => esc_html__( 'Bar chart', MWF_Config::DOMAIN ),
 								);
-							}
-							?>
-						</select>
-						<br />
-						<?php esc_html_e( 'Separator string (If the check box. If the separator attribute is not set to ",")', MWF_Config::DOMAIN ); ?>
-						<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[chart][<?php echo $key; ?>][separator]" value="<?php echo esc_attr( $value['separator'] ); ?>" size="5" />
-					<!-- end .repeatable-box-content --></div>
-				<!-- end .repeatable-box --></div>
-				<?php endforeach; ?>
+								foreach ( $chart_options as $chart_option_key => $chart_option ) {
+									printf(
+										'<option value="%s" %s>%s</option>',
+										esc_attr( $chart_option_key ),
+										selected( $value['chart'], $chart_option_key, false ),
+										esc_html( $chart_option )
+									);
+								}
+								?>
+							</select>
+							<br />
+							<?php esc_html_e( 'Separator string (If the check box. If the separator attribute is not set to ",")', MWF_Config::DOMAIN ); ?>
+							<input type="text" name="<?php echo esc_attr( sprintf( '%s-chart-%s[chart][%s][separator]', MWF_Config::NAME, $this->formkey, $key ) ); ?>" value="<?php echo esc_attr( $value['separator'] ); ?>" size="5" />
+						<!-- end .repeatable-box-content --></div>
+					<!-- end .repeatable-box --></div>
+					<?php endforeach; ?>
+				<!-- end .repeatable-boxes --></div>
+				<input type="hidden" name="<?php echo esc_attr( sprintf( '%s-formkey', MWF_Config::NAME ) ); ?>" value="<?php echo esc_attr( $this->formkey ); ?>" />
 				<?php submit_button(); ?>
 			<!-- end .inside --></div>
 		<!-- end #mw-wp-form_chart --></div>

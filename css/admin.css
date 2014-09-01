@@ -72,6 +72,7 @@ span#formkey_field {
  */
 #mw-wp-form_validation .repeatable-box,
 #mw-wp-form_chart .repeatable-box {
+	background: #fff;
 	border: #ddd solid 1px;
 	border-radius: 5px;
 	margin: 10px 0;

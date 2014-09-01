@@ -15,7 +15,7 @@ jQuery( function( $ ) {
 			add_position: 'first' // or last
 		};
 		var config = $.extend( defaults, config );
-		var cnt = config.box.length;
+		var cnt = $( config.box ).length;
 
 		return this.each( function( i, e ) {
 			/**
@@ -48,9 +48,9 @@ jQuery( function( $ ) {
 				} );
 				clone.hide().find( config.box_content ).show();
 				if ( config.add_position === 'first' ) {
-					$( this ).siblings( config.box ).first().after( clone.fadeIn() );
+					$( this ).parent().find( config.box ).first().after( clone.fadeIn() );
 				} else {
-					$( this ).siblings( config.box ).last().after( clone.fadeIn() );
+					$( this ).parent().find( config.box ).last().after( clone.fadeIn() );
 				}
 			} );
 
