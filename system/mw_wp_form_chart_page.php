@@ -241,7 +241,7 @@ class MW_WP_Form_Chart_Page {
 				if ( $item === '' ) {
 					$item = '(Empty)';
 				}
-				if ( empty( $raw_data[$_item] ) ) {
+				if ( empty( $raw_data[$item] ) ) {
 					$raw_data[$item] = 1;
 				} else {
 					$raw_data[$item] += 1;
