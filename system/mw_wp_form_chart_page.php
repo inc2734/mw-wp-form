@@ -232,9 +232,9 @@ class MW_WP_Form_Chart_Page {
 						$_item = '(Empty)';
 					}
 					if ( empty( $raw_data[$_item] ) ) {
-						$raw_data[$_item] = 1;
+						$raw_data[$_item] = count( $values );
 					} else {
-						$raw_data[$_item] += 1;
+						$raw_data[$_item] += count( $values );
 					}
 				}
 			} else {
@@ -242,9 +242,9 @@ class MW_WP_Form_Chart_Page {
 					$item = '(Empty)';
 				}
 				if ( empty( $raw_data[$item] ) ) {
-					$raw_data[$item] = 1;
+					$raw_data[$item] = count( $values );
 				} else {
-					$raw_data[$item] += 1;
+					$raw_data[$item] += count( $values );
 				}
 			}
 		}
