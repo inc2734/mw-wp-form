@@ -530,11 +530,11 @@ class MW_WP_Form_Contact_Data_Page {
 	 */
 	private function get_count( $post_type ) {
 		global $wpdb;
-		$count = $wpdb->prepare(
-			"SELECT count(*) FROM $wpdb->posts WHERE post_type = '%s'",
-			$post_type
-		);
-		return number_format( $wpdb->get_var( $count ) );
+		$posts_contact = get_posts( array(
+			'post_type' => $post_type,
+			'posts_per_page' => -1,
+		) );
+		return count( $posts_contact );
 	}
 
 	/**
