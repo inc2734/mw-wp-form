@@ -34,8 +34,8 @@ jQuery( function( $ ) {
 					calc: function ( dt, row ) {
 						var val = dt.getValue( row, 1 );
 						return {
-							v: ( val * 100 ).toFixed( 2 ) + ' %',
-							f: ( val * 100 ).toFixed( 2 ) + ' %'
+							v: ( val * 100 ).toFixed( 1 ) + ' %',
+							f: ( val * 100 ).toFixed( 1 ) + ' %'
 						};
 					},
 					type: 'string',
