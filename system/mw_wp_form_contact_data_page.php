@@ -2,11 +2,11 @@
 /**
  * Name: MW WP Form Contact Data Page
  * Description: DB保存データを扱うクラス
- * Version: 1.2.0
+ * Version: 1.2.1
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : October 10, 2013
- * Modified: July 24, 2014
+ * Modified: September 1, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
