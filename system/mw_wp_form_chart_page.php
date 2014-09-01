@@ -212,7 +212,7 @@ class MW_WP_Form_Chart_Page {
 			continue;
 		}
 		printf(
-			'<h3>%s</h3><div class="%s" style="width: 100%%;"></div>',
+			'<h3>%s</h3><div class="%s" style="width: 100%%; max-width: 800px"></div>',
 			esc_html( $chart['target'] ),
 			esc_attr( MWF_Config::NAME . '-chart-div-' . $postdata_key )
 		);
