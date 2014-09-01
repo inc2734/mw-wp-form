@@ -210,6 +210,7 @@ class mw_wp_form {
 
 		if ( empty( $data_post_ids ) ) return;
 		foreach ( $data_post_ids as $data_post_id ) {
+			delete_option( MWF_Config::NAME . '-chart-' . $data_post_id );
 			$data_posts = get_posts( array(
 				'post_type' => MWF_Config::DBDATA . $data_post_id,
 				'posts_per_page' => -1,
