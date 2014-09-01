@@ -33,6 +33,7 @@ class MW_WP_Form_Chart_Page {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
 		add_action( 'admin_init', array( $this, 'register_setting' ) );
+		add_action( 'admin_print_styles', array( $this, 'admin_print_styles' ) );
 		$this->option_group = MWF_Config::NAME . '-' . 'chart-group';
 		if ( !empty( $_GET['formkey'] ) ) {
 			$this->formkey = $_GET['formkey'];
