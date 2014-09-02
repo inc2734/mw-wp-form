@@ -59,7 +59,11 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 == Screenshots ==
 
-1. screenshot-1.png
+1. Form creation page.
+2. Form item create box. You can easily insert the form.
+3. Supports saving inquiry data to database.
+4. List page of inquiry data that has been saved.
+5. Supports chart display of saved inquiry data.
 
 == Changelog ==
 
