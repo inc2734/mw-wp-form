@@ -39,7 +39,6 @@ class MW_Form_Field_Image extends MW_Form_Field {
 		return array(
 			'name' => '',
 			'id'   => '',
-			'size' => '20',
 			'show_error' => 'true',
 		);
 	}
@@ -51,8 +50,7 @@ class MW_Form_Field_Image extends MW_Form_Field {
 	 */
 	protected function inputPage() {
 		$_ret = $this->Form->file( $this->atts['name'], array(
-			'id'   => $this->atts['id'],
-			'size' => $this->atts['size'],
+			'id' => $this->atts['id'],
 		) );
 		$value = $this->Form->getValue( $this->atts['name'] );
 
@@ -103,10 +101,6 @@ class MW_Form_Field_Image extends MW_Form_Field {
 		<p>
 			<strong>id(<?php esc_html_e( 'option', MWF_Config::DOMAIN ); ?>)</strong>
 			<input type="text" name="id" />
-		</p>
-		<p>
-			<strong>size(<?php esc_html_e( 'option', MWF_Config::DOMAIN ); ?>)</strong>
-			<input type="text" name="size" />
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'Dsiplay error', MWF_Config::DOMAIN ); ?></strong>

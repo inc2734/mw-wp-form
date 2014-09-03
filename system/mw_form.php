@@ -727,12 +727,11 @@ class MW_Form {
 	public function file( $name, $options = array() ) {
 		$defaults = array(
 			'id' => '',
-			'size' => 20,
 		);
 		$id = $this->get_attr_id( $options['id'] );
 		$options = array_merge( $defaults, $options );
-		return sprintf( '<input type="file" name="%s" size="%d" %s /><span data-mwform-file-delete="%1$s" class="mwform-file-delete">&times;</span>',
-			esc_attr( $name ), esc_attr( $options['size'] ), $id
+		return sprintf( '<input type="file" name="%s" %s /><span data-mwform-file-delete="%1$s" class="mwform-file-delete">&times;</span>',
+			esc_attr( $name ), $id
 		);
 	}
 
