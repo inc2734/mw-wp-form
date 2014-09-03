@@ -76,8 +76,8 @@ class MW_WP_Form_Contact_Data_Page {
 		$post_type = get_post_type();
 		if ( in_array( $post_type, $this->form_post_type ) ) {
 			$url = plugin_dir_url( __FILE__ );
-			wp_register_style( MWF_Config::DOMAIN . '-admin', $url . '../css/admin.css' );
-			wp_enqueue_style( MWF_Config::DOMAIN . '-admin' );
+			wp_register_style( MWF_Config::NAME . '-admin', $url . '../css/admin.css' );
+			wp_enqueue_style( MWF_Config::NAME . '-admin' );
 		}
 	}
 
@@ -89,8 +89,8 @@ class MW_WP_Form_Contact_Data_Page {
 		$post_type = get_post_type();
 		if ( in_array( $post_type, $this->form_post_type ) ) {
 			$url = plugin_dir_url( __FILE__ );
-			wp_register_script( MWF_Config::DOMAIN . '-admin-data', $url . '../js/admin-data.js' );
-			wp_enqueue_script( MWF_Config::DOMAIN . '-admin-data' );
+			wp_register_script( MWF_Config::NAME . '-admin-data', $url . '../js/admin-data.js' );
+			wp_enqueue_script( MWF_Config::NAME . '-admin-data' );
 		}
 	}
 

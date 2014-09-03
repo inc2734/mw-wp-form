@@ -242,15 +242,15 @@ class mw_wp_form {
 	 */
 	public function original_style() {
 		$url = plugin_dir_url( __FILE__ );
-		wp_register_style( MWF_Config::DOMAIN, $url . 'css/style.css' );
-		wp_enqueue_style( MWF_Config::DOMAIN );
+		wp_register_style( MWF_Config::NAME, $url . 'css/style.css' );
+		wp_enqueue_style( MWF_Config::NAME );
 
 		$style = $this->options_by_formkey['style'];
 		$styles = apply_filters( 'mwform_styles', array() );
 		if ( is_array( $styles ) && isset( $styles[$style] ) ) {
 			$css = $styles[$style];
-			wp_register_style( MWF_Config::DOMAIN . '_style', $css );
-			wp_enqueue_style( MWF_Config::DOMAIN . '_style' );
+			wp_register_style( MWF_Config::NAME . '_style', $css );
+			wp_enqueue_style( MWF_Config::NAME . '_style' );
 		}
 	}
 
@@ -260,8 +260,8 @@ class mw_wp_form {
 	 */
 	public function original_script() {
 		$url = plugin_dir_url( __FILE__ );
-		wp_register_script( MWF_Config::DOMAIN, $url . 'js/form.js', array( 'jquery' ), false, true );
-		wp_enqueue_script( MWF_Config::DOMAIN );
+		wp_register_script( MWF_Config::NAME, $url . 'js/form.js', array( 'jquery' ), false, true );
+		wp_enqueue_script( MWF_Config::NAME );
 	}
 
 	/**
