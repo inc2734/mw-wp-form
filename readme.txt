@@ -4,7 +4,7 @@ Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph
 Requires at least: 3.7
 Tested up to: 3.9.1
-Stable tag: 1.9.0
+Stable tag: 1.9.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,11 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 5. Supports chart display of saved inquiry data.
 
 == Changelog ==
+
+= 1.9.1 =
+* Changed : Easy to see change the form tag insertion selectbox.
+* Deleted : Delete size attribute in file or image field.
+* Bug fix : Fix bug that there are cases where the page chache does not disabled on Nginx.
 
 = 1.9.0 =
 * Added   : Add chart function.
