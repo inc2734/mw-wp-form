@@ -2,11 +2,11 @@
 /**
  * Name: MW Form Field Akismet Error
  * Description: Akismetのエラーを出力。
- * Version: 1.3.1
+ * Version: 1.3.3
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : June 21, 2013
- * Modified: July 24, 2014
+ * Modified: September 3, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -39,7 +39,13 @@ class MW_Form_Field_Akismet_Error extends MW_Form_Field {
 	 * @return string HTML
 	 */
 	protected function inputPage() {
-		return '<div class="akismet_error">' . $this->getError( MWF_Config::AKISMET ) . '</div>';
+		$error = $this->getError( MWF_Config::AKISMET );
+		if ( $error ) {
+			return sprintf(
+				'<span class="akismet_error">%s</span>',
+				$this->getError( MWF_Config::AKISMET )
+			);
+		}
 	}
 
 	/**
