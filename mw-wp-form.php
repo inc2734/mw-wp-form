@@ -153,7 +153,7 @@ class mw_wp_form {
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_mail.php' );
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_validation.php' );
 		include_once( plugin_dir_path( __FILE__ ) . 'system/mw_wp_form_file.php' );
-		add_action( 'nocache_headers' , array( $this, 'nocache_headers' ) , 1 );
+		add_filter( 'nocache_headers' , array( $this, 'nocache_headers' ) , 1 );
 		add_filter( 'template_include', array( $this, 'main' ), 10000 );
 		add_action( 'parse_request', array( $this, 'remove_query_vars_from_post' ) );
 	}
@@ -320,6 +320,8 @@ class mw_wp_form {
 			 is_null( $this->complete ) ||
 			 is_null( $this->validation_error ) )
 			return $template;
+
+		nocache_headers();
 
 		// セッション初期化
 		$this->Data = MW_WP_Form_Data::getInstance( $this->key );
