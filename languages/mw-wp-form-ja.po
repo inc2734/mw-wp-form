@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MW WP Form 1.9.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/mw-wp-form\n"
-"POT-Creation-Date: 2014-09-01 11:56:58+00:00\n"
-"PO-Revision-Date: 2014-09-01 21:03+0900\n"
+"POT-Creation-Date: 2014-09-03 16:27:26+00:00\n"
+"PO-Revision-Date: 2014-09-04 01:29+0900\n"
 "Last-Translator: Takashi Kitajima <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -23,129 +23,128 @@ msgstr ""
 msgid "Akismet Error"
 msgstr "Akismetエラー"
 
-#: form_fields/mw_form_field_back_button.php:23
-#: form_fields/mw_form_field_back_button.php:34
+#: form_fields/mw_form_field_back_button.php:29
+#: form_fields/mw_form_field_back_button.php:40
 msgid "Back"
 msgstr "戻る"
 
-#: form_fields/mw_form_field_back_button.php:62
-#: form_fields/mw_form_field_button.php:68
-#: form_fields/mw_form_field_submit.php:68
+#: form_fields/mw_form_field_back_button.php:68
+#: form_fields/mw_form_field_button.php:74
+#: form_fields/mw_form_field_submit.php:74
 msgid "String on the button"
 msgstr "ボタンに表示する文字列"
 
-#: form_fields/mw_form_field_back_button.php:62
-#: form_fields/mw_form_field_button.php:68
-#: form_fields/mw_form_field_checkbox.php:84
-#: form_fields/mw_form_field_checkbox.php:88
-#: form_fields/mw_form_field_checkbox.php:95
-#: form_fields/mw_form_field_confirm_button.php:62
-#: form_fields/mw_form_field_datepicker.php:106
-#: form_fields/mw_form_field_datepicker.php:110
-#: form_fields/mw_form_field_datepicker.php:114
-#: form_fields/mw_form_field_datepicker.php:118
-#: form_fields/mw_form_field_file.php:97
+#: form_fields/mw_form_field_back_button.php:68
+#: form_fields/mw_form_field_button.php:74
+#: form_fields/mw_form_field_checkbox.php:90
+#: form_fields/mw_form_field_checkbox.php:94
+#: form_fields/mw_form_field_checkbox.php:101
+#: form_fields/mw_form_field_confirm_button.php:68
+#: form_fields/mw_form_field_datepicker.php:112
+#: form_fields/mw_form_field_datepicker.php:116
+#: form_fields/mw_form_field_datepicker.php:120
+#: form_fields/mw_form_field_datepicker.php:124
 #: form_fields/mw_form_field_file.php:101
 #: form_fields/mw_form_field_hidden.php:78
-#: form_fields/mw_form_field_image.php:98
 #: form_fields/mw_form_field_image.php:102
-#: form_fields/mw_form_field_password.php:83
-#: form_fields/mw_form_field_password.php:87
-#: form_fields/mw_form_field_password.php:91
-#: form_fields/mw_form_field_password.php:95
-#: form_fields/mw_form_field_password.php:99
-#: form_fields/mw_form_field_radio.php:82
-#: form_fields/mw_form_field_radio.php:86
-#: form_fields/mw_form_field_radio.php:93
-#: form_fields/mw_form_field_select.php:82
-#: form_fields/mw_form_field_select.php:86
-#: form_fields/mw_form_field_select.php:93
-#: form_fields/mw_form_field_submit.php:68
-#: form_fields/mw_form_field_text.php:91 form_fields/mw_form_field_text.php:95
-#: form_fields/mw_form_field_text.php:99
-#: form_fields/mw_form_field_text.php:103
-#: form_fields/mw_form_field_text.php:107
-#: form_fields/mw_form_field_textarea.php:85
-#: form_fields/mw_form_field_textarea.php:89
-#: form_fields/mw_form_field_textarea.php:93
-#: form_fields/mw_form_field_textarea.php:97
-#: form_fields/mw_form_field_textarea.php:101
+#: form_fields/mw_form_field_password.php:89
+#: form_fields/mw_form_field_password.php:93
+#: form_fields/mw_form_field_password.php:97
+#: form_fields/mw_form_field_password.php:101
+#: form_fields/mw_form_field_password.php:105
+#: form_fields/mw_form_field_radio.php:88
+#: form_fields/mw_form_field_radio.php:92
+#: form_fields/mw_form_field_radio.php:99
+#: form_fields/mw_form_field_select.php:88
+#: form_fields/mw_form_field_select.php:92
+#: form_fields/mw_form_field_select.php:99
+#: form_fields/mw_form_field_submit.php:74
+#: form_fields/mw_form_field_text.php:97
+#: form_fields/mw_form_field_text.php:101
+#: form_fields/mw_form_field_text.php:105
+#: form_fields/mw_form_field_text.php:109
+#: form_fields/mw_form_field_text.php:113
+#: form_fields/mw_form_field_textarea.php:91
+#: form_fields/mw_form_field_textarea.php:95
+#: form_fields/mw_form_field_textarea.php:99
+#: form_fields/mw_form_field_textarea.php:103
+#: form_fields/mw_form_field_textarea.php:107
 msgid "option"
 msgstr "オプション"
 
-#: form_fields/mw_form_field_button.php:23
+#: form_fields/mw_form_field_button.php:29
 msgid "Button"
 msgstr "ボタン"
 
-#: form_fields/mw_form_field_checkbox.php:23
+#: form_fields/mw_form_field_checkbox.php:29
 msgid "Checkbox"
 msgstr "チェックボックス"
 
-#: form_fields/mw_form_field_checkbox.php:88
-#: form_fields/mw_form_field_radio.php:86
-#: form_fields/mw_form_field_select.php:86
+#: form_fields/mw_form_field_checkbox.php:94
+#: form_fields/mw_form_field_radio.php:92
+#: form_fields/mw_form_field_select.php:92
 msgid "Choices"
 msgstr "選択肢"
 
-#: form_fields/mw_form_field_checkbox.php:91
+#: form_fields/mw_form_field_checkbox.php:97
 #: form_fields/mw_form_field_error.php:70
-#: form_fields/mw_form_field_radio.php:89
-#: form_fields/mw_form_field_select.php:89
+#: form_fields/mw_form_field_radio.php:95
+#: form_fields/mw_form_field_select.php:95
 msgid "Input one line about one item."
 msgstr "1項目につき1行で入力してください。"
 
-#: form_fields/mw_form_field_checkbox.php:95
-#: form_fields/mw_form_field_confirm_button.php:62
-#: form_fields/mw_form_field_datepicker.php:118
+#: form_fields/mw_form_field_checkbox.php:101
+#: form_fields/mw_form_field_confirm_button.php:68
+#: form_fields/mw_form_field_datepicker.php:124
 #: form_fields/mw_form_field_hidden.php:78
-#: form_fields/mw_form_field_password.php:95
-#: form_fields/mw_form_field_radio.php:93
-#: form_fields/mw_form_field_select.php:93
-#: form_fields/mw_form_field_text.php:103
-#: form_fields/mw_form_field_textarea.php:97
+#: form_fields/mw_form_field_password.php:101
+#: form_fields/mw_form_field_radio.php:99
+#: form_fields/mw_form_field_select.php:99
+#: form_fields/mw_form_field_text.php:109
+#: form_fields/mw_form_field_textarea.php:103
 msgid "Default value"
 msgstr "初期値"
 
-#: form_fields/mw_form_field_checkbox.php:99
+#: form_fields/mw_form_field_checkbox.php:105
 msgid "Separator string"
 msgstr "区切り文字"
 
-#: form_fields/mw_form_field_checkbox.php:103
-#: form_fields/mw_form_field_datepicker.php:122
+#: form_fields/mw_form_field_checkbox.php:109
+#: form_fields/mw_form_field_datepicker.php:128
 #: form_fields/mw_form_field_file.php:105
 #: form_fields/mw_form_field_image.php:106
-#: form_fields/mw_form_field_password.php:103
-#: form_fields/mw_form_field_radio.php:97
-#: form_fields/mw_form_field_select.php:97
-#: form_fields/mw_form_field_tel.php:80 form_fields/mw_form_field_text.php:111
-#: form_fields/mw_form_field_textarea.php:105
-#: form_fields/mw_form_field_zip.php:80
+#: form_fields/mw_form_field_password.php:109
+#: form_fields/mw_form_field_radio.php:103
+#: form_fields/mw_form_field_select.php:103
+#: form_fields/mw_form_field_tel.php:86 form_fields/mw_form_field_text.php:117
+#: form_fields/mw_form_field_textarea.php:111
+#: form_fields/mw_form_field_zip.php:86
 msgid "Dsiplay error"
 msgstr "エラー表示"
 
-#: form_fields/mw_form_field_checkbox.php:104
-#: form_fields/mw_form_field_datepicker.php:123
+#: form_fields/mw_form_field_checkbox.php:110
+#: form_fields/mw_form_field_datepicker.php:129
 #: form_fields/mw_form_field_file.php:106
 #: form_fields/mw_form_field_image.php:107
-#: form_fields/mw_form_field_password.php:104
-#: form_fields/mw_form_field_radio.php:98
-#: form_fields/mw_form_field_select.php:98
-#: form_fields/mw_form_field_tel.php:81 form_fields/mw_form_field_text.php:112
-#: form_fields/mw_form_field_textarea.php:106
-#: form_fields/mw_form_field_zip.php:81
+#: form_fields/mw_form_field_password.php:110
+#: form_fields/mw_form_field_radio.php:104
+#: form_fields/mw_form_field_select.php:104
+#: form_fields/mw_form_field_tel.php:87 form_fields/mw_form_field_text.php:118
+#: form_fields/mw_form_field_textarea.php:112
+#: form_fields/mw_form_field_zip.php:87
 msgid "Don't display error."
 msgstr "エラーを表示しない"
 
-#: form_fields/mw_form_field_confirm_button.php:23
+#: form_fields/mw_form_field_confirm_button.php:29
 msgid "Confirm Button"
 msgstr "確認ボタン"
 
-#: form_fields/mw_form_field_confirm_button.php:34
-#: form_fields/mw_form_field_submit_button.php:35
+#: form_fields/mw_form_field_confirm_button.php:40
+#: form_fields/mw_form_field_submit_button.php:41
 msgid "Confirm"
 msgstr "確認画面へ"
 
-#: form_fields/mw_form_field_datepicker.php:23
+#: form_fields/mw_form_field_datepicker.php:29
 msgid "Datepicker"
 msgstr "日付"
 
@@ -157,11 +156,11 @@ msgstr "エラーメッセージ"
 msgid "name of the element which wants to display error"
 msgstr "エラーを表示したい要素のname属性"
 
-#: form_fields/mw_form_field_file.php:23
+#: form_fields/mw_form_field_file.php:29
 msgid "File"
 msgstr "ファイルフィールド"
 
-#: form_fields/mw_form_field_file.php:57 form_fields/mw_form_field_file.php:78
+#: form_fields/mw_form_field_file.php:61 form_fields/mw_form_field_file.php:82
 msgid "Uploaded."
 msgstr "アップロードしました。"
 
@@ -177,75 +176,75 @@ msgstr "表示する"
 msgid "Display hidden value."
 msgstr "hiddenの値を表示"
 
-#: form_fields/mw_form_field_image.php:23
+#: form_fields/mw_form_field_image.php:29
 msgid "Image"
 msgstr "画像フィールド"
 
-#: form_fields/mw_form_field_password.php:23
+#: form_fields/mw_form_field_password.php:29
 msgid "Password"
 msgstr "パスワードフィールド"
 
-#: form_fields/mw_form_field_radio.php:23
+#: form_fields/mw_form_field_radio.php:29
 msgid "Radio"
 msgstr "ラジオボタン"
 
-#: form_fields/mw_form_field_select.php:23
+#: form_fields/mw_form_field_select.php:29
 msgid "Select"
 msgstr "セレクトボックス"
 
-#: form_fields/mw_form_field_submit.php:23
+#: form_fields/mw_form_field_submit.php:29
 msgid "Submit Button"
 msgstr "送信ボタン"
 
-#: form_fields/mw_form_field_submit.php:35
-#: form_fields/mw_form_field_submit_button.php:36
+#: form_fields/mw_form_field_submit.php:41
+#: form_fields/mw_form_field_submit_button.php:42
 msgid "Send"
 msgstr "送信する"
 
-#: form_fields/mw_form_field_submit_button.php:23
+#: form_fields/mw_form_field_submit_button.php:29
 msgid "Confirm &amp; Submit"
 msgstr "確認・送信"
 
-#: form_fields/mw_form_field_submit_button.php:72
+#: form_fields/mw_form_field_submit_button.php:78
 msgid "String on the confirm button"
 msgstr "確認ボタンに表示する文字列"
 
-#: form_fields/mw_form_field_submit_button.php:76
+#: form_fields/mw_form_field_submit_button.php:82
 msgid "String on the submit button"
 msgstr "送信ボタンに表示する文字列"
 
-#: form_fields/mw_form_field_tel.php:23
+#: form_fields/mw_form_field_tel.php:29
 #: validation_rules/mw_validation_rule_tel.php:52
 msgid "Tel"
 msgstr "電話番号"
 
-#: form_fields/mw_form_field_tel.php:84 form_fields/mw_form_field_text.php:115
-#: form_fields/mw_form_field_zip.php:84
+#: form_fields/mw_form_field_tel.php:90 form_fields/mw_form_field_text.php:121
+#: form_fields/mw_form_field_zip.php:90
 msgid "Convert half alphanumeric"
 msgstr "半角英数字に変換"
 
-#: form_fields/mw_form_field_tel.php:85 form_fields/mw_form_field_zip.php:85
+#: form_fields/mw_form_field_tel.php:91 form_fields/mw_form_field_zip.php:91
 msgid "Don't Convert."
 msgstr "変換しない"
 
-#: form_fields/mw_form_field_text.php:23
+#: form_fields/mw_form_field_text.php:29
 msgid "Text"
 msgstr "テキストフィールド"
 
-#: form_fields/mw_form_field_text.php:116
+#: form_fields/mw_form_field_text.php:122
 msgid "Convert."
 msgstr "変換する"
 
-#: form_fields/mw_form_field_textarea.php:23
+#: form_fields/mw_form_field_textarea.php:29
 msgid "Textarea"
 msgstr "テキストエリア"
 
-#: form_fields/mw_form_field_zip.php:23
+#: form_fields/mw_form_field_zip.php:29
 #: validation_rules/mw_validation_rule_zip.php:46
 msgid "Zip Code"
 msgstr "郵便番号"
 
-#: mw-wp-form.php:529
+#: mw-wp-form.php:531
 msgid "Validation Object is not a MW Validation Class."
 msgstr ""
 
@@ -450,7 +449,27 @@ msgstr "バリデーションを適用する項目"
 msgid "Select Style"
 msgstr "スタイルを選択"
 
-#: system/mw_wp_form_admin_page.php:580
+#: system/mw_wp_form_admin_page.php:578 system/mw_wp_form_chart_page.php:172
+msgid "Select this."
+msgstr "選択してください"
+
+#: system/mw_wp_form_admin_page.php:579
+msgid "Input fields"
+msgstr "入力項目"
+
+#: system/mw_wp_form_admin_page.php:582
+msgid "Select fields"
+msgstr "選択項目"
+
+#: system/mw_wp_form_admin_page.php:585
+msgid "Button fields"
+msgstr "ボタン項目"
+
+#: system/mw_wp_form_admin_page.php:588
+msgid "Other fields"
+msgstr "その他の項目"
+
+#: system/mw_wp_form_admin_page.php:592
 msgid "Add form tag"
 msgstr "フォームタグを追加"
 
@@ -466,10 +485,6 @@ msgstr "グラフを追加"
 #: system/mw_wp_form_chart_page.php:170
 msgid "Item that create chart"
 msgstr "グラフを作成する項目"
-
-#: system/mw_wp_form_chart_page.php:172
-msgid "Select this."
-msgstr "選択してください"
 
 #: system/mw_wp_form_chart_page.php:178
 msgid "Chart type"
@@ -489,6 +504,11 @@ msgid ""
 "\",\")"
 msgstr ""
 "区切り文字（チェックボックスの場合。separator 属性が未設定の場合は「,」）"
+
+#: system/mw_wp_form_chart_page.php:217
+#: system/mw_wp_form_contact_data_page.php:491
+msgid "The number of inquiries"
+msgstr "問い合わせ件数"
 
 #: system/mw_wp_form_contact_data_page.php:53
 msgid "Not supported"
@@ -526,34 +546,34 @@ msgstr "ゴミ箱にデータはありません"
 msgid "CSV Download"
 msgstr "CSVダウンロード"
 
-#: system/mw_wp_form_contact_data_page.php:195
-#: system/mw_wp_form_contact_data_page.php:227
-#: system/mw_wp_form_contact_data_page.php:310
-#: system/mw_wp_form_contact_data_page.php:407
+#: system/mw_wp_form_contact_data_page.php:198
+#: system/mw_wp_form_contact_data_page.php:230
+#: system/mw_wp_form_contact_data_page.php:313
+#: system/mw_wp_form_contact_data_page.php:410
 msgid "Response Status"
 msgstr "対応状況"
 
-#: system/mw_wp_form_contact_data_page.php:218
-#: system/mw_wp_form_contact_data_page.php:229
-#: system/mw_wp_form_contact_data_page.php:419
+#: system/mw_wp_form_contact_data_page.php:221
+#: system/mw_wp_form_contact_data_page.php:232
+#: system/mw_wp_form_contact_data_page.php:422
 msgid "Memo"
 msgstr "メモ"
 
-#: system/mw_wp_form_contact_data_page.php:285
+#: system/mw_wp_form_contact_data_page.php:288
 msgid "Custom Fields"
 msgstr "カスタムフィールド"
 
-#: system/mw_wp_form_contact_data_page.php:309
+#: system/mw_wp_form_contact_data_page.php:312
 msgid "Registed Date"
 msgstr "登録日時"
 
-#: system/mw_wp_form_contact_data_page.php:465
-#: system/mw_wp_form_contact_data_page.php:466
-#: system/mw_wp_form_contact_data_page.php:480
+#: system/mw_wp_form_contact_data_page.php:468
+#: system/mw_wp_form_contact_data_page.php:469
+#: system/mw_wp_form_contact_data_page.php:483
 msgid "Inquiry data"
 msgstr "問い合わせデータ"
 
-#: system/mw_wp_form_contact_data_page.php:482
+#: system/mw_wp_form_contact_data_page.php:485
 msgid ""
 "You can see the inquiry data that are saved in the database by clicking on "
 "the link below."
@@ -561,32 +581,28 @@ msgstr ""
 "リンクをクリックすることでデータベースに保存された問い合わせデータを見ること"
 "ができます。"
 
-#: system/mw_wp_form_contact_data_page.php:486
+#: system/mw_wp_form_contact_data_page.php:489
 msgid "Form title"
 msgstr "フォーム名"
 
-#: system/mw_wp_form_contact_data_page.php:487
-#: system/mw_wp_form_contact_data_page.php:497
+#: system/mw_wp_form_contact_data_page.php:490
+#: system/mw_wp_form_contact_data_page.php:500
 msgid "Display Chart"
 msgstr "グラフを表示"
 
-#: system/mw_wp_form_contact_data_page.php:488
-msgid "The number of inquiries"
-msgstr "問い合わせ件数"
-
-#: system/mw_wp_form_contact_data_page.php:489
+#: system/mw_wp_form_contact_data_page.php:492
 msgid "Updated date"
 msgstr "更新日"
 
-#: system/mw_wp_form_contact_data_page.php:490
+#: system/mw_wp_form_contact_data_page.php:493
 msgid "Created date"
 msgstr "作成日"
 
-#: system/mw_wp_form_contact_data_page.php:498
+#: system/mw_wp_form_contact_data_page.php:501
 msgid "cases"
 msgstr "件"
 
-#: system/mw_wp_form_contact_data_page.php:520
+#: system/mw_wp_form_contact_data_page.php:523
 msgid "&laquo; Back to the list"
 msgstr "&laquo; 一覧に戻る"
 
