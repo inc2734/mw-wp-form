@@ -2,11 +2,11 @@
 /**
  * Name: MW WP Form Admin Page
  * Description: 管理画面クラス
- * Version: 1.11.0
+ * Version: 1.11.1
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : February 21, 2013
- * Modified: August 8, 2014
+ * Modified: September 3, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -575,7 +575,19 @@ class MW_WP_Form_Admin_Page {
 		?>
 		<div class="add-mwform-btn">
 			<select>
-				<?php do_action( 'mwform_tag_generator_option' ); ?>
+				<option value=""><?php echo esc_html_e( 'Select this.', MWF_Config::DOMAIN ); ?></option>
+				<optgroup label="<?php echo esc_attr_e( 'Input fields', MWF_Config::DOMAIN ); ?>">
+					<?php do_action( 'mwform_tag_generator_input_option' ); ?>
+				</optgroup>
+				<optgroup label="<?php echo esc_attr_e( 'Select fields', MWF_Config::DOMAIN ); ?>">
+					<?php do_action( 'mwform_tag_generator_select_option' ); ?>
+				</optgroup>
+				<optgroup label="<?php echo esc_attr_e( 'Button fields', MWF_Config::DOMAIN ); ?>">
+					<?php do_action( 'mwform_tag_generator_button_option' ); ?>
+				</optgroup>
+				<optgroup label="<?php echo esc_attr_e( 'Other fields', MWF_Config::DOMAIN ); ?>">
+					<?php do_action( 'mwform_tag_generator_option' ); ?>
+				</optgroup>
 			</select>
 			<span class="button"><?php esc_html_e( 'Add form tag', MWF_Config::DOMAIN ); ?></span>
 		</div>

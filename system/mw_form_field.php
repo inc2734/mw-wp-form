@@ -2,11 +2,11 @@
 /**
  * Name: MW Form Field
  * Description: フォームフィールドの抽象クラス
- * Version: 1.6.2
+ * Version: 1.6.3
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : December 14, 2012
- * Modified: June 23, 2014
+ * Modified: September 3, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -46,6 +46,12 @@ abstract class MW_Form_Field {
 	 * string $key フォーム識別子
 	 */
 	protected $key;
+
+	/**
+	 * string $type フォームタグの種類
+	 * input, select, button, other
+	 */
+	protected $type = 'other';
 
 	/**
 	 * array $qtags qtagsの引数
@@ -218,7 +224,12 @@ abstract class MW_Form_Field {
 	 */
 	protected function _add_mwform_tag_generator() {
 		add_action( 'mwform_tag_generator_dialog', array( $this, 'add_mwform_tag_generator' ) );
-		add_action( 'mwform_tag_generator_option', array( $this, 'mwform_tag_generator_option' ) );
+		if ( $this->type !== 'other' ) {
+			$tag = 'mwform_tag_generator_' . $this->type . '_option';
+		} else {
+			$tag = 'mwform_tag_generator_option';
+		}
+		add_action( $tag, array( $this, 'mwform_tag_generator_option' ) );
 	}
 
 	/**

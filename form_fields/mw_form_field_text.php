@@ -2,15 +2,21 @@
 /**
  * Name: MW Form Field Text
  * Description: テキストフィールドを出力。
- * Version: 1.4.3
+ * Version: 1.4.4
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : December 14, 2012
- * Modified: August 29, 2014
+ * Modified: September 3, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_Form_Field_Text extends MW_Form_Field {
+
+	/**
+	 * string $type フォームタグの種類
+	 * input, select, button, other
+	 */
+	public $type = 'input';
 
 	/**
 	 * set_names

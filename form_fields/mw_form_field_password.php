@@ -2,15 +2,21 @@
 /**
  * Name: MW Form Field Password
  * Description: パスワードフィールドを出力。
- * Version: 1.4.1
+ * Version: 1.4.2
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : December 14, 2012
- * Modified: July 24, 2014
+ * Modified: September 3, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_Form_Field_Password extends MW_Form_Field {
+
+	/**
+	 * string $type フォームタグの種類
+	 * input, select, button, other
+	 */
+	public $type = 'input';
 
 	/**
 	 * set_names
@@ -31,13 +37,13 @@ class MW_Form_Field_Password extends MW_Form_Field {
 	 */
 	protected function setDefaults() {
 		return array(
-			'name'       => '',
-			'id'         => '',
-			'size'       => 60,
-			'maxlength'  => 255,
-			'value'      => '',
+			'name'        => '',
+			'id'          => '',
+			'size'        => 60,
+			'maxlength'   => 255,
+			'value'       => '',
 			'placeholder' => '',
-			'show_error' => 'true',
+			'show_error'  => 'true',
 		);
 	}
 
@@ -48,11 +54,11 @@ class MW_Form_Field_Password extends MW_Form_Field {
 	 */
 	protected function inputPage() {
 		$_ret = $this->Form->password( $this->atts['name'], array(
-			'id'        => $this->atts['id'],
-			'size'      => $this->atts['size'],
-			'maxlength' => $this->atts['maxlength'],
-			'value'     => $this->atts['value'],
-			'placeholder'     => $this->atts['placeholder'],
+			'id'          => $this->atts['id'],
+			'size'        => $this->atts['size'],
+			'maxlength'   => $this->atts['maxlength'],
+			'value'       => $this->atts['value'],
+			'placeholder' => $this->atts['placeholder'],
 		) );
 		if ( $this->atts['show_error'] !== 'false' )
 			$_ret .= $this->getError( $this->atts['name'] );
