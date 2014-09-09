@@ -30,6 +30,15 @@
 }
 
 /**
+ * .add-mwform-btn
+ */
+.add-mwform-btn {
+	position: relative;
+	bottom: -15px;
+	z-index: 1001;
+}
+
+/**
  * フォーム識別子
  */
 span#formkey_field {
@@ -277,6 +286,9 @@ span#formkey_field {
 /**
  * .mwform-dialog
  */
+.ui-dialog {
+	z-index: 1002 !important;
+}
 .mwform-dialog {
 	display: none;
 	font-size: 12px;

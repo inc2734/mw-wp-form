@@ -3,8 +3,8 @@ Contributors: inc2734, ryu263
 Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph
 Requires at least: 3.7
-Tested up to: 3.9.1
-Stable tag: 1.9.1
+Tested up to: 4.0
+Stable tag: 1.9.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -34,7 +34,7 @@ MW WP Form はショートコードを使って確認画面付きのメールフ
 
 http://plugins.2inc.org/mw-wp-form/
 
-== The following third-party resources ==
+= The following third-party resources =
 
 Google Charts
 Source: https://developers.google.com/chart/
@@ -66,6 +66,10 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 5. Supports chart display of saved inquiry data.
 
 == Changelog ==
+
+= 1.9.2 =
+* Bug fix : Fix comment in mwform_confirmButton dialogbox.
+* Bug fix : Fix bug in stacking order of the dialog in WordPress 4.0.
 
 = 1.9.1 =
 * Changed : Easy to see change the form tag insertion selectbox.
