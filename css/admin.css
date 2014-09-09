@@ -286,7 +286,7 @@ span#formkey_field {
 /**
  * .mwform-dialog
  */
-.ui-dialog {
+.post-type-mw-wp-form .ui-dialog {
 	z-index: 1002 !important;
 }
 .mwform-dialog {
