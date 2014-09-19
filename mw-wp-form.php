@@ -326,7 +326,7 @@ class mw_wp_form {
 		$this->Data = MW_WP_Form_Data::getInstance( $this->key );
 		// $_POSTがあるときは$_POST
 		if ( !empty( $_POST ) ) {
-			$this->Data->setValues( $_POST );
+			$this->Data->setValues( stripslashes_deep( $_POST ) );
 		}
 
 		// $_FILESがあるときは$this->dataに統合
