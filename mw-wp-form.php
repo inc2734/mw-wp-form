@@ -201,14 +201,13 @@ class mw_wp_form {
 			'post_type' => MWF_Config::NAME,
 			'posts_per_page' => -1,
 		) );
-		if ( empty( $forms ) ) return;
-		$data_post_ids[] = array();
+
+		$data_post_ids = array();
 		foreach ( $forms as $form ) {
 			$data_post_ids[] = $form->ID;
 			wp_delete_post( $form->ID, true );
 		}
 
-		if ( empty( $data_post_ids ) ) return;
 		foreach ( $data_post_ids as $data_post_id ) {
 			delete_option( MWF_Config::NAME . '-chart-' . $data_post_id );
 			$data_posts = get_posts( array(
