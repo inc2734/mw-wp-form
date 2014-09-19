@@ -4,7 +4,7 @@ Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph
 Requires at least: 3.7
 Tested up to: 4.0
-Stable tag: 1.9.2
+Stable tag: 1.9.3
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -66,6 +66,10 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 5. Supports chart display of saved inquiry data.
 
 == Changelog ==
+
+= 1.9.3 =
+* Bug fix : Fix bug that would be escaped in double.
+* Bug fix : Fix uninstall process.
 
 = 1.9.2 =
 * Bug fix : Fix comment in mwform_confirmButton dialogbox.
