@@ -510,8 +510,8 @@ class MW_WP_Form_Admin_Page {
 		array_unshift( $postdata, $validation_keys );
 		?>
 		<b class="add-btn"><?php esc_html_e( 'Add Validation rule', MWF_Config::DOMAIN ); ?></b>
-		<?php foreach ( $postdata as $key => $value ) : $value = array_merge( $validation_keys, $value ); ?>
 		<div class="repeatable-boxes">
+			<?php foreach ( $postdata as $key => $value ) : $value = array_merge( $validation_keys, $value ); ?>
 			<div class="repeatable-box"<?php if ( $key === 0 ) : ?> style="display:none"<?php endif; ?>>
 				<div class="remove-btn"><b>×</b></div>
 				<div class="open-btn"><span><?php echo esc_attr( $value['target'] ); ?></span><b>▼</b></div>
