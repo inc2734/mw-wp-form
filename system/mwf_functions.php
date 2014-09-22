@@ -57,12 +57,16 @@ class MWF_Functions {
 	 */
 	public static function fileurl_to_path( $fileurl ) {
 		$wp_upload_dir = wp_upload_dir();
-		$filepath = str_replace(
-			$wp_upload_dir['baseurl'],
-			realpath( $wp_upload_dir['basedir'] ),
-			$fileurl
-		);
-		return $filepath;
+		if ( preg_match( '/^https?:\/\//', $fileurl ) ) {
+			$baseurl = preg_replace( '/^https?:\/\/(.+)$/', '$1', $wp_upload_dir['baseurl'] );
+			$fileurl = preg_replace( '/^https?:\/\/(.+)$/', '$1', $fileurl );
+			$filepath = str_replace(
+				$baseurl,
+				realpath( $wp_upload_dir['basedir'] ),
+				$fileurl
+			);
+			return $filepath;
+		}
 	}
 
 	/**
@@ -78,6 +82,9 @@ class MWF_Functions {
 			$wp_upload_dir['baseurl'],
 			$filepath
 		);
+		if ( is_ssl() ) {
+			$fileurl = preg_replace( '/^https?:\/\//', 'https://', $fileurl );
+		}
 		return $fileurl;
 	}
 
