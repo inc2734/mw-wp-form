@@ -34,6 +34,10 @@ MW WP Form はショートコードを使って確認画面付きのメールフ
 
 http://plugins.2inc.org/mw-wp-form/
 
+= GitHub =
+
+https://github.com/inc2734/mw-wp-form
+
 = The following third-party resources =
 
 Google Charts 
