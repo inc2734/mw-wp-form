@@ -630,12 +630,6 @@ class mw_wp_form {
 				return;
 			$Mail->send();
 
-			// 問い合わせ番号を加算
-			$form_id = $this->options_by_formkey['post_id'];
-			$tracking_number = $this->get_tracking_number( $form_id );
-			$new_tracking_number = $tracking_number + 1;
-			update_post_meta( $form_id, MWF_Config::TRACKINGNUMBER, $new_tracking_number );
-
 			// DB非保存時は管理者メール送信後、ファイルを削除
 			if ( empty( $this->options_by_formkey['usedb'] ) ) {
 				foreach ( $attachments as $filepath ) {
@@ -647,25 +641,33 @@ class mw_wp_form {
 			if ( isset( $this->options_by_formkey['automatic_reply_email'] ) ) {
 				$automatic_reply_email = $this->Data->getValue( $this->options_by_formkey['automatic_reply_email'] );
 				if ( $automatic_reply_email && !$this->validation_rules['mail']->rule( $automatic_reply_email ) ) {
-					$Mail_raw = $this->set_reply_mail_raw_params( $Mail_raw );
+					$Mail_auto_raw = $this->set_reply_mail_raw_params( clone $Mail_raw );
 
 					// 自動返信メールからは添付ファイルを削除
-					$Mail_raw->attachments = array();
+					$Mail_auto_raw->attachments = array();
 
 					$filter_name = 'mwform_auto_mail_raw_' . $this->key;
-					$Mail_raw = apply_filters( $filter_name, $Mail_raw, $this->Data->getValues() );
-					if ( !is_a( $Mail_raw, 'MW_Mail' ) )
+					$Mail_auto_raw = apply_filters( $filter_name, $Mail_auto_raw, $this->Data->getValues() );
+					if ( !is_a( $Mail_auto_raw, 'MW_Mail' ) )
 						return;
 
-					$Mail = $this->parse_mail_object( $Mail_raw );
-					$Mail = $this->set_reply_mail_reaquire_params( $Mail );
+					$Mail_auto = $this->parse_mail_object( $Mail_auto_raw );
+					$Mail_auto = $this->set_reply_mail_reaquire_params( $Mail_auto );
 
 					$filter_name = 'mwform_auto_mail_' . $this->key;
-					$Mail = apply_filters( $filter_name, $Mail, $this->Data->getValues() );
-					if ( !is_a( $Mail, 'MW_Mail' ) )
+					$Mail_auto = apply_filters( $filter_name, $Mail_auto, $this->Data->getValues() );
+					if ( !is_a( $Mail_auto, 'MW_Mail' ) )
 						return;
-					$Mail->send();
+					$Mail_auto->send();
 				}
+			}
+
+			// 問い合わせ番号を加算
+			if ( preg_match( '{' . MWF_Config::TRACKINGNUMBER . '}', $Mail_raw->body, $reg ) ) {
+				$form_id = $this->options_by_formkey['post_id'];
+				$tracking_number = $this->get_tracking_number( $form_id );
+				$new_tracking_number = $tracking_number + 1;
+				update_post_meta( $form_id, MWF_Config::TRACKINGNUMBER, $new_tracking_number );
 			}
 		}
 	}
