@@ -67,6 +67,10 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 == Changelog ==
 
+= 2.0.0 =
+* Added   : Add scrolling of screen transition setting.
+* Added   : Add filter_hook mwform_scroll_offset_mw-wp-form-xxx.
+
 = 1.9.4 =
 * Bug fix : Fix HTML structures.
 * Bug fix : Fix bug that does not display image of image field in SSL.

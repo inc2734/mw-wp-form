@@ -3,11 +3,11 @@
  * Plugin Name: MW WP Form
  * Plugin URI: http://plugins.2inc.org/mw-wp-form/
  * Description: MW WP Form can create mail form with a confirmation screen.
- * Version: 1.9.4
+ * Version: 2.0.0
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : September 25, 2012
- * Modified: September 22, 2014
+ * Modified: October 14, 2014
  * Text Domain: mw-wp-form
  * Domain Path: /languages/
  * License: GPLv2
@@ -77,6 +77,7 @@ class mw_wp_form {
 		'validation_error_url' => '',
 		'validation' => array(),
 		'style' => '',
+		'scroll' => null,
 	);
 
 	/**
@@ -264,6 +265,18 @@ class mw_wp_form {
 	}
 
 	/**
+	 * scroll_script
+	 */
+	public function scroll_script() {
+		$url = plugin_dir_url( __FILE__ );
+		wp_register_script( MWF_Config::NAME . '-scroll', $url . 'js/scroll.js', array( 'jquery' ), false, true );
+		wp_localize_script( MWF_Config::NAME . '-scroll', 'mwform_scroll', array(
+			'offset' => apply_filters( 'mwform_scroll_offset_' . $this->key, 0 ),
+		) );
+		wp_enqueue_script( MWF_Config::NAME . '-scroll' );
+	}
+
+	/**
 	 * get_shortcode
 	 * MW WP Form のショートコードが含まれていればそのショートコードを返す
 	 * @param string $content
@@ -432,6 +445,14 @@ class mw_wp_form {
 				$this->redirect( $back_url );
 			}
 		}
+
+		// スクロール用スクリプトのロード
+		if ( !empty( $this->options_by_formkey['scroll'] ) ) {
+			if ( $this->Form->isConfirm() || $this->Form->isComplete() || !$this->Validation->check() ) {
+				add_action( 'wp_enqueue_scripts', array( $this, 'scroll_script' ) );
+			}
+		}
+
 		add_shortcode( 'mwform_formkey', array( $this, '_mwform_formkey' ) );
 		add_shortcode( 'mwform', array( $this, '_mwform' ) );
 		add_shortcode( 'mwform_complete_message', array( $this, '_mwform_complete_message' ) );
@@ -846,13 +867,12 @@ class mw_wp_form {
 				}
 			}
 			$_preview_class = ( $this->viewFlg === 'confirm' ) ? ' mw_wp_form_preview' : '';
-			return
-				'<div id="mw_wp_form_' . $this->key . '" class="mw_wp_form mw_wp_form_' . $this->viewFlg . $_preview_class . '">' .
-				$this->Form->start() .
-				do_shortcode( $content ) .
-				$upload_file_hidden .
-				$this->Form->end() .
-				'<!-- end .mw_wp_form --></div>';
+			return sprintf(
+				'<div id="mw_wp_form_%s" class="mw_wp_form mw_wp_form_%s">%s<!-- end .mw_wp_form --></div>',
+				esc_attr( $this->key ),
+				esc_attr( $this->viewFlg . $_preview_class ),
+				$this->Form->start() . do_shortcode( $content ) . $upload_file_hidden . $this->Form->end()
+			);
 		}
 	}
 
@@ -942,7 +962,12 @@ class mw_wp_form {
 	 */
 	public function _mwform_complete_message( $atts, $content = '' ) {
 		if ( $this->viewFlg == 'complete' ) {
-			return $content;
+			return sprintf(
+				'<div id="mw_wp_form_%s" class="mw_wp_form mw_wp_form_%s">%s<!-- end .mw_wp_form --></div>',
+				esc_attr( $this->key ),
+				esc_attr( $this->viewFlg ),
+				$content
+			);
 		}
 	}
 
