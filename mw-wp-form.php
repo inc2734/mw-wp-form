@@ -630,6 +630,12 @@ class mw_wp_form {
 				return;
 			$Mail->send();
 
+			// 問い合わせ番号を加算
+			$form_id = $this->options_by_formkey['post_id'];
+			$tracking_number = $this->get_tracking_number( $form_id );
+			$new_tracking_number = $tracking_number + 1;
+			update_post_meta( $form_id, MWF_Config::TRACKINGNUMBER, $new_tracking_number );
+
 			// DB非保存時は管理者メール送信後、ファイルを削除
 			if ( empty( $this->options_by_formkey['usedb'] ) ) {
 				foreach ( $attachments as $filepath ) {
@@ -717,11 +723,25 @@ class mw_wp_form {
 	 * parse_mail_body
 	 * $this->create_mail_body(), $this->save_mail_body の本体
 	 * 第2引数でDB保存するか判定
+	 * @param array $matches
+	 * @param bool $doUpdate
+	 * @return string $value
 	 */
 	protected function parse_mail_body( $matches, $doUpdate = false ) {
-		$value = $this->Data->get( $matches[1] );
+		$match = $matches[1];
+		// MWF_Config::TRACKINGNUMBER のときはお問い合せ番号を参照する
+		if ( $match === MWF_Config::TRACKINGNUMBER ) {
+			if ( !empty( $this->options_by_formkey['post_id'] ) ) {
+				$form_id = $this->options_by_formkey['post_id'];
+				$tracking_number_title = esc_html__( 'Tracking Number', MWF_Config::DOMAIN );
+				$match = apply_filters( 'mwform_tracking_number_title_' . $this->key, $tracking_number_title );
+				$value = $this->get_tracking_number( $form_id );
+			}
+		} else {
+			$value = $this->Data->get( $match );
+		}
 		if ( $value !== null && $doUpdate ) {
-			update_post_meta( $this->insert_id, $matches[1], $value );
+			update_post_meta( $this->insert_id, $match, $value );
 		}
 		return $value;
 	}
@@ -1149,5 +1169,18 @@ class mw_wp_form {
 			}
 		}
 		return $Mail;
+	}
+
+	/**
+	 * get_tracking_number
+	 * @param int $post_id フォームの Post ID
+	 * @return int $tracking_number
+	 */
+	protected function get_tracking_number( $post_id ) {
+		$tracking_number = get_post_meta( $post_id, MWF_Config::TRACKINGNUMBER, true );
+		if ( empty( $tracking_number ) ) {
+			$tracking_number = 1;
+		}
+		return intval( $tracking_number );
 	}
 }

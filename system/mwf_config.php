@@ -2,11 +2,11 @@
 /**
  * Name: MWF_Config
  * Description: 設定ファイル
- * Version: 1.2.1
+ * Version: 1.2.2
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : May 29, 2013
- * Modified: July 24, 2014
+ * Modified: October 15, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -53,4 +53,10 @@ class MWF_Config {
 	 * 権限
 	 */
 	const CAPABILITY = 'edit_pages';
+
+	/**
+	 * TRACKINGNUMBER
+	 * お問い合せ番号用のキー名
+	 */
+	const TRACKINGNUMBER = 'tracking_number';
 }

@@ -369,6 +369,10 @@ class MW_WP_Form_Admin_Page {
 		?>
 		<p>
 			<?php esc_html_e( '{key} is converted form data.', MWF_Config::DOMAIN ); ?>
+			<?php echo sprintf(
+				esc_html__( 'It is automatically converted to Tracking number when you input {%s}.', MWF_Config::DOMAIN ),
+				MWF_Config::TRACKINGNUMBER
+			); ?>
 		</p>
 		<p>
 			<b><?php esc_html_e( 'Subject', MWF_Config::DOMAIN ); ?></b><br />
@@ -405,6 +409,10 @@ class MW_WP_Form_Admin_Page {
 		?>
 		<p>
 			<?php esc_html_e( '{key} is converted form data.', MWF_Config::DOMAIN ); ?>
+			<?php echo sprintf(
+				esc_html__( 'It is automatically converted to Tracking number when you input {%s}.', MWF_Config::DOMAIN ),
+				MWF_Config::TRACKINGNUMBER
+			); ?>
 		</p>
 		<p>
 			<?php esc_html_e( 'If Admin Email Options is a blank, Automatic Replay Email Options is used as Admin Email Options.', MWF_Config::DOMAIN ); ?>

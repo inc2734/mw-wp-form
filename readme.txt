@@ -70,6 +70,8 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 = 2.0.0 =
 * Added   : Add scrolling of screen transition setting.
 * Added   : Add filter_hook mwform_scroll_offset_mw-wp-form-xxx.
+* Added   : Support auto tracking number.
+* Added   : Add filter_hook mwform_tracking_number_title_mw-wp-form-xxx.
 
 = 1.9.4 =
 * Bug fix : Fix HTML structures.
