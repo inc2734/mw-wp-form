@@ -66,7 +66,7 @@ class MW_Form_Field_Datepicker extends MW_Form_Field {
 				$this->atts['js'] = $this->atts['js'] . ',';
 			$this->atts['js'] .= '
 				yearSuffix: "年",
-				dateFormat: "yy-mm-dd",
+				dateFormat: "yy年mm月dd日",
 				dayNames: ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"],
 				dayNamesMin: ["日","月","火","水","木","金","土"],
 				dayNamesShort: ["日曜","月曜","火曜","水曜","木曜","金曜","土曜"],
