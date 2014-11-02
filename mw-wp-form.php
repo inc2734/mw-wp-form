@@ -889,10 +889,13 @@ class mw_wp_form {
 				}
 			}
 			$_preview_class = ( $this->viewFlg === 'confirm' ) ? ' mw_wp_form_preview' : '';
+			$style = $this->options_by_formkey['style'];
+			$class_for_style = ( $style ) ? 'mw_wp_form_' . $style : '';
 			return sprintf(
-				'<div id="mw_wp_form_%s" class="mw_wp_form mw_wp_form_%s">%s<!-- end .mw_wp_form --></div>',
+				'<div id="mw_wp_form_%s" class="mw_wp_form mw_wp_form_%s %s">%s<!-- end .mw_wp_form --></div>',
 				esc_attr( $this->key ),
 				esc_attr( $this->viewFlg . $_preview_class ),
+				$class_for_style,
 				$this->Form->start() . do_shortcode( $content ) . $upload_file_hidden . $this->Form->end()
 			);
 		}
