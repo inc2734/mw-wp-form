@@ -841,7 +841,7 @@ class mw_wp_form {
 
 		// 入力画面・確認画面
 		if ( $this->viewFlg == 'input' || $this->viewFlg == 'confirm' ) {
-			$content = get_the_content();
+			$content = apply_filters( 'mwform_post_content_raw_' . $this->key, get_the_content() );
 			if ( has_filter( 'the_content', 'wpautop' ) ) {
 				$content = wpautop( $content );
 			}
