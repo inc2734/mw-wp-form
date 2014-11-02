@@ -2,11 +2,11 @@
 /**
  * Name: MW Form Field Hidden
  * Description: hiddenフィールドを出力。
- * Version: 1.5.1
+ * Version: 1.5.2
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : December 14, 2012
- * Modified: July 24, 2014
+ * Modified: November 2, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */

@@ -2,11 +2,11 @@
 /**
  * Name: MW Form Field Checkbox
  * Description: チェックボックスを出力。
- * Version: 1.4.3
+ * Version: 1.4.4
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : December 14, 2012
- * Modified: September 3, 2014
+ * Modified: November 2, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -14,7 +14,7 @@ class MW_Form_Field_Checkbox extends MW_Form_Field {
 
 	/**
 	 * string $type フォームタグの種類
-	 * input, select, button, other
+	 * input, select, button, error, other
 	 */
 	public $type = 'select';
 

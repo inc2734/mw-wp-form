@@ -2,11 +2,11 @@
 /**
  * Name: MW Form Field Image
  * Description: 画像アップロードフィールドを出力。
- * Version: 1.4.3
+ * Version: 1.4.4
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : May 17, 2013
- * Modified: September 3, 2014
+ * Modified: November 2, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -14,7 +14,7 @@ class MW_Form_Field_Image extends MW_Form_Field {
 
 	/**
 	 * string $type フォームタグの種類
-	 * input, select, button, other
+	 * input, select, button, error, other
 	 */
 	public $type = 'input';
 

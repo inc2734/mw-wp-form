@@ -49,7 +49,7 @@ abstract class MW_Form_Field {
 
 	/**
 	 * string $type フォームタグの種類
-	 * input, select, button, other
+	 * input, select, button, error, other
 	 */
 	protected $type = 'other';
 
