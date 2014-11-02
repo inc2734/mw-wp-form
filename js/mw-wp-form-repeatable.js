@@ -22,7 +22,7 @@ jQuery( function( $ ) {
 			 * 開閉ボタン
 			 */
 			$( e ).find( config.open_btn ).on( 'click', function() {
-				$( this ).parent().siblings( config.box_content ).slideToggle( 'high' );
+				$( this ).parent().siblings( config.box_content ).slideToggle( 100 );
 			} );
 
 			/**
