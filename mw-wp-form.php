@@ -845,7 +845,7 @@ class mw_wp_form {
 			if ( has_filter( 'the_content', 'wpautop' ) ) {
 				$content = wpautop( $content );
 			}
-			$_ret ='[mwform]' . $content . '[/mwform]';
+			$_ret ='[mwform]' . apply_filters( 'mwform_post_content_' . $this->key, $content ) . '[/mwform]';
 		}
 		// 完了画面
 		elseif( $this->viewFlg == 'complete' ) {
