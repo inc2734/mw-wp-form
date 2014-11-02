@@ -2,11 +2,11 @@
 /**
  * Name: MW Form Field
  * Description: フォームフィールドの抽象クラス
- * Version: 1.6.3
+ * Version: 1.6.4
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : December 14, 2012
- * Modified: September 3, 2014
+ * Modified: November 2, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -274,5 +274,34 @@ abstract class MW_Form_Field {
 	public function mwform_form_fields( array $form_fields ) {
 		$form_fields = array_merge( $form_fields, array( $this->shortcode_name => $this ) );
 		return $form_fields;
+	}
+
+	/**
+	 * get_display_name
+	 * @return string 表示名
+	 */
+	public function get_display_name() {
+		return $this->display_name;
+	}
+
+	/**
+	 * get_value_for_generator
+	 * MW WP Fomr Generator 用
+	 */
+	public function get_value_for_generator( $key, $options ) {
+		$attributes = array_keys( $this->defaults );
+		$add_allow_attributes = array(
+			'mw-wp-form-generator-notes',
+			'mw-wp-form-generator-display-name'
+		);
+		$attributes = array_merge( $attributes, $add_allow_attributes );
+		$attributes = array_flip( $attributes );
+		if ( isset( $attributes[$key] ) ) {
+			if ( isset( $options[$key] ) ) {
+				return $options[$key];
+			} else {
+				return '';
+			}
+		}
 	}
 }
