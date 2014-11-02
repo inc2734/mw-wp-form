@@ -68,19 +68,22 @@ class MW_Form_Field_Hidden extends MW_Form_Field {
 	 * add_mwform_tag_generator
 	 * フォームタグジェネレーター
 	 */
-	public function mwform_tag_generator_dialog() {
+	public function mwform_tag_generator_dialog( array $options = array() ) {
 		?>
 		<p>
-			<strong>name</strong>
-			<input type="text" name="name" />
+			<strong>name<span class="mwf_require">*</span></strong>
+			<?php $name = $this->get_value_for_generator( 'name', $options ); ?>
+			<input type="text" name="name" value="<?php echo esc_attr( $name ); ?>" />
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'Default value', MWF_Config::DOMAIN ); ?>(<?php esc_html_e( 'option', MWF_Config::DOMAIN ); ?>)</strong>
-			<input type="text" name="value" />
+			<strong><?php esc_html_e( 'Default value', MWF_Config::DOMAIN ); ?></strong>
+			<?php $value = $this->get_value_for_generator( 'value', $options ); ?>
+			<input type="text" name="value" value="<?php echo esc_attr( $value ); ?>" />
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'Display', MWF_Config::DOMAIN ); ?></strong>
-			<input type="checkbox" name="echo" value="true" /> <?php esc_html_e( 'Display hidden value.', MWF_Config::DOMAIN ); ?>
+			<?php $echo = $this->get_value_for_generator( 'echo', $options ); ?>
+			<input type="checkbox" name="echo" value="true" <?php checked( 'true', $echo ); ?> /> <?php esc_html_e( 'Display hidden value.', MWF_Config::DOMAIN ); ?>
 		</p>
 		<?php
 	}

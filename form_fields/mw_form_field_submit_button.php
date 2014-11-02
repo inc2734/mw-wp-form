@@ -68,19 +68,22 @@ class MW_Form_Field_Submit_Button extends MW_Form_Field {
 	 * add_mwform_tag_generator
 	 * フォームタグジェネレーター
 	 */
-	public function mwform_tag_generator_dialog() {
+	public function mwform_tag_generator_dialog( array $options = array() ) {
 		?>
 		<p>
 			<strong>name</strong>
-			<input type="text" name="name" />
+			<?php $name = $this->get_value_for_generator( 'name', $options ); ?>
+			<input type="text" name="name" value="<?php echo esc_attr( $name ); ?>" />
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'String on the confirm button', MWF_Config::DOMAIN ); ?></strong>
-			<input type="text" name="confirm_value" />
+			<?php $confirm_value = $this->get_value_for_generator( 'confirm_value', $options ); ?>
+			<input type="text" name="confirm_value" value="<?php echo esc_attr( $confirm_value ); ?>" />
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'String on the submit button', MWF_Config::DOMAIN ); ?></strong>
-			<input type="text" name="submit_value" />
+			<?php $submit_value = $this->get_value_for_generator( 'submit_value', $options ); ?>
+			<input type="text" name="submit_value" value="<?php echo esc_attr( $submit_value ); ?>" />
 		</p>
 		<?php
 	}

@@ -247,6 +247,14 @@ span#formkey_field {
 }
 
 /**
+ * 注釈
+ */
+.mwf_require {
+	color: #b70000;
+	margin-left: 3px;
+}
+
+/**
  * CSVダウンロードボタン
  */
 #wpbody-content {

@@ -67,11 +67,12 @@ class MW_Form_Field_Error extends MW_Form_Field {
 	 * add_mwform_tag_generator
 	 * フォームタグジェネレーター
 	 */
-	public function mwform_tag_generator_dialog() {
+	public function mwform_tag_generator_dialog( array $options = array() ) {
 		?>
 		<p>
 			<strong><?php esc_html_e( 'name of the element which wants to display error', MWF_Config::DOMAIN ); ?></strong>
-			<textarea name="keys"></textarea>
+			<?php $keys = "\n" . $this->get_value_for_generator( 'keys', $options ); ?>
+			<textarea name="keys"><?php echo esc_attr( $keys ); ?></textarea>
 			<span class="mwf_note">
 				<?php esc_html_e( 'Input one line about one item.', MWF_Config::DOMAIN ); ?>
 			</span>

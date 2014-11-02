@@ -251,7 +251,7 @@ abstract class MW_Form_Field {
 	 * add_mwform_tag_generator
 	 * タグジェネレータのダイアログを出力。各フォーム項目クラスでオーバーライド
 	 */
-	protected function mwform_tag_generator_dialog() {}
+	public function mwform_tag_generator_dialog( array $options = array() ) {}
 
 	/**
 	 * mwform_tag_generator_option
