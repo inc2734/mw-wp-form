@@ -71,6 +71,7 @@ abstract class MW_Form_Field {
 		$this->defaults = $this->setDefaults();
 		add_action( 'mwform_add_shortcode', array( $this, 'add_shortcode' ), 10, 4 );
 		$this->_add_mwform_tag_generator();
+		add_filter( 'mwform_form_fields', array( $this, 'mwform_form_fields' ) );
 	}
 
 	/**
@@ -263,5 +264,15 @@ abstract class MW_Form_Field {
 		?>
 		<option value="<?php echo esc_attr( $this->shortcode_name ); ?>"><?php echo esc_html( $display_name ); ?></option>
 		<?php
+	}
+
+	/**
+	 * mwform_form_fields
+	 * @param array $form_fields MW_Form_Field を継承したオブジェクトの一覧
+	 * @return array $form_fields
+	 */
+	public function mwform_form_fields( array $form_fields ) {
+		$form_fields = array_merge( $form_fields, array( $this->shortcode_name => $this ) );
+		return $form_fields;
 	}
 }

@@ -79,6 +79,7 @@ class mw_wp_form {
 		'style' => '',
 		'scroll' => null,
 	);
+	private $form_fields = array();
 
 	/**
 	 * __construct
@@ -127,6 +128,7 @@ class mw_wp_form {
 				new $className();
 			}
 		}
+		$this->form_fields = apply_filters( 'mwform_form_fields', $this->form_fields );
 
 		// バリデーションルールの読み込み、インスタンス化
 		$validation_rules = $this->validation_rules;
