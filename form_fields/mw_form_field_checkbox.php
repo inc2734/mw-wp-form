@@ -53,10 +53,11 @@ class MW_Form_Field_Checkbox extends MW_Form_Field {
 	 */
 	protected function inputPage() {
 		$children = $this->getChildren( $this->atts['children'] );
+		$separator = ( $this->atts['separator'] ) ? $this->atts['separator'] : $this->defaults['separator'];
 		$_ret = $this->Form->checkbox( $this->atts['name'], $children, array(
 			'id'    => $this->atts['id'],
 			'value' => $this->atts['value'],
-		), $this->atts['separator'] );
+		), $separator );
 		if ( $this->atts['show_error'] !== 'false' )
 			$_ret .= $this->getError( $this->atts['name'] );
 		return $_ret;
