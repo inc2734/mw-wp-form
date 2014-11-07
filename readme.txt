@@ -77,6 +77,8 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Add filter_hook mwform_form_fields.
 * Added   : Add "Error" form type.
 * Changed : MW_Form_Field::mwform_tag_generator_dialog() method needs $options argument.
+* Changed : Zip code field and Tel field are wrapped by span tag.
+* Bug fix : Empty separator is changed to not allow in checkbox field.
 
 = 2.0.0 =
 * Added   : Add scrolling of screen transition setting.
