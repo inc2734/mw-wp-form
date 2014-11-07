@@ -428,7 +428,8 @@ class MW_Form {
 			}
 		}
 
-		$_ret  = '〒';
+		$_ret  = '<span class="mwform-zip-field">';
+		$_ret .= '〒';
 		$_ret .= $this->text( $name . '[data][0]', array(
 			'size' => 4,
 			'maxlength' => 3,
@@ -443,6 +444,7 @@ class MW_Form {
 			'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
 		) );
 		$_ret .= $this->separator( $name, $separator );
+		$_ret .= '</span>';
 		return $_ret;
 	}
 
@@ -477,7 +479,7 @@ class MW_Form {
 			}
 		}
 
-		$_ret = '';
+		$_ret  = '<span class="mwform-tel-field">';
 		$_ret .= $this->text( $name . '[data][0]', array(
 			'size' => 6,
 			'maxlength' => 5,
@@ -499,6 +501,7 @@ class MW_Form {
 			'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
 		) );
 		$_ret .= $this->separator( $name, $separator );
+		$_ret .= '</span>';
 		return $_ret;
 	}
 
