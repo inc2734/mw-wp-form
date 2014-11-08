@@ -38,7 +38,7 @@ class MW_WP_Form_Admin_Page {
 		add_action( 'admin_print_footer_scripts', array( $this, 'add_quicktag' ) );
 		add_action( 'current_screen', array( $this, 'current_screen' ) );
 		add_filter( 'default_content', array( $this, 'default_content' ) );
-		add_action( 'edit_form_after_title', array( $this, 'add_tag_generator' ) );
+		add_action( 'media_buttons', array( $this, 'add_tag_generator' ) );
 	}
 
 	/**

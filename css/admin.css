@@ -30,12 +30,28 @@
 }
 
 /**
+ * #titlediv
+ */
+#titlediv {
+	margin-bottom: 3px;
+}
+
+/**
  * .add-mwform-btn
  */
 .add-mwform-btn {
 	position: relative;
-	bottom: -15px;
+	/* bottom: -15px; */
 	z-index: 1001;
+}
+
+/**
+ * .wp-editor-tabs
+ */
+.wp-editor-tabs {
+	position: absolute;
+	right: 0;
+	bottom: 0;
 }
 
 /**
