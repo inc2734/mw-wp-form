@@ -2,11 +2,11 @@
 /**
  * Name: MW WP Form Contact Data Page
  * Description: DB保存データを扱うクラス
- * Version: 1.2.1
+ * Version: 1.2.2
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : October 10, 2013
- * Modified: September 1, 2014
+ * Modified: November 23, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -532,12 +532,11 @@ class MW_WP_Form_Contact_Data_Page {
 	 * @return numeric 投稿数
 	 */
 	private function get_count( $post_type ) {
-		global $wpdb;
-		$posts_contact = get_posts( array(
+		$query = new WP_Query( array(
 			'post_type' => $post_type,
-			'posts_per_page' => -1,
+			'posts_per_page' => 1,
 		) );
-		return count( $posts_contact );
+		return $query->found_posts;
 	}
 
 	/**
