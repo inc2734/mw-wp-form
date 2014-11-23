@@ -43,7 +43,7 @@ class MW_Form_Field_Checkbox extends MW_Form_Field {
 			'value'      => '',
 			'vertically' => '',
 			'show_error' => 'true',
-			'separator'  => ',',
+			'separator'  => ', ',
 		);
 	}
 

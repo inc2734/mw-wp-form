@@ -74,6 +74,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 = 2.1.1 =
 * Added   : Added an option to vertically display in Radio and Checkbox.
 * Changed : Optimization of the number display processing of saving contact data.
+* Changed : Change separator of checkbox in confirm page.
 
 = 2.1.0 =
 * Added   : Add filter_hook mwform_post_content_raw_mw-wp-form-xxx.
