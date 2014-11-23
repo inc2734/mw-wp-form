@@ -2,11 +2,11 @@
 /**
  * Name: MW Form Field Radio
  * Description: ラジオボタンを出力。
- * Version: 1.4.3
+ * Version: 1.4.4
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : December 14, 2012
- * Modified: November 2, 2014
+ * Modified: November 23, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -41,6 +41,7 @@ class MW_Form_Field_Radio extends MW_Form_Field {
 			'id'         => '',
 			'children'   => '',
 			'value'      => '',
+			'vertically' => '',
 			'show_error' => 'true',
 		);
 	}
@@ -53,8 +54,9 @@ class MW_Form_Field_Radio extends MW_Form_Field {
 	protected function inputPage() {
 		$children = $this->getChildren( $this->atts['children'] );
 		$_ret = $this->Form->radio( $this->atts['name'], $children, array(
-			'id'    => $this->atts['id'],
-			'value' => $this->atts['value'],
+			'id'         => $this->atts['id'],
+			'value'      => $this->atts['value'],
+			'vertically' => $this->atts['vertically'],
 		) );
 		if ( $this->atts['show_error'] !== 'false' )
 			$_ret .= $this->getError( $this->atts['name'] );
@@ -102,6 +104,11 @@ class MW_Form_Field_Radio extends MW_Form_Field {
 			<strong><?php esc_html_e( 'Default value', MWF_Config::DOMAIN ); ?></strong>
 			<?php $value = $this->get_value_for_generator( 'value', $options ); ?>
 			<input type="text" name="value" value="<?php echo esc_attr( $value ); ?>" />
+		</p>
+		<p>
+			<strong><?php esc_html_e( 'Display method', MWF_Config::DOMAIN ); ?></strong>
+			<?php $vertically = $this->get_value_for_generator( 'vertically', $options ); ?>
+			<input type="checkbox" name="vertically" value="true" <?php checked( 'true', $vertically ); ?> /> <?php esc_html_e( 'Arranged vertically.', MWF_Config::DOMAIN ); ?>
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'Dsiplay error', MWF_Config::DOMAIN ); ?></strong>

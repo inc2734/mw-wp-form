@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.1.0\n"
+"Project-Id-Version: MW WP Form 2.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/mw-wp-form\n"
-"POT-Creation-Date: 2014-11-02 02:20:30+00:00\n"
+"POT-Creation-Date: 2014-11-23 13:56:38+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.6.9\n"
+"X-Generator: Poedit 1.6.10\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: ..\n"
 
@@ -42,40 +42,50 @@ msgstr ""
 msgid "Checkbox"
 msgstr ""
 
-#: form_fields/mw_form_field_checkbox.php:96
-#: form_fields/mw_form_field_radio.php:94
+#: form_fields/mw_form_field_checkbox.php:99
+#: form_fields/mw_form_field_radio.php:96
 #: form_fields/mw_form_field_select.php:94
 msgid "Choices"
 msgstr ""
 
-#: form_fields/mw_form_field_checkbox.php:100
+#: form_fields/mw_form_field_checkbox.php:103
 #: form_fields/mw_form_field_error.php:77
-#: form_fields/mw_form_field_radio.php:98
+#: form_fields/mw_form_field_radio.php:100
 #: form_fields/mw_form_field_select.php:98
 msgid "Input one line about one item."
 msgstr ""
 
-#: form_fields/mw_form_field_checkbox.php:104
+#: form_fields/mw_form_field_checkbox.php:107
 #: form_fields/mw_form_field_datepicker.php:128
 #: form_fields/mw_form_field_hidden.php:79
 #: form_fields/mw_form_field_password.php:105
-#: form_fields/mw_form_field_radio.php:102
+#: form_fields/mw_form_field_radio.php:104
 #: form_fields/mw_form_field_select.php:102
 #: form_fields/mw_form_field_text.php:113
 #: form_fields/mw_form_field_textarea.php:107
 msgid "Default value"
 msgstr ""
 
-#: form_fields/mw_form_field_checkbox.php:109
+#: form_fields/mw_form_field_checkbox.php:112
 msgid "Separator string"
 msgstr ""
 
-#: form_fields/mw_form_field_checkbox.php:114
+#: form_fields/mw_form_field_checkbox.php:117
+#: form_fields/mw_form_field_radio.php:109
+msgid "Display method"
+msgstr ""
+
+#: form_fields/mw_form_field_checkbox.php:119
+#: form_fields/mw_form_field_radio.php:111
+msgid "Arranged vertically."
+msgstr ""
+
+#: form_fields/mw_form_field_checkbox.php:122
 #: form_fields/mw_form_field_datepicker.php:133
 #: form_fields/mw_form_field_file.php:107
 #: form_fields/mw_form_field_image.php:108
 #: form_fields/mw_form_field_password.php:115
-#: form_fields/mw_form_field_radio.php:107
+#: form_fields/mw_form_field_radio.php:114
 #: form_fields/mw_form_field_select.php:107
 #: form_fields/mw_form_field_tel.php:87 form_fields/mw_form_field_text.php:123
 #: form_fields/mw_form_field_textarea.php:117
@@ -83,12 +93,12 @@ msgstr ""
 msgid "Dsiplay error"
 msgstr ""
 
-#: form_fields/mw_form_field_checkbox.php:116
+#: form_fields/mw_form_field_checkbox.php:124
 #: form_fields/mw_form_field_datepicker.php:135
 #: form_fields/mw_form_field_file.php:109
 #: form_fields/mw_form_field_image.php:110
 #: form_fields/mw_form_field_password.php:117
-#: form_fields/mw_form_field_radio.php:109
+#: form_fields/mw_form_field_radio.php:116
 #: form_fields/mw_form_field_select.php:109
 #: form_fields/mw_form_field_tel.php:89 form_fields/mw_form_field_text.php:125
 #: form_fields/mw_form_field_textarea.php:119

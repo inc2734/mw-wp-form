@@ -10,6 +10,10 @@
 	display: block;
 }
 
+.mw_wp_form .vertical-item {
+	display: block;
+}
+
 .ui-datepicker .ui-datepicker-title select.ui-datepicker-month,
 .ui-datepicker .ui-datepicker-title select.ui-datepicker-year {
 	width: 40%;

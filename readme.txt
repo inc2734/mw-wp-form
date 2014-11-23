@@ -72,6 +72,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 == Changelog ==
 
 = 2.1.1 =
+* Added   : Added an option to vertically display in Radio and Checkbox.
 * Changed : Optimization of the number display processing of saving contact data.
 
 = 2.1.0 =

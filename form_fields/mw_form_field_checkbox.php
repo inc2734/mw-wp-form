@@ -2,11 +2,11 @@
 /**
  * Name: MW Form Field Checkbox
  * Description: チェックボックスを出力。
- * Version: 1.4.4
+ * Version: 1.4.5
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : December 14, 2012
- * Modified: November 2, 2014
+ * Modified: November 23, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -41,6 +41,7 @@ class MW_Form_Field_Checkbox extends MW_Form_Field {
 			'id'         => '',
 			'children'   => '',
 			'value'      => '',
+			'vertically' => '',
 			'show_error' => 'true',
 			'separator'  => ',',
 		);
@@ -55,8 +56,9 @@ class MW_Form_Field_Checkbox extends MW_Form_Field {
 		$children = $this->getChildren( $this->atts['children'] );
 		$separator = ( $this->atts['separator'] ) ? $this->atts['separator'] : $this->defaults['separator'];
 		$_ret = $this->Form->checkbox( $this->atts['name'], $children, array(
-			'id'    => $this->atts['id'],
-			'value' => $this->atts['value'],
+			'id'         => $this->atts['id'],
+			'value'      => $this->atts['value'],
+			'vertically' => $this->atts['vertically'],
 		), $separator );
 		if ( $this->atts['show_error'] !== 'false' )
 			$_ret .= $this->getError( $this->atts['name'] );
@@ -110,6 +112,11 @@ class MW_Form_Field_Checkbox extends MW_Form_Field {
 			<strong><?php esc_html_e( 'Separator string', MWF_Config::DOMAIN ); ?></strong>
 			<?php $separator = $this->get_value_for_generator( 'separator', $options ); ?>
 			<input type="text" name="separator" size="10" value="<?php echo esc_attr( $separator ); ?>" />
+		</p>
+		<p>
+			<strong><?php esc_html_e( 'Display method', MWF_Config::DOMAIN ); ?></strong>
+			<?php $vertically = $this->get_value_for_generator( 'vertically', $options ); ?>
+			<input type="checkbox" name="vertically" value="true" <?php checked( 'true', $vertically ); ?> /> <?php esc_html_e( 'Arranged vertically.', MWF_Config::DOMAIN ); ?>
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'Dsiplay error', MWF_Config::DOMAIN ); ?></strong>

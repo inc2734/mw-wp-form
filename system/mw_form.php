@@ -2,11 +2,11 @@
 /**
  * Name: MW Form
  * Description: フォームクラス
- * Version: 1.4.1
+ * Version: 1.4.2
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : September 25, 2012
- * Modified: July 23, 2014
+ * Modified: November 23, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -583,8 +583,9 @@ class MW_Form {
 	 */
 	public function radio( $name, $children = array(), $options = array() ) {
 		$defaults = array(
-			'id' => '',
-			'value' => ''
+			'id'         => '',
+			'value'      => '',
+			'vertically' => '',
 		);
 		$options = array_merge( $defaults, $options );
 		$value = $options['value'];
@@ -601,9 +602,11 @@ class MW_Form {
 			$i ++;
 			$id = $this->get_attr_id( $options['id'], $i );
 			$for = $this->get_attr_for( $options['id'], $i );
+			$vertically = ( $options['vertically'] === 'true' ) ? 'vertical-item' : '';
 			$checked = ( $key == $value )? ' checked="checked"' : '';
-			$_ret .= sprintf( '<label %s><input type="radio" name="%s" value="%s"%s %s />%s</label>',
+			$_ret .= sprintf( '<label %s class="%s"><input type="radio" name="%s" value="%s"%s %s />%s</label>',
 				$for,
+				$vertically,
 				esc_attr( $name ),
 				esc_attr( $key ),
 				$checked,
@@ -625,8 +628,9 @@ class MW_Form {
 	 */
 	public function checkbox( $name, $children = array(), $options = array(), $separator = ',' ) {
 		$defaults = array(
-			'id' => '',
-			'value' => array()
+			'id'         => '',
+			'value'      => array(),
+			'vertically' => '',
 		);
 		$options = array_merge( $defaults, $options );
 		$value = $options['value'];
@@ -648,9 +652,11 @@ class MW_Form {
 			$i ++;
 			$id = $this->get_attr_id( $options['id'], $i );
 			$for = $this->get_attr_for( $options['id'], $i );
+			$vertically = ( $options['vertically'] === 'true' ) ? 'vertical-item' : '';
 			$checked = ( is_array( $value ) && in_array( $key, $value ) )? ' checked="checked"' : '';
-			$_ret .= sprintf( '<label %s><input type="checkbox" name="%s" value="%s"%s %s />%s</label>',
+			$_ret .= sprintf( '<label %s class="%s"><input type="checkbox" name="%s" value="%s"%s %s />%s</label>',
 				$for,
+				$vertically,
 				esc_attr( $name.'[data][]' ),
 				esc_attr( $key ),
 				$checked,
