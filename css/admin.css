@@ -401,3 +401,24 @@ span#formkey_field {
 .mwform-chart-wrapper .mwform-legend .mwform-legend-value {
 	margin-left: 10px;
 }
+
+/**
+ * .column-mwform_form_key
+ */
+.fixed .column-title {
+	width: 40%;
+}
+.fixed .column-mwform_form_key {
+	width: 30%;
+}
+.fixed .column-date {
+	width: 20%;
+}
+@media screen and (max-width: 782px) {
+	.fixed .column-title {
+		width: auto;
+	}
+	.fixed .column-mwform_form_key {
+		display: none;
+	}
+}

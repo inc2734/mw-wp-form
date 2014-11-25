@@ -72,6 +72,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 == Changelog ==
 
 = 2.1.2 =
+* Added   : Added form key in list of MW WP Form page.
 * Bug fix : Fixed a bug that "add form tag button" is displayed in complete message area.
 
 = 2.1.1 =
