@@ -2,11 +2,11 @@
 /**
  * Name: MW WP Form Admin Page
  * Description: 管理画面クラス
- * Version: 1.12.1
+ * Version: 1.12.2
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : February 21, 2013
- * Modified: November 2, 2014
+ * Modified: November 26, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -577,10 +577,13 @@ class MW_WP_Form_Admin_Page {
 	/**
 	 * add_tag_generator
 	 * タグジェネレータを出力
+	 * @param string $editor_id
 	 */
-	public function add_tag_generator() {
+	public function add_tag_generator( $editor_id ) {
 		$post_type = get_post_type();
 		if ( $post_type !== MWF_Config::NAME )
+			return;
+		if ( $editor_id !== 'content' )
 			return;
 		do_action( 'mwform_tag_generator_dialog' );
 		?>
