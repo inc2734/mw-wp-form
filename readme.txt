@@ -72,6 +72,8 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 == Changelog ==
 
 = 2.1.3 =
+* Bug fix : Fixed a bug that number of newline characters are different by the environment.
+
 = 2.1.2 =
 * Added   : Added form key in list of MW WP Form page.
 * Bug fix : Fixed a bug that "add form tag button" is displayed in complete message area.

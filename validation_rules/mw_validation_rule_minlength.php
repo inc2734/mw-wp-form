@@ -2,11 +2,11 @@
 /**
  * Name: MW Validation Rule MinLength
  * Description: 値の文字数が範囲内
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : July 21, 2014
- * Modified: August 18, 2014
+ * Modified: December 1, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -25,6 +25,7 @@ class MW_Validation_Rule_MinLength extends MW_Validation_Rule {
 	 */
 	public function rule( $key, array $options = array() ) {
 		$value = $this->Data->get( $key );
+		$value = MWF_Functions::convert_eol( $value );
 		if ( !is_null( $value ) && !MWF_Functions::is_empty( $value ) ) {
 			$defaults = array(
 				'min' => 0,

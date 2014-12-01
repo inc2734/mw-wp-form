@@ -89,6 +89,16 @@ class MWF_Functions {
 	}
 
 	/**
+	 * convert_eol
+	 * 改行コードを \n に統一
+	 * @param sring $string
+	 * @return string $string
+	 */
+	public static function convert_eol( $string ) {
+		return preg_replace( "/\r\n|\r|\n/", "\n", $string );
+	}
+
+	/**
 	 * deprecated_message
 	 * 古いメソッドを使った場合にエラーを出力
 	 * @param string $function_name メソッド名
