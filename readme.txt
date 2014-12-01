@@ -73,6 +73,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.1.3 =
 * Bug fix : Fixed a bug that number of newline characters are different by the environment.
+* Changed : Modified to ignore uppercase letters of lowercase letters at the file type validation.
 
 = 2.1.2 =
 * Added   : Added form key in list of MW WP Form page.

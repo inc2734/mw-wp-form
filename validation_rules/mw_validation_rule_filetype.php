@@ -2,11 +2,11 @@
 /**
  * Name: MW Validation Rule FileType
  * Description: ファイル名が指定した拡張子を含む。types は , 区切り
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : July 21, 2014
- * Modified: August 18, 2014
+ * Modified: December 1, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -36,7 +36,7 @@ class MW_Validation_Rule_FileType extends MW_Validation_Rule {
 				$types[] = preg_quote( trim( $type ), '/' );
 			}
 			$types = implode( '|', MWF_Functions::array_clean( $types ) );
-			$pattern = '/\.(' . $types . ')$/';
+			$pattern = '/\.(' . $types . ')$/i';
 			if ( !preg_match( $pattern, $value ) ) {
 				return $options['message'];
 			}
