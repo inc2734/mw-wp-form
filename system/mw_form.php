@@ -2,11 +2,11 @@
 /**
  * Name: MW Form
  * Description: フォームクラス
- * Version: 1.4.2
+ * Version: 1.4.3
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : September 25, 2012
- * Modified: November 23, 2014
+ * Modified: December 6, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -356,6 +356,9 @@ class MW_Form {
 	 * @return string HTML
 	 */
 	public function hidden( $name, $value ) {
+		if ( is_null( $value ) ) {
+			$value = $this->getValue( $name );
+		}
 		if ( is_array( $value ) ) {
 			$value = $this->getZipValue( $name );
 		}
