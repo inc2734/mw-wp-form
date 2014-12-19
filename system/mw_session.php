@@ -2,11 +2,11 @@
 /**
  * Name: MW Session
  * Description: セッションクラス
- * Version: 2.0.1
+ * Version: 2.0.2
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : July 17, 2012
- * Modified: June 23, 2014
+ * Modified: December 16, 2014
  * License: GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -36,9 +36,9 @@ class MW_Session {
 		if ( isset( $_COOKIE[$this->name] ) ) {
 			$session_id = $_COOKIE[$this->name];
 		} else {
-			$session_id = sha1( wp_create_nonce( $this->name ) . ip2long( $_SERVER['REMOTE_ADDR'] ) . uniqid() );
+			$session_id = sha1( wp_create_nonce( $this->name ) . ip2long( $this->get_remote_addr() ) . uniqid() );
 			$secure = apply_filters( 'mwform_secure_cookie', is_ssl() );
-			setcookie( $this->name, $session_id, 0, COOKIEPATH, COOKIE_DOMAIN, $secure, true );
+			@setcookie( $this->name, $session_id, 0, COOKIEPATH, COOKIE_DOMAIN, $secure, true );
 		}
 		$this->session_id = $session_id;
 	}
@@ -138,5 +138,15 @@ class MW_Session {
 	 */
 	public function clearValues() {
 		delete_transient( $this->session_id );
+	}
+
+	/**
+	 * get_remote_addr
+	 */
+	protected function get_remote_addr() {
+		if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {
+			return $_SERVER['REMOTE_ADDR'];
+		}
+		return '127.0.0.1';
 	}
 }

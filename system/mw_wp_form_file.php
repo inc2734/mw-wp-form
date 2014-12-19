@@ -227,7 +227,7 @@ class MW_WP_Form_File {
 	 * Tempディレクトリ名（パス、URL）を返す。ディレクトリの存在可否は関係なし
 	 * @return array ( dir => Tempディレクトリのパス, url => Tempディレクトリのurl )
 	 */
-	protected function getTempDir() {
+	public function getTempDir() {
 		$wp_upload_dir = wp_upload_dir();
 		$temp_dir_name = '/' . MWF_Config::NAME . '_uploads';
 		$temp_dir['dir'] = realpath( $wp_upload_dir['basedir'] ) . $temp_dir_name;
@@ -240,7 +240,7 @@ class MW_WP_Form_File {
 	 * Tempディレクトリを作成
 	 * @return bool
 	 */
-	protected function createTempDir() {
+	public function createTempDir() {
 		$_ret = false;
 		$temp_dir = $this->getTempDir();
 		$temp_dir = $temp_dir['dir'];
