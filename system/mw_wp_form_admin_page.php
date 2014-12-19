@@ -91,29 +91,6 @@ class MW_WP_Form_Admin_Page {
 	}
 
 	/**
-	 * register_post_type
-	 */
-	public function register_post_type() {
-		register_post_type( MWF_Config::NAME, array(
-			'label' => 'MW WP Form',
-			'labels' => array(
-				'name' => 'MW WP Form',
-				'singular_name' => 'MW WP Form',
-				'add_new_item' => __( 'Add New Form', MWF_Config::DOMAIN ),
-				'edit_item' => __( 'Edit Form', MWF_Config::DOMAIN ),
-				'new_item' => __( 'New Form', MWF_Config::DOMAIN ),
-				'view_item' => __( 'View Form', MWF_Config::DOMAIN ),
-				'search_items' => __( 'Search Forms', MWF_Config::DOMAIN ),
-				'not_found' => __( 'No Forms found', MWF_Config::DOMAIN ),
-				'not_found_in_trash' => __( 'No Forms found in Trash', MWF_Config::DOMAIN ),
-			),
-			'capability_type' => 'page',
-			'public'  => false,
-			'show_ui' => true,
-		) );
-	}
-
-	/**
 	 * add_meta_box
 	 */
 	public function add_meta_box() {
