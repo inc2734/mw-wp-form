@@ -42,6 +42,18 @@ class MW_WP_Form_Contact_Data_Page {
 			'reservation'   => esc_html__( 'Reservation', MWF_Config::DOMAIN ),
 			'supported'     => esc_html__( 'Supported', MWF_Config::DOMAIN ),
 		);
+		$_posts = get_posts( array(
+			'post_type'      => MWF_Config::NAME,
+			'posts_per_page' => -1
+		) );
+		foreach ( $_posts as $_post ) {
+			$post_meta = get_post_meta( $_post->ID, MWF_Config::NAME, true );
+			if ( empty( $post_meta['usedb'] ) ) {
+				continue;
+			}
+			$post_type = MWF_Config::DBDATA . $_post->ID;
+			$this->form_post_type[] = $post_type;
+		}
 	}
 
 	/**

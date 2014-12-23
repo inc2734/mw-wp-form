@@ -1,5 +1,5 @@
 <?php
-class MW_WP_Form_Model {
+class MW_WP_Form_Main_Service extends MW_WP_Form_Service {
 
 	/**
 	 * $key
@@ -88,37 +88,6 @@ class MW_WP_Form_Model {
 	protected $options_by_formkey = array();
 
 	/**
-	 * $validation_rules
-	 * バリデーションルールの配列
-	 */
-	protected $validation_rules = array(
-		'akismet_check' => '',
-		'noempty'       => '',
-		'required'      => '',
-		'numeric'       => '',
-		'alpha'         => '',
-		'alphanumeric'  => '',
-		'katakana'      => '',
-		'hiragana'      => '',
-		'zip'           => '',
-		'tel'           => '',
-		'mail'          => '',
-		'date'          => '',
-		'url'           => '',
-		'eq'            => '',
-		'between'       => '',
-		'minlength'     => '',
-		'filetype'      => '',
-		'filesize'      => '',
-	);
-
-	/**
-	 * form_fields
-	 * フォームフィールドの配列
-	 */
-	protected $form_fields = array();
-
-	/**
 	 * Data
 	 * データを管理するためのオブジェクト
 	 */
@@ -141,12 +110,6 @@ class MW_WP_Form_Model {
 	 * ファイル操作を管理するためのオブジェクト
 	 */
 	protected $File;
-
-	/**
-	 * $Admim
-	 * 管理画面を管理するためのオブジェクト
-	 */
-	protected $Admim;
 
 	/**
 	 * initialize
@@ -213,59 +176,6 @@ class MW_WP_Form_Model {
 		// この条件判定がないと fileSize チェックが正しく動作しない
 		if ( $files ) {
 			$this->Data->setValue( MWF_Config::UPLOAD_FILES, $files );
-		}
-	}
-
-	/**
-	 * instantiate_form_fields
-	 * フォームフィールドのインスタンス化。配列にはフックを通して格納する。
-	 */
-	public function instantiate_form_fields() {
-		$plugin_dir_path = plugin_dir_path( __FILE__ );
-		foreach ( glob( $plugin_dir_path . '../form-fields/*.php' ) as $form_field ) {
-			include_once $form_field;
-			$className = basename( $form_field, '.php' );
-			if ( class_exists( $className ) ) {
-				new $className();
-			}
-		}
-		$this->form_fields = apply_filters( 'mwform_form_fields', $this->form_fields );
-	}
-
-	/**
-	 * set_validation_rules
-	 * @param array $validation_rules バリデーションルールオブジェクトの配列
-	 */
-	public function set_validation_rules( array $validation_rules ) {
-		$validation_rules = array_merge(
-			$this->validation_rules,
-			$validation_rules
-		);
-		$this->validation_rules = apply_filters(
-			'mwform_validation_rules',
-			$validation_rules,
-			$this->get_key()
-		);
-	}
-
-	/**
-	 * set_admin_page
-	 * @param MW_WP_Form_Admin_Page $Admin
-	 */
-	public function set_admin_page( MW_WP_Form_Admin_Page $Admin ) {
-		$this->Admin = $Admin;
-		$this->Admin->initialize();
-	}
-
-	/**
-	 * set_validation_rules_in_admin_page
-	 */
-	public function set_validation_rules_in_admin_page() {
-		$validation_rules = $this->validation_rules;
-		foreach ( $validation_rules as $validation_name => $instance ) {
-			if ( is_callable( array( $instance, 'admin' ) ) ) {
-				$this->Admin->add_validation_rule( $instance->getName(), $instance );
-			}
 		}
 	}
 

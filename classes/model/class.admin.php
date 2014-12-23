@@ -95,9 +95,8 @@ class MW_WP_Form_Admin_Page {
 	public function add_meta_box() {
 		$post_type = get_post_type();
 		if ( MWF_Config::NAME == $post_type ) {
-			global $post;
 			// 設定データ取得
-			$this->postdata = get_post_meta( $post->ID, MWF_Config::NAME, true );
+			$this->postdata = get_post_meta( get_the_ID(), MWF_Config::NAME, true );
 			// 完了画面内容
 			add_meta_box(
 				MWF_Config::NAME . '_complete_message_metabox',
