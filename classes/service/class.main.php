@@ -143,26 +143,26 @@ class MW_WP_Form_Model {
 	protected $File;
 
 	/**
-	 * MW_WP_Form_Admin_Page
+	 * $Admim
 	 * 管理画面を管理するためのオブジェクト
 	 */
-	protected $MW_WP_Form_Admin_Page;
+	protected $Admim;
 
 	/**
-	 * init
+	 * initialize
 	 * key、各URLを設定
 	 * __construct にしたほうが良いかも…
 	 * @param WP_Post $post
 	 * @param string $template 使用テンプレートのパス
 	 */
-	public function init( $post, $template ) {
+	public function initialize( $post, $template ) {
 		add_shortcode( 'mwform'        , array( $this, 'set_form_meta_by_mwform' ) );
-		add_shortcode( 'mwform_formkey', array( $this, 'set_form_meta_by_meta_mwform_formkey' ) );
+		add_shortcode( 'mwform_formkey', array( $this, 'set_form_meta_by_mwform_formkey' ) );
 		do_shortcode( $post->post_content );
 
 		$shortcode = $this->get_shortcode( $post, $template );
 		if ( $shortcode ) {
-			// ここで set_form_meta_by_mwform(), set_form_meta_by_meta_mwform_formkey() が実行される
+			// ここで set_form_meta_by_mwform(), set_form_meta_by_mwform_formkey() が実行される
 			do_shortcode( $shortcode );
 		}
 
@@ -217,12 +217,12 @@ class MW_WP_Form_Model {
 	}
 
 	/**
-	 * init_form_fields
-	 * フォームフィールドの読み込み
+	 * instantiate_form_fields
+	 * フォームフィールドのインスタンス化。配列にはフックを通して格納する。
 	 */
-	public function init_form_fields() {
+	public function instantiate_form_fields() {
 		$plugin_dir_path = plugin_dir_path( __FILE__ );
-		foreach ( glob( $plugin_dir_path . '../form_fields/*.php' ) as $form_field ) {
+		foreach ( glob( $plugin_dir_path . '../form-fields/*.php' ) as $form_field ) {
 			include_once $form_field;
 			$className = basename( $form_field, '.php' );
 			if ( class_exists( $className ) ) {
@@ -233,13 +233,13 @@ class MW_WP_Form_Model {
 	}
 
 	/**
-	 * init_validation_rules
-	 * バリデーションルールの読み込み
+	 * set_validation_rules
+	 * @param array $validation_rules バリデーションルールオブジェクトの配列
 	 */
-	public function init_validation_rules() {
+	public function set_validation_rules( array $validation_rules ) {
 		$validation_rules = array_merge(
 			$this->validation_rules,
-			$this->load_validation_rule_classes()
+			$validation_rules
 		);
 		$this->validation_rules = apply_filters(
 			'mwform_validation_rules',
@@ -249,43 +249,32 @@ class MW_WP_Form_Model {
 	}
 
 	/**
-	 * set_validation_rules_in_admin_page
+	 * set_admin_page
+	 * @param MW_WP_Form_Admin_Page $Admin
 	 */
-	public function set_validation_rules_in_admin_page() {
-		$this->MW_WP_Form_Admin_Page = new MW_WP_Form_Admin_Page();
-		$validation_rules = $this->validation_rules;
-		foreach ( $validation_rules as $validation_name => $instance ) {
-			if ( is_callable( array( $instance, 'admin' ) ) ) {
-				$this->MW_WP_Form_Admin_Page->add_validation_rule( $instance->getName(), $instance );
-			}
-		}
+	public function set_admin_page( MW_WP_Form_Admin_Page $Admin ) {
+		$this->Admin = $Admin;
+		$this->Admin->initialize();
 	}
 
 	/**
-	 * load_validation_rule_classes
-	 * 各バリデーションルールクラスを読み込み返す
-	 * @return $validation_rules
+	 * set_validation_rules_in_admin_page
 	 */
-	public function load_validation_rule_classes() {
-		$validation_rules = array();
-		$plugin_dir_path = plugin_dir_path( __FILE__ );
-		foreach ( glob( $plugin_dir_path . '../validation_rules/*.php' ) as $validation_rule ) {
-			include_once $validation_rule;
-			$className = basename( $validation_rule, '.php' );
-			if ( class_exists( $className ) ) {
-				$instance = new $className( $this->get_key() );
-				$validation_rules[$instance->getName()] = $instance;
+	public function set_validation_rules_in_admin_page() {
+		$validation_rules = $this->validation_rules;
+		foreach ( $validation_rules as $validation_name => $instance ) {
+			if ( is_callable( array( $instance, 'admin' ) ) ) {
+				$this->Admin->add_validation_rule( $instance->getName(), $instance );
 			}
 		}
-		return $validation_rules;
 	}
 
 	/**
 	 * init_validation
-	 * バリデーションクラスのインスタンス化
+	 * @param MW_Validation $Validation
 	 */
-	public function init_validation() {
-		$this->Validation = new MW_Validation( $this->get_key() );
+	public function set_validation_object( MW_Validation $Validation ) {
+		$this->Validation = $Validation;
 		foreach ( $this->validation_rules as $validation_name => $instance ) {
 			if ( is_callable( array( $instance, 'rule' ) ) ) {
 				$this->Validation->add_validation_rule( $instance->getName(), $instance );
@@ -337,18 +326,20 @@ class MW_WP_Form_Model {
 	}
 
 	/**
-	 * init_form
-	 * フォームクラスのインスタンス化
+	 * set_form_object
+	 * @param MW_Form $Form
 	 */
-	public function init_form() {
-		$this->Form = new MW_Form( $this->get_key() );
+	public function set_form_object( MW_Form $Form ) {
+		$this->Form = $Form;
 	}
 
 	/**
-	 * init_file
+	 * set_file_object
+	 * @param MW_WP_Form_File $File
 	 */
-	public function init_file() {
-		$this->File = new MW_WP_Form_File();
+	public function set_file_object( MW_WP_Form_File $File ) {
+		$this->File = $File;
+		$this->File->initialize();
 	}
 
 	/**
@@ -361,10 +352,10 @@ class MW_WP_Form_Model {
 	}
 
 	/**
-	 * set_form_meta_by_meta_mwform_formkey
+	 * set_form_meta_by_mwform_formkey
 	 * @param array $attributes
 	 */
-	public function set_form_meta_by_meta_mwform_formkey( array $attributes ) {
+	public function set_form_meta_by_mwform_formkey( array $attributes ) {
 		$options_by_formkey = $this->get_form_meta_by_mwform_formkey( $attributes );
 		if ( $options_by_formkey ) {
 			$post_id = $this->get_form_id_by_mwform_formkey( $attributes );
@@ -372,8 +363,8 @@ class MW_WP_Form_Model {
 				$this->defaults,
 				$options_by_formkey
 			);
-			$options_by_formkey['post_id'] = $post_id;
-			$options_by_formkey['key']     = MWF_Config::NAME . '-' . $post_id;
+			$this->options_by_formkey['post_id'] = $post_id;
+			$options_by_formkey['key']           = MWF_Config::NAME . '-' . $post_id;
 			$this->set_form_meta( $options_by_formkey );
 		}
 	}
@@ -383,9 +374,6 @@ class MW_WP_Form_Model {
 	 * @param array $attributes
 	 */
 	private function set_form_meta( array $attributes ) {
-		if ( isset( $attributes['post_id'] ) ) {
-			$this->options_by_formkey['post_id'] = $attributes['post_id'];
-		}
 		if ( isset( $attributes['key'] ) ) {
 			$this->key = $attributes['key'];
 		}
@@ -408,7 +396,7 @@ class MW_WP_Form_Model {
 	 * @param array $attributes
 	 * @return array $attributes
 	 */
-	public function get_form_meta_by_mwform( array $attributes ) {
+	protected function get_form_meta_by_mwform( array $attributes ) {
 		return shortcode_atts( array(
 			'input'            => '',
 			'confirm'          => '',
@@ -437,7 +425,7 @@ class MW_WP_Form_Model {
 	 * @param array $attributes
 	 * @return string|null Post ID
 	 */
-	public function get_form_id_by_mwform_formkey( array $attributes ) {
+	protected function get_form_id_by_mwform_formkey( array $attributes ) {
 		$attributes = shortcode_atts( array(
 			'key' => '',
 		), $attributes );
@@ -465,7 +453,7 @@ class MW_WP_Form_Model {
 	 * @param string $template
 	 * @return string [hoge xxx="xxx"]
 	 */
-	public function get_shortcode( $post, $template ) {
+	protected function get_shortcode( $post, $template ) {
 		if ( is_singular() && !empty( $post->ID ) ) {
 			$shortcode = $this->get_shortcode_in_contnt( $post->post_content );
 		}
@@ -483,7 +471,7 @@ class MW_WP_Form_Model {
 	 * @param string $content
 	 * @return string [hoge xxx="xxx"]
 	 */
-	public function get_shortcode_in_contnt( $content ) {
+	protected function get_shortcode_in_contnt( $content ) {
 		preg_match_all( '/' . get_shortcode_regex() . '/s', $content, $matches, PREG_SET_ORDER );
 		if ( $matches ) {
 			foreach ( $matches as $shortcode ) {
@@ -497,22 +485,6 @@ class MW_WP_Form_Model {
 				}
 			}
 		}
-	}
-
-	public function get_key() {
-		return $this->key;
-	}
-	public function get_input() {
-		return $this->parse_url( $this->input );
-	}
-	public function get_confirm() {
-		return $this->parse_url( $this->confirm );
-	}
-	public function get_complete() {
-		return $this->parse_url( $this->complete );
-	}
-	public function get_validation_error() {
-		return $this->parse_url( $this->validation_error );
 	}
 
 	/**
@@ -532,6 +504,52 @@ class MW_WP_Form_Model {
 		return true;
 	}
 
+	/**
+	 * get_key
+	 * @return string $this->key
+	 */
+	public function get_key() {
+		return $this->key;
+	}
+
+	/**
+	 * get_input
+	 * @return string $this->input
+	 */
+	public function get_input() {
+		return $this->parse_url( $this->input );
+	}
+
+	/**
+	 * get_confirm
+	 * @return string $this->confirm
+	 */
+	public function get_confirm() {
+		return $this->parse_url( $this->confirm );
+	}
+
+	/**
+	 * get_complete
+	 * @return string $this->complete
+	 */
+	public function get_complete() {
+		return $this->parse_url( $this->complete );
+	}
+
+	/**
+	 * get_coget_validation_errormplete
+	 * @return string $this->validation_error
+	 */
+	public function get_validation_error() {
+		return $this->parse_url( $this->validation_error );
+	}
+
+	/**
+	 * get_post_condition
+	 * 送信データからどのページを表示すべきかの状態を判定して返す
+	 * ただし実際に表示するページと同じとは限らない（バリデーション通らないとかあるので）
+	 * @return string back|confirm|complete|input
+	 */
 	public function get_post_condition() {
 		if ( $this->Form->isBack() ) {
 			return 'back';
@@ -543,6 +561,11 @@ class MW_WP_Form_Model {
 		return 'input';
 	}
 
+	/**
+	 * is_valid
+	 * バリデーションエラーがなければtrue
+	 * @return bool
+	 */
 	public function is_valid() {
 		if ( $this->Validation->check() ) {
 			return true;
@@ -550,24 +573,47 @@ class MW_WP_Form_Model {
 		return false;
 	}
 
+	/**
+	 * set_view_flg
+	 * 実際に表示するページを判別するためのフラグを設定
+	 * @param string $view_flg input|confirm|complete
+	 */
 	public function set_view_flg( $view_flg ) {
 		if ( in_array( $view_flg, array( 'input', 'confirm', 'complete' ) ) ) {
 			$this->viewFlg = $view_flg;
 		}
 	}
 
+	/**
+	 * get_view_flg
+	 * 実際に表示するページを判別するためのフラグを返す
+	 * @return string $this->view_flg input|confirm|complete
+	 */
 	public function get_view_flg() {
 		return $this->viewFlg;
 	}
 
+	/**
+	 * get_token
+	 * @return string フォームのトークン
+	 */
 	public function get_token() {
 		$this->Data->getValue( $this->Form->getTokenName() );
 	}
 
+	/**
+	 * clear_token
+	 * フォームのトークンを消去
+	 */
 	public function clear_token() {
 		$this->Data->clearValue( $this->Form->getTokenName() );
 	}
 
+	/**
+	 * is_generated_by_formkey
+	 * 管理画面で作成されたフォームであればtrue
+	 * @return bool
+	 */
 	public function is_generated_by_formkey() {
 		if ( $this->options_by_formkey ) {
 			return true;
@@ -575,25 +621,25 @@ class MW_WP_Form_Model {
 		return false;
 	}
 
+	/**
+	 * clear_data
+	 * 保持していたリクエストデータを全て消去
+	 */
 	public function clear_data() {
 		$this->Data->clearValues();
 	}
 
+	/**
+	 * get_option
+	 * 管理画面で作成したフォームの設定値を返す
+	 * @param string $key
+	 * @return mixed
+	 */
 	public function get_option( $key ) {
 		if ( isset( $this->options_by_formkey[$key] ) ) {
 			return $this->options_by_formkey[$key];
 		}
 	}
-
-	/*
-	public function get_Error() {
-		return $this->Validation->Error();
-	}
-
-	public function get_Form() {
-		return $this->Form;
-	}
-	*/
 	
 	/**
 	 * nocache_headers
@@ -614,8 +660,9 @@ class MW_WP_Form_Model {
 	 */
 	public function remove_query_vars_from_post( array $query_vars, array $post ) {
 		foreach ( $post as $key => $value ) {
-			if ( $key == 'token' )
+			if ( $key == 'token' ) {
 				continue;
+			}
 			if ( isset( $query_vars[$key] ) && $query_vars[$key] === $value && !empty( $value ) ) {
 				$query_vars[$key] = '';
 			}
@@ -625,10 +672,11 @@ class MW_WP_Form_Model {
 
 	/**
 	 * get_the_content
+	 * フォームのコンテンツを整形して返す
 	 * @param string $content
 	 * @return string $content
 	 */
-	public function get_the_content( $content ) {
+	protected function get_the_content( $content ) {
 		$content = $this->replace_user_property( $content );
 		$content = $this->replace_post_property( $content );
 		return $content;
@@ -636,6 +684,7 @@ class MW_WP_Form_Model {
 
 	/**
 	 * add_shortocde_that_display_content
+	 * 画面にフォーム、完了画面を表示するためのショートコードを有効化
 	 */
 	public function add_shortocde_that_display_content() {
 		add_shortcode( 'mwform_formkey'         , array( $this, 'mwform_formkey' ) );
@@ -651,37 +700,69 @@ class MW_WP_Form_Model {
 	 * @example [mwform_formkey key="post_id"]
 	 */
 	public function mwform_formkey( $attributes ) {
-		global $post;
 		$post_id = $this->get_form_id_by_mwform_formkey( $attributes );
-		$post = get_post( $post_id );
-		setup_postdata( $post );
 
-		// 入力画面・確認画面
 		$view_flg = $this->get_view_flg();
-		if ( $view_flg === 'input' || $view_flg == 'confirm' ) {
-			$content = apply_filters( 'mwform_post_content_raw_' . $this->get_key(), get_the_content() );
-			if ( has_filter( 'the_content', 'wpautop' ) ) {
-				$content = wpautop( $content );
-			}
-			$_ret = sprintf(
-				'[mwform]%s[/mwform]',
-				apply_filters( 'mwform_post_content_' . $this->get_key(), $content )
-			);
+
+		// 入力画面
+		if ( $view_flg === 'input' ) {
+			$content = $this->get_input_page_content( $post_id );
+		}
+		// 確認画面
+		elseif ( $view_flg == 'confirm' ) {
+			$content = $this->get_confirm_page_content( $post_id );
 		}
 		// 完了画面
-		elseif( $view_flg === 'complete' ) {
-			$content = $this->get_option( 'complete_message' );
-			if ( has_filter( 'the_content', 'wpautop' ) ) {
-				$content = wpautop( $content );
-			}
-			$_ret = sprintf(
-				'[mwform_complete_message]%s[/mwform_complete_message]',
-				$content
-			);
+		elseif ( $view_flg === 'complete' ) {
+			$content = $this->get_complete_page_content();
 		}
+		return do_shortcode( $content );
+	}
+
+	/**
+	 * get_input_page_content
+	 * @param int $post_id
+	 * @return string $content
+	 */
+	protected function get_input_page_content( $post_id ) {
+		global $post;
+		$post = get_post( $post_id );
+		setup_postdata( $post );
+		$content = apply_filters( 'mwform_post_content_raw_' . $this->get_key(), get_the_content() );
+		if ( has_filter( 'the_content', 'wpautop' ) ) {
+			$content = wpautop( $content );
+		}
+		$content = sprintf(
+			'[mwform]%s[/mwform]',
+			apply_filters( 'mwform_post_content_' . $this->get_key(), $content )
+		);
 		wp_reset_postdata();
-		$_ret = do_shortcode( $_ret );
-		return $_ret;
+		return $content;
+	}
+
+	/**
+	 * get_confirm_page_content
+	 * @param int $post_id
+	 * @return string $content
+	 */
+	protected function get_confirm_page_content( $post_id ) {
+		return $this->get_input_page_content( $post_id );
+	}
+
+	/**
+	 * get_complete_page_content
+	 * @return string $content
+	 */
+	protected function get_complete_page_content() {
+		$content = $this->get_option( 'complete_message' );
+		if ( has_filter( 'the_content', 'wpautop' ) ) {
+			$content = wpautop( $content );
+		}
+		$content = sprintf(
+			'[mwform_complete_message]%s[/mwform_complete_message]',
+			$content
+		);
+		return $content;
 	}
 
 	/**
@@ -711,13 +792,24 @@ class MW_WP_Form_Model {
 					$upload_file_hidden .= $this->Form->hidden( MWF_Config::UPLOAD_FILE_KEYS . '[]', $value );
 				}
 			}
-			$_preview_class = ( $view_flg === 'confirm' ) ? ' mw_wp_form_preview' : '';
+
+			// 下位互換性のための class を付与
+			$_preview_class = '';
+			if ( $view_flg === 'confirm' ) {
+				$_preview_class = 'mw_wp_form_preview';
+			}
+
+			// スタイル機能用の class を付与
 			$style = $this->get_option( 'style' );
-			$class_for_style = ( $style ) ? 'mw_wp_form_' . $style : '';
+			$class_for_style = '';
+			if ( $style ) {
+				$class_for_style = 'mw_wp_form_' . $style;
+			}
+
 			return sprintf(
 				'<div id="mw_wp_form_%s" class="mw_wp_form mw_wp_form_%s %s">%s<!-- end .mw_wp_form --></div>',
 				esc_attr( $this->get_key() ),
-				esc_attr( $view_flg . $_preview_class ),
+				esc_attr( $view_flg . ' ' . $_preview_class ),
 				$class_for_style,
 				$this->Form->start() . do_shortcode( $content ) . $upload_file_hidden . $this->Form->end()
 			);
@@ -747,7 +839,7 @@ class MW_WP_Form_Model {
 	 * @param string フォーム内容
 	 * @return string フォーム内容
 	 */
-	public function replace_user_property( $content ) {
+	protected function replace_user_property( $content ) {
 		$user = wp_get_current_user();
 		$search = array(
 			'{user_id}',
@@ -778,7 +870,7 @@ class MW_WP_Form_Model {
 	 * @param string フォーム内容
 	 * @return string フォーム内容
 	 */
-	public function replace_post_property( $content ) {
+	protected function replace_post_property( $content ) {
 		if ( $this->get_option( 'querystring' ) ) {
 			$content = preg_replace_callback(
 				'/{(.+?)}/',
@@ -801,7 +893,7 @@ class MW_WP_Form_Model {
 	 * @param array $matches
 	 * @return string
 	 */
-	public function get_post_property_from_querystring( $matches ) {
+	protected function get_post_property_from_querystring( $matches ) {
 		if ( $this->get_option( 'querystring' ) &&
 			 isset( $_GET['post_id'] ) &&
 			 MWF_Functions::is_numeric( $_GET['post_id'] ) ) {
@@ -827,7 +919,7 @@ class MW_WP_Form_Model {
 	 * @param array $matches
 	 * @return string
 	 */
-	public function get_post_property_from_this( $matches ) {
+	protected function get_post_property_from_this( $matches ) {
 		global $post;
 		if ( !is_singular() )
 			return;
@@ -876,8 +968,9 @@ class MW_WP_Form_Model {
 			}
 		}
 
-		if ( !empty( $query_string ) )
+		if ( !empty( $query_string ) ) {
 			$url = $url . '?' . http_build_query( $query_string, null, '&' );
+		}
 		return $url;
 	}
 
@@ -958,29 +1051,23 @@ class MW_WP_Form_Model {
 		$Mail = new MW_Mail();
 		$Mail_raw = clone $Mail;
 
+		// 管理画面で作成した場合だけ自動で送信
 		if ( $this->is_generated_by_formkey() ) {
-			$Mail_raw = $this->set_admin_mail_raw_params( $Mail_raw );
-
-			// 添付ファイルのデータをためた配列を作成
-			$attachments = array();
-			// $Mail->attachments を設定（メールにファイルを添付）
-			$upload_file_keys = $this->Data->getValue( MWF_Config::UPLOAD_FILE_KEYS );
-			if ( $upload_file_keys !== null && is_array( $upload_file_keys ) ) {
-				$wp_upload_dir = wp_upload_dir();
-				foreach ( $upload_file_keys as $key ) {
-					$upload_file_url = $this->Data->getValue( $key );
-					if ( !$upload_file_url )
-						continue;
-					$filepath = MWF_Functions::fileurl_to_path( $upload_file_url );
-					if ( file_exists( $filepath ) ) {
-						$filepath = $this->File->moveTempFileToUploadDir( $filepath );
-						$new_upload_file_url = MWF_Functions::filepath_to_url( $filepath );
-						$attachments[$key] = $filepath;
-						$this->Data->setValue( $key, $new_upload_file_url );
-					}
-				}
-				$Mail_raw->attachments = $attachments;
+			$attachments = $this->get_attachments();
+			$attachment_files = array();
+			foreach ( $attachments as $attachment ) {
+				$attachment_files[$key] = $attachment['file'];
 			}
+			$attachment_urls = array();
+			foreach ( $attachments as $attachment ) {
+				$attachment_urls[$key] = $attachment['url'];
+			}
+			foreach ( $attachment_urls as $attachment_url ) {
+				$this->Data->setValue( $key, $attachment_url );
+			}
+
+			$Mail_raw = $this->set_admin_mail_raw_params( $Mail_raw );
+			$Mail_raw->attachments = $attachment_files;
 
 			$Mail_raw = apply_filters(
 				'mwform_admin_mail_raw_' . $this->get_key(),
@@ -993,40 +1080,25 @@ class MW_WP_Form_Model {
 
 			$Mail = $this->parse_mail_object( $Mail_raw );
 			$Mail = $this->set_admin_mail_reaquire_params( $Mail );
-		}
 
-		$Mail = apply_filters(
-			'mwform_mail_' . $this->get_key(),
-			$Mail,
-			$this->Data->getValues()
-		);
-
-		if ( $this->is_generated_by_formkey() && is_a( $Mail, 'MW_Mail' ) && is_a( $Mail_raw, 'MW_Mail' ) ) {
+			$Mail = apply_filters(
+				'mwform_mail_' . $this->get_key(),
+				$Mail,
+				$this->Data->getValues()
+			);
+			if ( !is_a( $Mail, 'MW_Mail' ) ) {
+				return;
+			}
 
 			// メール送信前にファイルのリネームをしないと、tempファイル名をメールで送信してしまう。
 			if ( $this->get_option( 'usedb' ) ) {
 				// save_mail_body で登録されないように
-				foreach ( $attachments as $key => $filepath ) {
+				foreach ( $attachments as $key => $attachment ) {
 					$this->Data->clearValue( $key );
 				}
 
 				// $this->insert_contact_data_id を設定 ( save_mail_body で 使用 )
-				$this->insert_contact_data_id = wp_insert_post( array(
-					'post_title'  => $Mail->subject,
-					'post_status' => 'publish',
-					'post_type'   => MWF_Config::DBDATA . $this->get_option( 'post_id' ),
-				) );
-				// 保存
-				$this->save_mail_body( $Mail_raw->body );
-
-				// 添付ファイルをメディアに保存
-				if ( !empty( $this->insert_contact_data_id ) ) {
-					$this->File->saveAttachmentsInMedia(
-						$this->insert_contact_data_id,
-						$attachments,
-						$this->get_option( 'post_id' )
-					);
-				}
+				$this->insert_contact_data_id = $this->save_contact_data( $attachment_files );
 			}
 
 			$Mail = apply_filters(
@@ -1041,19 +1113,17 @@ class MW_WP_Form_Model {
 
 			// DB非保存時は管理者メール送信後、ファイルを削除
 			if ( !$this->get_option( 'usedb' ) ) {
-				foreach ( $attachments as $filepath ) {
-					if ( file_exists( $filepath ) ) {
-						unlink( $filepath );
-					}
-				}
+				$this->delete_files( $attachment_files );
 			}
 
+			// 自動返信メールの送信
 			if ( $this->get_option( 'automatic_reply_email' ) ) {
 				$automatic_reply_email = $this->Data->getValue( $this->get_option( 'automatic_reply_email' ) );
 				if ( $automatic_reply_email &&
 					 !$this->validation_rules['mail']->rule( $automatic_reply_email ) ) {
 
-					$Mail_auto_raw = $this->set_reply_mail_raw_params( clone $Mail_raw );
+					$Mail_auto_raw = clone $Mail_raw;
+					$Mail_auto_raw = $this->set_reply_mail_raw_params( $Mail_auto_raw );
 
 					// 自動返信メールからは添付ファイルを削除
 					$Mail_auto_raw->attachments = array();
@@ -1084,12 +1154,92 @@ class MW_WP_Form_Model {
 
 			// 問い合わせ番号を加算
 			if ( preg_match( '{' . MWF_Config::TRACKINGNUMBER . '}', $Mail_raw->body, $reg ) ) {
-				$form_id = $this->get_option( 'post_id' );
-				$tracking_number = $this->get_tracking_number( $form_id );
-				$new_tracking_number = $tracking_number + 1;
-				update_post_meta( $form_id, MWF_Config::TRACKINGNUMBER, $new_tracking_number );
+				$this->update_tracking_number();
 			}
 		}
+		// 手動送信対応
+		else {
+			$Mail = apply_filters(
+				'mwform_mail_' . $this->get_key(),
+				$Mail,
+				$this->Data->getValues()
+			);
+		}
+	}
+
+	/**
+	 * delete_files
+	 * @param array $attachments 消去するファイルパスの配列
+	 */
+	protected function delete_files( array $files ) {
+		foreach ( $files as $file ) {
+			if ( file_exists( $file ) ) {
+				unlink( $file );
+			}
+		}
+	}
+
+	/**
+	 * update_tracking_number
+	 */
+	protected function update_tracking_number() {
+		$form_id = $this->get_option( 'post_id' );
+		$tracking_number = $this->get_tracking_number( $form_id );
+		$new_tracking_number = $tracking_number + 1;
+		update_post_meta( $form_id, MWF_Config::TRACKINGNUMBER, $new_tracking_number );
+	}
+
+	/**
+	 * get_attachments
+	 * @return array $attachments path と url の配列
+	 */
+	protected function get_attachments() {
+		// 添付ファイルのデータをためた配列を作成
+		$attachments = array();
+		$upload_file_keys = $this->Data->getValue( MWF_Config::UPLOAD_FILE_KEYS );
+		if ( $upload_file_keys !== null && is_array( $upload_file_keys ) ) {
+			$wp_upload_dir = wp_upload_dir();
+			foreach ( $upload_file_keys as $key ) {
+				$upload_file_url = $this->Data->getValue( $key );
+				if ( !$upload_file_url ) {
+					continue;
+				}
+				$filepath = MWF_Functions::fileurl_to_path( $upload_file_url );
+				if ( file_exists( $filepath ) ) {
+					$filepath            = $this->File->moveTempFileToUploadDir( $filepath );
+					$new_upload_file_url = MWF_Functions::filepath_to_url( $filepath );
+					$attachments[$key]   = array(
+						'path' => $filepath,
+						'url'  => $new_upload_file_url,
+					);
+				}
+			}
+		}
+		return $attachments;
+	}
+
+	/**
+	 * save_contact_data
+	 * @param array $files 保存するファイルパスの配列
+	 */
+	protected function save_contact_data( array $files ) {
+		$insert_contact_data_id = wp_insert_post( array(
+			'post_title'  => $Mail->subject,
+			'post_status' => 'publish',
+			'post_type'   => MWF_Config::DBDATA . $this->get_option( 'post_id' ),
+		) );
+		// メタデータを保存
+		$this->save_mail_body( $Mail_raw->body );
+
+		// 添付ファイルをメディアに保存
+		if ( !empty( $insert_contact_data_id ) ) {
+			$this->File->saveAttachmentsInMedia(
+				$insert_contact_data_id,
+				$files,
+				$this->get_option( 'post_id' )
+			);
+		}
+		return $insert_contact_data_id;
 	}
 
 	/**
@@ -1116,14 +1266,14 @@ class MW_WP_Form_Model {
 	 * @param string $value
 	 * @return string
 	 */
-	public function parse_mail_content( $value ) {
+	protected function parse_mail_content( $value ) {
 		return preg_replace_callback(
 			'/{(.+?)}/',
 			array( $this, '_parse_mail_content' ),
 			$value
 		);
 	}
-	public function _parse_mail_content( $matches ) {
+	protected function _parse_mail_content( $matches ) {
 		return $this->parse_mail_body( $matches, false );
 	}
 
@@ -1131,14 +1281,14 @@ class MW_WP_Form_Model {
 	 * save_mail_body
 	 * DB保存用に {name属性} を置換、保存
 	 */
-	public function save_mail_body( $value ) {
+	protected function save_mail_body( $value ) {
 		return preg_replace_callback(
 			'/{(.+?)}/',
 			array( $this, '_save_mail_body' ),
 			$value
 		);
 	}
-	public function _save_mail_body( $matches ) {
+	protected function _save_mail_body( $matches ) {
 		return $this->parse_mail_body( $matches, true );
 	}
 

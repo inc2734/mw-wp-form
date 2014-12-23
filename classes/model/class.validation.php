@@ -37,7 +37,7 @@ class MW_Validation {
 	 * @param string $key 識別子
 	 */
 	public function __construct( $key ) {
-		$this->key = $key;
+		$this->key   = $key;
 		$this->Error = new MW_Error();
 	}
 

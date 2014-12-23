@@ -50,7 +50,7 @@ class MW_Mail {
 	/**
 	 * 添付
 	 */
-	public $attachments;
+	public $attachments = array();
 
 	/**
 	 * send

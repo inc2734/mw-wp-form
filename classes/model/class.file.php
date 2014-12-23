@@ -13,9 +13,9 @@
 class MW_WP_Form_File {
 
 	/**
-	 * __construct
+	 * initialize
 	 */
-	public function __construct() {
+	public function initialize() {
 		add_filter( 'upload_mimes', array( $this, 'upload_mimes' ) );
 	}
 

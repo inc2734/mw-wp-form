@@ -36,24 +36,27 @@ class MW_WP_Form_Contact_Data_Page {
 	 * __construct
 	 */
 	public function __construct() {
-		$this->POST_DATA_NAME = '_' . MWF_Config::NAME . '_data';
-		add_action( 'init', array( $this, 'register_post_type' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_style' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_script' ) );
-		add_action( 'admin_head', array( $this, 'add_style' ) );
-		add_action( 'admin_head', array( $this, 'add_forms_columns' ) );
-		add_action( 'admin_head', array( $this, 'add_meta_box' ) );
-		add_action( 'save_post', array( $this, 'save_post' ) );
-		add_action( 'in_admin_footer', array( $this, 'add_csv_download_button' ) );
-		add_action( 'wp_loaded', array( $this, 'csv_download' ) );
-		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-		add_action( 'edit_form_top', array( $this, 'display_returning_link' ) );
-
+		$this->POST_DATA_NAME    = '_' . MWF_Config::NAME . '_data';
 		$this->response_statuses = array(
 			'not-supported' => esc_html__( 'Not supported', MWF_Config::DOMAIN ),
-			'reservation' => esc_html__( 'Reservation', MWF_Config::DOMAIN ),
-			'supported' => esc_html__( 'Supported', MWF_Config::DOMAIN ),
+			'reservation'   => esc_html__( 'Reservation', MWF_Config::DOMAIN ),
+			'supported'     => esc_html__( 'Supported', MWF_Config::DOMAIN ),
 		);
+	}
+
+	/**
+	 * initialize
+	 */
+	public function initialize() {
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'admin_head'           , array( $this, 'add_style' ) );
+		add_action( 'admin_head'           , array( $this, 'add_forms_columns' ) );
+		add_action( 'admin_head'           , array( $this, 'add_meta_box' ) );
+		add_action( 'save_post'            , array( $this, 'save_post' ) );
+		add_action( 'in_admin_footer'      , array( $this, 'add_csv_download_button' ) );
+		add_action( 'wp_loaded'            , array( $this, 'csv_download' ) );
+		add_action( 'admin_menu'           , array( $this, 'admin_menu' ) );
+		add_action( 'edit_form_top'        , array( $this, 'display_returning_link' ) );
 	}
 
 	/**
@@ -69,64 +72,14 @@ class MW_WP_Form_Contact_Data_Page {
 	}
 
 	/**
-	 * admin_style
-	 * CSS適用
+	 * admin_enqueue_scripts
 	 */
-	public function admin_style() {
+	public function admin_enqueue_scripts() {
 		$post_type = get_post_type();
 		if ( in_array( $post_type, $this->form_post_type ) ) {
 			$url = plugin_dir_url( __FILE__ );
-			wp_register_style( MWF_Config::NAME . '-admin', $url . '../css/admin.css' );
-			wp_enqueue_style( MWF_Config::NAME . '-admin' );
-		}
-	}
-
-	/**
-	 * admin_script
-	 * JS適用
-	 */
-	public function admin_script() {
-		$post_type = get_post_type();
-		if ( in_array( $post_type, $this->form_post_type ) ) {
-			$url = plugin_dir_url( __FILE__ );
-			wp_register_script( MWF_Config::NAME . '-admin-data', $url . '../js/admin-data.js' );
-			wp_enqueue_script( MWF_Config::NAME . '-admin-data' );
-		}
-	}
-
-	/**
-	 * register_post_type
-	 * メインクラスから呼ばれる
-	 */
-	public function register_post_type() {
-		$_posts = get_posts( array(
-			'post_type' => MWF_Config::NAME,
-			'posts_per_page' => -1
-		) );
-		foreach ( $_posts as $_post ) {
-			$post_meta = get_post_meta( $_post->ID, MWF_Config::NAME, true );
-			if ( empty( $post_meta['usedb'] ) )
-				continue;
-
-			$post_type = MWF_Config::DBDATA . $_post->ID;
-			register_post_type( $post_type, array(
-				'label' => $_post->post_title,
-				'labels' => array(
-					'name' => $_post->post_title,
-					'singular_name' => $_post->post_title,
-					'edit_item' => __( 'Edit ', MWF_Config::DOMAIN ) . ':' . $_post->post_title,
-					'view_item' => __( 'View', MWF_Config::DOMAIN ) . ':' . $_post->post_title,
-					'search_items' => __( 'Search', MWF_Config::DOMAIN ) . ':' . $_post->post_title,
-					'not_found' => __( 'No data found', MWF_Config::DOMAIN ),
-					'not_found_in_trash' => __( 'No data found in Trash', MWF_Config::DOMAIN ),
-				),
-				'capability_type' => 'page',
-				'public' => false,
-				'show_ui' => true,
-				'show_in_menu' => false,
-				'supports' => array( 'title' ),
-			) );
-			$this->form_post_type[] = $post_type;
+			wp_enqueue_style( MWF_Config::NAME . '-admin', $url . '../../css/admin.css' );
+			wp_enqueue_script( MWF_Config::NAME . '-admin-data', $url . '../js/../admin-data.js' );
 		}
 	}
 
@@ -568,8 +521,8 @@ class MW_WP_Form_Contact_Data_Page {
 	 */
 	private function get_created_datetime( $post_type ) {
 		global $post;
-		$post_id = preg_replace( '/^mwf_(.+?)$/', '$1', $post_type );
-		$post = get_post( $post_id );
+		$post_id   = preg_replace( '/^mwf_(.+?)$/', '$1', $post_type );
+		$post      = get_post( $post_id );
 		$post_date = get_the_date();
 		wp_reset_postdata();
 		return $post_date;
@@ -584,9 +537,9 @@ class MW_WP_Form_Contact_Data_Page {
 	private function get_modified_datetime( $post_type ) {
 		global $post;
 		$inquiry_posts = get_posts( array(
-			'post_type' => $post_type,
+			'post_type'      => $post_type,
 			'posts_per_page' => 1,
-			'orderby' => 'modified',
+			'orderby'        => 'modified',
 		) );
 
 		$modified_datetime = '';

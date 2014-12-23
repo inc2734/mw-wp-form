@@ -31,13 +31,19 @@ class MW_WP_Form_Chart_Page {
 	 * __construct
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'add_menu' ) );
-		add_action( 'admin_init', array( $this, 'register_setting' ) );
-		add_action( 'admin_print_styles', array( $this, 'admin_print_styles' ) );
 		$this->option_group = MWF_Config::NAME . '-' . 'chart-group';
 		if ( !empty( $_GET['formkey'] ) ) {
 			$this->formkey = $_GET['formkey'];
 		}
+	}
+
+	/**
+	 * initialize
+	 */
+	public function initialize() {
+		add_action( 'admin_menu'        , array( $this, 'add_menu' ) );
+		add_action( 'admin_init'        , array( $this, 'register_setting' ) );
+		add_action( 'admin_print_styles', array( $this, 'admin_print_styles' ) );
 	}
 
 	/**
@@ -77,7 +83,12 @@ class MW_WP_Form_Chart_Page {
 	public function admin_enqueue_scripts() {
 		global $wp_scripts;
 		$ui = $wp_scripts->query( 'jquery-ui-core' );
-		wp_enqueue_style( 'jquery.ui', '//ajax.googleapis.com/ajax/libs/jqueryui/' . $ui->ver . '/themes/smoothness/jquery-ui.min.css', array( 'jquery' ), $ui->ver );
+		wp_enqueue_style(
+			'jquery.ui',
+			'//ajax.googleapis.com/ajax/libs/jqueryui/' . $ui->ver . '/themes/smoothness/jquery-ui.min.css',
+			array( 'jquery' ),
+			$ui->ver
+		);
 		wp_enqueue_script( 'jquery-ui-sortable' );
 
 		$url = plugin_dir_url( __FILE__ );
@@ -87,7 +98,7 @@ class MW_WP_Form_Chart_Page {
 
 		wp_register_script(
 			MWF_Config::NAME . '-repeatable',
-			$url . '../js/mw-wp-form-repeatable.js',
+			$url . '../../js/mw-wp-form-repeatable.js',
 			array( 'jquery' ),
 			null,
 			true
@@ -96,7 +107,7 @@ class MW_WP_Form_Chart_Page {
 
 		wp_register_script(
 			MWF_Config::NAME . '-google-chart',
-			$url . '../js/mw-wp-form-google-chart.js',
+			$url . '../../js/mw-wp-form-google-chart.js',
 			array( 'jquery' ),
 			null,
 			true
@@ -105,7 +116,7 @@ class MW_WP_Form_Chart_Page {
 
 		wp_register_script(
 			MWF_Config::NAME . '-admin-chart',
-			$url . '../js/admin-chart.js',
+			$url . '../../js/admin-chart.js',
 			array( 'jquery', 'jquery-ui-sortable' ),
 			null,
 			true
@@ -118,7 +129,6 @@ class MW_WP_Form_Chart_Page {
 	 */
 	public function display() {
 		if ( !empty( $this->formkey ) ) {
-			$this->formkey = $_GET['formkey'];
 			$form_posts = get_posts( array(
 				'post_type' => $this->formkey,
 				'posts_per_page' => -1,

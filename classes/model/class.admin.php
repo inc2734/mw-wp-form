@@ -28,18 +28,17 @@ class MW_WP_Form_Admin_Page {
 	private $validation_rules = array();
 
 	/**
-	 * __construct
+	 * initialize
 	 */
-	public function __construct() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_style' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
-		add_action( 'admin_head', array( $this, 'add_meta_box' ) );
-		add_action( 'save_post', array( $this, 'save_post' ) );
+	public function initialize() {
+		add_action( 'admin_head'                , array( $this, 'add_meta_box' ) );
+		add_action( 'save_post'                 , array( $this, 'save_post' ) );
+		add_action( 'current_screen'            , array( $this, 'current_screen' ) );
+		add_filter( 'default_content'           , array( $this, 'default_content' ) );
+		add_action( 'media_buttons'             , array( $this, 'add_tag_generator' ) );
+		add_action( 'admin_enqueue_scripts'     , array( $this, 'admin_enqueue_scripts' ) );
 		add_action( 'admin_print_footer_scripts', array( $this, 'add_quicktag' ) );
-		add_action( 'current_screen', array( $this, 'current_screen' ) );
-		add_filter( 'default_content', array( $this, 'default_content' ) );
-		add_action( 'media_buttons', array( $this, 'add_tag_generator' ) );
-		add_filter( 'manage_posts_columns', array( $this, 'manage_posts_columns' ) );
+		add_filter( 'manage_posts_columns'      , array( $this, 'manage_posts_columns' ) );
 		add_action( 'manage_posts_custom_column', array( $this, 'manage_posts_custom_column' ), 10, 2 );
 	}
 
@@ -177,34 +176,28 @@ class MW_WP_Form_Admin_Page {
 	}
 
 	/**
-	 * admin_style
-	 * CSS適用
+	 * admin_enqueue_scripts
 	 */
-	public function admin_style() {
+	public function admin_enqueue_scripts() {
 		$post_type = get_post_type();
-		if ( isset( $_GET['post_type'] ) && MWF_Config::NAME === $_GET['post_type'] || MWF_Config::NAME == $post_type ) {
-			$url = plugin_dir_url( __FILE__ );
-			wp_register_style( MWF_Config::NAME . '-admin', $url . '../css/admin.css' );
-			wp_enqueue_style( MWF_Config::NAME . '-admin' );
+		$url = plugin_dir_url( __FILE__ );
+		if ( isset( $_GET['post_type'] ) && MWF_Config::NAME === $_GET['post_type'] ||
+			 MWF_Config::NAME == $post_type ) {
+			wp_enqueue_style( MWF_Config::NAME . '-admin', $url . '../../css/admin.css' );
 		}
-	}
-
-	/**
-	 * admin_scripts
-	 * JavaScript適用
-	 */
-	public function admin_scripts() {
-		if ( MWF_Config::NAME == get_post_type() ) {
-			$url = plugin_dir_url( __FILE__ );
-			wp_register_script( MWF_Config::NAME . '-repeatable', $url . '../js/mw-wp-form-repeatable.js' );
-			wp_enqueue_script( MWF_Config::NAME . '-repeatable' );
-			wp_register_script( MWF_Config::NAME . '-admin', $url . '../js/admin.js' );
-			wp_enqueue_script( MWF_Config::NAME . '-admin' );
+		if ( MWF_Config::NAME === $post_type ) {
+			wp_enqueue_script( MWF_Config::NAME . '-repeatable', $url . '../../js/mw-wp-form-repeatable.js' );
+			wp_enqueue_script( MWF_Config::NAME . '-admin', $url . '../../js/admin.js' );
 			wp_enqueue_script( 'jquery-ui-dialog' );
 
 			global $wp_scripts;
 			$ui = $wp_scripts->query( 'jquery-ui-core' );
-			wp_enqueue_style( 'jquery.ui', '//ajax.googleapis.com/ajax/libs/jqueryui/' . $ui->ver . '/themes/smoothness/jquery-ui.min.css', array(), $ui->ver );
+			wp_enqueue_style(
+				'jquery.ui',
+				'//ajax.googleapis.com/ajax/libs/jqueryui/' . $ui->ver . '/themes/smoothness/jquery-ui.min.css',
+				array(),
+				$ui->ver
+			);
 		}
 	}
 
