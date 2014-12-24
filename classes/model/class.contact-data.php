@@ -20,7 +20,7 @@ class MW_WP_Form_Contact_Data_Page {
 	/**
 	 * DB保存データ独自の項目（メモとか）
 	 */
-	private $postdata;
+	private $settings;
 
 	/**
 	 * 対応状況種別の一覧
@@ -42,16 +42,14 @@ class MW_WP_Form_Contact_Data_Page {
 			'reservation'   => esc_html__( 'Reservation', MWF_Config::DOMAIN ),
 			'supported'     => esc_html__( 'Supported', MWF_Config::DOMAIN ),
 		);
-		$_posts = get_posts( array(
-			'post_type'      => MWF_Config::NAME,
-			'posts_per_page' => -1
-		) );
-		foreach ( $_posts as $_post ) {
-			$post_meta = get_post_meta( $_post->ID, MWF_Config::NAME, true );
-			if ( empty( $post_meta['usedb'] ) ) {
+		$Admin = new MW_WP_Form_Admin_page();
+		$forms = $Admin->get_forms();
+		foreach ( $forms as $form ) {
+			$settings = $Admin->get_settings( $form->ID );
+			if ( empty( $settings['usedb'] ) ) {
 				continue;
 			}
-			$post_type = MWF_Config::DBDATA . $_post->ID;
+			$post_type = MWF_Config::DBDATA . $form->ID;
 			$this->form_post_type[] = $post_type;
 		}
 	}
@@ -72,14 +70,14 @@ class MW_WP_Form_Contact_Data_Page {
 	}
 
 	/**
-	 * get_post_data
+	 * get_option
 	 * フォームの設定データを返す
 	 * @param string $key 項目名
 	 * @return string
 	 */
-	protected function get_post_data( $key ) {
-		if ( isset( $this->postdata[$key] ) ) {
-			return $this->postdata[$key];
+	protected function get_option( $key ) {
+		if ( isset( $this->settings[$key] ) ) {
+			return $this->settings[$key];
 		}
 	}
 
@@ -214,9 +212,9 @@ class MW_WP_Form_Contact_Data_Page {
 				foreach ( $rows[0] as $key => $value ) {
 					$_column = '';
 					if ( $value === __( 'Response Status', MWF_Config::DOMAIN ) ) {
-						$_column = $this->get_post_data_value( 'response_status', $post->ID );
+						$_column = $this->get_option_value( 'response_status', $post->ID );
 					} elseif ( $value === __( 'Memo', MWF_Config::DOMAIN ) ) {
-						$_column = $this->get_post_data_value( 'memo', $post->ID );
+						$_column = $this->get_option_value( 'memo', $post->ID );
 					} elseif ( isset( $post->$value ) ) {
 						$post_meta = $post->$value;
 						if ( $this->is_upload_file_key( $post, $value ) ) {
@@ -268,7 +266,7 @@ class MW_WP_Form_Contact_Data_Page {
 		$post_type = get_post_type();
 		if ( in_array( $post_type, $this->form_post_type ) ) {
 			global $post;
-			$this->postdata = get_post_meta( $post->ID, $this->POST_DATA_NAME, true );
+			$this->settings = get_post_meta( $post->ID, $this->POST_DATA_NAME, true );
 			add_meta_box(
 				substr( $this->POST_DATA_NAME, 1 ) . '_custom_fields',
 				__( 'Custom Fields', MWF_Config::DOMAIN ),
@@ -318,7 +316,7 @@ class MW_WP_Form_Contact_Data_Page {
 			echo esc_html( $post->post_date );
 		}
 		elseif ( $column == 'response_status' ) {
-			echo $this->get_post_data_value( 'response_status', $post_id );
+			echo $this->get_option_value( 'response_status', $post_id );
 		}
 		elseif ( !empty( $post_custom_keys ) && is_array( $post_custom_keys ) && in_array( $column, $post_custom_keys ) ) {
 			$post_meta = get_post_meta( $post_id, $column, true );
@@ -395,9 +393,9 @@ class MW_WP_Form_Contact_Data_Page {
 				<tr>
 					<th><?php esc_html_e( 'Response Status', MWF_Config::DOMAIN ); ?></th>
 					<td>
-						<select name="<?php echo $this->POST_DATA_NAME; ?>[response_status]">
+						<select name="<?php echo esc_attr( $this->POST_DATA_NAME ); ?>[response_status]">
 							<?php foreach ( $this->response_statuses as $key => $value ) : ?>
-							<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $key, $this->get_post_data( 'response_status' ) ); ?>>
+							<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $key, $this->get_option( 'response_status' ) ); ?>>
 								<?php echo esc_html( $value ); ?>
 							</option>
 							<?php endforeach; ?>
@@ -406,7 +404,7 @@ class MW_WP_Form_Contact_Data_Page {
 				</tr>
 				<tr>
 					<th><?php esc_html_e( 'Memo', MWF_Config::DOMAIN ); ?></th>
-					<td><textarea name="<?php echo $this->POST_DATA_NAME; ?>[memo]" cols="50" rows="5"><?php echo $this->get_post_data( 'memo' ); ?></textarea></td>
+					<td><textarea name="<?php echo esc_attr( $this->POST_DATA_NAME ); ?>[memo]" cols="50" rows="5"><?php echo $this->get_option( 'memo' ); ?></textarea></td>
 				</tr>
 			</table>
 			<?php
@@ -597,13 +595,13 @@ class MW_WP_Form_Contact_Data_Page {
 	}
 
 	/**
-	 * get_post_data_value
+	 * get_option_value
 	 * DB保存データの編集画面で付け足した項目の値を取得（翻訳済み）
 	 * @param string $key 項目名
 	 * @param numeric $post_id
 	 * @return string
 	 */
-	private function get_post_data_value( $key, $post_id ) {
+	private function get_option_value( $key, $post_id ) {
 		$post_data = get_post_meta( $post_id, $this->POST_DATA_NAME, true );
 
 		if ( $key === 'response_status' ) {

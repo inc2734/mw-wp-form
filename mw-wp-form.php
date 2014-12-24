@@ -96,25 +96,23 @@ class MW_WP_Form {
 		) );
 
 		// MW WP Form のデータベースに保存される問い合わせデータを管理する投稿タイプ
-		$_posts = get_posts( array(
-			'post_type'      => MWF_Config::NAME,
-			'posts_per_page' => -1
-		) );
-		foreach ( $_posts as $_post ) {
-			$post_meta = ( array )get_post_meta( $_post->ID, MWF_Config::NAME, true );
+		$Admin = new MW_WP_Form_Admin_page();
+		$forms = $Admin->get_forms();
+		foreach ( $forms as $form ) {
+			$post_meta = $Admin->get_settings( $form->ID );
 			if ( empty( $post_meta['usedb'] ) ) {
 				continue;
 			}
 
-			$post_type = MWF_Config::DBDATA . $_post->ID;
+			$post_type = MWF_Config::DBDATA . $form->ID;
 			register_post_type( $post_type, array(
-				'label'  => $_post->post_title,
+				'label'  => $form->post_title,
 				'labels' => array(
-					'name'               => $_post->post_title,
-					'singular_name'      => $_post->post_title,
-					'edit_item'          => __( 'Edit ', MWF_Config::DOMAIN ) . ':' . $_post->post_title,
-					'view_item'          => __( 'View', MWF_Config::DOMAIN ) . ':' . $_post->post_title,
-					'search_items'       => __( 'Search', MWF_Config::DOMAIN ) . ':' . $_post->post_title,
+					'name'               => $form->post_title,
+					'singular_name'      => $form->post_title,
+					'edit_item'          => __( 'Edit ', MWF_Config::DOMAIN ) . ':' . $form->post_title,
+					'view_item'          => __( 'View', MWF_Config::DOMAIN ) . ':' . $form->post_title,
+					'search_items'       => __( 'Search', MWF_Config::DOMAIN ) . ':' . $form->post_title,
 					'not_found'          => __( 'No data found', MWF_Config::DOMAIN ),
 					'not_found_in_trash' => __( 'No data found in Trash', MWF_Config::DOMAIN ),
 				),
@@ -139,10 +137,8 @@ class MW_WP_Form {
 	 * アンインストールした時の処理
 	 */
 	public static function uninstall() {
-		$forms = get_posts( array(
-			'post_type'      => MWF_Config::NAME,
-			'posts_per_page' => -1,
-		) );
+		$Admin = new MW_WP_Form_Admin_page();
+		$forms = $Admin->get_forms();
 
 		$data_post_ids = array();
 		foreach ( $forms as $form ) {

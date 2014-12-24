@@ -13,17 +13,52 @@
 class MW_WP_Form_Admin_Page {
 
 	/**
+	 * $defaults
+	 * 各種設定項目のデフォルト値
+	 */
+	protected $defaults = array(
+		'mail_subject'          => '',
+		'mail_from'             => '',
+		'mail_sender'           => '',
+		'mail_content'          => '',
+		'automatic_reply_email' => '',
+		'mail_to'               => '',
+		'mail_cc'               => '',
+		'mail_bcc'              => '',
+		'admin_mail_subject'    => '',
+		'admin_mail_from'       => '',
+		'admin_mail_sender'     => '',
+		'admin_mail_content'    => '',
+		'querystring'           => null,
+		'usedb'                 => null,
+		'akismet_author'        => '',
+		'akismet_author_email'  => '',
+		'akismet_author_url'    => '',
+		'complete_message'      => '',
+		'input_url'             => '',
+		'confirmation_url'      => '',
+		'complete_url'          => '',
+		'validation_error_url'  => '',
+		'validation'            => array(),
+		'style'                 => '',
+		'scroll'                => null,
+	);
+
+	/**
+	 * $styles
 	 * 登録済みのフォームスタイルの一覧
 	 */
 	private $styles = array();
 
 	/**
+	 * $settings
 	 * フォームの設定データ
 	 */
-	private $postdata;
+	private $settings;
 
 	/**
-	 * バリデーションルールの一覧
+	 * $validation_rules
+	 * バリデーションルールの配列
 	 */
 	private $validation_rules = array();
 
@@ -58,20 +93,20 @@ class MW_WP_Form_Admin_Page {
 	}
 
 	/**
-	 * get_post_data
+	 * get_option
 	 * フォームの設定データを返す
 	 * @param string $key 設定データのキー
 	 * @return mixed 設定データ
 	 */
-	protected function get_post_data( $key ) {
+	protected function get_option( $key ) {
 		global $post;
-		if ( isset( $this->postdata[$key] ) ) {
-			return $this->postdata[$key];
+		if ( isset( $this->settings[$key] ) ) {
+			return $this->settings[$key];
 		} else {
 			$date = $post->post_date;
 			$modified = $post->post_modified;
 			if ( $date === $modified ){
-				return apply_filters( 'mwform_default_postdata', '', $key );
+				return apply_filters( 'mwform_default_settings', '', $key );
 			}
 		}
 	}
@@ -96,7 +131,7 @@ class MW_WP_Form_Admin_Page {
 		$post_type = get_post_type();
 		if ( MWF_Config::NAME == $post_type ) {
 			// 設定データ取得
-			$this->postdata = get_post_meta( get_the_ID(), MWF_Config::NAME, true );
+			$this->settings = $this->get_settings( get_the_ID() );
 			// 完了画面内容
 			add_meta_box(
 				MWF_Config::NAME . '_complete_message_metabox',
@@ -258,8 +293,7 @@ class MW_WP_Form_Admin_Page {
 			}
 			$data['validation'] = $validation;
 		}
-		//$old_data = get_post_meta( $post_ID, MWF_Config::NAME, true );
-		update_post_meta( $post_ID, MWF_Config::NAME, $data, $this->postdata );
+		update_post_meta( $post_ID, MWF_Config::NAME, $data, $this->settings );
 	}
 
 	/**
@@ -287,15 +321,15 @@ class MW_WP_Form_Admin_Page {
 		global $post;
 		?>
 		<p>
-			<label><input type="checkbox" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[querystring]" value="1" <?php checked( $this->get_post_data( 'querystring' ), 1 ); ?> /> <?php esc_html_e( 'Activate Query string of post', MWF_Config::DOMAIN ); ?></label><br />
+			<label><input type="checkbox" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[querystring]" value="1" <?php checked( $this->get_option( 'querystring' ), 1 ); ?> /> <?php esc_html_e( 'Activate Query string of post', MWF_Config::DOMAIN ); ?></label><br />
 			<span class="mwf_note"><?php esc_html_e( 'If this field is active, MW WP Form get query string. And get post data from query string "post_id". You can use $post\'s property in editor.', MWF_Config::DOMAIN ); ?><br />
 			<?php esc_html_e( 'Example: {ID}, {post_title}, {post_meta} etc...', MWF_Config::DOMAIN ); ?></span>
 		</p>
 		<p>
-			<label><input type="checkbox" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[usedb]" value="1" <?php checked( $this->get_post_data( 'usedb' ), 1 ); ?> /> <?php esc_html_e( 'Saving inquiry data in database', MWF_Config::DOMAIN ); ?></label>
+			<label><input type="checkbox" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[usedb]" value="1" <?php checked( $this->get_option( 'usedb' ), 1 ); ?> /> <?php esc_html_e( 'Saving inquiry data in database', MWF_Config::DOMAIN ); ?></label>
 		</p>
 		<p>
-			<label><input type="checkbox" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[scroll]" value="1" <?php checked( $this->get_post_data( 'scroll' ), 1 ); ?> /> <?php esc_html_e( 'Enable scrolling of screen transition.', MWF_Config::DOMAIN ); ?></label>
+			<label><input type="checkbox" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[scroll]" value="1" <?php checked( $this->get_option( 'scroll' ), 1 ); ?> /> <?php esc_html_e( 'Enable scrolling of screen transition.', MWF_Config::DOMAIN ); ?></label>
 		</p>
 		<table border="0" cellpadding="0" cellspacing="0" class="akismet">
 			<tr>
@@ -303,15 +337,15 @@ class MW_WP_Form_Admin_Page {
 			</tr>
 			<tr>
 				<td>author</td>
-				<td><input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[akismet_author]" value="<?php echo esc_attr( $this->get_post_data( 'akismet_author' ) ); ?>" /></td>
+				<td><input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[akismet_author]" value="<?php echo esc_attr( $this->get_option( 'akismet_author' ) ); ?>" /></td>
 			</tr>
 			<tr>
 				<td>email</td>
-				<td><input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[akismet_author_email]" value="<?php echo esc_attr( $this->get_post_data( 'akismet_author_email' ) ); ?>" /></td>
+				<td><input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[akismet_author_email]" value="<?php echo esc_attr( $this->get_option( 'akismet_author_email' ) ); ?>" /></td>
 			</tr>
 			<tr>
 				<td>url</td>
-				<td><input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[akismet_author_url]" value="<?php echo esc_attr( $this->get_post_data( 'akismet_author_url' ) ); ?>" /></td>
+				<td><input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[akismet_author_url]" value="<?php echo esc_attr( $this->get_option( 'akismet_author_url' ) ); ?>" /></td>
 			</tr>
 		</table>
 		<span class="mwf_note"><?php esc_html_e( 'Input the key to use Akismet.', MWF_Config::DOMAIN ); ?></span>
@@ -324,7 +358,7 @@ class MW_WP_Form_Admin_Page {
 	 */
 	public function add_complete_message() {
 		global $post;
-		$content = $this->get_post_data( 'complete_message' );
+		$content = $this->get_option( 'complete_message' );
 		wp_editor( $content, MWF_Config::NAME . '_complete_message', array(
 			'textarea_name' => MWF_Config::NAME . '[complete_message]',
 			'textarea_rows' => 7,
@@ -347,25 +381,25 @@ class MW_WP_Form_Admin_Page {
 		</p>
 		<p>
 			<b><?php esc_html_e( 'Subject', MWF_Config::DOMAIN ); ?></b><br />
-			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_subject]" value="<?php echo esc_attr( $this->get_post_data( 'mail_subject' ) ); ?>" />
+			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_subject]" value="<?php echo esc_attr( $this->get_option( 'mail_subject' ) ); ?>" />
 		</p>
 		<p>
 			<b><?php esc_html_e( 'Sender', MWF_Config::DOMAIN ); ?></b><br />
-			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_sender]" value="<?php echo esc_attr( $this->get_post_data( 'mail_sender' ) ); ?>" /><br />
+			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_sender]" value="<?php echo esc_attr( $this->get_option( 'mail_sender' ) ); ?>" /><br />
 			<span class="mwf_note"><?php esc_html_e( 'If empty:', MWF_Config::DOMAIN ); ?> <?php bloginfo( 'name' ); ?></span>
 		</p>
 		<p>
 			<b><?php esc_html_e( 'From ( E-mail address )', MWF_Config::DOMAIN ); ?></b><br />
-			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_from]" value="<?php echo esc_attr( $this->get_post_data( 'mail_from' ) ); ?>" /><br />
+			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_from]" value="<?php echo esc_attr( $this->get_option( 'mail_from' ) ); ?>" /><br />
 			<span class="mwf_note"><?php esc_html_e( 'If empty:', MWF_Config::DOMAIN ); ?> <?php bloginfo( 'admin_email' ); ?></span>
 		</p>
 		<p>
 			<b><?php esc_html_e( 'Content', MWF_Config::DOMAIN ); ?></b><br />
-			<textarea name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_content]" cols="30" rows="10"><?php echo esc_attr( $this->get_post_data( 'mail_content' ) ); ?></textarea>
+			<textarea name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_content]" cols="30" rows="10"><?php echo esc_attr( $this->get_option( 'mail_content' ) ); ?></textarea>
 		</p>
 		<p>
 			<b><?php esc_html_e( 'Automatic reply email', MWF_Config::DOMAIN ); ?></b><br />
-			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[automatic_reply_email]" value="<?php echo esc_attr( $this->get_post_data( 'automatic_reply_email') ); ?>" /><br />
+			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[automatic_reply_email]" value="<?php echo esc_attr( $this->get_option( 'automatic_reply_email') ); ?>" /><br />
 			<span class="mwf_note"><?php esc_html_e( 'Input the key to use as transmission to automatic reply email. {} is unnecessary.', MWF_Config::DOMAIN ); ?></span>
 		</p>
 		<?php
@@ -390,34 +424,34 @@ class MW_WP_Form_Admin_Page {
 		</p>
 		<p>
 			<b><?php esc_html_e( 'To ( E-mail address )', MWF_Config::DOMAIN ); ?></b><br />
-			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_to]" value="<?php echo esc_attr( $this->get_post_data( 'mail_to' ) ); ?>" /><br />
+			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_to]" value="<?php echo esc_attr( $this->get_option( 'mail_to' ) ); ?>" /><br />
 			<span class="mwf_note"><?php esc_html_e( 'If empty:', MWF_Config::DOMAIN ); ?> <?php bloginfo( 'admin_email' ); ?></span>
 		</p>
 		<p>
 			<b><?php esc_html_e( 'CC ( E-mail address )', MWF_Config::DOMAIN ); ?></b><br />
-			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_cc]" value="<?php echo esc_attr( $this->get_post_data( 'mail_cc' ) ); ?>" />
+			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_cc]" value="<?php echo esc_attr( $this->get_option( 'mail_cc' ) ); ?>" />
 		</p>
 		<p>
 			<b><?php esc_html_e( 'BCC ( E-mail address )', MWF_Config::DOMAIN ); ?></b><br />
-			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_bcc]" value="<?php echo esc_attr( $this->get_post_data( 'mail_bcc' ) ); ?>" />
+			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_bcc]" value="<?php echo esc_attr( $this->get_option( 'mail_bcc' ) ); ?>" />
 		</p>
 		<p>
 			<b><?php esc_html_e( 'Subject', MWF_Config::DOMAIN ); ?></b><br />
-			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[admin_mail_subject]" value="<?php echo esc_attr( $this->get_post_data( 'admin_mail_subject' ) ); ?>" />
+			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[admin_mail_subject]" value="<?php echo esc_attr( $this->get_option( 'admin_mail_subject' ) ); ?>" />
 		</p>
 		<p>
 			<b><?php esc_html_e( 'Sender', MWF_Config::DOMAIN ); ?></b><br />
-			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[admin_mail_sender]" value="<?php echo esc_attr( $this->get_post_data( 'admin_mail_sender' ) ); ?>" /><br />
+			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[admin_mail_sender]" value="<?php echo esc_attr( $this->get_option( 'admin_mail_sender' ) ); ?>" /><br />
 			<span class="mwf_note"><?php esc_html_e( 'If empty:', MWF_Config::DOMAIN ); ?> <?php bloginfo( 'name' ); ?></span>
 		</p>
 		<p>
 			<b><?php esc_html_e( 'From ( E-mail address )', MWF_Config::DOMAIN ); ?></b><br />
-			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[admin_mail_from]" value="<?php echo esc_attr( $this->get_post_data( 'admin_mail_from' ) ); ?>" /><br />
+			<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[admin_mail_from]" value="<?php echo esc_attr( $this->get_option( 'admin_mail_from' ) ); ?>" /><br />
 			<span class="mwf_note"><?php esc_html_e( 'If empty:', MWF_Config::DOMAIN ); ?> <?php bloginfo( 'admin_email' ); ?></span>
 		</p>
 		<p>
 			<b><?php esc_html_e( 'Content', MWF_Config::DOMAIN ); ?></b><br />
-			<textarea name="<?php echo esc_attr( MWF_Config::NAME ); ?>[admin_mail_content]" cols="30" rows="10"><?php echo esc_attr( $this->get_post_data( 'admin_mail_content' ) ); ?></textarea>
+			<textarea name="<?php echo esc_attr( MWF_Config::NAME ); ?>[admin_mail_content]" cols="30" rows="10"><?php echo esc_attr( $this->get_option( 'admin_mail_content' ) ); ?></textarea>
 		</p>
 		<?php
 	}
@@ -434,25 +468,25 @@ class MW_WP_Form_Admin_Page {
 			<tr>
 				<th><?php esc_html_e( 'Input Page URL', MWF_Config::DOMAIN ); ?></th>
 				<td>
-					<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[input_url]" value="<?php echo esc_attr( $this->get_post_data( 'input_url' ) ); ?>" />
+					<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[input_url]" value="<?php echo esc_attr( $this->get_option( 'input_url' ) ); ?>" />
 				</td>
 			</tr>
 			<tr>
 				<th><?php esc_html_e( 'Confirmation Page URL', MWF_Config::DOMAIN ); ?></th>
 				<td>
-					<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[confirmation_url]" value="<?php echo esc_attr( $this->get_post_data( 'confirmation_url' ) ); ?>" />
+					<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[confirmation_url]" value="<?php echo esc_attr( $this->get_option( 'confirmation_url' ) ); ?>" />
 				</td>
 			</tr>
 			<tr>
 				<th><?php esc_html_e( 'Complete Page URL', MWF_Config::DOMAIN ); ?></th>
 				<td>
-					<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[complete_url]" value="<?php echo esc_attr( $this->get_post_data( 'complete_url' ) ); ?>" />
+					<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[complete_url]" value="<?php echo esc_attr( $this->get_option( 'complete_url' ) ); ?>" />
 				</td>
 			</tr>
 			<tr>
 				<th><?php esc_html_e( 'Validation Error Page URL', MWF_Config::DOMAIN ); ?></th>
 				<td>
-					<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[validation_error_url]" value="<?php echo esc_attr( $this->get_post_data( 'validation_error_url' ) ); ?>" />
+					<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[validation_error_url]" value="<?php echo esc_attr( $this->get_option( 'validation_error_url' ) ); ?>" />
 				</td>
 			</tr>
 		</table>
@@ -479,8 +513,8 @@ class MW_WP_Form_Admin_Page {
 	 */
 	public function display_validation_rule() {
 		global $post;
-		if ( ! $postdata = $this->get_post_data( 'validation' ) )
-			$postdata = array();
+		if ( ! $settings = $this->get_option( 'validation' ) )
+			$settings = array();
 		$validation_keys = array(
 			'target' => '',
 		);
@@ -489,11 +523,11 @@ class MW_WP_Form_Admin_Page {
 		}
 
 		// 空の隠れバリデーションフィールド（コピー元）を挿入
-		array_unshift( $postdata, $validation_keys );
+		array_unshift( $settings, $validation_keys );
 		?>
 		<b class="add-btn"><?php esc_html_e( 'Add Validation rule', MWF_Config::DOMAIN ); ?></b>
 		<div class="repeatable-boxes">
-			<?php foreach ( $postdata as $key => $value ) : $value = array_merge( $validation_keys, $value ); ?>
+			<?php foreach ( $settings as $key => $value ) : $value = array_merge( $validation_keys, $value ); ?>
 			<div class="repeatable-box"<?php if ( $key === 0 ) : ?> style="display:none"<?php endif; ?>>
 				<div class="remove-btn"><b>×</b></div>
 				<div class="open-btn"><span><?php echo esc_attr( $value['target'] ); ?></span><b>▼</b></div>
@@ -524,7 +558,7 @@ class MW_WP_Form_Admin_Page {
 			<select name="<?php echo MWF_Config::NAME; ?>[style]">
 				<option value=""><?php esc_html_e( 'Select Style', MWF_Config::DOMAIN ); ?></option>
 				<?php foreach ( $this->styles as $style => $css ) : ?>
-				<option value="<?php echo esc_attr( $style ); ?>" <?php selected( $this->get_post_data( 'style' ), $style ); ?>>
+				<option value="<?php echo esc_attr( $style ); ?>" <?php selected( $this->get_option( 'style' ), $style ); ?>>
 					<?php echo esc_html( $style ); ?>
 				</option>
 				<?php endforeach; ?>
@@ -610,5 +644,34 @@ class MW_WP_Form_Admin_Page {
 				get_the_ID()
 			);
 		}
+	}
+
+	/**
+	 * get_settings
+	 * @param string $post_id
+	 * @return array
+	 */
+	public function get_settings( $post_id ) {
+		$settings = array();
+		if ( get_post_type( $post_id ) === MWF_Config::NAME ) {
+			$settings = ( array )get_post_meta( $post_id, MWF_Config::NAME, true );
+			$settings = shortcode_atts(
+				$this->defaults,
+				$settings
+			);
+		}
+		return $settings;
+	}
+
+	/**
+	 * get_forms
+	 * @return array フォーム（WP_Post）の配列
+	 */
+	public function get_forms() {
+		$forms = get_posts( array(
+			'post_type'      => MWF_Config::NAME,
+			'posts_per_page' => -1,
+		) );
+		return $forms;
 	}
 }

@@ -158,7 +158,7 @@ class MW_WP_Form_File {
 	/**
 	 * saveAttachmentsInMedia
 	 * 添付ファイルをメディアに保存、投稿データに添付ファイルのキー（配列）を保存
-	 * $this->options_by_formkey が確定した後でのみ利用可能
+	 * $this->settings が確定した後でのみ利用可能
 	 * @param int post_id
 	 * @param array ( ファイルのname属性値 => ファイルパス, … )
 	 * @param int 生成フォーム（usedb）の post_id

@@ -50,42 +50,10 @@ class MW_WP_Form_Main_Service extends MW_WP_Form_Service {
 	protected $insert_contact_data_id;
 
 	/**
-	 * $defaults
-	 * 各種設定項目のデフォルト値
-	 */
-	protected $defaults = array(
-		'mail_subject'          => '',
-		'mail_from'             => '',
-		'mail_sender'           => '',
-		'mail_content'          => '',
-		'automatic_reply_email' => '',
-		'mail_to'               => '',
-		'mail_cc'               => '',
-		'mail_bcc'              => '',
-		'admin_mail_subject'    => '',
-		'admin_mail_from'       => '',
-		'admin_mail_sender'     => '',
-		'admin_mail_content'    => '',
-		'querystring'           => null,
-		'usedb'                 => null,
-		'akismet_author'        => '',
-		'akismet_author_email'  => '',
-		'akismet_author_url'    => '',
-		'complete_message'      => '',
-		'input_url'             => '',
-		'confirmation_url'      => '',
-		'complete_url'          => '',
-		'validation_error_url'  => '',
-		'validation'            => array(),
-		'style'                 => '',
-		'scroll'                => null,
-	);
-
-	/**
-	 * $options_by_formkey
+	 * $settings
 	 * form_key をもとに取得した設定値
 	 */
-	protected $options_by_formkey = array();
+	protected $settings = array();
 
 	/**
 	 * Data
@@ -266,16 +234,13 @@ class MW_WP_Form_Main_Service extends MW_WP_Form_Service {
 	 * @param array $attributes
 	 */
 	public function set_form_meta_by_mwform_formkey( array $attributes ) {
-		$options_by_formkey = $this->get_form_meta_by_mwform_formkey( $attributes );
-		if ( $options_by_formkey ) {
+		$settings = $this->get_form_meta_by_mwform_formkey( $attributes );
+		if ( $settings ) {
 			$post_id = $this->get_form_id_by_mwform_formkey( $attributes );
-			$this->options_by_formkey = shortcode_atts(
-				$this->defaults,
-				$options_by_formkey
-			);
-			$this->options_by_formkey['post_id'] = $post_id;
-			$options_by_formkey['key']           = MWF_Config::NAME . '-' . $post_id;
-			$this->set_form_meta( $options_by_formkey );
+			$this->settings = $settings;
+			$this->settings['post_id'] = $post_id;
+			$settings['key']           = MWF_Config::NAME . '-' . $post_id;
+			$this->set_form_meta( $settings );
 		}
 	}
 
@@ -319,15 +284,16 @@ class MW_WP_Form_Main_Service extends MW_WP_Form_Service {
 	/**
 	 * get_form_meta_by_mwform_formkey
 	 * @param array $attributes
-	 * @return array $options_by_formkey
+	 * @return array $settings
 	 */
 	protected function get_form_meta_by_mwform_formkey( $attributes ) {
 		$post_id = $this->get_form_id_by_mwform_formkey( $attributes );
-		$options_by_formkey = array();
+		$settings = array();
 		if ( !empty( $post_id ) ) {
-			$options_by_formkey = $this->get_options_by_formkey( $post_id );
+			$Admin = new MW_WP_Form_Admin_page();
+			$settings = $Admin->get_settings( $post_id );
 		}
-		return $options_by_formkey;
+		return $settings;
 	}
 
 	/**
@@ -342,17 +308,6 @@ class MW_WP_Form_Main_Service extends MW_WP_Form_Service {
 		$post = get_post( $attributes['key'] );
 		if ( isset( $post->ID ) ) {
 			return $post->ID;
-		}
-	}
-
-	/**
-	 * get_options_by_formkey
-	 * @param string $post_id
-	 * @return array|null
-	 */
-	public function get_options_by_formkey( $post_id ) {
-		if ( get_post_type( $post_id ) === MWF_Config::NAME ) {
-			return ( array )get_post_meta( $post_id, MWF_Config::NAME, true );
 		}
 	}
 
@@ -525,7 +480,7 @@ class MW_WP_Form_Main_Service extends MW_WP_Form_Service {
 	 * @return bool
 	 */
 	public function is_generated_by_formkey() {
-		if ( $this->options_by_formkey ) {
+		if ( $this->settings ) {
 			return true;
 		}
 		return false;
@@ -546,8 +501,8 @@ class MW_WP_Form_Main_Service extends MW_WP_Form_Service {
 	 * @return mixed
 	 */
 	public function get_option( $key ) {
-		if ( isset( $this->options_by_formkey[$key] ) ) {
-			return $this->options_by_formkey[$key];
+		if ( isset( $this->settings[$key] ) ) {
+			return $this->settings[$key];
 		}
 	}
 	
@@ -1304,14 +1259,14 @@ class MW_WP_Form_Main_Service extends MW_WP_Form_Service {
 			$Mail->to = $admin_mail_to;
 
 			// CCを指定
-			$admin_mail_cc = $this->defaults['mail_cc'];
+			$admin_mail_cc = '';
 			if ( $this->get_option( 'mail_cc' ) ) {
 				$admin_mail_cc = $this->get_option( 'mail_cc' );
 			}
 			$Mail->cc = $admin_mail_cc;
 
 			// BCCを指定
-			$admin_mail_bcc = $this->defaults['mail_bcc'];
+			$admin_mail_bcc = '';
 			if ( $this->get_option( 'mail_bcc' ) ) {
 				$admin_mail_bcc = $this->get_option( 'mail_bcc' );
 			}
@@ -1344,7 +1299,7 @@ class MW_WP_Form_Main_Service extends MW_WP_Form_Service {
 		$Mail->to  = '';
 		$Mail->cc  = '';
 		$Mail->bcc = '';
-		if ( $this->options_by_formkey ) {
+		if ( $this->settings ) {
 			$automatic_reply_email = $this->Data->getValue( $this->get_option( 'automatic_reply_email' ) );
 			if ( $automatic_reply_email && !$this->validation_rules['mail']->rule( $automatic_reply_email ) ) {
 				// 送信先を指定
