@@ -1,13 +1,13 @@
 <?php
 /**
- * Name: MWF_Config
+ * Name       : MWF Config
  * Description: 設定ファイル
- * Version: 1.2.2
- * Author: Takashi Kitajima
- * Author URI: http://2inc.org
- * Created : May 29, 2013
- * Modified: October 15, 2014
- * License: GPLv2
+ * Version    : 1.3.0
+ * Author     : Takashi Kitajima
+ * Author URI : http://2inc.org
+ * Created    : May 29, 2013
+ * Modified   : January 2, 2015
+ * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MWF_Config {
@@ -59,4 +59,21 @@ class MWF_Config {
 	 * お問い合せ番号用のキー名
 	 */
 	const TRACKINGNUMBER = 'tracking_number';
+
+	/**
+	 * CONFIRM_BUTTON
+	 * 確認ボタンの名前
+	 */
+	const CONFIRM_BUTTON = 'submitConfirm';
+
+	/**
+	 * BACK_BUTTON
+	 * 戻るボタンの名前
+	 */
+	const BACK_BUTTON = 'submitBack';
+
+	/**
+	 * CONTACT_DATA_NAME
+	 */
+	const CONTACT_DATA_NAME = '_mw-wp-form_data';
 }

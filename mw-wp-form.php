@@ -7,7 +7,7 @@
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : September 25, 2012
- * Modified: December 6, 2014
+ * Modified: December 30, 2014
  * Text Domain: mw-wp-form
  * Domain Path: /languages/
  * License: GPLv2
@@ -15,8 +15,39 @@
  */
 include_once( plugin_dir_path( __FILE__ ) . 'classes/functions.php' );
 include_once( plugin_dir_path( __FILE__ ) . 'classes/config.php' );
-$MW_WP_Form = new MW_WP_Form();
+
 class MW_WP_Form {
+
+	/**
+	 * form_fields
+	 * フォームフィールドの配列
+	 */
+	protected $form_fields = array();
+
+	/**
+	 * $validation_rules
+	 * バリデーションルールの配列
+	 */
+	protected $validation_rules = array(
+		'akismet_check' => '',
+		'noempty'       => '',
+		'required'      => '',
+		'numeric'       => '',
+		'alpha'         => '',
+		'alphanumeric'  => '',
+		'katakana'      => '',
+		'hiragana'      => '',
+		'zip'           => '',
+		'tel'           => '',
+		'mail'          => '',
+		'date'          => '',
+		'url'           => '',
+		'eq'            => '',
+		'between'       => '',
+		'minlength'     => '',
+		'filetype'      => '',
+		'filesize'      => '',
+	);
 
 	/**
 	 * __construct
@@ -36,20 +67,37 @@ class MW_WP_Form {
 	 */
 	public function load_initialize_files() {
 		$plugin_dir_path = plugin_dir_path( __FILE__ );
-		include_once( $plugin_dir_path . 'classes/service/class.service.php' );
-		include_once( $plugin_dir_path . 'classes/model/class.form-fields.php' );
-		include_once( $plugin_dir_path . 'classes/model/class.session.php' );
-		include_once( $plugin_dir_path . 'classes/model/class.validation-rule.php' );
-		include_once( $plugin_dir_path . 'classes/model/class.admin.php' );
-		include_once( $plugin_dir_path . 'classes/model/class.chart.php' );
-		include_once( $plugin_dir_path . 'classes/model/class.contact-data.php' );
-		include_once( $plugin_dir_path . 'classes/model/class.data.php' );
-		include_once( $plugin_dir_path . 'classes/model/class.akismet.php' );
-		include_once( $plugin_dir_path . 'classes/model/class.error.php' );
-		include_once( $plugin_dir_path . 'classes/model/class.form.php' );
-		include_once( $plugin_dir_path . 'classes/model/class.mail.php' );
-		include_once( $plugin_dir_path . 'classes/model/class.validation.php' );
-		include_once( $plugin_dir_path . 'classes/model/class.file.php' );
+		include_once( $plugin_dir_path . 'classes/controllers/class.admin.php' );
+		include_once( $plugin_dir_path . 'classes/controllers/class.admin-list.php' );
+		include_once( $plugin_dir_path . 'classes/controllers/class.contact-data.php' );
+		include_once( $plugin_dir_path . 'classes/controllers/class.contact-data-list.php' );
+		include_once( $plugin_dir_path . 'classes/controllers/class.chart.php' );
+		include_once( $plugin_dir_path . 'classes/controllers/class.main.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.abstract-validation-rule.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.admin.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.akismet.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.contact-data.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.contact-data-setting.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.data.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.error.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.file.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.abstract-form-field.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.form.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.mail.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.session.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.setting.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.token-check.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.validation.php' );
+		include_once( $plugin_dir_path . 'classes/services/class.exec-shortcode.php' );
+		include_once( $plugin_dir_path . 'classes/services/class.mail.php' );
+		include_once( $plugin_dir_path . 'classes/services/class.redirected.php' );
+		include_once( $plugin_dir_path . 'classes/views/class.view.php' );
+		include_once( $plugin_dir_path . 'classes/views/class.admin.php' );
+		include_once( $plugin_dir_path . 'classes/views/class.admin-list.php' );
+		include_once( $plugin_dir_path . 'classes/views/class.chart.php' );
+		include_once( $plugin_dir_path . 'classes/views/class.main.php' );
+		include_once( $plugin_dir_path . 'classes/views/class.contact-data.php' );
+		include_once( $plugin_dir_path . 'classes/views/class.contact-data-list.php' );
 	}
 
 	/**
@@ -60,15 +108,32 @@ class MW_WP_Form {
 
 		add_action( 'init', array( $this, 'register_post_type' ) );
 
+		// フォームフィールドの読み込み、インスタンス化
+		$this->instantiate_form_fields();
+
+		// バリデーションルールの読み込み、インスタンス化
+		$validation_rules = $this->get_validation_rules();
+
 		$plugin_dir_path = plugin_dir_path( __FILE__ );
 		if ( is_admin() ) {
-			include_once( $plugin_dir_path . 'classes/controller/class.admin.php' );
-			$Controller = new MW_WP_Form_Admin_Controller();
+			$Controller = new MW_WP_Form_Admin_Controller( $validation_rules );
+			$Controller->initialize();
+
+			$Controller = new MW_WP_Form_Admin_List_Controller();
+			$Controller->initialize();
+
+			$Controller = new MW_WP_Form_Contact_Data_Controller();
+			$Controller->initialize();
+
+			$Controller = new MW_WP_Form_Contact_Data_List_Controller();
+			$Controller->initialize();
+
+			$Controller = new MW_WP_Form_Chart_Controller();
+			$Controller->initialize();
 		} else {
-			include_once( $plugin_dir_path . 'classes/controller/class.main.php' );
-			$Controller = new MW_WP_Form_Main_Controller();
+			$Controller = new MW_WP_Form_Main_Controller( $validation_rules );
+			$Controller->initialize();
 		}
-		$Controller->initialize();
 	}
 
 	/**
@@ -96,11 +161,11 @@ class MW_WP_Form {
 		) );
 
 		// MW WP Form のデータベースに保存される問い合わせデータを管理する投稿タイプ
-		$Admin = new MW_WP_Form_Admin_page();
+		$Admin = new MW_WP_Form_Admin();
 		$forms = $Admin->get_forms();
 		foreach ( $forms as $form ) {
-			$post_meta = $Admin->get_settings( $form->ID );
-			if ( empty( $post_meta['usedb'] ) ) {
+			$Setting = new MW_WP_Form_Setting( $form->ID );
+			if ( !$Setting->get( 'usedb' ) ) {
 				continue;
 			}
 
@@ -137,7 +202,7 @@ class MW_WP_Form {
 	 * アンインストールした時の処理
 	 */
 	public static function uninstall() {
-		$Admin = new MW_WP_Form_Admin_page();
+		$Admin = new MW_WP_Form_Admin();
 		$forms = $Admin->get_forms();
 
 		$data_post_ids = array();
@@ -158,10 +223,80 @@ class MW_WP_Form {
 			}
 		}
 
-		include_once( plugin_dir_path( __FILE__ ) . 'classes/model/mw_wp_form_file.php' );
+		include_once( plugin_dir_path( __FILE__ ) . 'classes/models/mw_wp_form_file.php' );
 		$File = new MW_WP_Form_File();
-		$File->removeTempDir();
+		$File->remove_temp_dir();
 
 		delete_option( MWF_Config::NAME );
 	}
+
+	/**
+	 * instantiate_form_fields
+	 * フォームフィールドのインスタンス化。配列にはフックを通して格納する。
+	 */
+	protected function instantiate_form_fields() {
+		$plugin_dir_path = plugin_dir_path( __FILE__ );
+		foreach ( glob( $plugin_dir_path . './classes/form-fields/*.php' ) as $filename ) {
+			include_once $filename;
+			$class_name = $this->get_class_name_from_form_field_filename( $filename );
+			if ( class_exists( $class_name ) ) {
+				new $class_name();
+			}
+		}
+		$this->form_fields = apply_filters( 'mwform_form_fields', $this->form_fields );
+	}
+
+	/**
+	 * get_class_name_from_form_field_filename
+	 * @param string $filename ファイル名
+	 * @return string クラス名
+	 */
+	protected function get_class_name_from_form_field_filename( $filename ) {
+		$class_name = preg_replace( '/^class\./', '', basename( $filename, '.php' ) );
+		$class_name = str_replace( '-', '_', $class_name );
+		$class_name = 'MW_WP_Form_Field_' . $class_name;
+		return $class_name;
+	}
+
+	/**
+	 * get_validation_rules
+	 * バリデーションルールのインスタンス化。配列にはフックを通して格納する。
+	 * @param string $key フォーム識別子
+	 * @return $validation_rules バリデーションルールオブジェクトの配列
+	 */
+	protected function get_validation_rules() {
+		$validation_rules = array();
+		$plugin_dir_path = plugin_dir_path( __FILE__ );
+		foreach ( glob( $plugin_dir_path . './classes/validation-rules/*.php' ) as $filename ) {
+			include_once $filename;
+			$class_name = $this->get_class_name_from_validation_rule_filename( $filename );
+			if ( class_exists( $class_name ) ) {
+				$instance = new $class_name();
+				$validation_rules[$instance->getName()] = $instance;
+			}
+		}
+		$validation_rules = array_merge(
+			$this->validation_rules,
+			$validation_rules
+		);
+		$this->validation_rules = apply_filters(
+			'mwform_validation_rules',
+			$validation_rules,
+			null // 後方互換性のために残してるだけ
+		);
+		return $validation_rules;
+	}
+
+	/**
+	 * get_class_name_from_validation_rule_filename
+	 * @param string $filename ファイル名
+	 * @return string クラス名
+	 */
+	protected function get_class_name_from_validation_rule_filename( $filename ) {
+		$class_name = preg_replace( '/^class\./', '', basename( $filename, '.php' ) );
+		$class_name = str_replace( '-', '_', $class_name );
+		$class_name = 'MW_WP_Form_Validation_Rule_' . $class_name;
+		return $class_name;
+	}
 }
+$MW_WP_Form = new MW_WP_Form();

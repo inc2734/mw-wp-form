@@ -71,6 +71,10 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 == Changelog ==
 
+= 2.2.0 =
+* Bug fix : Fixed a mwform_tracking_number_title filter hook bug.
+* Changed : mwform_tracking_number_title_mw-wp-form-xxx to mwform_tracking_number_title_mwf-x
+
 = 2.1.4 =
 * Bug fix : Fixed a bug that data lost when there are multiple same name radio buttons and checkboxes.
 
