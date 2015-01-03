@@ -59,8 +59,9 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 			'value'      => $this->atts['value'],
 			'vertically' => $this->atts['vertically'],
 		) );
-		if ( $this->atts['show_error'] !== 'false' )
+		if ( $this->atts['show_error'] !== 'false' ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
+		}
 		return $_ret;
 	}
 

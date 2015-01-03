@@ -55,8 +55,9 @@ class MW_WP_Form_Field_Tel extends MW_WP_Form_Abstract_Form_Field {
 			$conv_half_alphanumeric = true;
 		}
 		$_ret = $this->Form->tel( $this->atts['name'], array( 'conv-half-alphanumeric' => $conv_half_alphanumeric ) );
-		if ( $this->atts['show_error'] !== 'false' )
+		if ( $this->atts['show_error'] !== 'false' ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
+		}
 		return $_ret;
 	}
 

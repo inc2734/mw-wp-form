@@ -49,10 +49,10 @@ class MW_WP_Form_Mail_Service {
 	protected $Mail_auto;
 
 	/**
-	 * $attachments
-	 * @var array
+	 * $Data
+	 * @var MW_WP_Form_Data
 	 */
-	protected $attachments = array();
+	protected $Data;
 
 	/**
 	 * $form_key
@@ -62,32 +62,40 @@ class MW_WP_Form_Mail_Service {
 	protected $form_key;
 
 	/**
+	 * $validation_rules
+	 * @var array
+	 */
+	protected $validation_rules = array();
+
+	/**
+	 * $attachments
+	 * @var array
+	 */
+	protected $attachments = array();
+
+	/**
 	 * $Setting
 	 * @var MW_WP_Form_Setting
 	 */
 	protected $Setting;
 
 	/**
-	 * $Data
-	 * @var MW_WP_Form_Data
-	 */
-	protected $Data;
-
-	/**
 	 * __construct
 	 * @param MW_WP_Form_Mail $Mail
 	 * @param MW_WP_Form_Data $Data
 	 * @param strign $form_key
+	 * @param array $validation_rules
 	 * @param array $attachments
 	 * @param MW_WP_Form_Setting|null $Setting
 	 */
-	public function __construct( MW_WP_Form_Mail $Mail, MW_WP_Form_Data $Data, $form_key, array $attachments = array(), MW_WP_Form_Setting $Setting = null ) {
-		$this->form_key       = $form_key;
-		$this->Data           = $Data;
-		$this->Mail_raw       = $Mail;
-		$this->Mail_admin_raw = clone $Mail;
-		$this->attachments    = $attachments;
-		$this->Setting        = $Setting;
+	public function __construct( MW_WP_Form_Mail $Mail, MW_WP_Form_Data $Data, $form_key, array $validation_rules, array $attachments = array(), MW_WP_Form_Setting $Setting = null ) {
+		$this->form_key         = $form_key;
+		$this->Data             = $Data;
+		$this->validation_rules = $validation_rules;
+		$this->Mail_raw         = $Mail;
+		$this->Mail_admin_raw   = clone $Mail;
+		$this->attachments      = $attachments;
+		$this->Setting          = $Setting;
 
 		if ( $this->Setting->get( 'post_id' ) ) {
 			$this->set_admin_mail_raw_params();
@@ -418,7 +426,7 @@ class MW_WP_Form_Mail_Service {
 	 * @param MW_WP_Form_Mail $Mail
 	 * @param array $files 保存するファイルパスの配列
 	 */
-	protected function save_contact_data( MW_WP_Form_Mail $Mail, array $files = array() ) {
+	public function save_contact_data( MW_WP_Form_Mail $Mail, array $files = array() ) {
 		$form_id = $this->Setting->get( 'post_id' );
 		$insert_contact_data_id = wp_insert_post( array(
 			'post_title'  => $Mail->subject,

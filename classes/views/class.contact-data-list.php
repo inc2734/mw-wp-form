@@ -62,7 +62,7 @@ class MW_WP_Form_Contact_Data_List_View extends MW_WP_Form_View {
 		elseif ( is_array( $post_custom_keys ) && in_array( $column, $post_custom_keys ) ) {
 			$post_meta = get_post_meta( $post_id, $column, true );
 			if ( $Contact_Data_Setting->is_upload_file_key( $post, $column ) ) {
-				echo $this->get_multimedia_data();
+				echo $this->get_multimedia_data( $post_meta );
 			} elseif ( $post_meta ) {
 				echo esc_html( $post_meta );
 			} else {

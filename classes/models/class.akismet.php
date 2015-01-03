@@ -83,8 +83,9 @@ class MW_WP_Form_Akismet {
 			if ( $content )      $akismet['comment_content']      = $content;
 
 			foreach ( $_SERVER as $key => $value ) {
-				if ( !in_array( $key, array( 'HTTP_COOKIE', 'HTTP_COOKIE2', 'PHP_AUTH_PW' ) ) )
+				if ( !in_array( $key, array( 'HTTP_COOKIE', 'HTTP_COOKIE2', 'PHP_AUTH_PW' ) ) ) {
 					$akismet[$key] = $value;
+				}
 			}
 
 			$query_string = http_build_query( $akismet, null, '&' );

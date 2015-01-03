@@ -130,7 +130,7 @@ class MW_WP_Form_Main_Controller {
 
 		// スクロール用スクリプトのロード
 		if ( $this->Setting->get( 'scroll' ) ) {
-			if ( in_array( $view_flg, array( 'confirm', 'complete' ) ) ) {
+			if ( in_array( $view_flg, array( 'confirm', 'complete' ) ) || !$is_valid ) {
 				add_action( 'wp_enqueue_scripts', array( $this, 'scroll_script' ) );
 			}
 		}
@@ -143,7 +143,7 @@ class MW_WP_Form_Main_Controller {
 		$View->set( 'Setting', $this->Setting );
 		$View->set( 'form_key', $form_key );
 		$View->set( 'view_flg', $view_flg );
-		$View->add_shortocde_that_display_content();
+		$View->add_shortcode_that_display_content();
 
 		add_action( 'wp_footer'         , array( $this->Data, 'clear_values' ) );
 		add_action( 'wp_enqueue_scripts', array( $this      , 'wp_enqueue_scripts' ) );
@@ -192,7 +192,7 @@ class MW_WP_Form_Main_Controller {
 		$url = plugin_dir_url( __FILE__ );
 		wp_register_script(
 			MWF_Config::NAME . '-scroll',
-			$url . 'js/scroll.js',
+			$url . '../../js/scroll.js',
 			array( 'jquery' ),
 			false,
 			true
@@ -240,9 +240,9 @@ class MW_WP_Form_Main_Controller {
 	 */
 	protected function send() {
 		$Mail         = new MW_WP_Form_Mail();
-		$key          = $this->ExecShortcode->get( 'key' );
+		$form_key     = $this->ExecShortcode->get( 'key' );
 		$attachments  = $this->get_attachments();
-		$Mail_Service = new MW_WP_Form_Mail_Service( $Mail, $this->Data, $key, $attachments, $this->Setting );
+		$Mail_Service = new MW_WP_Form_Mail_Service( $Mail, $this->Data, $form_key, $this->validation_rules, $attachments, $this->Setting );
 
 		// 管理画面で作成した場合だけ自動で送信
 		if ( $this->ExecShortcode->is_generated_by_formkey() ) {

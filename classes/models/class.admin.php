@@ -70,6 +70,18 @@ class MW_WP_Form_Admin {
 			}
 			$data['validation'] = $validation;
 		}
+
+		// チェックボックスの項目は、未設定のときはデータが来ないのでここで処理する
+		if ( empty( $data['querystring'] ) ) {
+			$data['querystring'] = false;
+		}
+		if ( empty( $data['usedb'] ) ) {
+			$data['usedb'] = false;
+		}
+		if ( empty( $data['scroll'] ) ) {
+			$data['scroll'] = false;
+		}
+
 		$Setting = new MW_WP_Form_Setting( $post_id );
 		$Setting->sets( $data );
 		$Setting->save();

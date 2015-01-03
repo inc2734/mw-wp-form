@@ -55,14 +55,16 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function inputPage() {
 		$children = $this->getChildren( $this->atts['children'] );
+		$value    = $this->getChildren( $this->atts['value'] );
 		$separator = ( $this->atts['separator'] ) ? $this->atts['separator'] : $this->defaults['separator'];
 		$_ret = $this->Form->checkbox( $this->atts['name'], $children, array(
 			'id'         => $this->atts['id'],
-			'value'      => $this->atts['value'],
+			'value'      => $value,
 			'vertically' => $this->atts['vertically'],
 		), $separator );
-		if ( $this->atts['show_error'] !== 'false' )
+		if ( $this->atts['show_error'] !== 'false' ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
+		}
 		return $_ret;
 	}
 

@@ -291,7 +291,7 @@ class MW_WP_Form_Setting {
 	public function update_tracking_number() {
 		$tracking_number     = $this->get_tracking_number();
 		$new_tracking_number = $tracking_number + 1;
-		update_post_meta( $form_id, MWF_Config::TRACKINGNUMBER, $new_tracking_number );
+		update_post_meta( $this->post_id, MWF_Config::TRACKINGNUMBER, $new_tracking_number );
 	}
 
 	/**

@@ -12,12 +12,20 @@
 class MW_WP_Form_Main_View extends MW_WP_Form_View {
 	
 	/**
-	 * add_shortocde_that_display_content
+	 * add_shortcode_that_display_content
 	 */
-	public function add_shortocde_that_display_content() {
+	public function add_shortcode_that_display_content() {
 		add_shortcode( 'mwform_formkey'         , array( $this, 'mwform_formkey' ) );
 		add_shortcode( 'mwform'                 , array( $this, 'mwform' ) );
 		add_shortcode( 'mwform_complete_message', array( $this, 'mwform_complete_message' ) );
+
+		do_action(
+			'mwform_add_shortcode',
+			$this->get( 'Form' ),
+			$this->get( 'view_flg' ),
+			$this->get( 'Error' ),
+			$this->get( 'form_key' )
+		);
 	}
 
 	/**
@@ -103,33 +111,19 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 	public function mwform( $attributes, $content = '' ) {
 		$view_flg = $this->get( 'view_flg' );
 		$Form     = $this->get( 'Form' );
-		$Error    = $this->get( 'Error' );
 		$form_key = $this->get( 'form_key' );
 		$Setting  = $this->get( 'Setting' );
-		if ( $view_flg === 'input' || $view_flg == 'confirm' ) {
 
-			do_action(
-				'mwform_add_shortcode',
-				$Form,
-				$view_flg ,
-				$Error,
-				$form_key
-			);
+		if ( in_array( $view_flg, array( 'input', 'confirm' ) ) ) {
 
-			$content = $this->get_the_content( $content );
-
+			$content            = $this->get_the_content( $content );
 			$upload_file_keys   = $Form->get_raw( MWF_Config::UPLOAD_FILE_KEYS );
-			$upload_file_hidden = '';
-			if ( is_array( $upload_file_keys ) ) {
-				foreach ( $upload_file_keys as $value ) {
-					$upload_file_hidden .= $Form->hidden( MWF_Config::UPLOAD_FILE_KEYS . '[]', $value );
-				}
-			}
+			$upload_file_hidden = $this->get_upload_file_hidden( $upload_file_keys );
 
 			// 下位互換性のための class を付与
-			$_preview_class = '';
+			$preview_class = '';
 			if ( $view_flg === 'confirm' ) {
-				$_preview_class = 'mw_wp_form_preview';
+				$preview_class = 'mw_wp_form_preview';
 			}
 
 			// スタイル機能用の class を付与
@@ -142,7 +136,7 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 			return sprintf(
 				'<div id="mw_wp_form_%s" class="mw_wp_form mw_wp_form_%s %s">%s<!-- end .mw_wp_form --></div>',
 				esc_attr( $form_key ),
-				esc_attr( $view_flg . ' ' . $_preview_class ),
+				esc_attr( $view_flg . ' ' . $preview_class ),
 				$class_for_style,
 				$Form->start() . do_shortcode( $content ) . $upload_file_hidden . $Form->end()
 			);
@@ -236,8 +230,9 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 			 MWF_Functions::is_numeric( $_GET['post_id'] ) ) {
 
 			$_post = get_post( $_GET['post_id'] );
-			if ( empty( $_post->ID ) )
+			if ( empty( $_post->ID ) ) {
 				return;
+			}
 			if ( isset( $_post->$matches[1] ) ) {
 				return $_post->$matches[1];
 			} else {
@@ -258,8 +253,9 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 	 */
 	protected function get_post_property_from_this( $matches ) {
 		global $post;
-		if ( !is_singular() )
+		if ( !is_singular() ) {
 			return;
+		}
 		$post_id = get_the_ID();
 		if ( isset( $post->ID ) && MWF_Functions::is_numeric( $post->ID ) ) {
 			if ( isset( $post->$matches[1] ) ) {
@@ -267,8 +263,9 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 			} else {
 				// post_meta の処理
 				$pm = get_post_meta( $post->ID, $matches[1], true );
-				if ( !empty( $pm ) )
+				if ( !empty( $pm ) ) {
 					return $pm;
+				}
 			}
 		}
 	}
@@ -283,5 +280,21 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 		$content = $this->replace_user_property( $content );
 		$content = $this->replace_post_property( $content );
 		return $content;
+	}
+
+	/**
+	 * get_upload_file_hidden
+	 * @param array|'' $upload_file_keys
+	 */
+	protected function get_upload_file_hidden( $upload_file_keys ) {
+		$Form = $this->get( 'Form' );
+		$upload_file_hidden = '';
+		if ( !is_array( $upload_file_keys ) ) {
+			return $upload_file_hidden;
+		}
+		foreach ( $upload_file_keys as $value ) {
+			$upload_file_hidden .= $Form->hidden( MWF_Config::UPLOAD_FILE_KEYS . '[]', $value );
+		}
+		return $upload_file_hidden;
 	}
 }

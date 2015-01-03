@@ -110,8 +110,9 @@ class MW_WP_Form_Data {
 	 * @return array データ
 	 */
 	public function gets() {
-		if ( $this->data === null )
+		if ( $this->data === null ) {
 			return array();
+		}
 		return $this->data;
 	}
 
@@ -178,8 +179,9 @@ class MW_WP_Form_Data {
 	public function get( $key ) {
 		if ( isset( $this->data[$key] ) ) {
 			if ( is_array( $this->data[$key] ) ) {
-				if ( !array_key_exists( 'data', $this->data[$key] ) )
+				if ( !array_key_exists( 'data', $this->data[$key] ) ) {
 					return;
+				}
 				if ( is_array( $this->data[$key]['data'] ) ) {
 					return $this->getSeparatedValue( $key );
 				} else {

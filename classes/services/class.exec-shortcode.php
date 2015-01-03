@@ -111,23 +111,23 @@ class MW_WP_Form_Exec_Shortcode {
 	 */
 	protected function get_exec_shortcode() {
 		if ( is_singular() && !empty( $this->post->ID ) ) {
-			$exec_shortcode = $this->get_in_contnt( $this->post->post_content );
+			$exec_shortcode = $this->get_in_content( $this->post->post_content );
 		}
 		if ( empty( $exec_shortcode ) &&
 			 !( defined( 'MWFORM_NOT_USE_TEMPLATE' ) && MWFORM_NOT_USE_TEMPLATE === true ) ) {
 			$template_data  = @file_get_contents( $this->template );
-			$exec_shortcode = $this->get_in_contnt( $template_data );
+			$exec_shortcode = $this->get_in_content( $template_data );
 		}
 		return $exec_shortcode;
 	}
 
 	/**
-	 * get_in_contnt
+	 * get_in_content
 	 * ExecShortcode が含まれていればそのショートコードを返す
 	 * @param string $content
 	 * @return string [hoge xxx="xxx"]
 	 */
-	protected function get_in_contnt( $content ) {
+	protected function get_in_content( $content ) {
 		preg_match_all( '/' . get_shortcode_regex() . '/s', $content, $matches, PREG_SET_ORDER );
 		if ( $matches ) {
 			foreach ( $matches as $shortcode ) {
@@ -145,14 +145,19 @@ class MW_WP_Form_Exec_Shortcode {
 
 	/**
 	 * set_settings_by_mwform
-	 * @param array $attributes
+	 * @param array|'' $attributes
 	 */
-	public function set_settings_by_mwform( array $attributes ) {
+	public function set_settings_by_mwform( $attributes ) {
+		$attributes = shortcode_atts( array(
+			'key' => 'mwform',
+		), $attributes );
 		$settings = array();
 		foreach ( $this->defaults as $key => $value ) {
 			$settings[$key] = '';
 		}
-		$settings['key'] = 'mwform';
+		if ( isset( $attributes['key'] ) ) {
+			$settings['key'] = $attributes['key'];
+		}
 		if ( isset( $attributes['input'] ) ) {
 			$settings['input_url'] = $attributes['input'];
 		}
@@ -170,7 +175,7 @@ class MW_WP_Form_Exec_Shortcode {
 
 	/**
 	 * set_settings_by_mwform_formkey
-	 * @param array $attributes
+	 * @param array $attributes|''
 	 */
 	public function set_settings_by_mwform_formkey( $attributes ) {
 		$post_id       = $this->get_form_id_by_mwform_formkey( $attributes );
@@ -188,10 +193,10 @@ class MW_WP_Form_Exec_Shortcode {
 
 	/**
 	 * get_form_id_by_mwform_formkey
-	 * @param array $attributes
+	 * @param array|'' $attributes
 	 * @return string|null Post ID
 	 */
-	protected function get_form_id_by_mwform_formkey( array $attributes ) {
+	protected function get_form_id_by_mwform_formkey( $attributes ) {
 		$attributes = shortcode_atts( array(
 			'key' => '',
 		), $attributes );

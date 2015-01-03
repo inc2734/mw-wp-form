@@ -467,17 +467,14 @@ class MW_WP_Form_Form {
 			'vertically' => '',
 		);
 		$options = array_merge( $defaults, $options );
-		$value = $options['value'];
-		if ( !is_null( $value ) ) {
-			$value = $this->get_raw( $name );
-			if ( is_array( $value ) && isset( $value['data'] ) ) {
-				$value = $value['data'];
-			} else {
-				$value = $options['value'];
-			}
-			if ( !is_array( $value ) ) {
-				$value = explode( $separator, $value );
-			}
+		$value = $this->get_raw( $name );
+		if ( is_array( $value ) && isset( $value['data'] ) ) {
+			$value = $value['data'];
+		} else {
+			$value = $options['value'];
+		}
+		if ( !is_array( $value ) ) {
+			$value = explode( $separator, $value );
 		}
 
 		$i = 0;

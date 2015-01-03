@@ -203,7 +203,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 * @param MW_WP_Form_Error $Error
 	 * @param string $form_key
 	 */
-	public function add_shortcode( MW_WP_Form_Form $Form, $viewFlg, MW_WP_Form_Error $Error, $key ) {
+	public function add_shortcode( MW_WP_Form_Form $Form, $viewFlg, MW_WP_Form_Error $Error, $form_key ) {
 		if ( !empty( $this->shortcode_name ) ) {
 			$this->Form     = $Form;
 			$this->Error    = $Error;

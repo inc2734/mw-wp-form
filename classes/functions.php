@@ -202,8 +202,9 @@ class MWF_Functions {
 		} else {
 			$wp_check_filetype = wp_check_filetype( $filepath );
 		}
-		if ( empty( $wp_check_filetype['type'] ) )
+		if ( empty( $wp_check_filetype['type'] ) ) {
 			return false;
+		}
 
 		// 1つの拡張子に対し複数のMIMEタイプを持つファイルの対応
 		switch ( $wp_check_filetype['ext'] ) {
@@ -244,11 +245,13 @@ class MWF_Functions {
 			$finfo = new finfo( FILEINFO_MIME_TYPE );
 			$type = $finfo->file( $filepath );
 			if ( is_array( $wp_check_filetype['type'] ) ) {
-				if ( !( $finfo !== false && in_array( $type, $wp_check_filetype['type'] ) ) )
+				if ( !( $finfo !== false && in_array( $type, $wp_check_filetype['type'] ) ) ) {
 					return false;
+				}
 			} else {
-				if ( !( $finfo !== false && $type === $wp_check_filetype['type'] ) )
+				if ( !( $finfo !== false && $type === $wp_check_filetype['type'] ) ) {
 					return false;
+				}
 			}
 		}
 		return true;

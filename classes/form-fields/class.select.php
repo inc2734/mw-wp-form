@@ -57,8 +57,9 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 			'id'    => $this->atts['id'],
 			'value' => $this->atts['value'],
 		) );
-		if ( $this->atts['show_error'] !== 'false' )
+		if ( $this->atts['show_error'] !== 'false' ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
+		}
 		return $_ret;
 	}
 
