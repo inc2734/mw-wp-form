@@ -242,7 +242,7 @@ class MW_WP_Form_Main_Controller {
 		$Mail         = new MW_WP_Form_Mail();
 		$form_key     = $this->ExecShortcode->get( 'key' );
 		$attachments  = $this->get_attachments();
-		$Mail_Service = new MW_WP_Form_Mail_Service( $Mail, $this->Data, $form_key, $this->validation_rules, $attachments, $this->Setting );
+		$Mail_Service = new MW_WP_Form_Mail_Service( $Mail, $this->Data, $form_key, $this->validation_rules, $this->Setting, $attachments );
 
 		// 管理画面で作成した場合だけ自動で送信
 		if ( $this->ExecShortcode->is_generated_by_formkey() ) {
@@ -268,18 +268,20 @@ class MW_WP_Form_Main_Controller {
 			}
 
 			// 自動返信メールの送信
-			if ( $this->Setting->get( 'automatic_reply_email' ) ) {
-				$automatic_reply_email = $this->Data->get_raw( $this->Setting->get( 'automatic_reply_email' ) );
-				if ( $automatic_reply_email &&
-					 !$this->validation_rules['mail']->rule( $automatic_reply_email ) ) {
-
+			$automatic_reply_email = $this->Setting->get( 'automatic_reply_email' );
+			if ( $automatic_reply_email ) {
+				$automatic_reply_email = $this->Data->get_raw( $automatic_reply_email );
+				$is_invalid_mail_address = $this->validation_rules['mail']->rule(
+					$automatic_reply_email
+				);
+				if ( $automatic_reply_email && !$is_invalid_mail_address ) {
 					$Mail_auto = $Mail_Service->get_Mail_auto();
 					$Mail_auto->send();
 				}
 			}
 
 			// 問い合わせ番号を加算
-			if ( preg_match( '{' . MWF_Config::TRACKINGNUMBER . '}', $Mail_admin_raw->body, $reg ) ) {
+			if ( preg_match( '{' . MWF_Config::TRACKINGNUMBER . '}', $Mail_admin_raw->body ) ) {
 				$this->Setting->update_tracking_number();
 			}
 		}

@@ -10,7 +10,9 @@
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-abstract class MW_WP_Form_Abstract_Validation_Rule {
+abstract class MW_WP_Form_Abstract_Validation_Rule extends MW_Validation_Rule {
+}
+abstract class MW_Validation_Rule {
 
 	/**
 	 * $name
@@ -29,6 +31,12 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	 * __construct
 	 */
 	public function __construct() {
+		if ( in_array( 'MW_Validation_Rule', array( get_parent_class( $this ), get_class( $this ) ) ) ) {
+			MWF_Functions::deprecated_message(
+				'MW_Validation_Rule',
+				'MW_WP_Form_Abstract_Validation_Rule'
+			);
+		}
 		if ( !$this->getName() ) {
 			exit( 'MW_Validation_Rule::$name must override.' );
 		}
@@ -65,8 +73,4 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	 * @param array $value バリデーションルールセットの内容
 	 */
 	abstract public function admin( $key, $value );
-}
-
-// 後方互換
-abstract class MW_Validation_Rule extends MW_WP_Form_Abstract_Validation_Rule {
 }

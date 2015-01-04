@@ -106,7 +106,7 @@ class MWF_Functions {
 	 */
 	public static function deprecated_message( $function_name, $new_function = '' ) {
 		global $mwform_deprecated_message;
-		$mwform_deprecated_message .= '<div class="' . esc_attr( MWF_Config::NAME ) . '-deprecated-message">';
+		$mwform_deprecated_message .= '<div class="error ' . esc_attr( MWF_Config::NAME ) . '-deprecated-message">';
 		$mwform_deprecated_message .= sprintf( 'MW WP Form dosen\'t support "%s" already. ', $function_name );
 		if ( $new_function ) {
 			$mwform_deprecated_message .= sprintf( 'You should use "%s". ', $new_function );
@@ -118,9 +118,19 @@ class MWF_Functions {
 			break;
 		}
 		$mwform_deprecated_message .= '</div>';
-		add_filter( 'the_content', 'MWF_Functions::_deprecated_message' );
+		if ( is_admin() ) {
+			add_action( 'admin_notices', 'MWF_Functions::display_deprecated_message' );
+		} else {
+			add_filter( 'the_content', 'MWF_Functions::return_deprecated_message' );
+		}
 	}
-	public static function _deprecated_message( $content ) {
+	public static function display_deprecated_message() {
+		global $mwform_deprecated_message;
+		$content = $mwform_deprecated_message;
+		unset( $mwform_deprecated_message );
+		echo $content;
+	}
+	public static function return_deprecated_message( $content ) {
 		global $mwform_deprecated_message;
 		$content = $mwform_deprecated_message . $content;
 		unset( $mwform_deprecated_message );

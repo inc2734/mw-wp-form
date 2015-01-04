@@ -284,7 +284,7 @@ class MW_WP_Form_Admin_View extends MW_WP_Form_View {
 			<select name="<?php echo MWF_Config::NAME; ?>[style]">
 				<option value=""><?php esc_html_e( 'Select Style', MWF_Config::DOMAIN ); ?></option>
 				<?php foreach ( $styles as $style_key => $css ) : ?>
-				<option value="<?php echo esc_attr( $style ); ?>" <?php selected( $style, $style_key ); ?>>
+				<option value="<?php echo esc_attr( $style_key ); ?>" <?php selected( $style, $style_key ); ?>>
 					<?php echo esc_html( $style_key ); ?>
 				</option>
 				<?php endforeach; ?>

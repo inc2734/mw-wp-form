@@ -10,7 +10,9 @@
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-abstract class MW_WP_Form_Abstract_Form_Field {
+abstract class MW_WP_Form_Abstract_Form_Field extends MW_Form_Field {
+}
+abstract class MW_Form_Field {
 
 	/**
 	 * $shortcode_name
@@ -81,6 +83,12 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 * __construct
 	 */
 	public function __construct() {
+		if ( in_array( 'MW_Form_Field', array( get_parent_class( $this ), get_class( $this ) ) ) ) {
+			MWF_Functions::deprecated_message(
+				'MW_Form_Field',
+				'MW_WP_Form_Abstract_Form_Field'
+			);
+		}
 		$this->_set_names();
 		$this->defaults = $this->setDefaults();
 		$this->_add_mwform_tag_generator();
@@ -113,7 +121,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 * @param string $arg2 終了タグ（ショートコード）
 	 */
 	protected function set_qtags( $id, $display, $arg1, $arg2 = '' ) {
-		MWF_Functions::deprecated_message( 'MW_Form_Field::set_qtags', 'MW_Form_Field::set_names' );
+		MWF_Functions::deprecated_message( 'MW_WP_Form_Abstract_Form_Field::set_qtags', 'MW_WP_Form_Abstract_Form_Field::set_names' );
 		$this->qtags = array(
 			'id'      => $id,
 			'display' => $display,
@@ -293,7 +301,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 
 	/**
 	 * mwform_form_fields
-	 * @param array $form_fields MW_Form_Field を継承したオブジェクトの一覧
+	 * @param array $form_fields MW_WP_Form_Abstract_Form_Field を継承したオブジェクトの一覧
 	 * @return array $form_fields
 	 */
 	public function mwform_form_fields( array $form_fields ) {
@@ -329,8 +337,4 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 			}
 		}
 	}
-}
-
-// 後方互換
-abstract class MW_Form_Field extends MW_WP_Form_Abstract_Form_Field {
 }

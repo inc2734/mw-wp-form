@@ -85,15 +85,16 @@ class MW_WP_Form_Mail_Service {
 	 * @param MW_WP_Form_Data $Data
 	 * @param strign $form_key
 	 * @param array $validation_rules
+	 * @param MW_WP_Form_Setting $Setting
 	 * @param array $attachments
-	 * @param MW_WP_Form_Setting|null $Setting
 	 */
-	public function __construct( MW_WP_Form_Mail $Mail, MW_WP_Form_Data $Data, $form_key, array $validation_rules, array $attachments = array(), MW_WP_Form_Setting $Setting = null ) {
+	public function __construct( MW_WP_Form_Mail $Mail, MW_WP_Form_Data $Data, $form_key, array $validation_rules, MW_WP_Form_Setting $Setting, array $attachments = array() ) {
 		$this->form_key         = $form_key;
 		$this->Data             = $Data;
 		$this->validation_rules = $validation_rules;
 		$this->Mail_raw         = $Mail;
 		$this->Mail_admin_raw   = clone $Mail;
+		$this->Mail_auto_raw    = clone $Mail;
 		$this->attachments      = $attachments;
 		$this->Setting          = $Setting;
 
@@ -101,16 +102,12 @@ class MW_WP_Form_Mail_Service {
 			$this->set_admin_mail_raw_params();
 			$this->set_attachments( $this->Mail_admin_raw );
 			$this->Mail_admin_raw = $this->apply_filters_mwform_admin_mail_raw( $this->Mail_admin_raw );
-
 			$this->Mail_admin = $this->parse_mail_object( $this->Mail_admin_raw );
 			$this->Mail_admin = $this->set_admin_mail_reaquire_params( $this->Mail_admin );
 			$this->Mail_admin = $this->apply_filters_mwform_mail( $this->Mail_admin );
 			$this->Mail_admin = $this->apply_filters_mwform_admin_mail( $this->Mail_admin );
 
-			$this->Mail_auto_raw = clone $this->Mail_admin;
 			$this->set_reply_mail_raw_params();
-			// 自動返信メールからは添付ファイルを削除
-			$this->Mail_auto_raw->attachments = array();
 			$this->Mail_auto_raw = $this->apply_filters_mwform_auto_mail_raw( $this->Mail_auto_raw );
 			$this->Mail_auto = $this->parse_mail_object( $this->Mail_auto_raw );
 			$this->Mail_auto = $this->set_reply_mail_reaquire_params( $this->Mail_auto );
@@ -231,35 +228,40 @@ class MW_WP_Form_Mail_Service {
 		$this->Mail_auto_raw->to  = '';
 		$this->Mail_auto_raw->cc  = '';
 		$this->Mail_auto_raw->bcc = '';
+		// 自動返信メールからは添付ファイルを削除
+		$this->Mail_auto_raw->attachments = array();
 		$form_id = $this->Setting->get( 'post_id' );
 		if ( $form_id ) {
-			$automatic_reply_email = $this->Data->get_raw( $this->Setting->get( 'automatic_reply_email' ) );
-			if ( $automatic_reply_email && !$this->validation_rules['mail']->rule( $automatic_reply_email ) ) {
-				// 送信先を指定
+			$automatic_reply_email = $this->Setting->get( 'automatic_reply_email' );
+			$automatic_reply_email = $this->Data->get_raw( $automatic_reply_email );
+			$is_invalid_mail_address = $this->validation_rules['mail']->rule(
+				$automatic_reply_email
+			);
+
+			// 送信先を指定
+			if ( $automatic_reply_email && !$is_invalid_mail_address ) {
 				$this->Mail_auto_raw->to = $automatic_reply_email;
-
-				// 送信元を指定
-				$reply_mail_from = get_bloginfo( 'admin_email' );
-				if ( $this->Setting->get( 'mail_from' ) ) {
-					$reply_mail_from = $this->Setting->get( 'mail_from' );
-				}
-				$this->Mail_auto_raw->from = $reply_mail_from;
-
-				// 送信者を指定
-				$reply_mail_sender = get_bloginfo( 'name' );
-				if ( $this->Setting->get( 'mail_sender' ) ) {
-					$reply_mail_sender = $this->Setting->get( 'mail_sender' );
-				}
-				$this->Mail_auto_raw->sender = $reply_mail_sender;
-
-				// タイトルを指定
-				$reply_mail_subject = $this->Setting->get( 'mail_subject' );
-				$this->Mail_auto_raw->subject = $reply_mail_subject;
-
-				// 本文を指定
-				$reply_mail_content = $this->Setting->get( 'mail_content' );
-				$this->Mail_auto_raw->body = $reply_mail_content;
 			}
+
+			// 送信元を指定
+			$reply_mail_from = get_bloginfo( 'admin_email' );
+			if ( $this->Setting->get( 'mail_from' ) ) {
+				$reply_mail_from = $this->Setting->get( 'mail_from' );
+			}
+			$this->Mail_auto_raw->from = $reply_mail_from;
+
+			// 送信者を指定
+			$reply_mail_sender = get_bloginfo( 'name' );
+			if ( $this->Setting->get( 'mail_sender' ) ) {
+				$reply_mail_sender = $this->Setting->get( 'mail_sender' );
+			}
+			$this->Mail_auto_raw->sender = $reply_mail_sender;
+
+			// タイトルを指定
+			$this->Mail_auto_raw->subject = $this->Setting->get( 'mail_subject' );
+
+			// 本文を指定
+			$this->Mail_auto_raw->body = $this->Setting->get( 'mail_content' );
 		}
 	}
 

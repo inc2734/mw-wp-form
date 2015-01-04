@@ -112,32 +112,21 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 		$view_flg = $this->get( 'view_flg' );
 		$Form     = $this->get( 'Form' );
 		$form_key = $this->get( 'form_key' );
-		$Setting  = $this->get( 'Setting' );
 
 		if ( in_array( $view_flg, array( 'input', 'confirm' ) ) ) {
-
 			$content            = $this->get_the_content( $content );
 			$upload_file_keys   = $Form->get_raw( MWF_Config::UPLOAD_FILE_KEYS );
 			$upload_file_hidden = $this->get_upload_file_hidden( $upload_file_keys );
-
-			// 下位互換性のための class を付与
-			$preview_class = '';
-			if ( $view_flg === 'confirm' ) {
-				$preview_class = 'mw_wp_form_preview';
-			}
-
-			// スタイル機能用の class を付与
-			$style = $Setting->get( 'style' );
-			$class_for_style = '';
-			if ( $style ) {
-				$class_for_style = 'mw_wp_form_' . $style;
-			}
+			$old_confirm_class  = $this->get_old_confirm_class( $view_flg );
+			$class_by_style     = $this->get_class_by_style();
 
 			return sprintf(
-				'<div id="mw_wp_form_%s" class="mw_wp_form mw_wp_form_%s %s">%s<!-- end .mw_wp_form --></div>',
+				'<div id="mw_wp_form_%s" class="mw_wp_form mw_wp_form_%s %s">
+					%s
+				<!-- end .mw_wp_form --></div>',
 				esc_attr( $form_key ),
-				esc_attr( $view_flg . ' ' . $preview_class ),
-				$class_for_style,
+				esc_attr( $view_flg . ' ' . $old_confirm_class ),
+				$class_by_style,
 				$Form->start() . do_shortcode( $content ) . $upload_file_hidden . $Form->end()
 			);
 		}
@@ -154,7 +143,9 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 		$form_key = $this->get( 'form_key' );
 		if ( $view_flg === 'complete' ) {
 			return sprintf(
-				'<div id="mw_wp_form_%s" class="mw_wp_form mw_wp_form_%s">%s<!-- end .mw_wp_form --></div>',
+				'<div id="mw_wp_form_%s" class="mw_wp_form mw_wp_form_%s">
+					%s
+				<!-- end .mw_wp_form --></div>',
 				esc_attr( $form_key ),
 				esc_attr( $view_flg ),
 				$content
@@ -229,15 +220,15 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 			 isset( $_GET['post_id'] ) &&
 			 MWF_Functions::is_numeric( $_GET['post_id'] ) ) {
 
-			$_post = get_post( $_GET['post_id'] );
-			if ( empty( $_post->ID ) ) {
+			$post = get_post( $_GET['post_id'] );
+			if ( empty( $post->ID ) ) {
 				return;
 			}
-			if ( isset( $_post->$matches[1] ) ) {
-				return $_post->$matches[1];
+			if ( isset( $post->$matches[1] ) ) {
+				return $post->$matches[1];
 			} else {
 				// post_meta の処理
-				$pm = get_post_meta( $_post->ID, $matches[1], true );
+				$pm = get_post_meta( $post->ID, $matches[1], true );
 				if ( !empty( $pm ) ) {
 					return $pm;
 				}
@@ -256,7 +247,6 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 		if ( !is_singular() ) {
 			return;
 		}
-		$post_id = get_the_ID();
 		if ( isset( $post->ID ) && MWF_Functions::is_numeric( $post->ID ) ) {
 			if ( isset( $post->$matches[1] ) ) {
 				return $post->$matches[1];
@@ -296,5 +286,34 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 			$upload_file_hidden .= $Form->hidden( MWF_Config::UPLOAD_FILE_KEYS . '[]', $value );
 		}
 		return $upload_file_hidden;
+	}
+
+	/**
+	 * get_old_confirm_class
+	 * 下位互換性のための class を付与
+	 * @param string $view_flg
+	 * @return string mw_wp_form_preview
+	 */
+	protected function get_old_confirm_class( $view_flg ) {
+		$old_confirm_class = '';
+		if ( $view_flg === 'confirm' ) {
+			$old_confirm_class = 'mw_wp_form_preview';
+		}
+		return $old_confirm_class;
+	}
+
+	/**
+	 * get_class_by_style
+	 * スタイル機能用の class を付与
+	 * @return string
+	 */
+	protected function get_class_by_style() {
+		$Setting = $this->get( 'Setting' );
+		$style   = $Setting->get( 'style' );
+		$class_by_style = '';
+		if ( $style ) {
+			$class_by_style = 'mw_wp_form_' . $style;
+		}
+		return $class_by_style;
 	}
 }
