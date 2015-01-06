@@ -31,11 +31,11 @@ class MW_WP_Form_Validation_Rule_FileSize extends MW_WP_Form_Abstract_Validation
 			$file = $data[$key];
 			if ( !empty( $file['size'] ) ) {
 				$defaults = array(
-					'bytes' => '0',
+					'bytes'   => '0',
 					'message' => __( 'This file size is too big.', MWF_Config::DOMAIN )
 				);
 				$options = array_merge( $defaults, $options );
-				if ( !( preg_match( '/^[\d]+$/', $options['bytes'] ) && $options['bytes'] > $file['size'] ) ) {
+				if ( !( preg_match( '/^[\d]+$/', $options['bytes'] ) && $options['bytes'] >= $file['size'] ) ) {
 					return $options['message'];
 				}
 			}

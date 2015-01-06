@@ -30,8 +30,8 @@ class MW_WP_Form_Validation_Rule_Between extends MW_WP_Form_Abstract_Validation_
 		$value = MWF_Functions::convert_eol( $value );
 		if ( !is_null( $value ) && !MWF_Functions::is_empty( $value ) ) {
 			$defaults = array(
-				'min' => 0,
-				'max' => 0,
+				'min'     => 0,
+				'max'     => 0,
 				'message' => __( 'The number of characters is invalid.', MWF_Config::DOMAIN )
 			);
 			$options = array_merge( $defaults, $options );

@@ -2,6 +2,7 @@
 /**
  * Name       : MW WP Form Exec Shortcode
  * Version    : 1.0.0
+ * Description: ExecShortcode（mwform、mwform_formkey）の存在有無のチェックとそれらの抽象化レイヤー
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
@@ -32,27 +33,15 @@ class MW_WP_Form_Exec_Shortcode {
 	protected $template;
 
 	/**
-	 * $defaults
-	 * @var array
-	 */
-	protected $defaults = array(
-		'input_url'            => null,
-		'confirmation_url'     => null,
-		'complete_url'         => null,
-		'validation_error_url' => null,
-		'key'                  => '',
-	);
-
-	/**
 	 * $settings
 	 * @var array
 	 */
 	protected $settings = array(
-		'input'            => null,
-		'confirm'          => null,
-		'complete'         => null,
-		'validation_error' => null,
-		'key'              => '',
+		'input_url'            => '',
+		'confirmation_url'     => '',
+		'complete_url'         => '',
+		'validation_error_url' => '',
+		'key'                  => null,
 	);
 
 	/**
@@ -84,12 +73,7 @@ class MW_WP_Form_Exec_Shortcode {
 	 * @return bool
 	 */
 	public function has_shortcode() {
-		if ( is_null( $this->settings['key'] ) ||
-			 is_null( $this->settings['input'] ) ||
-			 is_null( $this->settings['confirm'] ) ||
-			 is_null( $this->settings['complete'] ) ||
-			 is_null( $this->settings['validation_error'] ) ) {
-
+		if ( is_null( $this->settings['key'] ) ) {
 			return false;
 		}
 		return true;
@@ -151,26 +135,7 @@ class MW_WP_Form_Exec_Shortcode {
 		$attributes = shortcode_atts( array(
 			'key' => 'mwform',
 		), $attributes );
-		$settings = array();
-		foreach ( $this->defaults as $key => $value ) {
-			$settings[$key] = '';
-		}
-		if ( isset( $attributes['key'] ) ) {
-			$settings['key'] = $attributes['key'];
-		}
-		if ( isset( $attributes['input'] ) ) {
-			$settings['input_url'] = $attributes['input'];
-		}
-		if ( isset( $attributes['confirm'] ) ) {
-			$settings['confirmation_url'] = $attributes['confirm'];
-		}
-		if ( isset( $attributes['complete'] ) ) {
-			$settings['complete_url'] = $attributes['complete'];
-		}
-		if ( isset( $attributes['validation_error'] ) ) {
-			$settings['validation_error_url'] = $attributes['validation_error'];
-		}
-		$this->set_settings( $settings );
+		$this->set_settings( $attributes );
 	}
 
 	/**
@@ -183,7 +148,7 @@ class MW_WP_Form_Exec_Shortcode {
 		$settings      = array();
 		if ( !empty( $post_id ) ) {
 			$Setting = new MW_WP_Form_Setting( $post_id );
-			foreach ( $this->defaults as $key => $value ) {
+			foreach ( $this->settings as $key => $value ) {
 				$settings[$key] = $Setting->get( $key );
 			}
 			$settings['key'] = MWF_Config::NAME . '-' . $post_id;
@@ -214,17 +179,17 @@ class MW_WP_Form_Exec_Shortcode {
 		if ( isset( $attributes['key'] ) ) {
 			$this->settings['key'] = $attributes['key'];
 		}
-		if ( isset( $attributes['input_url'] ) ) {
-			$this->settings['input'] = $attributes['input_url'];
+		if ( isset( $attributes['input_url'] ) || isset( $attributes['input'] ) ) {
+			$this->settings['input_url'] = $attributes['input_url'];
 		}
-		if ( isset( $attributes['confirmation_url'] ) ) {
-			$this->settings['confirm'] = $attributes['confirmation_url'];
+		if ( isset( $attributes['confirmation_url'] ) || isset( $attributes['confirm'] ) ) {
+			$this->settings['confirmation_url'] = $attributes['confirmation_url'];
 		}
-		if ( isset( $attributes['complete_url'] ) ) {
-			$this->settings['complete'] = $attributes['complete_url'];
+		if ( isset( $attributes['complete_url'] ) || isset( $attributes['complete'] ) ) {
+			$this->settings['complete_url'] = $attributes['complete_url'];
 		}
-		if ( isset( $attributes['validation_error_url'] ) ) {
-			$this->settings['validation_error'] = $attributes['validation_error_url'];
+		if ( isset( $attributes['validation_error_url'] ) || isset( $attributes['validation_error'] ) ) {
+			$this->settings['validation_error_url'] = $attributes['validation_error_url'];
 		}
 	}
 
@@ -234,7 +199,7 @@ class MW_WP_Form_Exec_Shortcode {
 	 * @return bool
 	 */
 	public function is_generated_by_formkey() {
-		if ( $this->settings ) {
+		if ( $this->post_id ) {
 			return true;
 		}
 		return false;

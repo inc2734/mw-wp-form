@@ -33,9 +33,16 @@ class MW_WP_Form_Validation_Rule_Date extends MW_WP_Form_Abstract_Validation_Rul
 			);
 			$options = array_merge( $defaults, $options );
 			$timestamp = strtotime( $value );
-			$year = date( 'Y', $timestamp );
+			if ( !$timestamp ) {
+				if ( preg_match( '/\d+年\d{1,2}月\d{1,2}日/', $value ) ) {
+					$DateTime  = DateTime::createFromFormat( 'Y年m月d日', $value );
+					$value     = $DateTime->format( 'Y-m-d' );
+					$timestamp = strtotime( $value );
+				}
+			}
+			$year  = date( 'Y', $timestamp );
 			$month = date( 'm', $timestamp );
-			$day = date( 'd', $timestamp );
+			$day   = date( 'd', $timestamp );
 			$checkdate = checkdate( $month, $day, $year );
 			if ( !$timestamp || !$checkdate || preg_match( '/^[a-zA-Z]$/', $value ) || preg_match( '/^\s+$/', $value ) ) {
 				return $options['message'];

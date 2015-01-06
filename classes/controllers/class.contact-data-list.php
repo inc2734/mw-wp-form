@@ -109,6 +109,11 @@ class MW_WP_Form_Contact_Data_List_Controller {
 		exit;
 	}
 
+	/**
+	 * get_csv_headings
+	 * @param array $posts
+	 * @return array
+	 */
 	protected function get_csv_headings( array $posts ) {
 		$default_headings = array(
 			'ID',
@@ -143,6 +148,12 @@ class MW_WP_Form_Contact_Data_List_Controller {
 		return $rows[0];
 	}
 
+	/**
+	 * get_rows
+	 * @param array $posts
+	 * @param array $headings
+	 * @return array
+	 */
 	protected function get_rows( array $posts, array $headings ) {
 		global $post;
 		$rows = array();
@@ -174,11 +185,20 @@ class MW_WP_Form_Contact_Data_List_Controller {
 		return $rows;
 	}
 
+	/**
+	 * escape_double_quote
+	 * @param string $value
+	 * @return string
+	 */
 	protected function escape_double_quote( $value ) {
 		$value = str_replace( '"', '""', $value );
 		return '"' . $value . '"';
 	}
 
+	/**
+	 * get_posts_per_page
+	 * @return int
+	 */
 	protected function get_posts_per_page() {
 		$posts_per_page = -1;
 		if ( ( isset( $_POST['download-all'] ) && $_POST['download-all'] === 'true' ) === false ) {
@@ -191,6 +211,10 @@ class MW_WP_Form_Contact_Data_List_Controller {
 		return $posts_per_page;
 	}
 
+	/**
+	 * get_paged
+	 * @return int
+	 */
 	protected function get_paged() {
 		$posts_per_page = $this->get_posts_per_page();
 		$paged = 1;
@@ -224,6 +248,11 @@ class MW_WP_Form_Contact_Data_List_Controller {
 		);
 	}
 
+	/**
+	 * add_form_columns_name
+	 * @param array $columns
+	 * @return array $columns
+	 */
 	public function add_form_columns_name( $columns ) {
 		global $posts;
 		unset( $columns['date'] );
@@ -247,6 +276,11 @@ class MW_WP_Form_Contact_Data_List_Controller {
 		return $columns;
 	}
 
+	/**
+	 * add_form_columns_name
+	 * @param string $column カラム名
+	 * @param int $post_id
+	 */
 	public function add_form_columns( $column, $post_id ) {
 		$post_custom_keys     = get_post_custom_keys( $post_id );
 		$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $post_id );

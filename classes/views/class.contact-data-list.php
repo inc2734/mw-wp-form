@@ -101,4 +101,3 @@ class MW_WP_Form_Contact_Data_List_View extends MW_WP_Form_View {
 		}
 	}
 }
-

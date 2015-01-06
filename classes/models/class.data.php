@@ -19,6 +19,13 @@ class MW_WP_Form_Data {
 	protected static $Instance;
 
 	/**
+	 * $form_key
+	 * フォーム識別子
+	 * @var string
+	 */
+	protected $form_key;
+
+	/**
 	 * $data
 	 * フォームから送信された内容を保存した配列
 	 * @var array
@@ -32,27 +39,50 @@ class MW_WP_Form_Data {
 	protected $Session;
 
 	/**
+	 * $token_name
+	 * @var string
+	 */
+	protected $token_name = 'token';
+
+	/**
+	 * $POST
+	 * @var array
+	 */
+	protected $POST = array();
+
+	/**
+	 * $FILES
+	 * @var array
+	 */
+	protected $FILES = array();
+
+	/**
 	 * __construct
-	 * @param string $key フォーム識別子
+	 * @param string $form_key フォーム識別子
 	 * @param array $POST $_POSTを想定
 	 * @param array $FILES $_FILESを想定
 	 */
-	private function __construct( $key, array $POST = array(), array $FILES = array() ) {
-		$this->Session = new MW_WP_Form_Session( $key );
-		$this->data    = $this->Session->gets();
-		$this->set_request_valiables( $POST );
-		$this->set_files_valiables( $POST, $FILES );
+	private function __construct( $form_key, array $POST = array(), array $FILES = array() ) {
+		$this->form_key = $form_key;
+		$this->POST     = $POST;
+		$this->FILES    = $FILES;
+		$this->Session  = new MW_WP_Form_Session( $form_key );
+		$this->data     = $this->Session->gets();
+		$this->set_request_valiables( $this->POST );
+		$this->set_files_valiables( $this->POST, $this->FILES );
+		add_filter( 'mwform_form_end_html', array( $this, 'mwform_form_end_html' ) );
+		add_action( 'parse_request'       , array( $this, 'remove_query_vars_from_post' ) );
 	}
 	
 	/**
 	 * getInstance
-	 * @param string $key フォーム識別子
+	 * @param string $form_key フォーム識別子
 	 * @param array $POST $_POSTを想定
 	 * @param array $FILES $_FILESを想定
 	 */
-	public static function getInstance( $key, array $POST = array(), array $FILES = array() ) {
+	public static function getInstance( $form_key, array $POST = array(), array $FILES = array() ) {
 		if ( is_null( self::$Instance ) ) {
-			self::$Instance = new self( $key, $POST, $FILES );
+			self::$Instance = new self( $form_key, $POST, $FILES );
 		}
 		return self::$Instance;
 	}
@@ -90,6 +120,55 @@ class MW_WP_Form_Data {
 		if ( $files ) {
 			$this->set( MWF_Config::UPLOAD_FILES, $files );
 		}
+	}
+
+	/**
+	 * mwform_form_end_html
+	 * @param string $html
+	 * @return string $html
+	 */
+	public function mwform_form_end_html( $html ) {
+		$html .= wp_nonce_field( $this->form_key, $this->token_name, true, false );
+		return $html;
+	}
+
+	/**
+	 * check
+	 * トークンチェック
+	 * @return bool
+	 */
+	protected function token_check() {
+		if ( isset( $_POST[$this->token_name] ) ) {
+			$request_token = $_POST[$this->token_name];
+		}
+		$values = $this->gets();
+		if ( isset( $request_token ) && wp_verify_nonce( $request_token, $this->key ) ) {
+			$this->set( MWF_Config::COMPLETE_TWICE, true );
+			return true;
+		} elseif ( empty( $_POST ) && !empty( $values ) && $this->get_raw( MWF_Config::COMPLETE_TWICE ) ) {
+			$this->clear_value( MWF_Config::COMPLETE_TWICE );
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * get_post_condition
+	 * 送信データからどのページを表示すべきかの状態を判定して返す
+	 * ただし実際に表示するページと同じとは限らない（バリデーション通らないとかあるので）
+	 * @return string back|confirm|complete|input
+	 */
+	public function get_post_condition() {
+		$backButton    = $this->get_raw( MWF_Config::BACK_BUTTON );
+		$confirmButton = $this->get_raw( MWF_Config::CONFIRM_BUTTON );
+		if ( $backButton ) {
+			return 'back';
+		} elseif ( $confirmButton ) {
+			return 'confirm';
+		} elseif ( !$confirmButton && !$backButton && $this->token_check() ) {
+			return 'complete';
+		}
+		return 'input';
 	}
 
 	/**
@@ -270,6 +349,26 @@ class MW_WP_Form_Data {
 			$this->set( $key, $upload_file );
 			if ( !in_array( $key, $upload_file_keys ) ) {
 				$this->push( MWF_Config::UPLOAD_FILE_KEYS, $key );
+			}
+		}
+	}
+
+	/**
+	 * remove_query_vars_from_post
+	 * WordPressへのリクエストに含まれている、$_POSTの値を削除
+	 */
+	public function remove_query_vars_from_post( $wp_query ) {
+		if ( strtolower( $_SERVER['REQUEST_METHOD'] ) === 'post' && isset( $this->POST['token'] ) ) {
+			foreach ( $this->POST as $key => $value ) {
+				if ( $key == 'token' ) {
+					continue;
+				}
+				if ( isset( $wp_query->query_vars[$key] ) &&
+					 $wp_query->query_vars[$key] === $value &&
+					 !empty( $value ) ) {
+
+					$wp_query->query_vars[$key] = '';
+				}
 			}
 		}
 	}

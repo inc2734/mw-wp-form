@@ -163,6 +163,10 @@ class MW_WP_Form_Chart_Controller {
 		return $new_input;
 	}
 
+	/**
+	 * is_chart
+	 * @return bool
+	 */
 	protected function is_chart() {
 		if ( isset( $_GET['page'] ) && $_GET['page'] === 'mw-wp-form-chart' && $this->formkey ) {
 			return true;

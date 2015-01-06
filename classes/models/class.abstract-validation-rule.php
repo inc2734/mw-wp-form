@@ -31,7 +31,9 @@ abstract class MW_Validation_Rule {
 	 * __construct
 	 */
 	public function __construct() {
-		if ( in_array( 'MW_Validation_Rule', array( get_parent_class( $this ), get_class( $this ) ) ) ) {
+		$parent_class = get_parent_class( $this );
+		$class        = get_class( $this );
+		if ( is_admin() && in_array( 'MW_Validation_Rule', array( $parent_class, $class ) ) ) {
 			MWF_Functions::deprecated_message(
 				'MW_Validation_Rule',
 				'MW_WP_Form_Abstract_Validation_Rule'

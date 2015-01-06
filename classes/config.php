@@ -76,4 +76,10 @@ class MWF_Config {
 	 * CONTACT_DATA_NAME
 	 */
 	const CONTACT_DATA_NAME = '_mw-wp-form_data';
+
+	/**
+	 * COMPLETE_TWICE
+	 * post時、リダイレクト時の2回完了画面を通るのでその判定用
+	 */
+	const COMPLETE_TWICE = '__complete_twice_flg';
 }

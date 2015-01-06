@@ -52,6 +52,26 @@ class MW_WP_Form {
 	);
 
 	/**
+	 * $validation_rules_only_jp
+	 * 日本語の時のみ使用できるバリデーションルール
+	 * @var array
+	 */
+	protected $validation_rules_only_jp = array(
+		'MW_WP_Form_Validation_Rule_Zip',
+		'MW_WP_Form_Validation_Rule_Tel',
+	);
+
+	/**
+	 * $form_fields_only_jp
+	 * 日本語の時のみ使用できるフォーム項目
+	 * @var array
+	 */
+	protected $form_fields_only_jp = array(
+		'MW_WP_Form_Field_Zip',
+		'MW_WP_Form_Field_Tel',
+	);
+
+	/**
 	 * __construct
 	 */
 	public function __construct() {
@@ -88,7 +108,6 @@ class MW_WP_Form {
 		include_once( $plugin_dir_path . 'classes/models/class.mail.php' );
 		include_once( $plugin_dir_path . 'classes/models/class.session.php' );
 		include_once( $plugin_dir_path . 'classes/models/class.setting.php' );
-		include_once( $plugin_dir_path . 'classes/models/class.token-check.php' );
 		include_once( $plugin_dir_path . 'classes/models/class.validation.php' );
 		include_once( $plugin_dir_path . 'classes/services/class.exec-shortcode.php' );
 		include_once( $plugin_dir_path . 'classes/services/class.mail.php' );
@@ -238,10 +257,16 @@ class MW_WP_Form {
 	 */
 	protected function instantiate_form_fields() {
 		$plugin_dir_path = plugin_dir_path( __FILE__ );
+		foreach ( $this->form_fields_only_jp as $key => $value ) {
+			$this->form_fields_only_jp[$key] = strtolower( $value );
+		}
 		foreach ( glob( $plugin_dir_path . './classes/form-fields/*.php' ) as $filename ) {
 			include_once $filename;
 			$class_name = $this->get_class_name_from_form_field_filename( $filename );
 			if ( class_exists( $class_name ) ) {
+				if ( get_locale() !== 'ja' && in_array( strtolower( $class_name ), $this->form_fields_only_jp ) ) {
+					continue;
+				}
 				new $class_name();
 			}
 		}
@@ -269,10 +294,16 @@ class MW_WP_Form {
 	protected function get_validation_rules() {
 		$validation_rules = array();
 		$plugin_dir_path = plugin_dir_path( __FILE__ );
+		foreach ( $this->validation_rules_only_jp as $key => $value ) {
+			$this->validation_rules_only_jp[$key] = strtolower( $value );
+		}
 		foreach ( glob( $plugin_dir_path . './classes/validation-rules/*.php' ) as $filename ) {
 			include_once $filename;
 			$class_name = $this->get_class_name_from_validation_rule_filename( $filename );
 			if ( class_exists( $class_name ) ) {
+				if ( get_locale() !== 'ja' && in_array( strtolower( $class_name ), $this->validation_rules_only_jp ) ) {
+					continue;
+				}
 				$instance = new $class_name();
 				$validation_rules[$instance->getName()] = $instance;
 			}

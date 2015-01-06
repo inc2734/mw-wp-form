@@ -29,7 +29,7 @@ class MW_WP_Form_Validation_Rule_FileType extends MW_WP_Form_Abstract_Validation
 		$value = $this->Data->get( $key );
 		if ( !is_null( $value ) && !MWF_Functions::is_empty( $value ) ) {
 			$defaults = array(
-				'types' => '',
+				'types'   => '',
 				'message' => __( 'This file is invalid.', MWF_Config::DOMAIN )
 			);
 			$options = array_merge( $defaults, $options );

@@ -31,59 +31,42 @@ class MW_WP_Form_Redirected {
 	protected $url;
 
 	/**
-	 * $ExecShortcode
-	 * @var MW_WP_Form_Exec_Shortcode
-	 */
-	protected $ExecShortcode;
-
-	/**
-	 * $is_valid
+	 * $querystring
 	 * @var bool
 	 */
-	protected $is_valid = false;
-
-	/**
-	 * $Token_Check
-	 * @var MW_WP_Form_Token_Check
-	 */
-	protected $Token_Check;
-
-	/**
-	 * $Setting
-	 * @var MW_WP_Form_Setting
-	 */
-	protected $Setting;
-
-	/**
-	 * $Data
-	 * @var MW_WP_Form_Data
-	 */
-	protected $Data;
+	protected $querystring;
 	
 	/**
 	 * __construct
-	 * @param MW_WP_Form_Exec_Shortcode $ExecShortcode
+	 * @param string $input
+	 * @param string $confirm
+	 * @param string $complete
+	 * @param string $valdation_error
 	 * @param bool $is_valid
-	 * @param MW_WP_Form_Token_Check $Token_Check
-	 * @param MW_WP_Form_Setting $Setting
+	 * @param bool $post_condition
+	 * @param bool $querystring
 	 */
-	public function __construct( MW_WP_Form_Exec_Shortcode $ExecShortcode, $is_valid, MW_WP_Form_Token_Check $Token_Check, MW_WP_Form_Setting $Setting, MW_WP_Form_Data $Data ) {
-		$this->ExecShortcode = $ExecShortcode;
-		$this->is_valid      = $is_valid;
-		$this->Token_Check   = $Token_Check;
-		$this->Setting       = $Setting;
-		$this->Data          = $Data;
+	public function __construct( $input, $confirm, $complete, $valdation_error, $is_valid, $post_condition, $querystring ) {
+		$this->querystring = $querystring; // parse_url
 
-		$this->initialize();
+		$this->initialize( $input, $confirm, $complete, $valdation_error, $is_valid, $post_condition );
 	}
-
-	protected function initialize() {
-		$input            = $this->parse_url( $this->ExecShortcode->get( 'input' ) );
-		$confirm          = $this->parse_url( $this->ExecShortcode->get( 'confirm' ) );
-		$complete         = $this->parse_url( $this->ExecShortcode->get( 'complete' ) );
-		$validation_error = $this->parse_url( $this->ExecShortcode->get( 'validation_error' ) );
+	
+	/**
+	 * __construct
+	 * @param string $input
+	 * @param string $confirm
+	 * @param string $complete
+	 * @param string $valdation_error
+	 * @param bool $is_valid
+	 * @param bool $post_condition
+	 */
+	protected function initialize( $input, $confirm, $complete, $valdation_error, $is_valid, $post_condition ) {
+		$input            = $this->parse_url( $input );
+		$confirm          = $this->parse_url( $confirm );
+		$complete         = $this->parse_url( $complete );
+		$validation_error = $this->parse_url( $valdation_error );
 		$REQUEST_URI      = $this->parse_url( $this->get_request_uri() );
-		$post_condition   = $this->get_post_condition();
 
 		// 入力画面（戻る）のとき
 		if ( $post_condition === 'back' ) {
@@ -92,12 +75,12 @@ class MW_WP_Form_Redirected {
 		}
 		// 確認画面のとき
 		elseif ( $post_condition === 'confirm' ) {
-			if ( $this->is_valid ) {
+			if ( $is_valid ) {
 				$this->view_flg = 'confirm';
 				$this->url      = $confirm;
 				return;
 			} else {
-				if ( $this->ExecShortcode->get( 'validation_error' ) ) {
+				if ( $validation_error ) {
 					$this->url = $validation_error;
 					return;
 				} else {
@@ -108,12 +91,12 @@ class MW_WP_Form_Redirected {
 		}
 		// 完了画面のとき
 		elseif ( $post_condition === 'complete' ) {
-			if ( $this->is_valid ) {
+			if ( $is_valid ) {
 				$this->view_flg = 'complete';
 				$this->url      = $complete;
 				return;
 			} else {
-				if ( $this->ExecShortcode->get( 'validation_error' ) ) {
+				if ( $validation_error ) {
 					$this->url = $validation_error;
 					return;
 				} else {
@@ -139,7 +122,7 @@ class MW_WP_Form_Redirected {
 			$this->url = $input;
 			return;
 
-			if ( $this->is_valid && $REQUEST_URI == $validation_error ) {
+			if ( $is_valid && $REQUEST_URI == $validation_error ) {
 				$this->url = $back_url;
 				return;
 			}
@@ -161,42 +144,6 @@ class MW_WP_Form_Redirected {
 	 */
 	public function get_view_flg() {
 		return $this->view_flg;
-	}
-
-	/**
-	 * mode_check
-	 * @return string back|confirm|complete|input
-	 */
-	protected function mode_check() {
-		$backButton    = $this->Data->get_raw( MWF_Config::BACK_BUTTON );
-		$confirmButton = $this->Data->get_raw( MWF_Config::CONFIRM_BUTTON );
-		if ( $backButton ) {
-			return 'back';
-		} elseif ( $confirmButton ) {
-			return 'confirm';
-		} elseif ( !$confirmButton && !$backButton && $this->Token_Check->check() ) {
-			return 'complete';
-		}
-		return 'input';
-	}
-
-	/**
-	 * get_post_condition
-	 * 送信データからどのページを表示すべきかの状態を判定して返す
-	 * ただし実際に表示するページと同じとは限らない（バリデーション通らないとかあるので）
-	 * @return string back|confirm|complete|input
-	 */
-	public function get_post_condition() {
-		$mode = $this->mode_check();
-		$data = $this->Data->gets();
-		if ( $mode === 'back' ) {
-			return 'back';
-		} elseif ( !empty( $data ) && $mode === 'confirm' ) {
-			return 'confirm';
-		} elseif ( !empty( $data ) && $mode === 'complete' ) {
-			return 'complete';
-		}
-		return 'input';
 	}
 
 	/**
@@ -236,8 +183,7 @@ class MW_WP_Form_Redirected {
 		$query_string = array();
 		preg_match( '/\?(.*)$/', $url, $reg );
 		if ( !empty( $reg[1] ) ) {
-			$url = str_replace( '?', '', $url );
-			$url = str_replace( $reg[1], '', $url );
+			$url = str_replace( '?' . $reg[1], '', $url );
 			parse_str( $reg[1], $query_string );
 		}
 		if ( !preg_match( '/^https?:\/\//', $url ) ) {
@@ -248,7 +194,7 @@ class MW_WP_Form_Redirected {
 
 		// URL設定でURL引数が使用されている場合はそれを使う。
 		// 「URL引数を有効にする」が有効の場合は $_GET を利用する（重複するURL引数はURL設定のものが優先される ※post_id除く）
-		if ( $this->Setting->get( 'querystring' ) ) {
+		if ( $this->querystring ) {
 			$query_string = array_merge( $_GET, $query_string );
 			if ( isset( $_GET['post_id'] ) && MWF_Functions::is_numeric( $_GET['post_id'] ) ) {
 				$query_string['post_id'] = $_GET['post_id'];

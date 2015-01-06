@@ -55,7 +55,6 @@ class MW_WP_Form_Main_Controller {
 	 */
 	public function initialize() {
 		add_filter( 'nocache_headers' , array( $this, 'nocache_headers' ) , 1 );
-		add_action( 'parse_request'   , array( $this, 'remove_query_vars_from_post' ) );
 		add_filter( 'template_include', array( $this, 'template_include' ), 10000 );
 	}
 
@@ -88,9 +87,6 @@ class MW_WP_Form_Main_Controller {
 
 		nocache_headers();
 
-		$Token_Check = new MW_WP_Form_Token_Check( $form_key, $this->Data );
-		$Token_Check->initialize();
-
 		$Error = new MW_WP_Form_Error();
 		$rules = $this->Setting->get_validation_rules( $this->Data );
 		$this->Validation = new MW_WP_Form_Validation( $Error );
@@ -102,17 +98,19 @@ class MW_WP_Form_Main_Controller {
 			$this->Data->gets()
 		);
 
+		$post_condition = $this->Data->get_post_condition();
 		$is_valid = $this->Validation->check();
 		$this->Redirected = new MW_WP_Form_Redirected(
-			$this->ExecShortcode,
+			$this->ExecShortcode->get( 'input_url' ),
+			$this->ExecShortcode->get( 'confirmation_url' ),
+			$this->ExecShortcode->get( 'complete_url' ),
+			$this->ExecShortcode->get( 'validation_error_url' ),
 			$is_valid,
-			$Token_Check,
-			$this->Setting,
-			$this->Data
+			$post_condition,
+			$this->Setting->get( 'querystring' )
 		);
-		$url            = $this->Redirected->get_url();
-		$post_condition = $this->Redirected->get_post_condition();
-		$view_flg       = $this->Redirected->get_view_flg();
+		$url      = $this->Redirected->get_url();
+		$view_flg = $this->Redirected->get_view_flg();
 
 		// confirm もしくは complete のとき
 		if ( in_array( $post_condition, array( 'confirm', 'complete' ) ) ) {
@@ -122,7 +120,7 @@ class MW_WP_Form_Main_Controller {
 		if ( $view_flg === 'complete' ) {
 			// view_flg の生成時に COMPLETE_TWICE が true になる
 			// リダイレクト後の view_flg 生成時に COMPLETE_TWICE は消える
-			if ( $this->Data->get_raw( MW_WP_Form_Token_Check::COMPLETE_TWICE ) ) {
+			if ( $this->Data->get_raw( MWF_Config::COMPLETE_TWICE ) ) {
 				$this->send();
 			}
 		}
@@ -201,26 +199,6 @@ class MW_WP_Form_Main_Controller {
 			'offset' => apply_filters( 'mwform_scroll_offset_' . $this->ExecShortcode->get( 'key' ), 0 ),
 		) );
 		wp_enqueue_script( MWF_Config::NAME . '-scroll' );
-	}
-
-	/**
-	 * remove_query_vars_from_post
-	 * WordPressへのリクエストに含まれている、$_POSTの値を削除
-	 */
-	public function remove_query_vars_from_post( $wp_query ) {
-		if ( strtolower( $_SERVER['REQUEST_METHOD'] ) === 'post' && isset( $_POST['token'] ) ) {
-			foreach ( $_POST as $key => $value ) {
-				if ( $key == 'token' ) {
-					continue;
-				}
-				if ( isset( $query->query_vars[$key] ) &&
-					 $query->query_vars[$key] === $value &&
-					 !empty( $value ) ) {
-
-					$query->query_vars[$key] = '';
-				}
-			}
-		}
 	}
 	
 	/**

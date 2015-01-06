@@ -29,7 +29,7 @@ class MW_WP_Form_Validation_Rule_Eq extends MW_WP_Form_Abstract_Validation_Rule 
 		$value = $this->Data->get( $key );
 		if ( !is_null( $value ) ) {
 			$defaults = array(
-				'target' => null,
+				'target'  => null,
 				'message' => __( 'This is not in agreement.', MWF_Config::DOMAIN )
 			);
 			$options = array_merge( $defaults, $options );

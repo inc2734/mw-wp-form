@@ -83,7 +83,9 @@ abstract class MW_Form_Field {
 	 * __construct
 	 */
 	public function __construct() {
-		if ( in_array( 'MW_Form_Field', array( get_parent_class( $this ), get_class( $this ) ) ) ) {
+		$parent_class = get_parent_class( $this );
+		$class        = get_class( $this );
+		if ( is_admin() && in_array( 'MW_Form_Field', array( $parent_class, $class ) ) ) {
 			MWF_Functions::deprecated_message(
 				'MW_Form_Field',
 				'MW_WP_Form_Abstract_Form_Field'
@@ -207,24 +209,26 @@ abstract class MW_Form_Field {
 	 * add_shortcode
 	 * フォーム項目を返す
 	 * @param MW_WP_Form_Form $Form
-	 * @param string $viewFlg
+	 * @param string $view_flg
 	 * @param MW_WP_Form_Error $Error
 	 * @param string $form_key
 	 */
-	public function add_shortcode( MW_WP_Form_Form $Form, $viewFlg, MW_WP_Form_Error $Error, $form_key ) {
+	public function add_shortcode( MW_WP_Form_Form $Form, $view_flg, MW_WP_Form_Error $Error, $form_key ) {
 		if ( !empty( $this->shortcode_name ) ) {
 			$this->Form     = $Form;
 			$this->Error    = $Error;
 			$this->form_key = $form_key;
-			switch( $viewFlg ) {
+			switch( $view_flg ) {
 				case 'input' :
 					add_shortcode( $this->shortcode_name, array( $this, '_inputPage' ) );
 					break;
 				case 'confirm' :
 					add_shortcode( $this->shortcode_name, array( $this, '_confirmPage' ) );
 					break;
+				case 'complete' :
+					break;
 				default :
-					exit( '$viewFlg is not right value.' );
+					exit( '$view_flg is not right value. $view_flg is ' . $view_flg . ' now.' );
 			}
 		}
 	}
@@ -315,6 +319,14 @@ abstract class MW_Form_Field {
 	 */
 	public function get_display_name() {
 		return $this->display_name;
+	}
+
+	/**
+	 * get_shortcode_name
+	 * @return string ショートコード名
+	 */
+	public function get_shortcode_name() {
+		return $this->shortcode_name;
 	}
 
 	/**

@@ -3,7 +3,7 @@ Contributors: inc2734, ryu263
 Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 3.7
-Tested up to: 4.0
+Tested up to: 4.1
 Stable tag: 2.2.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -79,6 +79,8 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Changed : mwform_tracking_number_title_mw-wp-form-xxx to mwform_tracking_number_title_mwf-xxx.
 * Changed : Class name changed MW_Form_Field to MW_WP_Form_Abstract_Form_Field.
 * Changed : Class name changed MW_Validation_Rule to MW_WP_Form_Abstract_Validation_Rule.
+* Changed : Zip or Tel validation can use Japanese only.
+* Changed : Zip or Tel field can use Japanese only.
 
 = 2.1.4 =
 * Bug fix : Fixed a bug that data lost when there are multiple same name radio buttons and checkboxes.

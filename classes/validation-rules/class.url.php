@@ -28,7 +28,7 @@ class MW_WP_Form_Validation_Rule_Url extends MW_WP_Form_Abstract_Validation_Rule
 	public function rule( $key, array $options = array() ) {
 		$value = $this->Data->get( $key );
 		if ( !is_null( $value ) && !MWF_Functions::is_empty( $value ) ) {
-			if ( !preg_match( '/^https{0,1}:\/\/[^\/].?/', $value ) ) {
+			if ( !preg_match( '/^https{0,1}:\/\/[^\/]+\..?/', $value ) ) {
 				$defaults = array(
 					'message' => __( 'This is not the format of a url.', MWF_Config::DOMAIN )
 				);
