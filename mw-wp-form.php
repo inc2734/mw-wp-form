@@ -26,32 +26,6 @@ class MW_WP_Form {
 	protected $form_fields = array();
 
 	/**
-	 * $validation_rules
-	 * バリデーションルールの配列
-	 * @var array
-	 */
-	protected $validation_rules = array(
-		'akismet_check' => '',
-		'noempty'       => '',
-		'required'      => '',
-		'numeric'       => '',
-		'alpha'         => '',
-		'alphanumeric'  => '',
-		'katakana'      => '',
-		'hiragana'      => '',
-		'zip'           => '',
-		'tel'           => '',
-		'mail'          => '',
-		'date'          => '',
-		'url'           => '',
-		'eq'            => '',
-		'between'       => '',
-		'minlength'     => '',
-		'filetype'      => '',
-		'filesize'      => '',
-	);
-
-	/**
 	 * $validation_rules_only_jp
 	 * 日本語の時のみ使用できるバリデーションルール
 	 * @var array
@@ -308,11 +282,7 @@ class MW_WP_Form {
 				$validation_rules[$instance->getName()] = $instance;
 			}
 		}
-		$validation_rules = array_merge(
-			$this->validation_rules,
-			$validation_rules
-		);
-		$this->validation_rules = apply_filters(
+		$validation_rules = apply_filters(
 			'mwform_validation_rules',
 			$validation_rules,
 			null // 後方互換性のために残してるだけ

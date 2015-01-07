@@ -81,6 +81,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Changed : Class name changed MW_Validation_Rule to MW_WP_Form_Abstract_Validation_Rule.
 * Changed : Zip or Tel validation can use Japanese only.
 * Changed : Zip or Tel field can use Japanese only.
+* Added   : You can set a different value in the key and display value for children of checkbox, select, radio. For xample, [mwform_checkbox name="hoge" children="key1:value1,key2:value2"]
 
 = 2.1.4 =
 * Bug fix : Fixed a bug that data lost when there are multiple same name radio buttons and checkboxes.

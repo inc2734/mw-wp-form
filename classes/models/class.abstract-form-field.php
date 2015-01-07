@@ -235,18 +235,24 @@ abstract class MW_Form_Field {
 
 	/**
 	 * getChildren
-	 * 選択肢の配列を返す
+	 * 選択肢の配列を返す（:が含まれている場合は分割して前をキーに、後ろを表示名にする）
 	 * @param string $_children
 	 * @return array $children
 	 */
-	protected function getChildren( $_children ) {
+	public function getChildren( $_children ) {
 		$children = array();
 		if ( !empty( $_children ) && !is_array( $_children ) ) {
 			$_children = explode( ',', $_children );
 		}
 		if ( is_array( $_children ) ) {
+			$_children = array_map( 'trim', $_children );
 			foreach ( $_children as $child ) {
-				$children[$child] = $child;
+				$child = array_map( 'trim', explode( ':', $child, 2 ) );
+				if ( count( $child ) === 1 ) {
+					$children[$child[0]] = $child[0];
+				} else {
+					$children[$child[0]] = $child[1];
+				}
 			}
 		}
 		if ( $this->form_key ) {

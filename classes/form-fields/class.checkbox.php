@@ -103,7 +103,8 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 			<?php $children = "\n" . $this->get_value_for_generator( 'children', $options ); ?>
 			<textarea name="children"><?php echo esc_attr( $children ); ?></textarea>
 			<span class="mwf_note">
-				<?php esc_html_e( 'Input one line about one item.', MWF_Config::DOMAIN ); ?>
+				<?php esc_html_e( 'Input one line about one item.', MWF_Config::DOMAIN ); ?><br />
+				<?php esc_html_e( 'Example: value1&crarr;value2 or key1:value1&crarr;key2:value2', MWF_Config::DOMAIN ); ?>
 			</span>
 		</p>
 		<p>
@@ -119,12 +120,12 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 		<p>
 			<strong><?php esc_html_e( 'Display method', MWF_Config::DOMAIN ); ?></strong>
 			<?php $vertically = $this->get_value_for_generator( 'vertically', $options ); ?>
-			<input type="checkbox" name="vertically" value="true" <?php checked( 'true', $vertically ); ?> /> <?php esc_html_e( 'Arranged vertically.', MWF_Config::DOMAIN ); ?>
+			<label><input type="checkbox" name="vertically" value="true" <?php checked( 'true', $vertically ); ?> /> <?php esc_html_e( 'Arranged vertically.', MWF_Config::DOMAIN ); ?></label>
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'Dsiplay error', MWF_Config::DOMAIN ); ?></strong>
 			<?php $show_error = $this->get_value_for_generator( 'show_error', $options ); ?>
-			<input type="checkbox" name="show_error" value="false" <?php checked( 'false', $show_error ); ?> /> <?php esc_html_e( 'Don\'t display error.', MWF_Config::DOMAIN ); ?>
+			<label><input type="checkbox" name="show_error" value="false" <?php checked( 'false', $show_error ); ?> /> <?php esc_html_e( 'Don\'t display error.', MWF_Config::DOMAIN ); ?></label>
 		</p>
 		<?php
 	}

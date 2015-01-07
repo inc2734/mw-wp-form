@@ -438,9 +438,10 @@ class MW_WP_Form_Form {
 			$for = $this->get_attr_for( $options['id'], $i );
 			$vertically = ( $options['vertically'] === 'true' ) ? 'vertical-item' : '';
 			$checked = ( $key == $value )? ' checked="checked"' : '';
-			$_ret .= sprintf( '<label %s class="%s"><input type="radio" name="%s" value="%s"%s %s />%s</label>',
-				$for,
+			$_ret .= sprintf(
+				'<span class="%s"><label %s><input type="radio" name="%s" value="%s"%s %s />%s</label></span>',
 				$vertically,
+				$for,
 				esc_attr( $name ),
 				esc_attr( $key ),
 				$checked,
@@ -485,9 +486,10 @@ class MW_WP_Form_Form {
 			$for = $this->get_attr_for( $options['id'], $i );
 			$vertically = ( $options['vertically'] === 'true' ) ? 'vertical-item' : '';
 			$checked = ( is_array( $value ) && in_array( $key, $value ) )? ' checked="checked"' : '';
-			$_ret .= sprintf( '<label %s class="%s"><input type="checkbox" name="%s" value="%s"%s %s />%s</label>',
-				$for,
+			$_ret .= sprintf(
+				'<span class="%s"><label %s><input type="checkbox" name="%s" value="%s"%s %s />%s</label></span>',
 				$vertically,
+				$for,
 				esc_attr( $name.'[data][]' ),
 				esc_attr( $key ),
 				$checked,

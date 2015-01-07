@@ -40,7 +40,7 @@ abstract class MW_Validation_Rule {
 			);
 		}
 		if ( !$this->getName() ) {
-			exit( 'MW_Validation_Rule::$name must override.' );
+			exit( 'MW_WP_Form_Abstract_Validation_Rule::$name must override.' );
 		}
 	}
 

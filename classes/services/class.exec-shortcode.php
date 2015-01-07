@@ -133,7 +133,11 @@ class MW_WP_Form_Exec_Shortcode {
 	 */
 	public function set_settings_by_mwform( $attributes ) {
 		$attributes = shortcode_atts( array(
-			'key' => 'mwform',
+			'key'              => 'mwform',
+			'input'            => '',
+			'confirm'          => '',
+			'complete'         => '',
+			'validation_error' => '',
 		), $attributes );
 		$this->set_settings( $attributes );
 	}
@@ -176,20 +180,22 @@ class MW_WP_Form_Exec_Shortcode {
 	 * @param array $attributes
 	 */
 	protected function set_settings( array $attributes ) {
-		if ( isset( $attributes['key'] ) ) {
-			$this->settings['key'] = $attributes['key'];
-		}
-		if ( isset( $attributes['input_url'] ) || isset( $attributes['input'] ) ) {
-			$this->settings['input_url'] = $attributes['input_url'];
-		}
-		if ( isset( $attributes['confirmation_url'] ) || isset( $attributes['confirm'] ) ) {
-			$this->settings['confirmation_url'] = $attributes['confirmation_url'];
-		}
-		if ( isset( $attributes['complete_url'] ) || isset( $attributes['complete'] ) ) {
-			$this->settings['complete_url'] = $attributes['complete_url'];
-		}
-		if ( isset( $attributes['validation_error_url'] ) || isset( $attributes['validation_error'] ) ) {
-			$this->settings['validation_error_url'] = $attributes['validation_error_url'];
+		foreach ( $attributes as $key => $value ) {
+			if ( $key === 'key' ) {
+				$this->settings['key'] = $value;
+			}
+			if ( $key === 'input_url' || $key === 'input' ) {
+				$this->settings['input_url'] = $value;
+			}
+			if ( $key === 'confirmation_url' || $key === 'confirm' ) {
+				$this->settings['confirmation_url'] = $value;
+			}
+			if ( $key === 'complete_url' || $key === 'complete' ) {
+				$this->settings['complete_url'] = $value;
+			}
+			if ( $key === 'validation_error_url' || $key === 'validation_error' ) {
+				$this->settings['validation_error_url'] = $value;
+			}
 		}
 	}
 
