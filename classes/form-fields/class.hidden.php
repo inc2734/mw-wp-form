@@ -20,7 +20,7 @@ class MW_WP_Form_Field_Hidden extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_hidden',
-			'display_name' => __( 'Hidden', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Hidden', MWF_Config::DOMAIN ),
 		);
 	}
 

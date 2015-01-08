@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Password extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_password',
-			'display_name' => __( 'Password', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Password', MWF_Config::DOMAIN ),
 		);
 	}
 

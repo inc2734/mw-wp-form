@@ -123,7 +123,10 @@ abstract class MW_Form_Field {
 	 * @param string $arg2 終了タグ（ショートコード）
 	 */
 	protected function set_qtags( $id, $display, $arg1, $arg2 = '' ) {
-		MWF_Functions::deprecated_message( 'MW_WP_Form_Abstract_Form_Field::set_qtags', 'MW_WP_Form_Abstract_Form_Field::set_names' );
+		MWF_Functions::deprecated_message(
+			'MW_WP_Form_Abstract_Form_Field::set_qtags()',
+			'MW_WP_Form_Abstract_Form_Field::set_names()'
+		);
 		$this->qtags = array(
 			'id'      => $id,
 			'display' => $display,
@@ -165,6 +168,13 @@ abstract class MW_Form_Field {
 		if ( $_ret ) {
 			return apply_filters( 'mwform_error_message_wrapper', $_ret, $this->form_key );
 		}
+	}
+	protected function getError( $key ) {
+		MWF_Functions::deprecated_message(
+			'MW_Form_Field::getError()',
+			'MW_WP_Form_Abstract_Form_Field::get_error()'
+		);
+		return $this->get_error( $key );
 	}
 
 	/**

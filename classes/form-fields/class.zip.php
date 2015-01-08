@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Zip extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_zip',
-			'display_name' => __( 'Zip Code', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Zip Code', MWF_Config::DOMAIN ),
 		);
 	}
 
@@ -67,7 +67,7 @@ class MW_WP_Form_Field_Zip extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function confirmPage() {
-		$value = $this->Form->getZipValue( $this->atts['name'] );
+		$value = $this->Form->get_zip_value( $this->atts['name'] );
 		$_ret  = esc_html( $value );
 		$_ret .= $this->Form->hidden( $this->atts['name'].'[data]', $value );
 		$_ret .= $this->Form->separator( $this->atts['name'] );

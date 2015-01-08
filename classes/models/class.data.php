@@ -45,6 +45,13 @@ class MW_WP_Form_Data {
 	protected $token_name = 'token';
 
 	/**
+	 * $complete_twice
+	 * リダイレクトされてからの complete であれば true
+	 * @var bool
+	 */
+	protected $complete_twice = false;
+
+	/**
 	 * $POST
 	 * @var array
 	 */
@@ -142,11 +149,21 @@ class MW_WP_Form_Data {
 			$request_token = $_POST[$this->token_name];
 		}
 		$values = $this->gets();
-		if ( isset( $request_token ) && wp_verify_nonce( $request_token, $this->key ) ) {
-			$this->set( MWF_Config::COMPLETE_TWICE, true );
+		if ( isset( $request_token ) && wp_verify_nonce( $request_token, $this->form_key ) ) {
 			return true;
-		} elseif ( empty( $_POST ) && !empty( $values ) && $this->get_raw( MWF_Config::COMPLETE_TWICE ) ) {
-			$this->clear_value( MWF_Config::COMPLETE_TWICE );
+		} elseif ( empty( $_POST ) && $values ) {
+			$this->complete_twice = true;
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * is_complete_twice
+	 * リダイレクト後の complete かチェック
+	 */
+	public function is_complete_twice() {
+		if ( $this->complete_twice === true ) {
 			return true;
 		}
 		return false;
@@ -182,6 +199,13 @@ class MW_WP_Form_Data {
 			return $this->data[$key];
 		}
 	}
+	public function getValue( $key ) {
+		MWF_Functions::deprecated_message(
+			'MW_WP_Form_Data::getValue()',
+			'MW_WP_Form_Data::get_raw()'
+		);
+		return $this->get_raw( $key );
+	}
 
 	/**
 	 * getValues
@@ -193,6 +217,13 @@ class MW_WP_Form_Data {
 			return array();
 		}
 		return $this->data;
+	}
+	public function getValues() {
+		MWF_Functions::deprecated_message(
+			'MW_WP_Form_Data::getValues()',
+			'MW_WP_Form_Data::gets()'
+		);
+		return $this->gets();
 	}
 
 	/**
@@ -262,7 +293,7 @@ class MW_WP_Form_Data {
 					return;
 				}
 				if ( is_array( $this->data[$key]['data'] ) ) {
-					return $this->getSeparatedValue( $key );
+					return $this->get_separated_value( $key );
 				} else {
 					return $this->data[$key]['data'];
 				}
@@ -273,27 +304,34 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * getSeparatorValue
+	 * get_separator_value
 	 * 送られてきたseparatorを返す
 	 * @param string $key name属性
 	 * @return string
 	 */
-	public function getSeparatorValue( $key ) {
+	public function get_separator_value( $key ) {
 		$value = $this->get_raw( $key );
 		if ( is_array( $value ) && isset( $value['separator'] ) ) {
 			return $value['separator'];
 		}
 	}
+	public function getSeparatorValue( $key ) {
+		MWF_Functions::deprecated_message(
+			'MW_WP_Form_Data::getSeparatorValue()',
+			'MW_WP_Form_Data::get_separator_value()'
+		);
+		return $this->get_separator_value( $key );
+	}
 
 	/**
-	 * getSeparatedValue
+	 * get_separated_value
 	 * 配列データを整形して返す ( 郵便番号等用 )
 	 * @param string $key name属性
 	 * @param array $children 選択肢
 	 * @return string データ
 	 */
-	public function getSeparatedValue( $key, array $children = array() ) {
-		$separator = $this->getSeparatorValue( $key );
+	public function get_separated_value( $key, array $children = array() ) {
+		$separator = $this->get_separator_value( $key );
 		$value = $this->get_raw( $key );
 		if ( is_array( $value ) && isset( $value['data'] ) && is_array( $value['data'] ) && !empty( $separator ) ) {
 			if ( $children ) {
@@ -314,6 +352,13 @@ class MW_WP_Form_Data {
 				return '';
 			}
 		}
+	}
+	public function getSeparatedValue( $key ) {
+		MWF_Functions::deprecated_message(
+			'MW_WP_Form_Data::getSeparatedValue()',
+			'MW_WP_Form_Data::get_separated_value()'
+		);
+		return $this->get_separated_value( $key );
 	}
 
 	/**

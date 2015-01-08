@@ -118,10 +118,13 @@ class MW_WP_Form_Main_Controller {
 		}
 		// complete のとき
 		if ( $view_flg === 'complete' ) {
-			// view_flg の生成時に COMPLETE_TWICE が true になる
-			// リダイレクト後の view_flg 生成時に COMPLETE_TWICE は消える
-			if ( $this->Data->get_raw( MWF_Config::COMPLETE_TWICE ) ) {
+			if ( !$this->Data->is_complete_twice() ) {
 				$this->send();
+			}
+			// 手動フォームの場合は完了画面に ExecShortcode が無く footer の clear_values が
+			// 効かないためここで消す
+			if ( !$form_id ) {
+				$this->Data->clear_values();
 			}
 		}
 		$this->redirect( $url );

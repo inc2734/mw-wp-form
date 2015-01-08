@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_checkbox',
-			'display_name' => __( 'Checkbox', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Checkbox', MWF_Config::DOMAIN ),
 		);
 	}
 
@@ -75,7 +75,7 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function confirmPage() {
 		$children = $this->getChildren( $this->atts['children'] );
-		$value = $this->Form->getCheckedValue( $this->atts['name'], $children );
+		$value = $this->Form->get_checked_value( $this->atts['name'], $children );
 		$_ret  = esc_html( $value );
 		$_ret .= $this->Form->hidden( $this->atts['name'] . '[data]', $value );
 		$_ret .= $this->Form->separator( $this->atts['name'] );

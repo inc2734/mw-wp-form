@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Error extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_error',
-			'display_name' => __( 'Error Message', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Error Message', MWF_Config::DOMAIN ),
 		);
 	}
 

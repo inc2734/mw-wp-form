@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_datepicker',
-			'display_name' => __( 'Datepicker', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Datepicker', MWF_Config::DOMAIN ),
 		);
 	}
 

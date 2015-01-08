@@ -27,7 +27,7 @@ class MW_WP_Form_Field_File extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_file',
-			'display_name' => __( 'File', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'File', MWF_Config::DOMAIN ),
 		);
 	}
 

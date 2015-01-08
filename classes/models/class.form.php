@@ -38,44 +38,65 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * getZipValue
+	 * get_zip_value
 	 * データを返す ( 郵便番号用 )
 	 * @param string $key name属性
 	 * @return string データ
 	 */
-	public function getZipValue( $key ) {
-		return $this->Data->getSeparatedValue( $key );
+	public function get_zip_value( $key ) {
+		return $this->Data->get_separated_value( $key );
+	}
+	public function getZipValue() {
+		MWF_Functions::deprecated_message(
+			'MW_Form::getZipValue()',
+			'MW_WP_Form_Form::get_zip_value()'
+		);
+		return $this->get_zip_value( $key );
 	}
 
 	/**
-	 * getTelValue
+	 * get_tel_value
 	 * データを返す ( 電話番号用 )
 	 * @param string $key name属性
 	 * @return string データ
 	 */
+	public function get_tel_value( $key ) {
+		return $this->get_zip_value( $key );
+	}
 	public function getTelValue( $key ) {
-		return $this->getZipValue( $key );
+		MWF_Functions::deprecated_message(
+			'MW_Form::getTelValue()',
+			'MW_WP_Form_Form::get_tel_value()'
+		);
+		return $this->get_tel_value( $key );
 	}
 
 	/**
-	 * getCheckedValue
+	 * get_checked_value
 	 * データを返す（ checkbox用 ）。$dataに含まれる値のみ返す
 	 * @param string $key name属性
 	 * @param array $data
 	 * @return string データ
 	 */
-	public function getCheckedValue( $key, array $data ) {
-		return $this->Data->getSeparatedValue( $key, $data );
+	public function get_checked_value( $key, array $data ) {
+		return $this->Data->get_separated_value( $key, $data );
+	}
+	public function getCheckedValue() {
+		MWF_Functions::deprecated_message(
+			'MW_Form::getCheckedValue()',
+			'MW_WP_Form_Form::get_checked_value()'
+		);
+		return $this->get_checked_value( $key );
 	}
 
 	/**
-	 * getRadioValue
+	 * get_radio_value
 	 * データを返す（ radio用 ）。$dataに含まれる値のみ返す
 	 * @param string name属性値
 	 * @param array $data データ
 	 * @return string
 	 */
-	public function getRadioValue( $key, array $data ) {
+	public function get_radio_value( $key, array $data ) {
 		$value = $this->get_raw( $key );
 		if ( !is_null( $value ) && !is_array( $value ) ) {
 			if ( isset( $data[$value] ) ) {
@@ -83,16 +104,30 @@ class MW_WP_Form_Form {
 			}
 		}
 	}
+	public function getRadioValue( $key, array $data ) {
+		MWF_Functions::deprecated_message(
+			'MW_Form::getRadioValue()',
+			'MW_WP_Form_Form::get_radio_value()'
+		);
+		return $this->get_radio_value( $key, $data );
+	}
 
 	/**
-	 * getSelectedValue
+	 * get_selected_value
 	 * データを返す（ selectbox用 ）。$dataに含まれる値のみ返す
 	 * @param string $key name属性
 	 * @param array $data データ
 	 * @return string データ
 	 */
+	public function get_selected_value( $key, array $data ) {
+		return $this->get_radio_value( $key, $data );
+	}
 	public function getSelectedValue( $key, array $data ) {
-		return $this->getRadioValue( $key, $data );
+		MWF_Functions::deprecated_message(
+			'MW_Form::getSelectedValue()',
+			'MW_WP_Form_Form::get_selected_value()'
+		);
+		return $this->get_selected_value( $key, $data );
 	}
 
 	/**
@@ -103,7 +138,7 @@ class MW_WP_Form_Form {
 	 * @return string HTML
 	 */
 	public function separator( $key, $separator = '' ) {
-		$post_separator = $this->getSeparatorValue( $key );
+		$post_separator = $this->get_separator_value( $key );
 		if ( !$separator && $post_separator ) {
 			$separator = $post_separator;
 		}
@@ -113,13 +148,20 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * getSeparatorValue
+	 * get_separator_value
 	 * 送られてきたseparatorを返す
 	 * @param string $key name属性
 	 * @return string
 	 */
-	public function getSeparatorValue( $key ) {
-		return $this->Data->getSeparatorValue( $key );
+	public function get_separator_value( $key ) {
+		return $this->Data->get_separator_value( $key );
+	}
+	public function getSeparatorValue() {
+		MWF_Functions::deprecated_message(
+			'MW_Form::getSeparatorValue()',
+			'MW_WP_Form_Form::get_separator_value()'
+		);
+		return $this->get_separator_value( $key );
 	}
 
 	/**
@@ -616,5 +658,19 @@ class MW_WP_Form_Form {
 		if ( !empty( $placeholder ) ) {
 			return 'placeholder="' . esc_attr( $placeholder ) . '"';
 		}
+	}
+
+	/**
+	 * getValue
+	 * データを返す
+	 * @param string $key name属性値
+	 * @return mixed
+	 */
+	public function getValue( $key ) {
+		MWF_Functions::deprecated_message(
+			'MW_Form::getValue()',
+			'MW_WP_Form_Form::get_raw()'
+		);
+		return $this->Data->get_raw( $key );
 	}
 }

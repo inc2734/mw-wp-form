@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_radio',
-			'display_name' => __( 'Radio', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Radio', MWF_Config::DOMAIN ),
 		);
 	}
 
@@ -72,7 +72,7 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function confirmPage() {
 		$children = $this->getChildren( $this->atts['children'] );
-		$value = $this->Form->getRadioValue( $this->atts['name'], $children );
+		$value = $this->Form->get_radio_value( $this->atts['name'], $children );
 		$_ret  = esc_html( $value );
 		$_ret .= $this->Form->hidden( $this->atts['name'], $value );
 		return $_ret;

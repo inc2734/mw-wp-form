@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Text extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_text',
-			'display_name' => __( 'Text', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Text', MWF_Config::DOMAIN ),
 		);
 	}
 

@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Submit_Button extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_submitButton',
-			'display_name' => __( 'Confirm &amp; Submit', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Confirm &amp; Submit', MWF_Config::DOMAIN ),
 		);
 	}
 

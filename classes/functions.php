@@ -119,9 +119,17 @@ class MWF_Functions {
 		}
 		$mwform_deprecated_message .= '</div>';
 		if ( is_admin() ) {
-			add_action( 'admin_notices', 'MWF_Functions::display_deprecated_message' );
+			if ( current_filter() === 'admin_notices' ) {
+				self::display_deprecated_message();
+			} else {
+				add_action( 'admin_notices', 'MWF_Functions::display_deprecated_message' );
+			}
 		} else {
-			add_filter( 'the_content', 'MWF_Functions::return_deprecated_message' );
+			if ( current_filter() === 'the_content' ) {
+				self::display_deprecated_message();
+			} else {
+				add_filter( 'the_content', 'MWF_Functions::return_deprecated_message' );
+			}
 		}
 	}
 	public static function display_deprecated_message() {
