@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MW WP Form 2.2.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/mw-wp-form\n"
-"POT-Creation-Date: 2015-01-07 15:37:43+00:00\n"
+"POT-Creation-Date: 2015-01-09 14:19:18+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: ..\n"
 
 #: classes/controllers/class.admin-list.php:41
-#: classes/controllers/class.admin.php:94
+#: classes/controllers/class.admin.php:102
 msgid "Form Key"
 msgstr ""
 
@@ -35,19 +35,23 @@ msgstr ""
 msgid "Validation Rule"
 msgstr ""
 
-#: classes/controllers/class.admin.php:107
+#: classes/controllers/class.admin.php:93
+msgid "Add-ons"
+msgstr ""
+
+#: classes/controllers/class.admin.php:115
 msgid "Automatic Reply Email Options"
 msgstr ""
 
-#: classes/controllers/class.admin.php:122
+#: classes/controllers/class.admin.php:130
 msgid "Admin Email Options"
 msgstr ""
 
-#: classes/controllers/class.admin.php:136
+#: classes/controllers/class.admin.php:144
 msgid "settings"
 msgstr ""
 
-#: classes/controllers/class.admin.php:148
+#: classes/controllers/class.admin.php:156
 msgid "Style setting"
 msgstr ""
 
@@ -286,11 +290,11 @@ msgstr ""
 msgid "Zip Code"
 msgstr ""
 
-#: classes/functions.php:185
+#: classes/functions.php:193
 msgid "Uploaded from "
 msgstr ""
 
-#: classes/functions.php:276
+#: classes/functions.php:284
 msgid "Tracking Number"
 msgstr ""
 
@@ -483,133 +487,141 @@ msgstr ""
 msgid "The key which applies validation"
 msgstr ""
 
-#: classes/views/class.admin.php:124
+#: classes/views/class.admin.php:121
+msgid "You can use more easy and useful to the MW WP Form in add-on!"
+msgstr ""
+
+#: classes/views/class.admin.php:122
+msgid "View Add-ons"
+msgstr ""
+
+#: classes/views/class.admin.php:137
 msgid "Copy and Paste this shortcode."
 msgstr ""
 
-#: classes/views/class.admin.php:125
+#: classes/views/class.admin.php:138
 msgid "The key to use with hook is "
 msgstr ""
 
-#: classes/views/class.admin.php:143 classes/views/class.admin.php:189
+#: classes/views/class.admin.php:156 classes/views/class.admin.php:202
 msgid "{key} is converted form data."
 msgstr ""
 
-#: classes/views/class.admin.php:145 classes/views/class.admin.php:191
+#: classes/views/class.admin.php:158 classes/views/class.admin.php:204
 msgid "It is automatically converted to Tracking number when you input {%s}."
 msgstr ""
 
-#: classes/views/class.admin.php:150 classes/views/class.admin.php:212
+#: classes/views/class.admin.php:163 classes/views/class.admin.php:225
 msgid "Subject"
 msgstr ""
 
-#: classes/views/class.admin.php:154 classes/views/class.admin.php:216
+#: classes/views/class.admin.php:167 classes/views/class.admin.php:229
 msgid "Sender"
 msgstr ""
 
-#: classes/views/class.admin.php:156 classes/views/class.admin.php:161
-#: classes/views/class.admin.php:201 classes/views/class.admin.php:218
-#: classes/views/class.admin.php:223
+#: classes/views/class.admin.php:169 classes/views/class.admin.php:174
+#: classes/views/class.admin.php:214 classes/views/class.admin.php:231
+#: classes/views/class.admin.php:236
 msgid "If empty:"
 msgstr ""
 
-#: classes/views/class.admin.php:159 classes/views/class.admin.php:221
+#: classes/views/class.admin.php:172 classes/views/class.admin.php:234
 msgid "From ( E-mail address )"
 msgstr ""
 
-#: classes/views/class.admin.php:164 classes/views/class.admin.php:226
+#: classes/views/class.admin.php:177 classes/views/class.admin.php:239
 msgid "Content"
 msgstr ""
 
-#: classes/views/class.admin.php:168
+#: classes/views/class.admin.php:181
 msgid "Automatic reply email"
 msgstr ""
 
-#: classes/views/class.admin.php:170
+#: classes/views/class.admin.php:183
 msgid "Input the key to use as transmission to automatic reply email. {} is unnecessary."
 msgstr ""
 
-#: classes/views/class.admin.php:196
+#: classes/views/class.admin.php:209
 msgid "If Admin Email Options is a blank, Automatic Replay Email Options is used as Admin Email Options."
 msgstr ""
 
-#: classes/views/class.admin.php:199
+#: classes/views/class.admin.php:212
 msgid "To ( E-mail address )"
 msgstr ""
 
-#: classes/views/class.admin.php:204
+#: classes/views/class.admin.php:217
 msgid "CC ( E-mail address )"
 msgstr ""
 
-#: classes/views/class.admin.php:208
+#: classes/views/class.admin.php:221
 msgid "BCC ( E-mail address )"
 msgstr ""
 
-#: classes/views/class.admin.php:245
+#: classes/views/class.admin.php:258
 msgid "Activate Query string of post"
 msgstr ""
 
-#: classes/views/class.admin.php:246
+#: classes/views/class.admin.php:259
 msgid "If this field is active, MW WP Form get query string. And get post data from query string \"post_id\". You can use $post's property in editor."
 msgstr ""
 
-#: classes/views/class.admin.php:247
+#: classes/views/class.admin.php:260
 msgid "Example: {ID}, {post_title}, {post_meta} etc..."
 msgstr ""
 
-#: classes/views/class.admin.php:250
+#: classes/views/class.admin.php:263
 msgid "Saving inquiry data in database"
 msgstr ""
 
-#: classes/views/class.admin.php:253
+#: classes/views/class.admin.php:266
 msgid "Enable scrolling of screen transition."
 msgstr ""
 
-#: classes/views/class.admin.php:257
+#: classes/views/class.admin.php:270
 msgid "Akismet Setting"
 msgstr ""
 
-#: classes/views/class.admin.php:272
+#: classes/views/class.admin.php:285
 msgid "Input the key to use Akismet."
 msgstr ""
 
-#: classes/views/class.admin.php:285
+#: classes/views/class.admin.php:298
 msgid "Select Style"
 msgstr ""
 
-#: classes/views/class.admin.php:302
+#: classes/views/class.admin.php:315
 msgid "Your contribution is needed for making this plugin better."
 msgstr ""
 
-#: classes/views/class.admin.php:302
+#: classes/views/class.admin.php:315
 msgid "Donate"
 msgstr ""
 
-#: classes/views/class.admin.php:324 classes/views/class.chart.php:93
+#: classes/views/class.admin.php:337 classes/views/class.chart.php:93
 msgid "Select this."
 msgstr ""
 
-#: classes/views/class.admin.php:325
+#: classes/views/class.admin.php:338
 msgid "Input fields"
 msgstr ""
 
-#: classes/views/class.admin.php:328
+#: classes/views/class.admin.php:341
 msgid "Select fields"
 msgstr ""
 
-#: classes/views/class.admin.php:331
+#: classes/views/class.admin.php:344
 msgid "Button fields"
 msgstr ""
 
-#: classes/views/class.admin.php:334
+#: classes/views/class.admin.php:347
 msgid "Error fields"
 msgstr ""
 
-#: classes/views/class.admin.php:337
+#: classes/views/class.admin.php:350
 msgid "Other fields"
 msgstr ""
 
-#: classes/views/class.admin.php:341
+#: classes/views/class.admin.php:354
 msgid "Add form tag"
 msgstr ""
 
@@ -674,51 +686,51 @@ msgstr ""
 msgid "&laquo; Back to the list"
 msgstr ""
 
-#: mw-wp-form.php:171
+#: mw-wp-form.php:145
 msgid "Add New Form"
 msgstr ""
 
-#: mw-wp-form.php:172
+#: mw-wp-form.php:146
 msgid "Edit Form"
 msgstr ""
 
-#: mw-wp-form.php:173
+#: mw-wp-form.php:147
 msgid "New Form"
 msgstr ""
 
-#: mw-wp-form.php:174
+#: mw-wp-form.php:148
 msgid "View Form"
 msgstr ""
 
-#: mw-wp-form.php:175
+#: mw-wp-form.php:149
 msgid "Search Forms"
 msgstr ""
 
-#: mw-wp-form.php:176
+#: mw-wp-form.php:150
 msgid "No Forms found"
 msgstr ""
 
-#: mw-wp-form.php:177
+#: mw-wp-form.php:151
 msgid "No Forms found in Trash"
 msgstr ""
 
-#: mw-wp-form.php:199
+#: mw-wp-form.php:173
 msgid "Edit "
 msgstr ""
 
-#: mw-wp-form.php:200
+#: mw-wp-form.php:174
 msgid "View"
 msgstr ""
 
-#: mw-wp-form.php:201
+#: mw-wp-form.php:175
 msgid "Search"
 msgstr ""
 
-#: mw-wp-form.php:202
+#: mw-wp-form.php:176
 msgid "No data found"
 msgstr ""
 
-#: mw-wp-form.php:203
+#: mw-wp-form.php:177
 msgid "No data found in Trash"
 msgstr ""
 #. Plugin Name of the plugin/theme

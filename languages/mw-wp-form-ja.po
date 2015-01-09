@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MW WP Form 2.2.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/mw-wp-form\n"
-"POT-Creation-Date: 2015-01-07 15:37:43+00:00\n"
-"PO-Revision-Date: 2015-01-08 00:41+0900\n"
+"POT-Creation-Date: 2015-01-09 14:19:18+00:00\n"
+"PO-Revision-Date: 2015-01-09 23:20+0900\n"
 "Last-Translator: Takashi Kitajima <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: ..\n"
 
 #: classes/controllers/class.admin-list.php:41
-#: classes/controllers/class.admin.php:94
+#: classes/controllers/class.admin.php:102
 msgid "Form Key"
 msgstr "フォーム識別子"
 
@@ -36,19 +36,23 @@ msgstr "URL設定"
 msgid "Validation Rule"
 msgstr "バリデーションルール"
 
-#: classes/controllers/class.admin.php:107
+#: classes/controllers/class.admin.php:93
+msgid "Add-ons"
+msgstr "アドオン"
+
+#: classes/controllers/class.admin.php:115
 msgid "Automatic Reply Email Options"
 msgstr "自動返信メール設定"
 
-#: classes/controllers/class.admin.php:122
+#: classes/controllers/class.admin.php:130
 msgid "Admin Email Options"
 msgstr "管理者宛メール設定"
 
-#: classes/controllers/class.admin.php:136
+#: classes/controllers/class.admin.php:144
 msgid "settings"
 msgstr "設定"
 
-#: classes/controllers/class.admin.php:148
+#: classes/controllers/class.admin.php:156
 msgid "Style setting"
 msgstr "スタイル設定"
 
@@ -287,11 +291,11 @@ msgstr "テキストエリア"
 msgid "Zip Code"
 msgstr "郵便番号"
 
-#: classes/functions.php:185
+#: classes/functions.php:193
 msgid "Uploaded from "
 msgstr "Uploaded from "
 
-#: classes/functions.php:276
+#: classes/functions.php:284
 msgid "Tracking Number"
 msgstr "問い合わせ番号"
 
@@ -488,55 +492,63 @@ msgstr "バリデーションルールを追加"
 msgid "The key which applies validation"
 msgstr "バリデーションを適用する項目"
 
-#: classes/views/class.admin.php:124
+#: classes/views/class.admin.php:121
+msgid "You can use more easy and useful to the MW WP Form in add-on!"
+msgstr "アドオンで MW WP Form をもっと簡単・便利に使うことができます！"
+
+#: classes/views/class.admin.php:122
+msgid "View Add-ons"
+msgstr "アドオンを見る"
+
+#: classes/views/class.admin.php:137
 msgid "Copy and Paste this shortcode."
 msgstr "このショートコードをコピー＆ペーストしてください。"
 
-#: classes/views/class.admin.php:125
+#: classes/views/class.admin.php:138
 msgid "The key to use with hook is "
 msgstr "各フックで使用する修飾子は"
 
-#: classes/views/class.admin.php:143 classes/views/class.admin.php:189
+#: classes/views/class.admin.php:156 classes/views/class.admin.php:202
 msgid "{key} is converted form data."
 msgstr "{キー}でそのフォーム項目に変換されます。"
 
-#: classes/views/class.admin.php:145 classes/views/class.admin.php:191
+#: classes/views/class.admin.php:158 classes/views/class.admin.php:204
 msgid "It is automatically converted to Tracking number when you input {%s}."
 msgstr "{%s} と入力すると問い合わせ番号に自動的に変換されます。"
 
-#: classes/views/class.admin.php:150 classes/views/class.admin.php:212
+#: classes/views/class.admin.php:163 classes/views/class.admin.php:225
 msgid "Subject"
 msgstr "件名"
 
-#: classes/views/class.admin.php:154 classes/views/class.admin.php:216
+#: classes/views/class.admin.php:167 classes/views/class.admin.php:229
 msgid "Sender"
 msgstr "送信者"
 
-#: classes/views/class.admin.php:156 classes/views/class.admin.php:161
-#: classes/views/class.admin.php:201 classes/views/class.admin.php:218
-#: classes/views/class.admin.php:223
+#: classes/views/class.admin.php:169 classes/views/class.admin.php:174
+#: classes/views/class.admin.php:214 classes/views/class.admin.php:231
+#: classes/views/class.admin.php:236
 msgid "If empty:"
 msgstr "未入力の場合:"
 
-#: classes/views/class.admin.php:159 classes/views/class.admin.php:221
+#: classes/views/class.admin.php:172 classes/views/class.admin.php:234
 msgid "From ( E-mail address )"
 msgstr "送信元（E-mailアドレス）"
 
-#: classes/views/class.admin.php:164 classes/views/class.admin.php:226
+#: classes/views/class.admin.php:177 classes/views/class.admin.php:239
 msgid "Content"
 msgstr "本文"
 
-#: classes/views/class.admin.php:168
+#: classes/views/class.admin.php:181
 msgid "Automatic reply email"
 msgstr "自動返信メール"
 
-#: classes/views/class.admin.php:170
+#: classes/views/class.admin.php:183
 msgid ""
 "Input the key to use as transmission to automatic reply email. {} is "
 "unnecessary."
 msgstr "自動返信メールに使用する項目のキーを入力してください。{ }は不要です。"
 
-#: classes/views/class.admin.php:196
+#: classes/views/class.admin.php:209
 msgid ""
 "If Admin Email Options is a blank, Automatic Replay Email Options is used as "
 "Admin Email Options."
@@ -544,23 +556,23 @@ msgstr ""
 "管理者宛メール設定が空のときは自動返信メール設定に管理者宛メール設定が使用さ"
 "れます。"
 
-#: classes/views/class.admin.php:199
+#: classes/views/class.admin.php:212
 msgid "To ( E-mail address )"
 msgstr "送信先（E-mailアドレス）"
 
-#: classes/views/class.admin.php:204
+#: classes/views/class.admin.php:217
 msgid "CC ( E-mail address )"
 msgstr "CC（E-mailアドレス）"
 
-#: classes/views/class.admin.php:208
+#: classes/views/class.admin.php:221
 msgid "BCC ( E-mail address )"
 msgstr "BCC（E-mailアドレス）"
 
-#: classes/views/class.admin.php:245
+#: classes/views/class.admin.php:258
 msgid "Activate Query string of post"
 msgstr "URL引数を有効にする"
 
-#: classes/views/class.admin.php:246
+#: classes/views/class.admin.php:259
 msgid ""
 "If this field is active, MW WP Form get query string. And get post data from "
 "query string \"post_id\". You can use $post's property in editor."
@@ -569,63 +581,63 @@ msgstr ""
 "とに投稿を取得します。その投稿（$post） のプロパティを使用できるようになりま"
 "す。"
 
-#: classes/views/class.admin.php:247
+#: classes/views/class.admin.php:260
 msgid "Example: {ID}, {post_title}, {post_meta} etc..."
 msgstr "例：{ID}、{post_title}、{post_meta}など…"
 
-#: classes/views/class.admin.php:250
+#: classes/views/class.admin.php:263
 msgid "Saving inquiry data in database"
 msgstr "問い合わせデータをデータベースに保存"
 
-#: classes/views/class.admin.php:253
+#: classes/views/class.admin.php:266
 msgid "Enable scrolling of screen transition."
 msgstr "画面変遷時のスクロールを有効にする"
 
-#: classes/views/class.admin.php:257
+#: classes/views/class.admin.php:270
 msgid "Akismet Setting"
 msgstr "Akismet 設定"
 
-#: classes/views/class.admin.php:272
+#: classes/views/class.admin.php:285
 msgid "Input the key to use Akismet."
 msgstr "Akismetを使用する項目のキーを入力してください。"
 
-#: classes/views/class.admin.php:285
+#: classes/views/class.admin.php:298
 msgid "Select Style"
 msgstr "スタイルを選択"
 
-#: classes/views/class.admin.php:302
+#: classes/views/class.admin.php:315
 msgid "Your contribution is needed for making this plugin better."
 msgstr "あなたの貢献があればこのプラグインをもっと良くすることができます。"
 
-#: classes/views/class.admin.php:302
+#: classes/views/class.admin.php:315
 msgid "Donate"
 msgstr "寄付する"
 
-#: classes/views/class.admin.php:324 classes/views/class.chart.php:93
+#: classes/views/class.admin.php:337 classes/views/class.chart.php:93
 msgid "Select this."
 msgstr "選択してください"
 
-#: classes/views/class.admin.php:325
+#: classes/views/class.admin.php:338
 msgid "Input fields"
 msgstr "入力項目"
 
-#: classes/views/class.admin.php:328
+#: classes/views/class.admin.php:341
 msgid "Select fields"
 msgstr "選択項目"
 
-#: classes/views/class.admin.php:331
+#: classes/views/class.admin.php:344
 msgid "Button fields"
 msgstr "ボタン項目"
 
-#: classes/views/class.admin.php:334
+#: classes/views/class.admin.php:347
 msgid "Error fields"
 msgstr "エラー項目"
 
-#: classes/views/class.admin.php:337
+#: classes/views/class.admin.php:350
 msgid "Other fields"
 msgstr "その他の項目"
 
-#: classes/views/class.admin.php:341
+#: classes/views/class.admin.php:354
 msgid "Add form tag"
 msgstr "フォームタグを追加"
 
@@ -697,51 +709,51 @@ msgstr "件"
 msgid "&laquo; Back to the list"
 msgstr "&laquo; 一覧に戻る"
 
-#: mw-wp-form.php:171
+#: mw-wp-form.php:145
 msgid "Add New Form"
 msgstr "フォームを追加"
 
-#: mw-wp-form.php:172
+#: mw-wp-form.php:146
 msgid "Edit Form"
 msgstr "フォームを編集"
 
-#: mw-wp-form.php:173
+#: mw-wp-form.php:147
 msgid "New Form"
 msgstr "新しいフォーム"
 
-#: mw-wp-form.php:174
+#: mw-wp-form.php:148
 msgid "View Form"
 msgstr "フォームを表示"
 
-#: mw-wp-form.php:175
+#: mw-wp-form.php:149
 msgid "Search Forms"
 msgstr "フォームを検索"
 
-#: mw-wp-form.php:176
+#: mw-wp-form.php:150
 msgid "No Forms found"
 msgstr "フォームがありません"
 
-#: mw-wp-form.php:177
+#: mw-wp-form.php:151
 msgid "No Forms found in Trash"
 msgstr "ゴミ箱にフォームはありません"
 
-#: mw-wp-form.php:199
+#: mw-wp-form.php:173
 msgid "Edit "
 msgstr "編集"
 
-#: mw-wp-form.php:200
+#: mw-wp-form.php:174
 msgid "View"
 msgstr "表示"
 
-#: mw-wp-form.php:201
+#: mw-wp-form.php:175
 msgid "Search"
 msgstr "検索"
 
-#: mw-wp-form.php:202
+#: mw-wp-form.php:176
 msgid "No data found"
 msgstr "データがありません"
 
-#: mw-wp-form.php:203
+#: mw-wp-form.php:177
 msgid "No data found in Trash"
 msgstr "ゴミ箱にデータはありません"
 

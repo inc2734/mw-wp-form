@@ -87,6 +87,14 @@ class MW_WP_Form_Admin_Controller {
 			MWF_Config::NAME, 'normal'
 		);
 
+		// アドオン
+		add_meta_box(
+			MWF_Config::NAME . '_addon',
+			__( 'Add-ons', MWF_Config::DOMAIN ),
+			array( $View, 'add_ons' ),
+			MWF_Config::NAME, 'side'
+		);
+
 		// フォーム識別子
 		$View->set( 'post_id', get_the_ID() );
 		add_meta_box(
