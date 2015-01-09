@@ -266,7 +266,7 @@ class MW_WP_Form_Contact_Data_List_Controller {
 						continue;
 					}
 					if ( $key === MWF_Config::TRACKINGNUMBER ) {
-						$columns[$key] = MWF_Functions::get_tracking_number_title( get_post_type() );
+						$columns[$key] = MWF_Functions::get_tracking_number_title( get_post_type( $post->ID ) );
 						continue;
 					}
 					$columns[$key] = $key;

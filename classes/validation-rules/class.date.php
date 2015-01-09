@@ -34,7 +34,7 @@ class MW_WP_Form_Validation_Rule_Date extends MW_WP_Form_Abstract_Validation_Rul
 			$options = array_merge( $defaults, $options );
 			$timestamp = strtotime( $value );
 			if ( !$timestamp ) {
-				if ( preg_match( '/\d+年\d{1,2}月\d{1,2}日/', $value ) ) {
+				if ( preg_match( '/^\d+年\d{1,2}月\d{1,2}日$/', $value ) ) {
 					$DateTime  = DateTime::createFromFormat( 'Y年m月d日', $value );
 					$value     = $DateTime->format( 'Y-m-d' );
 					$timestamp = strtotime( $value );
