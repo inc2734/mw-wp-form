@@ -54,8 +54,8 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function inputPage() {
-		$children = $this->getChildren( $this->atts['children'] );
-		$value    = $this->getChildren( $this->atts['value'] );
+		$children = $this->get_children( $this->atts['children'] );
+		$value    = $this->get_children( $this->atts['value'] );
 		$separator = ( $this->atts['separator'] ) ? $this->atts['separator'] : $this->defaults['separator'];
 		$_ret = $this->Form->checkbox( $this->atts['name'], $children, array(
 			'id'         => $this->atts['id'],
@@ -74,7 +74,7 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function confirmPage() {
-		$children = $this->getChildren( $this->atts['children'] );
+		$children = $this->get_children( $this->atts['children'] );
 		$value = $this->Form->get_checked_value( $this->atts['name'], $children );
 		$_ret  = esc_html( $value );
 		$_ret .= $this->Form->hidden( $this->atts['name'] . '[data]', $value );

@@ -124,7 +124,7 @@ abstract class MW_Form_Field {
 	 */
 	protected function set_qtags( $id, $display, $arg1, $arg2 = '' ) {
 		MWF_Functions::deprecated_message(
-			'MW_WP_Form_Abstract_Form_Field::set_qtags()',
+			'MW_Form_Field::set_qtags()',
 			'MW_WP_Form_Abstract_Form_Field::set_names()'
 		);
 		$this->qtags = array(
@@ -244,12 +244,12 @@ abstract class MW_Form_Field {
 	}
 
 	/**
-	 * getChildren
+	 * get_children
 	 * 選択肢の配列を返す（:が含まれている場合は分割して前をキーに、後ろを表示名にする）
 	 * @param string $_children
 	 * @return array $children
 	 */
-	public function getChildren( $_children ) {
+	public function get_children( $_children ) {
 		$children = array();
 		if ( !empty( $_children ) && !is_array( $_children ) ) {
 			$_children = explode( ',', $_children );
@@ -269,6 +269,13 @@ abstract class MW_Form_Field {
 			$children = apply_filters( 'mwform_choices_' . $this->form_key, $children, $this->atts );
 		}
 		return $children;
+	}
+	public function getChildren( $_children ) {
+		MWF_Functions::deprecated_message(
+			'MW_Form_Field::getChildren()',
+			'MW_WP_Form_Abstract_Form_Field::get_children()'
+		);
+		return $this->get_children( $_children );
 	}
 
 	/**

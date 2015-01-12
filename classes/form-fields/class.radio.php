@@ -53,7 +53,7 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string html
 	 */
 	protected function inputPage() {
-		$children = $this->getChildren( $this->atts['children'] );
+		$children = $this->get_children( $this->atts['children'] );
 		$_ret = $this->Form->radio( $this->atts['name'], $children, array(
 			'id'         => $this->atts['id'],
 			'value'      => $this->atts['value'],
@@ -71,7 +71,7 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function confirmPage() {
-		$children = $this->getChildren( $this->atts['children'] );
+		$children = $this->get_children( $this->atts['children'] );
 		$value = $this->Form->get_radio_value( $this->atts['name'], $children );
 		$_ret  = esc_html( $value );
 		$_ret .= $this->Form->hidden( $this->atts['name'], $value );
