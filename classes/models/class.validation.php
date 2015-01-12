@@ -108,13 +108,20 @@ class MW_WP_Form_Validation {
 	 * @param array オプション
 	 * @return bool
 	 */
-	protected function set_rule( $key, $rule, array $options = array() ) {
+	public function set_rule( $key, $rule, array $options = array() ) {
 		$rules = array(
 			'rule'    => strtolower( $rule ),
 			'options' => $options
 		);
 		$this->validate[$key][] = $rules;
 		return $this;
+	}
+	public function setRule( $key, $rule, array $options = array() ) {
+		MWF_Functions::deprecated_message(
+			'MW_Validations::setRule()',
+			'MW_WP_Form_Validation::set_rule()'
+		);
+		return $this->set_rule( $key, $rule, $options );
 	}
 
 	/**
