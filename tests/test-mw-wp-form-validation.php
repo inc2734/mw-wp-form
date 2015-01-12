@@ -4,6 +4,7 @@ class MW_WP_Form_Validation_Test extends WP_UnitTestCase {
 	protected $Data;
 
 	public function setUp() {
+		parent::setUp();
 		$form_key = MWF_Config::NAME . '-1';
 		$this->Data = MW_WP_Form_Data::getInstance( $form_key );
 		$this->Data->set( 'numeric', '111' );
@@ -39,6 +40,32 @@ class MW_WP_Form_Validation_Test extends WP_UnitTestCase {
 		) );
 		$this->Data->set( 'jpg', 'hoge.jpg' );
 		$this->Data->set( 'png', 'hoge.png' );
+	}
+
+	/**
+	 * 複数
+	 */
+	public function test_multi_validations() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$Rule1 = new MW_WP_Form_Validation_Rule_Alpha();
+		$Rule2 = new MW_WP_Form_Validation_Rule_Date();
+		$Rule1->set_Data( $this->Data );
+		$Rule2->set_Data( $this->Data );
+		$Error = new MW_WP_Form_Error();
+		$Validation = new MW_WP_Form_Validation( $Error );
+		$Validation->set_validation_rules( array(
+			$Rule1, $Rule2,
+		) );
+		$Validation->set_rule( 'tel1', 'alpha' );
+		$Validation->set_rule( 'tel1', 'date' );
+		$Validation->check();
+		$errors = $Error->get_errors();
+		$this->assertTrue( isset( $errors['tel1'] ) );
+		if ( isset( $errors['tel1'] ) ) {
+			$this->assertEquals( count( $errors['tel1'] ), 2 );
+		}
 	}
 
 	/**
