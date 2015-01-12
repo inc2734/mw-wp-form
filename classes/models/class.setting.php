@@ -293,44 +293,4 @@ class MW_WP_Form_Setting {
 		$new_tracking_number = $tracking_number + 1;
 		update_post_meta( $this->post_id, MWF_Config::TRACKINGNUMBER, $new_tracking_number );
 	}
-
-	/**
-	 * get_validation_rules
-	 * @param MW_WP_Form_Data $Data
-	 * @return array $rules
-	 */
-	public function get_validation_rules( MW_WP_Form_Data $Data ) {
-		$rules = array();
-		$validations = $this->get( 'validation' );
-		if ( $validations ) {
-			foreach ( $validations as $validation ) {
-				foreach ( $validation as $rule => $options ) {
-					if ( $rule == 'target' ) {
-						continue;
-					}
-					if ( !is_array( $options ) ) {
-						$options = array();
-					}
-					$rules[$validation['target']] = array(
-						'rule'    => $rule,
-						'options' => $options,
-					);
-				}
-			}
-		}
-		$Akismet = new MW_WP_Form_Akismet();
-		$akismet_check = $Akismet->check(
-			$this->get( 'akismet_author' ),
-			$this->get( 'akismet_author_email' ),
-			$this->get( 'akismet_author_url' ),
-			$Data
-		);
-		if ( $akismet_check ) {
-			$rules[MWF_Config::AKISMET] = array(
-				'rule'    => 'akismet_check',
-				'options' => array(),
-			);
-		}
-		return $rules;
-	}
 }

@@ -69,11 +69,35 @@ class MW_WP_Form_Validation {
 
 	/**
 	 * set_rules
-	 * @param array $rules
+	 * @param MW_WP_Form_Setting $Setting
+	 * @param MW_WP_Form_Data $Data
+	 * @return array $rules
 	 */
-	public function set_rules( array $rules ) {
-		foreach ( $rules as $target => $rule ) {
-			$this->set_rule( $target, $rule['rule'], $rule['options'] );
+	public function set_rules( MW_WP_Form_Setting $Setting, MW_WP_Form_Data $Data ) {
+		$rules = array();
+		$validations = $Setting->get('validation' );
+		if ( $validations ) {
+			foreach ( $validations as $validation ) {
+				foreach ( $validation as $rule => $options ) {
+					if ( $rule == 'target' ) {
+						continue;
+					}
+					if ( !is_array( $options ) ) {
+						$options = array();
+					}
+					$this->set_rule( $validation['target'], $rule, $options );
+				}
+			}
+		}
+		$Akismet = new MW_WP_Form_Akismet();
+		$akismet_check = $Akismet->check(
+			$Setting->get( 'akismet_author' ),
+			$Setting->get( 'akismet_author_email' ),
+			$Setting->get( 'akismet_author_url' ),
+			$Data->gets()
+		);
+		if ( $akismet_check ) {
+			$this->set_rule( MWF_Config::AKISMET, 'akismet_check' );
 		}
 	}
 

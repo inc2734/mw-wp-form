@@ -88,10 +88,9 @@ class MW_WP_Form_Main_Controller {
 		nocache_headers();
 
 		$Error = new MW_WP_Form_Error();
-		$rules = $this->Setting->get_validation_rules( $this->Data );
 		$this->Validation = new MW_WP_Form_Validation( $Error );
 		$this->Validation->set_validation_rules( $this->validation_rules );
-		$this->Validation->set_rules( $rules );
+		$this->Validation->set_rules( $this->Setting, $this->Data );
 		$this->Validation = apply_filters(
 			'mwform_validation_' . $form_key,
 			$this->Validation,
