@@ -26,6 +26,32 @@ class MW_WP_Form {
 	protected $form_fields = array();
 
 	/**
+	 * $validation_rules
+	 * バリデーションルールの配列。順番を固定するために定義が必要
+	 * @var array
+	 */
+	protected $validation_rules = array(
+		'akismet_check' => '',
+		'noempty'       => '',
+		'required'      => '',
+		'numeric'       => '',
+		'alpha'         => '',
+		'alphanumeric'  => '',
+		'katakana'      => '',
+		'hiragana'      => '',
+		'zip'           => '',
+		'tel'           => '',
+		'mail'          => '',
+		'date'          => '',
+		'url'           => '',
+		'eq'            => '',
+		'between'       => '',
+		'minlength'     => '',
+		'filetype'      => '',
+		'filesize'      => '',
+	);
+
+	/**
 	 * $validation_rules_only_jp
 	 * 日本語の時のみ使用できるバリデーションルール
 	 * @var array
@@ -279,15 +305,15 @@ class MW_WP_Form {
 					continue;
 				}
 				$instance = new $class_name();
-				$validation_rules[$instance->getName()] = $instance;
+				$this->validation_rules[$instance->getName()] = $instance;
 			}
 		}
-		$validation_rules = apply_filters(
+		$this->validation_rules = apply_filters(
 			'mwform_validation_rules',
-			$validation_rules,
+			$this->validation_rules,
 			null // 後方互換性のために残してるだけ
 		);
-		return $validation_rules;
+		return $this->validation_rules;
 	}
 
 	/**
