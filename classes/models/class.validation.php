@@ -146,11 +146,9 @@ class MW_WP_Form_Validation {
 		$rules = array();
 		if ( is_array( $this->validate ) && isset( $this->validate[$key] ) ) {
 			$rules = $this->validate[$key];
-			if ( $this->_check( $key, $rules ) ) {
-				return false;
-			}
+			$this->_check( $key, $rules );
 		}
-		return true;
+		return $this->is_valid();
 	}
 
 	/**
@@ -158,7 +156,6 @@ class MW_WP_Form_Validation {
 	 * validate実行の実体
 	 * @param string $key
 	 * @param array $rules
-	 * @return bool エラーがあれば true
 	 */
 	protected function _check( $key, array $rules ) {
 		foreach ( $rules as $rule_set ) {
@@ -178,7 +175,6 @@ class MW_WP_Form_Validation {
 				$message = $validation_rule->rule( $key, $options );
 				if ( !empty( $message ) ) {
 					$this->Error->set_error( $key, $rule, $message );
-					return true;
 				}
 			}
 		}
