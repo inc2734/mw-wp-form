@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MW WP Form 2.2.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/mw-wp-form\n"
-"POT-Creation-Date: 2015-01-09 14:19:18+00:00\n"
-"PO-Revision-Date: 2015-01-09 23:20+0900\n"
+"POT-Creation-Date: 2015-01-13 14:16:40+00:00\n"
+"PO-Revision-Date: 2015-01-13 23:20+0900\n"
 "Last-Translator: Takashi Kitajima <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.7.1\n"
+"X-Generator: Poedit 1.7.3\n"
 "X-Poedit-KeywordsList: __;_e;_x;esc_html_e;esc_html__\n"
 "X-Poedit-SearchPath-0: ..\n"
 
@@ -291,11 +291,11 @@ msgstr "テキストエリア"
 msgid "Zip Code"
 msgstr "郵便番号"
 
-#: classes/functions.php:193
+#: classes/functions.php:198
 msgid "Uploaded from "
 msgstr "Uploaded from "
 
-#: classes/functions.php:284
+#: classes/functions.php:289
 msgid "Tracking Number"
 msgstr "問い合わせ番号"
 
@@ -709,51 +709,51 @@ msgstr "件"
 msgid "&laquo; Back to the list"
 msgstr "&laquo; 一覧に戻る"
 
-#: mw-wp-form.php:145
+#: mw-wp-form.php:171
 msgid "Add New Form"
 msgstr "フォームを追加"
 
-#: mw-wp-form.php:146
+#: mw-wp-form.php:172
 msgid "Edit Form"
 msgstr "フォームを編集"
 
-#: mw-wp-form.php:147
+#: mw-wp-form.php:173
 msgid "New Form"
 msgstr "新しいフォーム"
 
-#: mw-wp-form.php:148
+#: mw-wp-form.php:174
 msgid "View Form"
 msgstr "フォームを表示"
 
-#: mw-wp-form.php:149
+#: mw-wp-form.php:175
 msgid "Search Forms"
 msgstr "フォームを検索"
 
-#: mw-wp-form.php:150
+#: mw-wp-form.php:176
 msgid "No Forms found"
 msgstr "フォームがありません"
 
-#: mw-wp-form.php:151
+#: mw-wp-form.php:177
 msgid "No Forms found in Trash"
 msgstr "ゴミ箱にフォームはありません"
 
-#: mw-wp-form.php:173
+#: mw-wp-form.php:199
 msgid "Edit "
 msgstr "編集"
 
-#: mw-wp-form.php:174
+#: mw-wp-form.php:200
 msgid "View"
 msgstr "表示"
 
-#: mw-wp-form.php:175
+#: mw-wp-form.php:201
 msgid "Search"
 msgstr "検索"
 
-#: mw-wp-form.php:176
+#: mw-wp-form.php:202
 msgid "No data found"
 msgstr "データがありません"
 
-#: mw-wp-form.php:177
+#: mw-wp-form.php:203
 msgid "No data found in Trash"
 msgstr "ゴミ箱にデータはありません"
 
@@ -766,9 +766,14 @@ msgid "http://plugins.2inc.org/mw-wp-form/"
 msgstr "http://plugins.2inc.org/mw-wp-form/"
 
 #. Description of the plugin/theme
-msgid "MW WP Form can create mail form with a confirmation screen."
+msgid ""
+"MW WP Form is shortcode base contact form plugin. This plugin have many "
+"feature. For example you can use many validation rules, contact data saving, "
+"and chart aggregation using saved contact data."
 msgstr ""
-"MW WP Formは確認画面付きのフォームを作成しメールを送信することができます。"
+"MW WP Form はショートコードベースのフォームプラグインです。多くの機能を持って"
+"おり、例えば、多くのバリデーションルール、問い合わせデータの保存、そしてグラ"
+"フ機能集計などを使用することができます。"
 
 #. Author of the plugin/theme
 msgid "Takashi Kitajima"
@@ -777,6 +782,10 @@ msgstr ""
 #. Author URI of the plugin/theme
 msgid "http://2inc.org"
 msgstr ""
+
+#~ msgid "MW WP Form can create mail form with a confirmation screen."
+#~ msgstr ""
+#~ "MW WP Formは確認画面付きのフォームを作成しメールを送信することができます。"
 
 #~ msgid "option"
 #~ msgstr "オプション"

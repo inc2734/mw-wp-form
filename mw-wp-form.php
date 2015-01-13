@@ -2,12 +2,12 @@
 /**
  * Plugin Name: MW WP Form
  * Plugin URI: http://plugins.2inc.org/mw-wp-form/
- * Description: MW WP Form can create mail form with a confirmation screen.
+ * Description: MW WP Form is shortcode base contact form plugin. This plugin have many feature. For example you can use many validation rules, contact data saving, and chart aggregation using saved contact data.
  * Version: 2.2.0
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : September 25, 2012
- * Modified: December 30, 2014
+ * Modified: January 13, 2015
  * Text Domain: mw-wp-form
  * Domain Path: /languages/
  * License: GPLv2

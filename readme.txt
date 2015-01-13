@@ -8,7 +8,7 @@ Stable tag: 2.2.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-MW WP Form can create mail form with a confirmation screen using shortcode.
+MW WP Form is shortcode base contact form plugin. This plugin have many feature. For example you can use many validation rules, contact data saving, and chart aggregation using saved contact data.
 
 == Description ==
 
