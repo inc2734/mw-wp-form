@@ -69,7 +69,7 @@ class MW_WP_Form_Akismet {
 			}
 			$permalink = get_permalink();
 			$akismet = array();
-			$akismet['blog']         = get_option( 'home' );
+			$akismet['blog']         = home_url();
 			$akismet['blog_lang']    = get_locale();
 			$akismet['blog_charset'] = get_option( 'blog_charset' );
 			$akismet['user_ip']      = preg_replace( '/[^0-9., ]/', '', $_SERVER['REMOTE_ADDR'] );

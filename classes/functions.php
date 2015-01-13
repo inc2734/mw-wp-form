@@ -190,7 +190,7 @@ class MWF_Functions {
 				'post_mime_type' => $wp_check_filetype['type'],
 				'post_title'     => $key,
 				'post_status'    => 'inherit',
-				'post_content'   => __( 'Uploaded from ' ) . $post_type->label,
+				'post_content'   => __( 'Uploaded from ', MWF_Config::DOMAIN ) . $post_type->label,
 			);
 			$attach_id   = wp_insert_attachment( $attachment, $filepath, $post_id );
 			$attach_data = wp_generate_attachment_metadata( $attach_id, $filepath );
