@@ -92,7 +92,16 @@ abstract class MW_Form_Field {
 			);
 		}
 		$this->_set_names();
-		$this->defaults = $this->setDefaults();
+		// 後方互換
+		if ( method_exists( $this, 'setDefaults' ) ) {
+			MWF_Functions::deprecated_message(
+				'MW_Form_Field::setDefaults()',
+				'MW_WP_Form_Abstract_Form_Field::set_defaults()'
+			);
+			$this->defaults = $this->setDefaults();
+		} else {
+			$this->defaults = $this->set_defaults();
+		}
 		$this->_add_mwform_tag_generator();
 		add_action( 'mwform_add_shortcode', array( $this, 'add_shortcode' ), 10, 4 );
 		add_filter( 'mwform_form_fields'  , array( $this, 'mwform_form_fields' ) );
@@ -178,20 +187,24 @@ abstract class MW_Form_Field {
 	}
 
 	/**
-	 * setDefaults
+	 * set_defaults
 	 * $this->defaultsを設定し返す
 	 * @return array defaults
 	 */
-	abstract protected function setDefaults();
+	protected function set_defaults() {
+		// 本当は abstract。後方互換のためしてない。
+	}
 
 	/**
-	 * inputPage
+	 * input_page
 	 * 入力ページでのフォーム項目を返す
 	 * @param array $atts
 	 * @return string HTML
 	 */
-	abstract protected function inputPage();
-	public function _inputPage( $atts ) {
+	protected function input_page() {
+		// 本当は abstract。後方互換のためしてない。
+	}
+	public function _input_page( $atts ) {
 		if ( isset( $this->defaults['value'], $atts['name'] ) && !isset( $atts['value'] ) ) {
 			$atts['value'] = apply_filters(
 				'mwform_value_' . $this->form_key,
@@ -200,19 +213,37 @@ abstract class MW_Form_Field {
 			);
 		}
 		$this->atts = shortcode_atts( $this->defaults, $atts );
-		return $this->inputPage();
+		// 後方互換
+		if ( method_exists( $this, 'inputPage' ) ) {
+			MWF_Functions::deprecated_message(
+				'MW_Form_Field::inputPage()',
+				'MW_WP_Form_Abstract_Form_Field::input_page()'
+			);
+			return $this->inputPage();
+		}
+		return $this->input_page();
 	}
 
 	/**
-	 * confirmPage
+	 * confirm_page
 	 * 確認ページでのフォーム項目を返す
 	 * @param array $atts
 	 * @return string HTML
 	 */
-	abstract protected function confirmPage();
-	public function _confirmPage( $atts ) {
+	protected function confirm_page() {
+		// 本当は abstract。後方互換のためしてない。
+	}
+	public function _confirm_page( $atts ) {
 		$this->atts = shortcode_atts( $this->defaults, $atts );
-		return $this->confirmPage();
+		// 後方互換
+		if ( method_exists( $this, 'confirmPage' ) ) {
+			MWF_Functions::deprecated_message(
+				'MW_Form_Field::confirmPage()',
+				'MW_WP_Form_Abstract_Form_Field::confirm_page()'
+			);
+			return $this->confirmPage();
+		}
+		return $this->confirm_page();
 	}
 
 	/**
@@ -230,10 +261,10 @@ abstract class MW_Form_Field {
 			$this->form_key = $form_key;
 			switch( $view_flg ) {
 				case 'input' :
-					add_shortcode( $this->shortcode_name, array( $this, '_inputPage' ) );
+					add_shortcode( $this->shortcode_name, array( $this, '_input_page' ) );
 					break;
 				case 'confirm' :
-					add_shortcode( $this->shortcode_name, array( $this, '_confirmPage' ) );
+					add_shortcode( $this->shortcode_name, array( $this, '_confirm_page' ) );
 					break;
 				case 'complete' :
 					break;

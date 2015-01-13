@@ -32,11 +32,11 @@ class MW_WP_Form_Field_Password extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * setDefaults
+	 * set_defaults
 	 * $this->defaultsを設定し返す
 	 * @return array defaults
 	 */
-	protected function setDefaults() {
+	protected function set_defaults() {
 		return array(
 			'name'        => '',
 			'id'          => '',
@@ -49,11 +49,11 @@ class MW_WP_Form_Field_Password extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * inputPage
+	 * input_page
 	 * 入力ページでのフォーム項目を返す
 	 * @return string HTML
 	 */
-	protected function inputPage() {
+	protected function input_page() {
 		$_ret = $this->Form->password( $this->atts['name'], array(
 			'id'          => $this->atts['id'],
 			'size'        => $this->atts['size'],
@@ -68,11 +68,11 @@ class MW_WP_Form_Field_Password extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * confirmPage
+	 * confirm_page
 	 * 確認ページでのフォーム項目を返す
 	 * @return string HTML
 	 */
-	protected function confirmPage() {
+	protected function confirm_page() {
 		$value = $this->Form->get_raw( $this->atts['name'] );
 		return '*****' . $this->Form->hidden( $this->atts['name'], $value );
 	}

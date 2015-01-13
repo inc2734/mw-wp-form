@@ -32,11 +32,11 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * setDefaults
+	 * set_defaults
 	 * $this->defaultsを設定し返す
 	 * @return array defaults
 	 */
-	protected function setDefaults() {
+	protected function set_defaults() {
 		return array(
 			'name'       => '',
 			'id'         => '',
@@ -47,11 +47,11 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * inputPage
+	 * input_page
 	 * 入力ページでのフォーム項目を返す
 	 * @return string html
 	 */
-	protected function inputPage() {
+	protected function input_page() {
 		$children = $this->get_children( $this->atts['children'] );
 		$_ret = $this->Form->select( $this->atts['name'], $children, array(
 			'id'    => $this->atts['id'],
@@ -64,11 +64,11 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * confirmPage
+	 * confirm_page
 	 * 確認ページでのフォーム項目を返す
 	 * @return string HTML
 	 */
-	protected function confirmPage() {
+	protected function confirm_page() {
 		$children = $this->get_children( $this->atts['children'] );
 		$value = $this->Form->get_selected_value( $this->atts['name'], $children );
 		$_ret  = esc_html( $value );

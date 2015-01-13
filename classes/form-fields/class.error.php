@@ -32,22 +32,22 @@ class MW_WP_Form_Field_Error extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * setDefaults
+	 * set_defaults
 	 * $this->defaultsを設定し返す
 	 * @return array defaults
 	 */
-	protected function setDefaults() {
+	protected function set_defaults() {
 		return array(
 			'keys' => '',
 		);
 	}
 
 	/**
-	 * inputPage
+	 * input_page
 	 * 入力ページでのフォーム項目を返す
 	 * @return string HTML
 	 */
-	protected function inputPage() {
+	protected function input_page() {
 		$keys = explode( ',', $this->atts['keys'] );
 		$_ret = '';
 		foreach ( $keys as $key ) {
@@ -57,11 +57,11 @@ class MW_WP_Form_Field_Error extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * confirmPage
+	 * confirm_page
 	 * 確認ページでのフォーム項目を返す
 	 * @return string HTML
 	 */
-	protected function confirmPage() {
+	protected function confirm_page() {
 	}
 
 	/**

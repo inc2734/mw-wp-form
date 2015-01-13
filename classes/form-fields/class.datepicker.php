@@ -32,11 +32,11 @@ class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * setDefaults
+	 * set_defaults
 	 * $this->defaultsを設定し返す
 	 * @return array defaults
 	 */
-	protected function setDefaults() {
+	protected function set_defaults() {
 		return array(
 			'name'       => '',
 			'id'         => '',
@@ -48,11 +48,11 @@ class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * inputPage
+	 * input_page
 	 * 入力ページでのフォーム項目を返す
 	 * @return string HTML
 	 */
-	protected function inputPage() {
+	protected function input_page() {
 		global $wp_scripts;
 		$ui = $wp_scripts->query( 'jquery-ui-core' );
 		wp_enqueue_style( 'jquery.ui', '//ajax.googleapis.com/ajax/libs/jqueryui/' . $ui->ver . '/themes/smoothness/jquery-ui.min.css', array(), $ui->ver );
@@ -90,11 +90,11 @@ class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * confirmPage
+	 * confirm_page
 	 * 確認ページでのフォーム項目を返す
 	 * @return string HTML
 	 */
-	protected function confirmPage() {
+	protected function confirm_page() {
 		$value = $this->Form->get_raw( $this->atts['name'] );
 		$_ret  = esc_html( $value );
 		$_ret .= $this->Form->hidden( $this->atts['name'], $value );

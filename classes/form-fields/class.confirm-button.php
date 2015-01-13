@@ -32,31 +32,31 @@ class MW_WP_Form_Field_Confirm_Button extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * setDefaults
+	 * set_defaults
 	 * $this->defaultsを設定し返す
 	 * @return array defaults
 	 */
-	protected function setDefaults() {
+	protected function set_defaults() {
 		return array(
 			'value' => __( 'Confirm', MWF_Config::DOMAIN ),
 		);
 	}
 
 	/**
-	 * inputPage
+	 * input_page
 	 * 入力ページでのフォーム項目を返す
 	 * @return string HTML
 	 */
-	protected function inputPage() {
+	protected function input_page() {
 		return $this->Form->submit( MWF_Config::CONFIRM_BUTTON, $this->atts['value'] );
 	}
 
 	/**
-	 * confirmPage
+	 * confirm_page
 	 * 確認ページでのフォーム項目を返す
 	 * @return string HTML
 	 */
-	protected function confirmPage() {
+	protected function confirm_page() {
 	}
 
 	/**
