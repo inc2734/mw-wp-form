@@ -76,7 +76,6 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Bug fix : Fixed a mwform_tracking_number_title filter hook bug.
 * Bug fix : Fixed a bug that can not set the more than 2 default values of the checkbox.
 * Bug fix : Fixed a bug that double quotation of shortcodes are escaped in manual form.
-* Changed : mwform_tracking_number_title_mw-wp-form-xxx to mwform_tracking_number_title_mwf-xxx.
 * Changed : Class name changed MW_Form_Field to MW_WP_Form_Abstract_Form_Field.
 * Changed : Class name changed MW_Validation_Rule to MW_WP_Form_Abstract_Validation_Rule.
 * Changed : Zip or Tel validation can use Japanese only.

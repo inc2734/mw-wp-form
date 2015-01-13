@@ -277,15 +277,30 @@ class MWF_Functions {
 
 	/**
 	 * get_tracking_number_title
-	 * @param string $post_type
+	 * @param string $post_type　問い合わせデータの投稿タイプ名
 	 * @return string
 	 */
 	public static function get_tracking_number_title( $post_type ) {
 		$tracking_number_title = esc_html__( 'Tracking Number', MWF_Config::DOMAIN );
-		$tracking_number_title = apply_filters(
-			'mwform_tracking_number_title_' . $post_type,
-			$tracking_number_title
-		);
+		$form_key = self::contact_data_post_type_to_form_key( $post_type );
+		if ( $form_key ) {
+			$tracking_number_title = apply_filters(
+				'mwform_tracking_number_title_' . $form_key,
+				$tracking_number_title
+			);
+		}
 		return $tracking_number_title;
+	}
+
+	/**
+	 * contact_data_post_type_to_form_key
+	 * @param string $post_type 問い合わせデータの投稿タイプ名
+	 * @return string|null フォーム識別子
+	 */
+	public static function contact_data_post_type_to_form_key( $post_type ) {
+		if ( preg_match( '/^' . MWF_Config::DBDATA . '(\d+)$/', $post_type, $match ) ) {
+			$form_key = MWF_Config::NAME . '-' . $match[1];
+			return $form_key;
+		}
 	}
 }

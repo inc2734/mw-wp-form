@@ -24,6 +24,19 @@ class MW_WP_Form_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * MWF_Functions::contact_data_post_type_to_form_key のテスト
+	 */
+	public function test_contact_data_post_type_to_form_key() {
+		$post_type = MWF_Config::DBDATA . '1';
+		$form_key = MWF_Functions::contact_data_post_type_to_form_key( $post_type );
+		$this->assertEquals( $form_key, MWF_Config::NAME . '-1' );
+
+		$post_type = MWF_Config::DBDATA . '-1';
+		$form_key = MWF_Functions::contact_data_post_type_to_form_key( $post_type );
+		$this->assertNull( $form_key );
+	}
+
+	/**
 	 * ショートコード mwform からデータを読めるかテスト
 	 */
 	public function test_shortocde_mwform() {
