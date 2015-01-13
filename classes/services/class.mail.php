@@ -315,7 +315,7 @@ class MW_WP_Form_Mail_Service {
 	protected function apply_filters_mwform_admin_mail_raw( MW_WP_Form_Mail $Mail ) {
 		return apply_filters(
 			'mwform_admin_mail_raw_' . $this->form_key,
-			$this->Mail_admin_raw,
+			$Mail,
 			$this->Data->gets()
 		);
 	}
