@@ -107,14 +107,19 @@ class MWF_Functions {
 	public static function deprecated_message( $function_name, $new_function = '' ) {
 		global $mwform_deprecated_message;
 		$mwform_deprecated_message .= '<div class="error ' . esc_attr( MWF_Config::NAME ) . '-deprecated-message">';
-		$mwform_deprecated_message .= sprintf( 'MW WP Form dosen\'t support "%s" already. ', $function_name );
+		$mwform_deprecated_message .= sprintf(
+			'MW WP Form dosen\'t support "%s" already. This method will be removed in the next version. ',
+			$function_name
+		);
 		if ( $new_function ) {
 			$mwform_deprecated_message .= sprintf( 'You should use "%s". ', $new_function );
 		}
 		$debug_backtrace = debug_backtrace();
 		array_shift( $debug_backtrace );
 		foreach ( $debug_backtrace as $value ) {
-			$mwform_deprecated_message .= sprintf( '%s line %d', @$value['file'], @$value['line'] );
+			if ( isset( $value['file'], $value['line'] ) ) {
+				$mwform_deprecated_message .= sprintf( '%s line %d', $value['file'], $value['line'] );
+			}
 			break;
 		}
 		$mwform_deprecated_message .= '</div>';
