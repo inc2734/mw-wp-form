@@ -223,6 +223,8 @@ class MW_WP_Form {
 	 * アンインストールした時の処理
 	 */
 	public static function uninstall() {
+		$plugin_dir_path = plugin_dir_path( __FILE__ );
+		include_once( $plugin_dir_path . 'classes/controllers/class.admin.php' );
 		$Admin = new MW_WP_Form_Admin();
 		$forms = $Admin->get_forms();
 
