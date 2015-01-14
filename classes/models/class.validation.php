@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Validation
  * Description: 与えられたデータに対してバリデーションエラーがあるかチェックする
- * Version    : 1.8.0
+ * Version    : 1.8.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 20, 2012
- * Modified   : December 31, 2014
+ * Modified   : January 14, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -94,7 +94,7 @@ class MW_WP_Form_Validation {
 			$Setting->get( 'akismet_author' ),
 			$Setting->get( 'akismet_author_email' ),
 			$Setting->get( 'akismet_author_url' ),
-			$this->Data
+			$Data
 		);
 		if ( $akismet_check ) {
 			$this->set_rule( MWF_Config::AKISMET, 'akismet_check' );
