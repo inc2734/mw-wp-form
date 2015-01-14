@@ -5,6 +5,7 @@ class MW_WP_Form_Test extends WP_UnitTestCase {
 	 * ショートコード mwform_formkey からデータを読めるかテスト
 	 */
 	public function test_shortocde_mwform_formkey() {
+		global $post;
 		$form_id = $this->factory->post->create( array(
 			'post_type' => MWF_Config::NAME,
 		) );
@@ -17,10 +18,14 @@ class MW_WP_Form_Test extends WP_UnitTestCase {
 			'post_content' => sprintf( '[mwform_formkey key="%d"]', $form_id ),
 		) );
 		$post = get_post( $post_id );
+		query_posts( array(
+			'p' => $post_id,
+		) );
 
 		$ExecShortcode = new MW_WP_Form_Exec_Shortcode( $post, '' );
 		$this->assertTrue( $ExecShortcode->has_shortcode() );
 		$this->assertEquals( '/contact/', $ExecShortcode->get( 'input_url' ) );
+		wp_reset_query();
 	}
 
 	/**
@@ -40,16 +45,21 @@ class MW_WP_Form_Test extends WP_UnitTestCase {
 	 * ショートコード mwform からデータを読めるかテスト
 	 */
 	public function test_shortocde_mwform() {
+		global $post;
 		$post_id = $this->factory->post->create( array(
 			'post_type'    => 'paga',
 			'post_content' => sprintf( '[mwform key="testform" input="/contact/"]hoge[/mwform]' ),
 		) );
 		$post = get_post( $post_id );
+		query_posts( array(
+			'p' => $post_id,
+		) );
 
 		$ExecShortcode = new MW_WP_Form_Exec_Shortcode( $post, '' );
 		$this->assertTrue( $ExecShortcode->has_shortcode() );
 		$this->assertEquals( 'testform', $ExecShortcode->get( 'key' ) );
 		$this->assertEquals( '/contact/', $ExecShortcode->get( 'input_url' ) );
+		wp_reset_query();
 	}
 
 	/**

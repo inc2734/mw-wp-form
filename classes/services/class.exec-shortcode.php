@@ -46,7 +46,7 @@ class MW_WP_Form_Exec_Shortcode {
 
 	/**
 	 * __construct
-	 * @param WP_Post|null $post
+	 * @param WP_Post|null $_post
 	 * @param string $template 使用テンプレートのパス
 	 */
 	public function __construct( $post, $template ) {
