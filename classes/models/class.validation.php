@@ -94,7 +94,7 @@ class MW_WP_Form_Validation {
 			$Setting->get( 'akismet_author' ),
 			$Setting->get( 'akismet_author_email' ),
 			$Setting->get( 'akismet_author_url' ),
-			$Data->gets()
+			$this->Data
 		);
 		if ( $akismet_check ) {
 			$this->set_rule( MWF_Config::AKISMET, 'akismet_check' );

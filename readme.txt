@@ -73,6 +73,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.2.1 =
 * Bug fix : Fixed the form existence check bug.
+* Bug fix : Fixed a akismet feature bug.
 
 = 2.2.0 =
 * Refactoring
