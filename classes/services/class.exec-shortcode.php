@@ -1,12 +1,12 @@
 <?php
 /**
  * Name       : MW WP Form Exec Shortcode
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Description: ExecShortcode（mwform、mwform_formkey）の存在有無のチェックとそれらの抽象化レイヤー
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : 
+ * Modified   : January 14, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -22,7 +22,7 @@ class MW_WP_Form_Exec_Shortcode {
 	/**
 	 * $post
 	 * ショートコードが埋め込まれた投稿のオブジェクト
-	 * @var WP_Post
+	 * @var WP_Post|null
 	 */
 	protected $post;
 
@@ -46,16 +46,15 @@ class MW_WP_Form_Exec_Shortcode {
 
 	/**
 	 * __construct
-	 * @param WP_Post $post
+	 * @param WP_Post|null $post
 	 * @param string $template 使用テンプレートのパス
 	 */
-	public function __construct( WP_Post $post, $template ) {
+	public function __construct( $post, $template ) {
 		$this->post     = $post;
 		$this->template = $template;
 
 		add_shortcode( 'mwform'        , array( $this, 'set_settings_by_mwform' ) );
 		add_shortcode( 'mwform_formkey', array( $this, 'set_settings_by_mwform_formkey' ) );
-		do_shortcode( $this->post->post_content );
 
 		$exec_shortcode = $this->get_exec_shortcode();
 		if ( $exec_shortcode ) {
