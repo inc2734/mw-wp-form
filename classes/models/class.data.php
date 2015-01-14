@@ -1,12 +1,12 @@
 <?php
 /**
  * Name       : MW WP Form Data
- * Description: mw_wp_form のデータ操作用
- * Version    : 1.3.0
+ * Description: MW WP Form のデータ操作用
+ * Version    : 1.3.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : October 10, 2013
- * Modified   : December 31, 2014
+ * Modified   : January 14, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -78,7 +78,6 @@ class MW_WP_Form_Data {
 		$this->set_request_valiables( $this->POST );
 		$this->set_files_valiables( $this->POST, $this->FILES );
 		add_filter( 'mwform_form_end_html', array( $this, 'mwform_form_end_html' ) );
-		add_action( 'parse_request'       , array( $this, 'remove_query_vars_from_post' ) );
 	}
 	
 	/**
@@ -394,26 +393,6 @@ class MW_WP_Form_Data {
 			$this->set( $key, $upload_file );
 			if ( !in_array( $key, $upload_file_keys ) ) {
 				$this->push( MWF_Config::UPLOAD_FILE_KEYS, $key );
-			}
-		}
-	}
-
-	/**
-	 * remove_query_vars_from_post
-	 * WordPressへのリクエストに含まれている、$_POSTの値を削除
-	 */
-	public function remove_query_vars_from_post( $wp_query ) {
-		if ( strtolower( $_SERVER['REQUEST_METHOD'] ) === 'post' && isset( $this->POST['token'] ) ) {
-			foreach ( $this->POST as $key => $value ) {
-				if ( $key == 'token' ) {
-					continue;
-				}
-				if ( isset( $wp_query->query_vars[$key] ) &&
-					 $wp_query->query_vars[$key] === $value &&
-					 !empty( $value ) ) {
-
-					$wp_query->query_vars[$key] = '';
-				}
 			}
 		}
 	}

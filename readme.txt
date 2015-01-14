@@ -72,7 +72,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 == Changelog ==
 
 = 2.2.1 =
-* Bug fix : Fixed the form existence check bug.
+* Bug fix : Fixed a bug that remove_query_vars_from_post() is not executed.
 * Bug fix : Fixed a akismet feature bug.
 * Bug fix : Fixed a uninstall bug.
 

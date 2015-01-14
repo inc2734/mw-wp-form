@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Main Controller
  * Description: フロントエンドにおいて、適切な画面にリダイレクトさせる
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 23, 2014
- * Modified   :
+ * Modified   : January 14, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -55,7 +55,28 @@ class MW_WP_Form_Main_Controller {
 	 */
 	public function initialize() {
 		add_filter( 'nocache_headers' , array( $this, 'nocache_headers' ) , 1 );
+		add_action( 'parse_request'   , array( $this, 'remove_query_vars_from_post' ) );
 		add_filter( 'template_include', array( $this, 'template_include' ), 10000 );
+	}
+
+	/**
+	 * remove_query_vars_from_post
+	 * WordPressへのリクエストに含まれている、$_POSTの値を削除
+	 */
+	public function remove_query_vars_from_post( $wp_query ) {
+		if ( strtolower( $_SERVER['REQUEST_METHOD'] ) === 'post' && isset( $_POST['token'] ) ) {
+			foreach ( $_POST as $key => $value ) {
+				if ( $key == 'token' ) {
+					continue;
+				}
+				if ( isset( $wp_query->query_vars[$key] ) &&
+					 $wp_query->query_vars[$key] === $value &&
+					 !empty( $value ) ) {
+
+					$wp_query->query_vars[$key] = '';
+				}
+			}
+		}
 	}
 
 	/**
@@ -68,16 +89,15 @@ class MW_WP_Form_Main_Controller {
 		global $post;
 
 		$this->ExecShortcode = new MW_WP_Form_Exec_Shortcode( $post, $template );
-		$form_id  = $this->ExecShortcode->get_form_id();
-		$form_key = $this->ExecShortcode->get( 'key' );
-		$this->Setting = new MW_WP_Form_Setting( $form_id );
-
 		$has_shortcode = $this->ExecShortcode->has_shortcode();
 		if ( !$has_shortcode ) {
 			return $template;
 		}
 
-		$this->Data = MW_WP_Form_Data::getInstance( $form_key, $_POST, $_FILES );
+		$form_key      = $this->ExecShortcode->get( 'key' );
+		$form_id       = $this->ExecShortcode->get_form_id();
+		$this->Setting = new MW_WP_Form_Setting( $form_id );
+		$this->Data    = MW_WP_Form_Data::getInstance( $form_key, $_POST, $_FILES );
 
 		foreach ( $this->validation_rules as $validation_name => $validation_rule ) {
 			if ( is_callable( array( $validation_rule, 'set_Data' ) ) ) {
