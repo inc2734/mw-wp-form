@@ -296,6 +296,8 @@ class MW_WP_Form_Validation_Test extends WP_UnitTestCase {
 		$this->assertNull( $message );
 		$message = $Rule->rule( 'hogehoge-fugafuga' );
 		$this->assertNotNull( $message );
+		$message = $Rule->rule( 'zero' );
+		$this->assertNull( $message );
 	}
 
 	/**
@@ -320,6 +322,8 @@ class MW_WP_Form_Validation_Test extends WP_UnitTestCase {
 		$this->assertNull( $message );
 		$message = $Rule->rule( 'alpha' );
 		$this->assertNotNull( $message );
+		$message = $Rule->rule( 'zero' );
+		$this->assertNotNull( $message );
 	}
 
 	/**
@@ -331,6 +335,8 @@ class MW_WP_Form_Validation_Test extends WP_UnitTestCase {
 		$message = $Rule->rule( 'zip' );
 		$this->assertNull( $message );
 		$message = $Rule->rule( 'tel1' );
+		$this->assertNotNull( $message );
+		$message = $Rule->rule( 'zero' );
 		$this->assertNotNull( $message );
 	}
 
@@ -350,6 +356,8 @@ class MW_WP_Form_Validation_Test extends WP_UnitTestCase {
 		$this->assertNotNull( $message );
 		$message = $Rule->rule( 'break-http3' );
 		$this->assertNotNull( $message );
+		$message = $Rule->rule( 'zero' );
+		$this->assertNotNull( $message );
 	}
 
 	/**
@@ -365,6 +373,10 @@ class MW_WP_Form_Validation_Test extends WP_UnitTestCase {
 		$message = $Rule->rule( 'alpha', array( 'options' => array( 'aa' ) ) );
 		$this->assertNotNull( $message );
 		$message = $Rule->rule( 'alpha', array( 'options' => array( 'aaaa' ) ) );
+		$this->assertNotNull( $message );
+		$message = $Rule->rule( 'zero', array( 'options' => array( '0' ) ) );
+		$this->assertNull( $message );
+		$message = $Rule->rule( 'zero', array( 'options' => array( 'aaa' ) ) );
 		$this->assertNotNull( $message );
 	}
 
