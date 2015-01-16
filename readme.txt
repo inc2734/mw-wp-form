@@ -73,6 +73,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.2.2 =
 * Bug fix : Fixed a tel validation bug.
+* Bug fix : Fixed a zip validation bug.
 
 = 2.2.1 =
 * Bug fix : Fixed a bug that remove_query_vars_from_post() is not executed.
