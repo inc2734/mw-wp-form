@@ -1,12 +1,12 @@
 <?php
 /**
  * Name       : MW WP Form Exec Shortcode
- * Version    : 1.0.1
+ * Version    : 1.0.2
  * Description: ExecShortcode（mwform、mwform_formkey）の存在有無のチェックとそれらの抽象化レイヤー
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : January 14, 2015
+ * Modified   : January 18, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -46,7 +46,7 @@ class MW_WP_Form_Exec_Shortcode {
 
 	/**
 	 * __construct
-	 * @param WP_Post|null $_post
+	 * @param WP_Post|null $post
 	 * @param string $template 使用テンプレートのパス
 	 */
 	public function __construct( $post, $template ) {
@@ -97,15 +97,23 @@ class MW_WP_Form_Exec_Shortcode {
 		if ( is_singular() && !empty( $this->post->ID ) ) {
 			$exec_shortcode = $this->get_in_content( $this->post->post_content );
 		}
-		if ( empty( $exec_shortcode ) &&
-			 !( defined( 'MWFORM_NOT_USE_TEMPLATE' ) && MWFORM_NOT_USE_TEMPLATE === true ) ) {
-			$response = wp_remote_get( $this->template );
-			if ( !is_wp_error( $response ) && $response['response']['code'] === 200 ) {
-				$template_data  = $response['body'];
-				$exec_shortcode = $this->get_in_content( $template_data );
-			}
+		if ( empty( $exec_shortcode ) ) {
+			$exec_shortcode = $this->get_in_template();
 		}
 		return $exec_shortcode;
+	}
+
+	/**
+	 * get_in_template
+	 * テンプレートファイル（絶対パス）に ExecShortcode が含まれていればそのショートコードを返す
+	 * @return string [hoge xxx="xxx"]
+	 */
+	protected function get_in_template() {
+		if ( !( defined( 'MWFORM_NOT_USE_TEMPLATE' ) && MWFORM_NOT_USE_TEMPLATE === true ) ) {
+			$template_data  = @file_get_contents( $this->template );
+			$exec_shortcode = $this->get_in_content( $template_data );
+			return $exec_shortcode;
+		}
 	}
 
 	/**

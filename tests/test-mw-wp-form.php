@@ -29,6 +29,27 @@ class MW_WP_Form_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * ExecShortcode::get_in_template のテスト
+	 */
+	public function test_get_in_template() {
+		$form_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$Setting = new MW_WP_Form_Setting( $form_id );
+
+		$wp_upload_dir = wp_upload_dir();
+		$page2_path = $wp_upload_dir['basedir'] . '/page2.php';
+		file_put_contents( $page2_path, sprintf( '[mwform_formkey key="%d"]', $form_id ) );
+		$ExecShortcode = new MW_WP_Form_Exec_Shortcode( null, $page2_path );
+		$this->assertTrue( $ExecShortcode->has_shortcode() );
+		unlink( $page2_path );
+
+		$page_path = get_template_directory() . '/page.php';
+		$ExecShortcode = new MW_WP_Form_Exec_Shortcode( null, $page_path );
+		$this->assertFalse( $ExecShortcode->has_shortcode() );
+	}
+
+	/**
 	 * MWF_Functions::contact_data_post_type_to_form_key のテスト
 	 */
 	public function test_contact_data_post_type_to_form_key() {
