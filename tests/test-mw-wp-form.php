@@ -2,7 +2,7 @@
 class MW_WP_Form_Test extends WP_UnitTestCase {
 
 	/**
-	 * ショートコード mwform_formkey からデータを読めるかテスト
+	 * ショートコード mwform_formkey からデータを読めるかテスト（投稿内の場合）
 	 */
 	public function test_shortocde_mwform_formkey() {
 		global $post;
@@ -29,7 +29,7 @@ class MW_WP_Form_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * ExecShortcode::get_in_template のテスト
+	 * ショートコード mwform_formkey からデータを読めるかテスト（テンプレートの場合）
 	 */
 	public function test_get_in_template() {
 		$form_id = $this->factory->post->create( array(
