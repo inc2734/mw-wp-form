@@ -110,9 +110,11 @@ class MW_WP_Form_Exec_Shortcode {
 	 */
 	protected function get_in_template() {
 		if ( !( defined( 'MWFORM_NOT_USE_TEMPLATE' ) && MWFORM_NOT_USE_TEMPLATE === true ) ) {
-			$template_data  = @file_get_contents( $this->template );
-			$exec_shortcode = $this->get_in_content( $template_data );
-			return $exec_shortcode;
+			$template_data = @file_get_contents( $this->template );
+			if ( $template_data ) {
+				$exec_shortcode = $this->get_in_content( $template_data );
+				return $exec_shortcode;
+			}
 		}
 	}
 
