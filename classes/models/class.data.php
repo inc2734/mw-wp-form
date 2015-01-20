@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Data
  * Description: MW WP Form のデータ操作用
- * Version    : 1.3.1
+ * Version    : 1.3.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : October 10, 2013
- * Modified   : January 14, 2015
+ * Modified   : January 20, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -331,19 +331,19 @@ class MW_WP_Form_Data {
 	 */
 	public function get_separated_value( $key, array $children = array() ) {
 		$separator = $this->get_separator_value( $key );
-		$value = $this->get_raw( $key );
+		$value     = $this->get_raw( $key );
 		if ( is_array( $value ) && isset( $value['data'] ) && is_array( $value['data'] ) && !empty( $separator ) ) {
 			if ( $children ) {
 				$rightData = array();
-				foreach ( $value['data'] as $child ) {
-					if ( isset( $children[$child] ) && !in_array( $children[$child], $rightData ) ) {
-						$rightData[] = $children[$child];
+				foreach ( $value['data'] as $name => $child ) {
+					if ( isset( $children[$name] ) && !in_array( $children[$name], $rightData ) ) {
+						$rightData[] = $children[$name];
 					}
 				}
 				return implode( $separator, $rightData );
 			} else {
 				// すべて空のからのときはimplodeしないように（---がいってしまうため）
-				foreach ( $value['data'] as $child ) {
+				foreach ( $value['data'] as $name => $child ) {
 					if ( $child !== '' && $child !== null ) {
 						return implode( $separator, $value['data'] );
 					}
