@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Contact Data Controller
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : 
+ * Modified   : January 20, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -38,6 +38,11 @@ class MW_WP_Form_Contact_Data_Controller {
 	public function admin_menu() {
 		$View = new MW_WP_Form_Contact_Data_View();
 		$View->set( 'contact_data_post_types', $this->contact_data_post_types );
+
+		if ( empty( $this->contact_data_post_types ) ) {
+			return;
+		}
+
 		add_submenu_page(
 			'edit.php?post_type=' . MWF_Config::NAME,
 			__( 'Inquiry data', MWF_Config::DOMAIN ),  // ページタイトル
