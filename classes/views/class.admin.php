@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Admin View
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 2, 2015
- * Modified   : 
+ * Modified   : January 20, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -91,6 +91,7 @@ class MW_WP_Form_Admin_View extends MW_WP_Form_View {
 		<div class="repeatable-boxes">
 			<?php foreach ( $validation as $key => $value ) : $value = array_merge( $validation_keys, $value ); ?>
 			<div class="repeatable-box" <?php if ( $key === 0 ) : ?>style="display:none"<?php endif; ?>>
+				<div class="sortable-icon-handle"></div>
 				<div class="remove-btn"><b>×</b></div>
 				<div class="open-btn"><span><?php echo esc_attr( $value['target'] ); ?></span><b>▼</b></div>
 				<div class="repeatable-box-content">

@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Admin Controller
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   :
+ * Modified   : January 20, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -220,6 +220,7 @@ class MW_WP_Form_Admin_Controller {
 			wp_enqueue_script( MWF_Config::NAME . '-repeatable', $url . '../../js/mw-wp-form-repeatable.js' );
 			wp_enqueue_script( MWF_Config::NAME . '-admin', $url . '../../js/admin.js' );
 			wp_enqueue_script( 'jquery-ui-dialog' );
+			wp_enqueue_script( 'jquery-ui-sortable' );
 
 			global $wp_scripts;
 			$ui = $wp_scripts->query( 'jquery-ui-core' );

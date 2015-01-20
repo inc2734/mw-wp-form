@@ -3,5 +3,8 @@ jQuery( function( $ ) {
 		add_position: 'last'
 	} );
 
-	$( '#mw-wp-form_chart .repeatable-boxes' ).sortable();
+	$( '#mw-wp-form_chart .repeatable-boxes' ).sortable( {
+		items : '> .repeatable-box',
+		handle: '.sortable-icon-handle'
+	} );
 } );
