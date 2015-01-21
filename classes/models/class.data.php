@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Data
  * Description: MW WP Form のデータ操作用
- * Version    : 1.3.2
+ * Version    : 1.3.3
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : October 10, 2013
- * Modified   : January 20, 2015
+ * Modified   : January 21, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -324,7 +324,7 @@ class MW_WP_Form_Data {
 
 	/**
 	 * get_separated_value
-	 * 配列データを整形して返す ( 郵便番号等用 )
+	 * 配列データを整形して返す ( 郵便番号等用 )。配列の場合は表示値を連結して返す
 	 * @param string $key name属性
 	 * @param array $children 選択肢
 	 * @return string データ
@@ -335,20 +335,14 @@ class MW_WP_Form_Data {
 		if ( is_array( $value ) && isset( $value['data'] ) && is_array( $value['data'] ) && !empty( $separator ) ) {
 			if ( $children ) {
 				$rightData = array();
-				foreach ( $value['data'] as $name => $child ) {
-					if ( isset( $children[$name] ) && !in_array( $children[$name], $rightData ) ) {
-						$rightData[] = $children[$name];
+				foreach ( $value['data'] as $child ) {
+					if ( isset( $children[$child] ) && !in_array( $children[$child], $rightData ) ) {
+						$rightData[] = $children[$child];
 					}
 				}
 				return implode( $separator, $rightData );
 			} else {
-				// すべて空のからのときはimplodeしないように（---がいってしまうため）
-				foreach ( $value['data'] as $name => $child ) {
-					if ( $child !== '' && $child !== null ) {
-						return implode( $separator, $value['data'] );
-					}
-				}
-				return '';
+				return $this->get_separated_value_not_children_set( $value['data'], $separator );
 			}
 		}
 	}
@@ -358,6 +352,47 @@ class MW_WP_Form_Data {
 			'MW_WP_Form_Data::get_separated_value()'
 		);
 		return $this->get_separated_value( $key );
+	}
+
+	/**
+	 * get_separated_raw_value
+	 * 配列データを整形して返す ( チェックボックス等用 )。配列の場合はpost値を連結して返す
+	 * @param string $key name属性
+	 * @param array $children 選択肢
+	 * @return string データ
+	 */
+	public function get_separated_raw_value( $key, array $children = array() ) {
+		$separator = $this->get_separator_value( $key );
+		$value     = $this->get_raw( $key );
+		if ( is_array( $value ) && isset( $value['data'] ) && is_array( $value['data'] ) && !empty( $separator ) ) {
+			if ( $children ) {
+				$rightData = array();
+				foreach ( $value['data'] as $child ) {
+					if ( isset( $children[$child] ) && !in_array( $child, $rightData ) ) {
+						$rightData[] = $child;
+					}
+				}
+				return implode( $separator, $rightData );
+			} else {
+				return $this->get_separated_value_not_children_set( $value['data'], $separator );
+			}
+		}
+	}
+
+	/**
+	 * get_separated_value_not_children_set
+	 * すべて空のからのときはimplodeしないように（---がいってしまうため）
+	 * @param array $data
+	 * @param string $separator
+	 * @return string
+	 */
+	protected function get_separated_value_not_children_set( array $data, $separator ) {
+		foreach ( $data as $child ) {
+			if ( $child !== '' && $child !== null ) {
+				return implode( $separator, $data );
+			}
+		}
+		return '';
 	}
 
 	/**

@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Checkbox
  * Description: チェックボックスを出力
- * Version    : 1.5.1
+ * Version    : 1.5.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : January 20, 2015
+ * Modified   : January 21, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -76,7 +76,7 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 	protected function confirm_page() {
 		$children     = $this->get_children( $this->atts['children'] );
 		$value        = $this->Form->get_checked_value( $this->atts['name'], $children );
-		$posted_value = $this->Form->get_raw( $this->atts['name'] );
+		$posted_value = $this->Form->get_separated_raw_value( $this->atts['name'], $children );
 		$_ret         = esc_html( $value );
 		$_ret        .= $this->Form->hidden( $this->atts['name'] . '[data]', $posted_value );
 		$_ret        .= $this->Form->separator( $this->atts['name'] );

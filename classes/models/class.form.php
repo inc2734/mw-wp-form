@@ -131,6 +131,17 @@ class MW_WP_Form_Form {
 	}
 
 	/**
+	 * get_separated_raw_value
+	 * 配列データを整形して返す ( チェックボックス等用 )。配列の場合はpost値を連結して返す
+	 * @param string $key name属性
+	 * @param array $children 選択肢
+	 * @return string データ
+	 */
+	public function get_separated_raw_value( $key, array $children = array() ) {
+		return $this->Data->get_separated_raw_value( $key, $children );
+	}
+
+	/**
 	 * separator
 	 * separatorを設定するためのhiddenを返す
 	 * @param string $key name属性
@@ -532,7 +543,7 @@ class MW_WP_Form_Form {
 				'<span class="%s"><label %s><input type="checkbox" name="%s" value="%s"%s %s />%s</label></span>',
 				$vertically,
 				$for,
-				esc_attr( $name.'[data][]' ),
+				esc_attr( $name . '[data][]' ),
 				esc_attr( $key ),
 				$checked,
 				$id,
