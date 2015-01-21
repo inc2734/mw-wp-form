@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Mail Service
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : 
+ * Modified   : January 21, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -431,7 +431,7 @@ class MW_WP_Form_Mail_Service {
 	public function save_contact_data( MW_WP_Form_Mail $Mail, array $files = array() ) {
 		$form_id = $this->Setting->get( 'post_id' );
 		$insert_contact_data_id = wp_insert_post( array(
-			'post_title'  => $Mail->subject,
+			'post_title'  => $this->parse_mail_content( $Mail->subject ),
 			'post_status' => 'publish',
 			'post_type'   => MWF_Config::DBDATA . $form_id,
 		) );
