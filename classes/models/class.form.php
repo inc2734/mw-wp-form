@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Form
  * Description: フォームヘルパー
- * Version    : 1.5.0
+ * Version    : 1.5.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : September 25, 2012
- * Modified   : December 31, 2014
+ * Modified   : January 21, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -46,7 +46,7 @@ class MW_WP_Form_Form {
 	public function get_zip_value( $key ) {
 		return $this->Data->get_separated_value( $key );
 	}
-	public function getZipValue() {
+	public function getZipValue( $key ) {
 		MWF_Functions::deprecated_message(
 			'MW_Form::getZipValue()',
 			'MW_WP_Form_Form::get_zip_value()'
@@ -256,7 +256,7 @@ class MW_WP_Form_Form {
 			$value = $this->get_raw( $name );
 		}
 		if ( is_array( $value ) ) {
-			$value = $this->getZipValue( $name );
+			$value = $this->get_zip_value( $name );
 		}
 		return sprintf( '<input type="hidden" name="%s" value="%s" />', esc_attr( $name ), esc_attr( $value ) );
 	}
