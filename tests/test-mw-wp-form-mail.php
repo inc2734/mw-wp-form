@@ -3,6 +3,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
 	 * メール関連のフックのテスト（自動返信設定あり）
+	 * @backupStaticAttributes enabled
 	 */
 	public function test_mail_hooks_for_setted_auto_replay_mail() {
 		$post_id = $this->factory->post->create( array(
@@ -39,7 +40,6 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 		$Mail = new MW_WP_Form_Mail();
 		$Data = MW_WP_Form_Data::getInstance( $form_key );
-		$Data->clear_values();
 		$Data->set( 'メールアドレス', 'inc@2inc.org' );
 
 		$Validation_Rule_Mail = new MW_WP_Form_Validation_Rule_Mail();
@@ -82,6 +82,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
 	 * メール関連のフックのテスト（自動返信設定なし）
+	 * @backupStaticAttributes enabled
 	 */
 	public function test_mail_hooks_for_no_set_auto_replay_mail() {
 		$post_id = $this->factory->post->create( array(
@@ -121,7 +122,6 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 		$Mail = new MW_WP_Form_Mail();
 		$Data = MW_WP_Form_Data::getInstance( $form_key );
-		$Data->clear_values();
 
 		$Validation_Rule_Mail = new MW_WP_Form_Validation_Rule_Mail();
 		$Validation_Rule_Mail->set_Data( $Data );
@@ -162,6 +162,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
 	 * メール関連のフックのテスト（送信内容に応じてメール設定を書き換える）
+	 * @backupStaticAttributes enabled
 	 */
 	public function test_mail_hooks_for_parse_post_content() {
 		$post_id = $this->factory->post->create( array(
@@ -183,7 +184,6 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 		$Mail = new MW_WP_Form_Mail();
 		$Data = MW_WP_Form_Data::getInstance( $form_key );
-		$Data->clear_values();
 		$Data->set( 'メールアドレス', 'customer@example.com' );
 
 		$Validation_Rule_Mail = new MW_WP_Form_Validation_Rule_Mail();
