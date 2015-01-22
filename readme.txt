@@ -4,7 +4,7 @@ Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 3.7
 Tested up to: 4.1
-Stable tag: 2.2.5
+Stable tag: 2.2.6
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,6 +70,12 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 5. Supports chart display of saved inquiry data.
 
 == Changelog ==
+
+= 2.2.6 =
+* Added   : Adding MW_WP_Form_Data object to augment of mail related hooks.
+* Added   : Adding MW_WP_Form_Data object to augment of mwform_validation hook.
+* Bug fix : Fixed a bug that post_title is not parsed when contact data saving in database.
+* Bug fix : Fixed a bug that post value is sent and saved when children attribute separate at post value and display value.
 
 = 2.2.5 =
 * Bug fix : Fixed a checkbox bug.
