@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Checkbox
  * Description: チェックボックスを出力
- * Version    : 1.5.2
+ * Version    : 1.5.3
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : January 21, 2015
+ * Modified   : January 22, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -54,14 +54,15 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function input_page() {
-		$children = $this->get_children( $this->atts['children'] );
-		$value    = $this->get_children( $this->atts['value'] );
+		$children  = $this->get_children( $this->atts['children'] );
+		$value     = $this->get_children( $this->atts['value'] );
 		$separator = ( $this->atts['separator'] ) ? $this->atts['separator'] : $this->defaults['separator'];
 		$_ret = $this->Form->checkbox( $this->atts['name'], $children, array(
 			'id'         => $this->atts['id'],
 			'value'      => $value,
 			'vertically' => $this->atts['vertically'],
 		), $separator );
+		$_ret .= $this->Form->children( $this->atts['name'], $children );
 		if ( $this->atts['show_error'] !== 'false' ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
 		}
@@ -79,6 +80,7 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 		$posted_value = $this->Form->get_separated_raw_value( $this->atts['name'], $children );
 		$_ret         = esc_html( $value );
 		$_ret        .= $this->Form->hidden( $this->atts['name'] . '[data]', $posted_value );
+		$_ret        .= $this->Form->children( $this->atts['name'], $children );
 		$_ret        .= $this->Form->separator( $this->atts['name'] );
 		return $_ret;
 	}

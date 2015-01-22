@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Form
  * Description: フォームヘルパー
- * Version    : 1.5.1
+ * Version    : 1.5.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : September 25, 2012
- * Modified   : January 21, 2015
+ * Modified   : January 22, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -97,12 +97,7 @@ class MW_WP_Form_Form {
 	 * @return string
 	 */
 	public function get_radio_value( $key, array $data ) {
-		$value = $this->get_raw( $key );
-		if ( !is_null( $value ) && !is_array( $value ) ) {
-			if ( isset( $data[$value] ) ) {
-				return $data[$value];
-			}
-		}
+		return $this->Data->get_in_children( $key, $data );
 	}
 	public function getRadioValue( $key, array $data ) {
 		MWF_Functions::deprecated_message(
@@ -173,6 +168,18 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_separator_value()'
 		);
 		return $this->get_separator_value( $key );
+	}
+
+	/**
+	 * children
+	 * childrenを設定するためのhiddenを返す
+	 * @param string $key name属性
+	 * @param array $children 選択肢の配列（必ず MW_WP_Form_Abstract_Form_Field::get_children の値 ）
+	 * @return string HTML
+	 */
+	public function children( $key, array $children ) {
+		$name = sprintf( '__children[%s]', $key );
+		return $this->hidden( $name,  json_encode( $children ) );
 	}
 
 	/**

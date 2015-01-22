@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Select
  * Description: セレクトボックスを出力
- * Version    : 1.5.1
+ * Version    : 1.5.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : January 20, 2015
+ * Modified   : January 22, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -57,6 +57,7 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 			'id'    => $this->atts['id'],
 			'value' => $this->atts['value'],
 		) );
+		$_ret .= $this->Form->children( $this->atts['name'], $children );
 		if ( $this->atts['show_error'] !== 'false' ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
 		}
@@ -74,6 +75,7 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 		$posted_value = $this->Form->get_raw( $this->atts['name'] );
 		$_ret         = esc_html( $value );
 		$_ret        .= $this->Form->hidden( $this->atts['name'], $posted_value );
+		$_ret        .= $this->Form->children( $this->atts['name'], $children );
 		return $_ret;
 	}
 

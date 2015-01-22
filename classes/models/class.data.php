@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Data
  * Description: MW WP Form のデータ操作用
- * Version    : 1.3.3
+ * Version    : 1.3.4
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : October 10, 2013
- * Modified   : January 21, 2015
+ * Modified   : January 22, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -292,12 +292,46 @@ class MW_WP_Form_Data {
 					return;
 				}
 				if ( is_array( $this->data[$key]['data'] ) ) {
+					if ( isset( $this->data['__children'][$key] ) ) {
+						$children = json_decode( $this->data['__children'][$key], true );
+						return $this->get_separated_value( $key, $children );
+					}
 					return $this->get_separated_value( $key );
 				} else {
-					return $this->data[$key]['data'];
+					$value = $this->data[$key]['data'];
+					if ( isset( $this->data['__children'][$key] ) ) {
+						$children = json_decode( $this->data['__children'][$key], true );
+						if ( isset( $children[$value] ) ) {
+							return $children[$value];
+						}
+					}
+					return $value;
 				}
 			} else {
-				return $this->data[$key];
+				$value = $this->get_raw( $key );
+				if ( isset( $this->data['__children'][$key] ) ) {
+					$children = json_decode( $this->data['__children'][$key], true );
+					if ( isset( $children[$value] ) ) {
+						return $children[$value];
+					}
+				}
+				return $value;
+			}
+		}
+	}
+
+	/**
+	 * get_in_children
+	 * $children の中に値が含まれているときだけ返す
+	 * @param string $key name属性
+	 * @param array $children
+	 * @return string
+	 */
+	public function get_in_children( $key, array $children ) {
+		$value = $this->get_raw( $key );
+		if ( !is_null( $value ) && !is_array( $value ) ) {
+			if ( isset( $children[$value] ) ) {
+				return $children[$value];
 			}
 		}
 	}
