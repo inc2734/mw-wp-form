@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Mail Service
- * Version    : 1.0.1
+ * Version    : 1.0.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : January 21, 2015
+ * Modified   : January 22, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -316,7 +316,8 @@ class MW_WP_Form_Mail_Service {
 		return apply_filters(
 			'mwform_admin_mail_raw_' . $this->form_key,
 			$Mail,
-			$this->Data->gets()
+			$this->Data->gets(),
+			clone $this->Data
 		);
 	}
 
@@ -329,7 +330,8 @@ class MW_WP_Form_Mail_Service {
 		return apply_filters(
 			'mwform_mail_' . $this->form_key,
 			$Mail,
-			$this->Data->gets()
+			$this->Data->gets(),
+			clone $this->Data
 		);
 	}
 
@@ -342,7 +344,8 @@ class MW_WP_Form_Mail_Service {
 		return apply_filters(
 			'mwform_admin_mail_' . $this->form_key,
 			$Mail,
-			$this->Data->gets()
+			$this->Data->gets(),
+			clone $this->Data
 		);
 	}
 
@@ -355,7 +358,8 @@ class MW_WP_Form_Mail_Service {
 		return apply_filters(
 			'mwform_auto_mail_raw_' . $this->form_key,
 			$Mail,
-			$this->Data->gets()
+			$this->Data->gets(),
+			clone $this->Data
 		);
 	}
 
@@ -368,7 +372,8 @@ class MW_WP_Form_Mail_Service {
 		return apply_filters(
 			'mwform_auto_mail_' . $this->form_key,
 			$Mail,
-			$this->Data->gets()
+			$this->Data->gets(),
+			clone $this->Data
 		);
 	}
 

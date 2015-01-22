@@ -2,6 +2,94 @@
 class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_clone_data_for_setted_auto_replay_mail() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$form_key = MWF_Config::NAME . '-' . $post_id;
+
+		add_filter( 'mwform_auto_mail_raw_' . $form_key,
+			array( $this, 'clone_data_for_auto_replay_mail_mwform_auto_mail_raw' ),
+			10, 3
+		);
+
+		add_filter( 'mwform_auto_mail_' . $form_key,
+			array( $this, 'clone_data_for_auto_replay_mail_mwform_auto_mail' ),
+			10, 3
+		);
+
+		$Mail = new MW_WP_Form_Mail();
+		$Data = MW_WP_Form_Data::getInstance( $form_key );
+		$Data->set( 'メールアドレス', 'inc@2inc.org' );
+		$Validation_Rule_Mail = new MW_WP_Form_Validation_Rule_Mail();
+		$Validation_Rule_Mail->set_Data( $Data );
+		$validation_rules = array(
+			'mail' => $Validation_Rule_Mail,
+		);
+		$Setting = new MW_WP_Form_Setting( $post_id );
+		$Setting->set( 'automatic_reply_email', 'メールアドレス' );
+
+		$Mail_Service = new MW_WP_Form_Mail_Service(
+			$Mail, $Data, $form_key, $validation_rules, $Setting
+		);
+	}
+	public function clone_data_for_auto_replay_mail_mwform_auto_mail_raw( $Mail, $values, $Data ) {
+		$this->assertEquals( $Data->get( 'メールアドレス' ), 'inc@2inc.org' );
+		$Data->set( 'メールアドレス', 'hoge' );
+		return $Mail;
+	}
+	public function clone_data_for_auto_replay_mail_mwform_auto_mail( $Mail, $values, $Data ) {
+		$this->assertEquals( $Data->get( 'メールアドレス' ), 'inc@2inc.org' );
+		return $Mail;
+	}
+
+	/**
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_clone_data_for_setted_admin_mail() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$form_key = MWF_Config::NAME . '-' . $post_id;
+
+		add_filter( 'mwform_admin_mail_raw_' . $form_key,
+			array( $this, 'clone_data_for_auto_replay_mail_mwform_admin_mail_raw' ),
+			10, 3
+		);
+
+		add_filter( 'mwform_admin_mail_' . $form_key,
+			array( $this, 'clone_data_for_auto_replay_mail_mwform_admin_mail' ),
+			10, 3
+		);
+
+		$Mail = new MW_WP_Form_Mail();
+		$Data = MW_WP_Form_Data::getInstance( $form_key );
+		$Data->set( 'メールアドレス', 'inc@2inc.org' );
+		$Validation_Rule_Mail = new MW_WP_Form_Validation_Rule_Mail();
+		$Validation_Rule_Mail->set_Data( $Data );
+		$validation_rules = array(
+			'mail' => $Validation_Rule_Mail,
+		);
+		$Setting = new MW_WP_Form_Setting( $post_id );
+		$Setting->set( 'automatic_reply_email', 'メールアドレス' );
+
+		$Mail_Service = new MW_WP_Form_Mail_Service(
+			$Mail, $Data, $form_key, $validation_rules, $Setting
+		);
+	}
+	public function clone_data_for_auto_replay_mail_mwform_admin_mail_raw( $Mail, $values, $Data ) {
+		$this->assertEquals( $Data->get( 'メールアドレス' ), 'inc@2inc.org' );
+		$Data->set( 'メールアドレス', 'hoge' );
+		return $Mail;
+	}
+	public function clone_data_for_auto_replay_mail_mwform_admin_mail( $Mail, $values, $Data ) {
+		$this->assertEquals( $Data->get( 'メールアドレス' ), 'inc@2inc.org' );
+		return $Mail;
+	}
+
+	/**
 	 * メール関連のフックのテスト（自動返信設定あり）
 	 * @backupStaticAttributes enabled
 	 */
