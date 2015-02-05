@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Abstract Form Field
  * Description: フォームフィールドの抽象クラス
- * Version    : 1.7.0
+ * Version    : 1.7.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : January 2, 2015
+ * Modified   : February 6, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -288,7 +288,17 @@ abstract class MW_Form_Field {
 		if ( is_array( $_children ) ) {
 			$_children = array_map( 'trim', $_children );
 			foreach ( $_children as $child ) {
-				$child = array_map( 'trim', explode( ':', $child, 2 ) );
+				$temp_replacement = '@-[_-_]-@';
+				if ( preg_match( '/(^:[^:])|([^:]:[^:])/', $child ) ) {
+					$child = str_replace( '::', $temp_replacement, $child );
+					$child = array_map( 'trim', explode( ':', $child, 2 ) );
+				} else {
+					$child = str_replace( '::', $temp_replacement, $child );
+					$child = array( $child );
+				}
+				foreach ( $child as $child_key => $child_value ) {
+					$child[$child_key] = str_replace( $temp_replacement, ':', $child_value );
+				}
 				if ( count( $child ) === 1 ) {
 					$children[$child[0]] = $child[0];
 				} else {

@@ -308,5 +308,18 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 			'abc' => 'あいうえお:！',
 			'def' => 'かきくけこ:！',
 		), $Field->get_children( $children ) );
+
+		$children = array(
+			'abc::あいうえお',
+			'abc:::あいうえお',
+			'def:def::かきくけこ',
+			'::ghi:さしすせそ',
+		);
+		$this->assertEquals( array(
+			'abc:あいうえお'  => 'abc:あいうえお',
+			'abc::あいうえお' => 'abc::あいうえお',
+			'def'   => 'def:かきくけこ',
+			':ghi' => 'さしすせそ',
+		), $Field->get_children( $children ) );
 	}
 }
