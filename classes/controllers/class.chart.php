@@ -46,10 +46,29 @@ class MW_WP_Form_Chart_Controller {
 	 * initialize
 	 */
 	public function initialize() {
+		add_action( 'current_screen'       , array( $this, 'check_current_screen' ) );
 		add_action( 'admin_menu'           , array( $this, 'admin_menu' ) );
 		add_action( 'admin_init'           , array( $this, 'register_setting' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts') );
 		add_action( 'admin_print_styles'   , array( $this, 'admin_print_styles' ) );
+	}
+
+	/**
+	 * check_current_screen
+	 * 現在の投稿タイプが有効化チェック。無効であればページを表示しない
+	 */
+	public function check_current_screen() {
+		$current_screen = get_current_screen();
+		if ( !empty( $current_screen->id ) && isset( $_GET['formkey'] ) ) {
+			$page = $current_screen->id;
+			if ( $page === MWF_Config::NAME . '_page_' . MWF_Config::NAME . '-chart' &&
+				 preg_match( '/^' . MWF_Config::DBDATA . '\d+$/', $_GET['formkey'] ) ) {
+
+				if ( !$this->has_post_type() ) {
+					exit;
+				}
+			}
+		}
 	}
 
 	/**
@@ -170,6 +189,22 @@ class MW_WP_Form_Chart_Controller {
 	protected function is_chart() {
 		if ( isset( $_GET['page'] ) && $_GET['page'] === 'mw-wp-form-chart' && $this->formkey ) {
 			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * has_post_type
+	 * 表示しようとするグラフの投稿タイプが有効化どうか
+	 * @return bool
+	 */
+	protected function has_post_type() {
+		if ( isset( $_GET['formkey'] ) ) {
+			$post_type = $_GET['formkey'];
+			$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+			if ( in_array( $post_type, $contact_data_post_types ) ) {
+				return true;
+			}
 		}
 		return false;
 	}

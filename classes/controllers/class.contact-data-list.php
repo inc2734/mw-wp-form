@@ -16,9 +16,25 @@ class MW_WP_Form_Contact_Data_List_Controller {
 	 */
 	public function initialize() {
 		add_action( 'wp_loaded'         , array( $this, 'csv_download' ) );
+		add_action( 'current_screen'    , array( $this, 'check_current_screen' ) );
 		add_action( 'admin_head'        , array( $this, 'add_columns' ) );
 		add_action( 'admin_print_styles', array( $this, 'admin_print_styles' ) );
 		add_action( 'in_admin_footer'   , array( $this, 'add_csv_download_button' ) );
+	}
+
+	/**
+	 * check_current_screen
+	 * 現在の投稿タイプが有効化チェック。無効であればページを表示しない
+	 */
+	public function check_current_screen() {
+		$current_screen = get_current_screen();
+		if ( !empty( $current_screen->post_type ) &&
+			 preg_match( '/^' . MWF_Config::DBDATA . '\d+$/', $current_screen->post_type ) ) {
+
+			if ( !$this->is_contact_data_list() ) {
+				exit;
+			}
+		}
 	}
 
 	/**
