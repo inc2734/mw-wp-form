@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Admin
  * Description: 管理画面クラス
- * Version    : 2.0.0
+ * Version    : 2.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : February 21, 2013
- * Modified   : January 1, 2015
+ * Modified   : February 7, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
