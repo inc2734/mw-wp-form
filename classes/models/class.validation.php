@@ -148,7 +148,10 @@ class MW_WP_Form_Validation {
 			$rules = $this->validate[$key];
 			$this->_check( $key, $rules );
 		}
-		return $this->is_valid();
+		if ( $this->Error->get_error( $key ) ) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
