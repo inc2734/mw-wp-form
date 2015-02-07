@@ -127,7 +127,7 @@ class MW_WP_Form {
 	public function initialize() {
 		load_plugin_textdomain( MWF_Config::DOMAIN, false, basename( dirname( __FILE__ ) ) . '/languages' );
 
-		add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ) );
+		add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ), 11 );
 		add_action( 'init', array( $this, 'register_post_type' ) );
 	}
 
