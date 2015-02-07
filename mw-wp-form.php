@@ -190,13 +190,8 @@ class MW_WP_Form {
 
 		// MW WP Form のデータベースに保存される問い合わせデータを管理する投稿タイプ
 		$Admin = new MW_WP_Form_Admin();
-		$forms = $Admin->get_forms();
+		$forms = $Admin->get_forms_using_database();
 		foreach ( $forms as $form ) {
-			$Setting = new MW_WP_Form_Setting( $form->ID );
-			if ( !$Setting->get( 'usedb' ) ) {
-				continue;
-			}
-
 			$post_type = MWF_Config::DBDATA . $form->ID;
 			register_post_type( $post_type, array(
 				'label'  => $form->post_title,

@@ -184,15 +184,15 @@ class MW_WP_Form_Contact_Data_Setting {
 	public static function get_posts() {
 		$contact_data_post_types = array();
 		$Admin = new MW_WP_Form_Admin();
-		$forms = $Admin->get_forms();
+		$forms = $Admin->get_forms_using_database();
 		foreach ( $forms as $form ) {
-			$Setting = new MW_WP_Form_Setting( $form->ID );
-			if ( !$Setting->get( 'usedb' ) ) {
-				continue;
-			}
 			$post_type = MWF_Config::DBDATA . $form->ID;
 			$contact_data_post_types[] = $post_type;
 		}
+		$contact_data_post_types = apply_filters(
+			'mwform_contact_data_post_types',
+			$contact_data_post_types
+		);
 		return $contact_data_post_types;
 	}
 

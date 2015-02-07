@@ -98,4 +98,21 @@ class MW_WP_Form_Admin {
 		) );
 		return $forms;
 	}
+
+	/**
+	 * get_forms_using_database
+	 * @return array データベースに保存が有効なフォーム（WP_Post）の配列
+	 */
+	public function get_forms_using_database() {
+		$forms_using_database = array();
+		$forms = $this->get_forms();
+		foreach ( $forms as $form ) {
+			$Setting = new MW_WP_Form_Setting( $form->ID );
+			if ( !$Setting->get( 'usedb' ) ) {
+				continue;
+			}
+			$forms_using_database[$form->ID] = $form;
+		}
+		return $forms_using_database;
+	}
 }
