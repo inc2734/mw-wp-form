@@ -144,6 +144,8 @@ class MW_WP_Form {
 
 		$plugin_dir_path = plugin_dir_path( __FILE__ );
 		if ( is_admin() ) {
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+
 			$Controller = new MW_WP_Form_Admin_Controller( $validation_rules );
 			$Controller->initialize();
 
@@ -162,6 +164,11 @@ class MW_WP_Form {
 			$Controller = new MW_WP_Form_Main_Controller( $validation_rules );
 			$Controller->initialize();
 		}
+	}
+
+	public function admin_enqueue_scripts() {
+		$url = plugins_url( MWF_Config::NAME );
+		wp_enqueue_style( MWF_Config::NAME . '-admin-common', $url . '/css/admin-common.css' );
 	}
 
 	/**
