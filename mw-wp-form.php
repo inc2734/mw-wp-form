@@ -133,7 +133,7 @@ class MW_WP_Form {
 
 	/**
 	 * after_setup_theme
-	 * 各管理画面の初期化
+	 * 各管理画面の初期化、もしくはフロント画面の初期化
 	 */
 	public function after_setup_theme() {
 		// フォームフィールドの読み込み、インスタンス化
