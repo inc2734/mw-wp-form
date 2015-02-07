@@ -34,10 +34,12 @@ class MW_WP_Form_Chart_View extends MW_WP_Form_View {
 
 		$post_type    = $this->get( 'post_type' );
 		$option_group = $this->get( 'option_group' );
-		$form_posts = get_posts( array(
-			'post_type'      => $post_type,
+		$args = array(
 			'posts_per_page' => -1,
-		) );
+		);
+		$args = apply_filters( 'mwform_get_chart_posts_args-' . $post_type, $args );
+		$args['post_type'] = $post_type;
+		$form_posts = get_posts( $args );
 
 		$custom_keys = array();
 		foreach ( $form_posts as $post ) {
