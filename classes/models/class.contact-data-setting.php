@@ -189,11 +189,19 @@ class MW_WP_Form_Contact_Data_Setting {
 			$post_type = MWF_Config::DBDATA . $form->ID;
 			$contact_data_post_types[] = $post_type;
 		}
+		$raw_post_types = $contact_data_post_types;
+		$new_post_types = array();
 		$contact_data_post_types = apply_filters(
 			'mwform_contact_data_post_types',
 			$contact_data_post_types
 		);
-		return $contact_data_post_types;
+		// もともとの配列に含まれていない値は削除する
+		foreach ( $contact_data_post_types as $post_type ) {
+			if ( in_array( $post_type, $raw_post_types ) ) {
+				$new_post_types[] = $post_type;
+			}
+		}
+		return $new_post_types;
 	}
 
 	/**
