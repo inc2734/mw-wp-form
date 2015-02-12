@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Contact Data List View
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 2, 2015
- * Modified   : 
+ * Modified   : February 13, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -98,6 +98,10 @@ class MW_WP_Form_Contact_Data_List_View extends MW_WP_Form_View {
 					esc_url( $src[0] )
 				);
 			}
+		}
+		// 添付されているけど、フック等でメタ情報が書き換えられて添付ファイルID以外になってしまった場合
+		else {
+			echo esc_html( $value );
 		}
 	}
 }
