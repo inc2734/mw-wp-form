@@ -121,7 +121,7 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 			<strong><?php esc_html_e( 'Send value by e-mail', MWF_Config::DOMAIN ); ?></strong>
 			<?php $value = $this->get_value_for_generator( 'value', $options ); ?>
 			<?php $post_raw = $this->get_value_for_generator( 'post_raw', $options ); ?>
-			<label><input type="checkbox" name="post_raw" value="false" <?php checked( 'false', $post_raw ); ?> /> <?php esc_html_e( 'Send post value when you split tha post value and display value by ":" in choices.', MWF_Config::DOMAIN ); ?></label>
+			<label><input type="checkbox" name="post_raw" value="false" <?php checked( 'false', $post_raw ); ?> /> <?php esc_html_e( 'Send post value when you split the post value and display value by ":" in choices.', MWF_Config::DOMAIN ); ?></label>
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'Default value', MWF_Config::DOMAIN ); ?></strong>
