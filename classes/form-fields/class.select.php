@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Select
  * Description: セレクトボックスを出力
- * Version    : 1.5.3
+ * Version    : 1.5.4
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : February 6, 2015
+ * Modified   : February 12, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -42,6 +42,7 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 			'id'         => '',
 			'children'   => '',
 			'value'      => '',
+			'post_raw'   => 'true',
 			'show_error' => 'true',
 		);
 	}
@@ -57,7 +58,9 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 			'id'    => $this->atts['id'],
 			'value' => $this->atts['value'],
 		) );
-		$_ret .= $this->Form->children( $this->atts['name'], $children );
+		if ( $this->atts['post_raw'] !== 'false' ) {
+			$_ret .= $this->Form->children( $this->atts['name'], $children );
+		}
 		if ( $this->atts['show_error'] !== 'false' ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
 		}
@@ -75,7 +78,9 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 		$posted_value = $this->Form->get_raw( $this->atts['name'] );
 		$_ret         = esc_html( $value );
 		$_ret        .= $this->Form->hidden( $this->atts['name'], $posted_value );
-		$_ret        .= $this->Form->children( $this->atts['name'], $children );
+		if ( $this->atts['post_raw'] !== 'false' ) {
+			$_ret .= $this->Form->children( $this->atts['name'], $children );
+		}
 		return $_ret;
 	}
 
@@ -105,6 +110,12 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 				<?php esc_html_e( 'You can split the post value and display value by ":". But display value is sent in e-mail.', MWF_Config::DOMAIN ); ?><br />
 				<?php esc_html_e( 'When you want to use ":", please enter "::".', MWF_Config::DOMAIN ); ?>
 			</span>
+		</p>
+		<p>
+			<strong><?php esc_html_e( 'Send value by e-mail', MWF_Config::DOMAIN ); ?></strong>
+			<?php $value = $this->get_value_for_generator( 'value', $options ); ?>
+			<?php $post_raw = $this->get_value_for_generator( 'post_raw', $options ); ?>
+			<label><input type="checkbox" name="post_raw" value="false" <?php checked( 'false', $post_raw ); ?> /> <?php esc_html_e( 'Send post value when you split tha post value and display value by ":" in choices.', MWF_Config::DOMAIN ); ?></label>
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'Default value', MWF_Config::DOMAIN ); ?></strong>

@@ -71,6 +71,9 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 == Changelog ==
 
+= 2.2.8 =
+* Added   : Add "Send value by e-mail" option for checkbox, select, radio.
+
 = 2.2.7 =
 * Changed : Changed to be able to use ":" as value at checkbox, select, radio.
 

@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Checkbox
  * Description: チェックボックスを出力
- * Version    : 1.5.4
+ * Version    : 1.5.5
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : February 6, 2015
+ * Modified   : February 12, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -43,6 +43,7 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 			'children'   => '',
 			'value'      => '',
 			'vertically' => '',
+			'post_raw'   => 'true',
 			'show_error' => 'true',
 			'separator'  => ', ',
 		);
@@ -62,7 +63,9 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 			'value'      => $value,
 			'vertically' => $this->atts['vertically'],
 		), $separator );
-		$_ret .= $this->Form->children( $this->atts['name'], $children );
+		if ( $this->atts['post_raw'] !== 'false' ) {
+			$_ret .= $this->Form->children( $this->atts['name'], $children );
+		}
 		if ( $this->atts['show_error'] !== 'false' ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
 		}
@@ -80,8 +83,10 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 		$posted_value = $this->Form->get_separated_raw_value( $this->atts['name'], $children );
 		$_ret         = esc_html( $value );
 		$_ret        .= $this->Form->hidden( $this->atts['name'] . '[data]', $posted_value );
-		$_ret        .= $this->Form->children( $this->atts['name'], $children );
 		$_ret        .= $this->Form->separator( $this->atts['name'] );
+		if ( $this->atts['post_raw'] !== 'false' ) {
+			$_ret .= $this->Form->children( $this->atts['name'], $children );
+		}
 		return $_ret;
 	}
 
@@ -111,6 +116,12 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 				<?php esc_html_e( 'You can split the post value and display value by ":". But display value is sent in e-mail.', MWF_Config::DOMAIN ); ?><br />
 				<?php esc_html_e( 'When you want to use ":", please enter "::".', MWF_Config::DOMAIN ); ?>
 			</span>
+		</p>
+		<p>
+			<strong><?php esc_html_e( 'Send value by e-mail', MWF_Config::DOMAIN ); ?></strong>
+			<?php $value = $this->get_value_for_generator( 'value', $options ); ?>
+			<?php $post_raw = $this->get_value_for_generator( 'post_raw', $options ); ?>
+			<label><input type="checkbox" name="post_raw" value="false" <?php checked( 'false', $post_raw ); ?> /> <?php esc_html_e( 'Send post value when you split tha post value and display value by ":" in choices.', MWF_Config::DOMAIN ); ?></label>
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'Default value', MWF_Config::DOMAIN ); ?></strong>
