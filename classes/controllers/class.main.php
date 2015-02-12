@@ -249,7 +249,7 @@ class MW_WP_Form_Main_Controller {
 		if ( $this->ExecShortcode->is_generated_by_formkey() ) {
 			$Mail_admin_raw = $Mail_Service->get_Mail_admin_raw();
 
-			// save_mail_body で登録されないように
+			// save_mail_body でファイルURLではなくファイルのIDが保存されるように
 			foreach ( $attachments as $key => $attachment ) {
 				$this->Data->clear_value( $key );
 			}
