@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.2.7\n"
+"Project-Id-Version: MW WP Form 2.2.8\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/mw-wp-form\n"
-"POT-Creation-Date: 2015-02-05 16:32:33+00:00\n"
-"PO-Revision-Date: 2015-02-06 01:35+0900\n"
+"POT-Creation-Date: 2015-02-12 11:09:11+00:00\n"
+"PO-Revision-Date: 2015-02-12 20:11+0900\n"
 "Last-Translator: Takashi Kitajima <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -112,85 +112,99 @@ msgstr "ボタン"
 msgid "Checkbox"
 msgstr "チェックボックス"
 
-#: classes/form-fields/class.checkbox.php:105
-#: classes/form-fields/class.radio.php:101
-#: classes/form-fields/class.select.php:99
-msgid "Choices"
-msgstr "選択肢"
-
-#: classes/form-fields/class.checkbox.php:109
-#: classes/form-fields/class.error.php:78
-#: classes/form-fields/class.radio.php:105
-#: classes/form-fields/class.select.php:103
-msgid "Input one line about one item."
-msgstr "1項目につき1行で入力してください。"
-
 #: classes/form-fields/class.checkbox.php:110
 #: classes/form-fields/class.radio.php:106
 #: classes/form-fields/class.select.php:104
+msgid "Choices"
+msgstr "選択肢"
+
+#: classes/form-fields/class.checkbox.php:114
+#: classes/form-fields/class.error.php:78
+#: classes/form-fields/class.radio.php:110
+#: classes/form-fields/class.select.php:108
+msgid "Input one line about one item."
+msgstr "1項目につき1行で入力してください。"
+
+#: classes/form-fields/class.checkbox.php:115
+#: classes/form-fields/class.radio.php:111
+#: classes/form-fields/class.select.php:109
 msgid "Example: value1&crarr;value2 or key1:value1&crarr;key2:value2"
 msgstr "例：値1&crarr;値2 もしくは キー1:値1&crarr;キー2:値2"
 
-#: classes/form-fields/class.checkbox.php:111
-#: classes/form-fields/class.radio.php:107
-#: classes/form-fields/class.select.php:105
+#: classes/form-fields/class.checkbox.php:116
+#: classes/form-fields/class.radio.php:112
+#: classes/form-fields/class.select.php:110
 msgid ""
 "You can split the post value and display value by \":\". But display value "
 "is sent in e-mail."
 msgstr ""
 "送信値と表示値を「:」で分割できます。ただし、メールでは表示値が送信されます。"
 
-#: classes/form-fields/class.checkbox.php:112
-#: classes/form-fields/class.radio.php:108
-#: classes/form-fields/class.select.php:106
+#: classes/form-fields/class.checkbox.php:117
+#: classes/form-fields/class.radio.php:113
+#: classes/form-fields/class.select.php:111
 msgid "When you want to use \":\", please enter \"::\"."
 msgstr "「:」を使いたいときは「::」と入力してください。"
 
-#: classes/form-fields/class.checkbox.php:116
+#: classes/form-fields/class.checkbox.php:121
+#: classes/form-fields/class.radio.php:117
+#: classes/form-fields/class.select.php:115
+msgid "Send value by e-mail"
+msgstr "メールで送信する値"
+
+#: classes/form-fields/class.checkbox.php:124
+#: classes/form-fields/class.radio.php:120
+#: classes/form-fields/class.select.php:118
+msgid ""
+"Send post value when you split the post value and display value by \":\" in "
+"choices."
+msgstr "choicesで送信値と表示値を「:」で分割したとき、送信値をメールで送信"
+
+#: classes/form-fields/class.checkbox.php:127
 #: classes/form-fields/class.datepicker.php:131
 #: classes/form-fields/class.hidden.php:79
 #: classes/form-fields/class.password.php:107
-#: classes/form-fields/class.radio.php:112
-#: classes/form-fields/class.select.php:110
+#: classes/form-fields/class.radio.php:123
+#: classes/form-fields/class.select.php:121
 #: classes/form-fields/class.text.php:115
 #: classes/form-fields/class.textarea.php:109
 msgid "Default value"
 msgstr "初期値"
 
-#: classes/form-fields/class.checkbox.php:121
+#: classes/form-fields/class.checkbox.php:132
 msgid "Separator string"
 msgstr "区切り文字"
 
-#: classes/form-fields/class.checkbox.php:126
-#: classes/form-fields/class.radio.php:117
+#: classes/form-fields/class.checkbox.php:137
+#: classes/form-fields/class.radio.php:128
 msgid "Display method"
 msgstr "表示方法"
 
-#: classes/form-fields/class.checkbox.php:128
-#: classes/form-fields/class.radio.php:119
+#: classes/form-fields/class.checkbox.php:139
+#: classes/form-fields/class.radio.php:130
 msgid "Arranged vertically."
 msgstr "垂直に配置する"
 
-#: classes/form-fields/class.checkbox.php:131
+#: classes/form-fields/class.checkbox.php:142
 #: classes/form-fields/class.datepicker.php:136
 #: classes/form-fields/class.file.php:109
 #: classes/form-fields/class.image.php:110
 #: classes/form-fields/class.password.php:117
-#: classes/form-fields/class.radio.php:122
-#: classes/form-fields/class.select.php:115
+#: classes/form-fields/class.radio.php:133
+#: classes/form-fields/class.select.php:126
 #: classes/form-fields/class.tel.php:89 classes/form-fields/class.text.php:125
 #: classes/form-fields/class.textarea.php:119
 #: classes/form-fields/class.zip.php:89
 msgid "Dsiplay error"
 msgstr "エラー表示"
 
-#: classes/form-fields/class.checkbox.php:133
+#: classes/form-fields/class.checkbox.php:144
 #: classes/form-fields/class.datepicker.php:138
 #: classes/form-fields/class.file.php:111
 #: classes/form-fields/class.image.php:112
 #: classes/form-fields/class.password.php:119
-#: classes/form-fields/class.radio.php:124
-#: classes/form-fields/class.select.php:117
+#: classes/form-fields/class.radio.php:135
+#: classes/form-fields/class.select.php:128
 #: classes/form-fields/class.tel.php:91 classes/form-fields/class.text.php:127
 #: classes/form-fields/class.textarea.php:121
 #: classes/form-fields/class.zip.php:91
