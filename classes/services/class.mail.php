@@ -442,10 +442,9 @@ class MW_WP_Form_Mail_Service {
 		) );
 		$this->insert_contact_data_id = $insert_contact_data_id;
 
-		// メタデータを保存
-		$this->save_mail_body( $Mail->body );
-
 		// 添付ファイルをメディアに保存
+		// save_mail_body 内のフックで添付ファイルの情報を使えるように、
+		// save_mail_body より前にこのブロックを実行する
 		if ( !empty( $insert_contact_data_id ) ) {
 			MWF_Functions::save_attachments_in_media(
 				$insert_contact_data_id,
@@ -453,6 +452,9 @@ class MW_WP_Form_Mail_Service {
 				$form_id
 			);
 		}
+
+		// メタデータを保存
+		$this->save_mail_body( $Mail->body );
 	}
 
 	/**
@@ -476,7 +478,8 @@ class MW_WP_Form_Mail_Service {
 			$value = apply_filters(
 				'mwform_custom_mail_tag_' . $this->form_key,
 				$value,
-				$match
+				$match,
+				$this->insert_contact_data_id
 			);
 		}
 		if ( $value !== null && $doUpdate ) {
