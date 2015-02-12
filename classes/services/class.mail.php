@@ -474,7 +474,7 @@ class MW_WP_Form_Mail_Service {
 		} else {
 			$value = $this->Data->get( $match );
 			$value = apply_filters(
-				'mwform_custom_tag_in_mail_' . $this->form_key,
+				'mwform_custom_mail_tag_' . $this->form_key,
 				$value,
 				$match
 			);
