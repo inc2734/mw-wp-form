@@ -473,6 +473,11 @@ class MW_WP_Form_Mail_Service {
 			}
 		} else {
 			$value = $this->Data->get( $match );
+			$value = apply_filters(
+				'mwform_custom_tag_in_mail_' . $this->form_key,
+				$value,
+				$match
+			);
 		}
 		if ( $value !== null && $doUpdate ) {
 			update_post_meta( $this->insert_contact_data_id, $match, $value );
