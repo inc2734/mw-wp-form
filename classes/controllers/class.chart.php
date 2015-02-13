@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Chart Controller
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   :
+ * Modified   : February 7, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -46,10 +46,24 @@ class MW_WP_Form_Chart_Controller {
 	 * initialize
 	 */
 	public function initialize() {
-		add_action( 'admin_menu'           , array( $this, 'admin_menu' ) );
-		add_action( 'admin_init'           , array( $this, 'register_setting' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts') );
-		add_action( 'admin_print_styles'   , array( $this, 'admin_print_styles' ) );
+		add_action( 'admin_menu'    , array( $this, 'admin_menu' ) );
+		add_action( 'admin_init'    , array( $this, 'register_setting' ) );
+		add_action( 'current_screen', array( $this, 'current_screen' ) );
+	}
+
+	/**
+	 * current_screen
+	 * @param WP_Screen $screen
+	 */
+	public function current_screen( $screen ) {
+		if ( $screen->id === MWF_Config::NAME . '_page_' . MWF_Config::NAME . '-chart' ) {
+			$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+			if ( !in_array( $this->formkey, $contact_data_post_types ) ) {
+				exit;
+			}
+		
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts') );
+		}
 	}
 
 	/**
@@ -57,7 +71,6 @@ class MW_WP_Form_Chart_Controller {
 	 */
 	public function admin_menu() {
 		$View = new MW_WP_Form_Chart_View();
-		$View->set( 'is_chart' , $this->is_chart() );
 		$View->set( 'post_type', $this->formkey );
 		$View->set( 'option_group', $this->option_group );
 		add_submenu_page(
@@ -71,20 +84,9 @@ class MW_WP_Form_Chart_Controller {
 	}
 
 	/**
-	 * admin_print_styles
-	 */
-	public function admin_print_styles() {
-		$View = new MW_WP_Form_Chart_View();
-		$View->admin_print_styles();
-	}
-
-	/**
 	 * admin_enqueue_scripts
 	 */
 	public function admin_enqueue_scripts() {
-		if ( !$this->is_chart() ) {
-			return;
-		}
 		global $wp_scripts;
 		$ui = $wp_scripts->query( 'jquery-ui-core' );
 		wp_enqueue_style(
@@ -95,37 +97,30 @@ class MW_WP_Form_Chart_Controller {
 		);
 		wp_enqueue_script( 'jquery-ui-sortable' );
 
-		$url = plugin_dir_url( __FILE__ );
-
-		wp_register_script( 'jsapi', 'https://www.google.com/jsapi' );
-		wp_enqueue_script( 'jsapi' );
-
-		wp_register_script(
+		$url = plugins_url( MWF_Config::NAME );
+		wp_enqueue_style( MWF_Config::NAME . '-admin-repeatable', $url . '/css/admin-repeatable.css' );
+		wp_enqueue_script( 'jsapi', 'https://www.google.com/jsapi' );
+		wp_enqueue_script(
 			MWF_Config::NAME . '-repeatable',
-			$url . '../../js/mw-wp-form-repeatable.js',
+			$url . '/js/mw-wp-form-repeatable.js',
 			array( 'jquery' ),
 			null,
 			true
 		);
-		wp_enqueue_script( MWF_Config::NAME . '-repeatable' );
-
-		wp_register_script(
+		wp_enqueue_script(
 			MWF_Config::NAME . '-google-chart',
-			$url . '../../js/mw-wp-form-google-chart.js',
+			$url . '/js/mw-wp-form-google-chart.js',
 			array( 'jquery' ),
 			null,
 			true
 		);
-		wp_enqueue_script( MWF_Config::NAME . '-google-chart' );
-
-		wp_register_script(
+		wp_enqueue_script(
 			MWF_Config::NAME . '-admin-chart',
-			$url . '../../js/admin-chart.js',
+			$url . '/js/admin-chart.js',
 			array( 'jquery', 'jquery-ui-sortable' ),
 			null,
 			true
 		);
-		wp_enqueue_script( MWF_Config::NAME . '-admin-chart' );
 	}
 
 	/**
@@ -161,16 +156,5 @@ class MW_WP_Form_Chart_Controller {
 			}
 		}
 		return $new_input;
-	}
-
-	/**
-	 * is_chart
-	 * @return bool
-	 */
-	protected function is_chart() {
-		if ( isset( $_GET['page'] ) && $_GET['page'] === 'mw-wp-form-chart' && $this->formkey ) {
-			return true;
-		}
-		return false;
 	}
 }

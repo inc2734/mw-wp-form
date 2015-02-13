@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Contact Data List Controller
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   :
+ * Modified   : February 7, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -15,10 +15,33 @@ class MW_WP_Form_Contact_Data_List_Controller {
 	 * initialize
 	 */
 	public function initialize() {
-		add_action( 'wp_loaded'         , array( $this, 'csv_download' ) );
-		add_action( 'admin_head'        , array( $this, 'add_columns' ) );
-		add_action( 'admin_print_styles', array( $this, 'admin_print_styles' ) );
-		add_action( 'in_admin_footer'   , array( $this, 'add_csv_download_button' ) );
+		add_action( 'current_screen', array( $this, 'current_screen' ) );
+	}
+
+	/**
+	 * current_screen
+	 * @param WP_Screen $screen
+	 */
+	public function current_screen( $screen ) {
+		if ( preg_match( '/^edit-' . MWF_Config::DBDATA . '\d+$/', $screen->id ) ) {
+			if ( !$this->is_contact_data_list() ) {
+				exit;
+			}
+			$this->csv_download();
+			add_action( 'admin_head'           , array( $this, 'add_columns' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+			add_action( 'admin_print_styles'   , array( $this, 'admin_print_styles' ) );
+			add_action( 'in_admin_footer'      , array( $this, 'add_csv_download_button' ) );
+		}
+	}
+
+	/**
+	 * admin_enqueue_scripts
+	 */
+	public function admin_enqueue_scripts() {
+		$url = plugins_url( MWF_Config::NAME );
+		wp_enqueue_style( MWF_Config::NAME . '-admin-data-list', $url . '/css/admin-data-list.css' );
+		wp_enqueue_script( MWF_Config::NAME . '-admin-data-list', $url . '/js/admin-data-list.js' );
 	}
 
 	/**
@@ -26,9 +49,6 @@ class MW_WP_Form_Contact_Data_List_Controller {
 	 * DB登録データの一覧で新規追加のリンクを消す
 	 */
 	public function admin_print_styles() {
-		if ( !$this->is_contact_data_list() ) {
-			return;
-		}
 		$View = new MW_WP_Form_Contact_Data_List_View();
 		$View->admin_print_styles_for_list();
 	}
@@ -38,9 +58,6 @@ class MW_WP_Form_Contact_Data_List_Controller {
 	 * CSVダウンロードボタンを表示
 	 */
 	public function add_csv_download_button() {
-		if ( !$this->is_contact_data_list() ) {
-			return;
-		}
 		$post_type = get_post_type();
 		if ( true !== apply_filters( 'mwform_csv_button_' . $post_type, true ) ) {
 			return;
@@ -232,9 +249,6 @@ class MW_WP_Form_Contact_Data_List_Controller {
 	 * DB登録使用時に問い合わせデータ一覧にカラムを追加
 	 */
 	public function add_columns() {
-		if ( !$this->is_contact_data_list() ) {
-			return;
-		}
 		$post_type = get_post_type();
 		add_filter(
 			'manage_' . $post_type . '_posts_columns',

@@ -1,0 +1,43 @@
+@charset "utf-8";
+
+/**
+ * クイック編集リンク
+ */
+.wp-list-table .post-title span.hide-if-no-js {
+	display: none;
+}
+
+/**
+ * CSVダウンロードボタン
+ */
+#wpbody-content {
+	padding-bottom: 85px; /* default: 65px */;
+}
+#mw-wp-form_csv {
+	position: absolute;
+	top: -34px;
+}
+#mw-wp-form_csv .button-primary {
+}
+
+/**
+ * .mw-wp-form-table
+ */
+.mw-wp-form-table-count,
+.mw-wp-form-table-date {
+	width: 20%;
+}
+
+/**
+ * .wp-list-table
+ */
+.mw-wp-form-wp-list-table {
+	overflow: auto;
+}
+.mw-wp-form-wp-list-table .wp-list-table {
+	table-layout: auto;
+	width: 100%;
+}
+.mw-wp-form-wp-list-table .wp-list-table th {
+	white-space: nowrap;
+}

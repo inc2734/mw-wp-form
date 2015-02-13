@@ -1,0 +1,65 @@
+@charset "utf-8";
+
+/**
+ * クイック編集リンク
+ */
+.wp-list-table .post-title span.hide-if-no-js {
+	display: none;
+}
+
+/**
+ * フォーム識別子
+ */
+span#formkey_field {
+	background-color: #fff;
+	border: #dfdfdf solid 1px;
+	border-radius: 3px;
+	color: #333;
+	display: block;
+	margin: 1px;
+	padding: 3px;
+}
+
+/**
+ * 寄付ボタン
+ */
+.wp-admin li.donation {
+	color: #ffffe0;
+	display: block;
+	margin: -8px 0 0;
+	overflow: hidden;
+	zoom: 1;
+}
+.wp-admin li.donation div.donation {
+	background-color: #ffffe0;
+	border: #e6db55 solid 1px;
+	color: #000;
+	float: left;
+	padding: 0 10px;
+	margin: 0 -5px 10px 0;
+	border-radius: 3px;
+}
+.wp-admin li.donation div.donation p {
+	margin: 3px 0;
+}
+
+/**
+ * .column-mwform_form_key
+ */
+.fixed .column-title {
+	width: 30%;
+}
+.fixed .column-mwform_form_key {
+	width: 30%;
+}
+.fixed .column-date {
+	width: 20%;
+}
+@media screen and (max-width: 782px) {
+	.fixed .column-title {
+		width: auto;
+	}
+	.fixed .column-mwform_form_key {
+		display: none;
+	}
+}

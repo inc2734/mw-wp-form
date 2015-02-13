@@ -1,43 +1,28 @@
 <?php
 /**
  * Name       : MW WP Form Chart View
- * Version    : 1.0.1
+ * Version    : 1.0.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 2, 2015
- * Modified   : January 20, 2015
+ * Modified   : February 7, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Chart_View extends MW_WP_Form_View {
 	
 	/**
-	 * admin_print_styles
-	 */
-	public function admin_print_styles() {
-		?>
-		<style>
-		#menu-posts-mw-wp-form .wp-submenu li a[href$="-chart"] {
-			display: none;
-		}
-		</style>
-		<?php
-	}
-	
-	/**
 	 * index
 	 */
 	public function index() {
-		if ( !$this->get( 'is_chart' ) ) {
-			return;
-		}
-
 		$post_type    = $this->get( 'post_type' );
 		$option_group = $this->get( 'option_group' );
-		$form_posts = get_posts( array(
-			'post_type'      => $post_type,
+		$args = array(
 			'posts_per_page' => -1,
-		) );
+		);
+		$args = apply_filters( 'mwform_get_chart_posts_args-' . $post_type, $args );
+		$args['post_type'] = $post_type;
+		$form_posts = get_posts( $args );
 
 		$custom_keys = array();
 		foreach ( $form_posts as $post ) {
@@ -181,7 +166,7 @@ class MW_WP_Form_Chart_View extends MW_WP_Form_View {
 				$value = $raw_data_value;
 			}
 			$data[] = array(
-				$raw_data_key,
+				( string ) $raw_data_key,
 				$value,
 			);
 		}

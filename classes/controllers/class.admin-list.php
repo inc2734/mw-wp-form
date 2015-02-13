@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Admin List Controller
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : 
+ * Modified   : February 8, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -15,17 +15,34 @@ class MW_WP_Form_Admin_List_Controller {
 	 * initialize
 	 */
 	public function initialize() {
-		add_action( 'admin_head', array( $this, 'add_columns' ) );
+		add_action( 'current_screen', array( $this , 'current_screen' ) );
+	}
+
+	/**
+	 * current_screen
+	 * @param WP_Screen $screen
+	 */
+	public function current_screen( $screen ) {
+		if ( $screen->id === 'edit-' . MWF_Config::NAME ) {
+			$View = new MW_WP_Form_Admin_List_View();
+			add_filter( 'views_' . $screen->id , array( $View, 'donate_link' ) );
+			add_action( 'admin_head'           , array( $this, 'add_columns' ) );
+			add_action( 'admin_enqueue_scripts', array( $this , 'admin_enqueue_scripts' ) );
+		}
+	}
+
+	/**
+	 * admin_enqueue_scripts
+	 */
+	public function admin_enqueue_scripts() {
+		$url = plugins_url( MWF_Config::NAME );
+		wp_enqueue_style( MWF_Config::NAME . '-admin-list', $url . '/css/admin-list.css' );
 	}
 
 	/**
 	 * add_columns
 	 */
 	public function add_columns() {
-		$post_type = get_post_type();
-		if ( $post_type !== MWF_Config::NAME ) {
-			return;
-		}
 		add_filter( 'manage_posts_columns'      , array( $this, 'manage_posts_columns' ) );
 		add_action( 'manage_posts_custom_column', array( $this, 'manage_posts_custom_column' ), 10, 2 );
 	}

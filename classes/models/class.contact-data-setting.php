@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Contact Data Setting
  * Description: 管理画面クラス
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : 
+ * Modified   : February 7, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -184,16 +184,24 @@ class MW_WP_Form_Contact_Data_Setting {
 	public static function get_posts() {
 		$contact_data_post_types = array();
 		$Admin = new MW_WP_Form_Admin();
-		$forms = $Admin->get_forms();
+		$forms = $Admin->get_forms_using_database();
 		foreach ( $forms as $form ) {
-			$Setting = new MW_WP_Form_Setting( $form->ID );
-			if ( !$Setting->get( 'usedb' ) ) {
-				continue;
-			}
 			$post_type = MWF_Config::DBDATA . $form->ID;
 			$contact_data_post_types[] = $post_type;
 		}
-		return $contact_data_post_types;
+		$raw_post_types = $contact_data_post_types;
+		$new_post_types = array();
+		$contact_data_post_types = apply_filters(
+			'mwform_contact_data_post_types',
+			$contact_data_post_types
+		);
+		// もともとの配列に含まれていない値は削除する
+		foreach ( $contact_data_post_types as $post_type ) {
+			if ( in_array( $post_type, $raw_post_types ) ) {
+				$new_post_types[] = $post_type;
+			}
+		}
+		return $new_post_types;
 	}
 
 	/**

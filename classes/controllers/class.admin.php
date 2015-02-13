@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Admin Controller
- * Version    : 1.0.1
+ * Version    : 1.0.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : January 20, 2015
+ * Modified   : February 8, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -34,26 +34,30 @@ class MW_WP_Form_Admin_Controller {
 	 * initialize
 	 */
 	public function initialize() {
-		$View  = new MW_WP_Form_Admin_View();
-		$Admin = new MW_WP_Form_Admin();
-		add_action( 'add_meta_boxes'            , array( $this , 'add_meta_boxes' ) );
-		add_action( 'current_screen'            , array( $this , 'current_screen' ) );
-		add_filter( 'default_content'           , array( $this , 'default_content' ) );
-		add_action( 'media_buttons'             , array( $View , 'tag_generator' ) );
-		add_action( 'admin_enqueue_scripts'     , array( $this , 'admin_enqueue_scripts' ) );
-		add_action( 'admin_print_footer_scripts', array( $View , 'quicktag' ) );
-		add_action( 'save_post'                 , array( $Admin, 'save_post' ) );
+		add_action( 'current_screen', array( $this , 'current_screen' ) );
+	}
+
+	/**
+	 * current_screen
+	 * @param WP_Screen $screen
+	 */
+	public function current_screen( $screen ) {
+		if ( $screen->id === MWF_Config::NAME ) {
+			$View  = new MW_WP_Form_Admin_View();
+			$Admin = new MW_WP_Form_Admin();
+			add_action( 'add_meta_boxes'            , array( $this , 'add_meta_boxes' ) );
+			add_filter( 'default_content'           , array( $this , 'default_content' ) );
+			add_action( 'media_buttons'             , array( $View , 'tag_generator' ) );
+			add_action( 'admin_enqueue_scripts'     , array( $this , 'admin_enqueue_scripts' ) );
+			add_action( 'admin_print_footer_scripts', array( $View , 'quicktag' ) );
+			add_action( 'save_post'                 , array( $Admin, 'save_post' ) );
+		}
 	}
 
 	/**
 	 * add_meta_boxes
 	 */
 	public function add_meta_boxes() {
-		$post_type = get_post_type();
-		if ( MWF_Config::NAME !== $post_type ) {
-			return;
-		}
-
 		$View = new MW_WP_Form_Admin_View();
 
 		// 完了画面内容
@@ -161,28 +165,13 @@ class MW_WP_Form_Admin_Controller {
 	}
 
 	/**
-	 * current_screen
-	 * 寄付リンクを表示
-	 * @param WP_Screen $screen
-	 */
-	public function current_screen( $screen ) {
-		$View = new MW_WP_Form_Admin_View();
-		if ( $screen->id === 'edit-' . MWF_Config::NAME ) {
-			add_filter( 'views_' . $screen->id, array( $View, 'donate_link' ) );
-		}
-	}
-
-	/**
 	 * default_content
 	 * 本文の初期値を設定
 	 * @param string $content
 	 * @return string
 	 */
 	public function default_content( $content ) {
-		global $typenow;
-		if ( $typenow === MWF_Config::NAME ) {
-			return apply_filters( 'mwform_default_content', '' );
-		}
+		return apply_filters( 'mwform_default_content', '' );
 	}
 
 	/**
@@ -211,25 +200,21 @@ class MW_WP_Form_Admin_Controller {
 	 */
 	public function admin_enqueue_scripts() {
 		$post_type = get_post_type();
-		$url = plugin_dir_url( __FILE__ );
-		if ( isset( $_GET['post_type'] ) && MWF_Config::NAME === $_GET['post_type'] ||
-			 MWF_Config::NAME == $post_type ) {
-			wp_enqueue_style( MWF_Config::NAME . '-admin', $url . '../../css/admin.css' );
-		}
-		if ( MWF_Config::NAME === $post_type ) {
-			wp_enqueue_script( MWF_Config::NAME . '-repeatable', $url . '../../js/mw-wp-form-repeatable.js' );
-			wp_enqueue_script( MWF_Config::NAME . '-admin', $url . '../../js/admin.js' );
-			wp_enqueue_script( 'jquery-ui-dialog' );
-			wp_enqueue_script( 'jquery-ui-sortable' );
+		$url = plugins_url( MWF_Config::NAME );
+		wp_enqueue_style( MWF_Config::NAME . '-admin', $url . '/css/admin.css' );
+		wp_enqueue_style( MWF_Config::NAME . '-admin-repeatable', $url . '/css/admin-repeatable.css' );
+		wp_enqueue_script( MWF_Config::NAME . '-repeatable', $url . '/js/mw-wp-form-repeatable.js' );
+		wp_enqueue_script( MWF_Config::NAME . '-admin', $url . '/js/admin.js' );
+		wp_enqueue_script( 'jquery-ui-dialog' );
+		wp_enqueue_script( 'jquery-ui-sortable' );
 
-			global $wp_scripts;
-			$ui = $wp_scripts->query( 'jquery-ui-core' );
-			wp_enqueue_style(
-				'jquery.ui',
-				'//ajax.googleapis.com/ajax/libs/jqueryui/' . $ui->ver . '/themes/smoothness/jquery-ui.min.css',
-				array(),
-				$ui->ver
-			);
-		}
+		global $wp_scripts;
+		$ui = $wp_scripts->query( 'jquery-ui-core' );
+		wp_enqueue_style(
+			'jquery.ui',
+			'//ajax.googleapis.com/ajax/libs/jqueryui/' . $ui->ver . '/themes/smoothness/jquery-ui.min.css',
+			array(),
+			$ui->ver
+		);
 	}
 }

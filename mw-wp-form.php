@@ -127,8 +127,15 @@ class MW_WP_Form {
 	public function initialize() {
 		load_plugin_textdomain( MWF_Config::DOMAIN, false, basename( dirname( __FILE__ ) ) . '/languages' );
 
+		add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ), 11 );
 		add_action( 'init', array( $this, 'register_post_type' ) );
+	}
 
+	/**
+	 * after_setup_theme
+	 * 各管理画面の初期化、もしくはフロント画面の初期化
+	 */
+	public function after_setup_theme() {
 		// フォームフィールドの読み込み、インスタンス化
 		$this->instantiate_form_fields();
 
@@ -137,6 +144,8 @@ class MW_WP_Form {
 
 		$plugin_dir_path = plugin_dir_path( __FILE__ );
 		if ( is_admin() ) {
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+
 			$Controller = new MW_WP_Form_Admin_Controller( $validation_rules );
 			$Controller->initialize();
 
@@ -155,6 +164,11 @@ class MW_WP_Form {
 			$Controller = new MW_WP_Form_Main_Controller( $validation_rules );
 			$Controller->initialize();
 		}
+	}
+
+	public function admin_enqueue_scripts() {
+		$url = plugins_url( MWF_Config::NAME );
+		wp_enqueue_style( MWF_Config::NAME . '-admin-common', $url . '/css/admin-common.css' );
 	}
 
 	/**
@@ -183,13 +197,8 @@ class MW_WP_Form {
 
 		// MW WP Form のデータベースに保存される問い合わせデータを管理する投稿タイプ
 		$Admin = new MW_WP_Form_Admin();
-		$forms = $Admin->get_forms();
+		$forms = $Admin->get_forms_using_database();
 		foreach ( $forms as $form ) {
-			$Setting = new MW_WP_Form_Setting( $form->ID );
-			if ( !$Setting->get( 'usedb' ) ) {
-				continue;
-			}
-
 			$post_type = MWF_Config::DBDATA . $form->ID;
 			register_post_type( $post_type, array(
 				'label'  => $form->post_title,
