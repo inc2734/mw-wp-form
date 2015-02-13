@@ -166,7 +166,7 @@ class MW_WP_Form_Chart_View extends MW_WP_Form_View {
 				$value = $raw_data_value;
 			}
 			$data[] = array(
-				$raw_data_key,
+				( string ) $raw_data_key,
 				$value,
 			);
 		}
