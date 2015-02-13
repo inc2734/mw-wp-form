@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Mail Service
- * Version    : 1.0.2
+ * Version    : 1.1.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : January 22, 2015
+ * Modified   : February 13, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -35,18 +35,6 @@ class MW_WP_Form_Mail_Service {
 	 * @var MW_WP_Form_Mail
 	 */
 	protected $Mail_auto_raw;
-
-	/**
-	 * $Mail_admin
-	 * @var MW_WP_Form_Mail
-	 */
-	protected $Mail_admin;
-	
-	/**
-	 * $Mail_auto
-	 * @var MW_WP_Form_Mail
-	 */
-	protected $Mail_auto;
 
 	/**
 	 * $Data
@@ -102,59 +90,163 @@ class MW_WP_Form_Mail_Service {
 			$this->set_admin_mail_raw_params();
 			$this->set_attachments( $this->Mail_admin_raw );
 			$this->Mail_admin_raw = $this->apply_filters_mwform_admin_mail_raw( $this->Mail_admin_raw );
-			$this->Mail_admin = $this->parse_mail_object( $this->Mail_admin_raw );
-			$this->Mail_admin = $this->set_admin_mail_reaquire_params( $this->Mail_admin );
-			$this->Mail_admin = $this->apply_filters_mwform_mail( $this->Mail_admin );
-			$this->Mail_admin = $this->apply_filters_mwform_admin_mail( $this->Mail_admin );
 
 			$this->set_reply_mail_raw_params();
 			$this->Mail_auto_raw = $this->apply_filters_mwform_auto_mail_raw( $this->Mail_auto_raw );
-			$this->Mail_auto = $this->parse_mail_object( $this->Mail_auto_raw );
-			$this->Mail_auto = $this->set_reply_mail_reaquire_params( $this->Mail_auto );
-			$this->Mail_auto = $this->apply_filters_mwform_auto_mail( $this->Mail_auto );
 		} else {
 			$Mail = $this->apply_filters_mwform_mail( $Mail );
 		}
 	}
 
 	/**
-	 * get_Mail_raw
-	 * @return MW_WP_Form_Mail
+	 * send_admin_mail
+	 * 管理者メールの送信とデータベースへの保存
 	 */
-	public function get_Mail_raw() {
-		return $this->Mail_raw;
+	public function send_admin_mail() {
+		// save_mail_body でファイルURLではなくファイルのIDが保存されるように
+		foreach ( $this->attachments as $key => $attachment ) {
+			$this->Data->clear_value( $key );
+		}
+
+		if ( $this->Setting->get( 'usedb' ) ) {
+			$parsed_mail_object = $this->get_parsed_mail_object( $this->Mail_admin_raw, true );
+		} else {
+			$parsed_mail_object = $this->get_parsed_mail_object( $this->Mail_admin_raw );
+		}
+
+		$Mail_admin = $this->set_admin_mail_reaquire_params( $parsed_mail_object );
+		$Mail_admin = $this->apply_filters_mwform_mail( $Mail_admin );
+		$Mail_admin = $this->apply_filters_mwform_admin_mail( $Mail_admin );
+		$Mail_admin->send();
+
+		// DB非保存時は管理者メール送信後、ファイルを削除
+		if ( !$this->Setting->get( 'usedb' ) ) {
+			$File = new MW_WP_Form_File();
+			$File->delete_files( $this->attachments );
+		}
 	}
 
 	/**
-	 * get_Mail_admin_raw
+	 * get_parsed_mail_object
+	 * パースしたMailオブジェクトの取得とデータベースへの保存
+	 * @param MW_WP_Form_Mail $_Mail
+	 * @param bool $do_update
 	 * @return MW_WP_Form_Mail
 	 */
-	public function get_Mail_admin_raw() {
-		return $this->Mail_admin_raw;
+	protected function get_parsed_mail_object( MW_WP_Form_Mail $_Mail, $do_update = false ) {
+		$Mail = clone $_Mail;
+		if ( $do_update ) {
+			$form_id = $this->Setting->get( 'post_id' );
+			$insert_contact_data_id = wp_insert_post( array(
+				'post_title'  => $this->parse_mail_content( $Mail->subject ),
+				'post_status' => 'publish',
+				'post_type'   => MWF_Config::DBDATA . $form_id,
+			) );
+
+			// 添付ファイルをメディアに保存
+			// save_mail_body 内のフックで添付ファイルの情報を使えるように、
+			// save_mail_body より前にこのブロックを実行する
+			if ( !empty( $insert_contact_data_id ) ) {
+				MWF_Functions::save_attachments_in_media(
+					$insert_contact_data_id,
+					$this->attachments,
+					$form_id
+				);
+			}
+			$this->insert_contact_data_id = $insert_contact_data_id;
+		}
+		return $this->parse_mail_object( $Mail, $do_update );
 	}
 
 	/**
-	 * get_Mail_admin
-	 * @return MW_WP_Form_Mail
+	 * parse_mail_object
+	 * @param MW_WP_Form_Mail $_Mail
+	 * @param bool $do_update
+	 * @return MW_WP_Form_Mail $Mail
 	 */
-	public function get_Mail_admin() {
-		return $this->Mail_admin;
+	protected function parse_mail_object( MW_WP_Form_Mail $_Mail, $do_update = false ) {
+		$Mail = clone $_Mail;
+		$parsed_Mail_vars = get_object_vars( $Mail );
+		foreach ( $parsed_Mail_vars as $key => $value ) {
+			if ( is_array( $value ) || $key == 'to' || $key == 'cc' || $key == 'bcc' ) {
+				continue;
+			}
+			if ( $key == 'body' && $do_update ) {
+				$value = $this->parse_mail_content( $value, true );
+			} else {
+				$value = $this->parse_mail_content( $value );
+			}
+			$Mail->$key = $value;
+		}
+		return $Mail;
 	}
 
 	/**
-	 * get_Mail_auto_raw
-	 * @return MW_WP_Form_Mail
+	 * parse_mail_content
+	 * メール本文用に {name属性} を置換
+	 * @param string $value
+	 * @param bool $do_update
+	 * @return string
 	 */
-	public function get_Mail_auto_raw() {
-		return $this->Mail_auto_raw;
+	protected function parse_mail_content( $value, $do_update = false ) {
+		if ( $do_update ) {
+			$callback = '_save_mail_content';
+		} else {
+			$callback = '_parse_mail_content';
+		}
+		return preg_replace_callback(
+			'/{(.+?)}/',
+			array( $this, $callback ),
+			$value
+		);
+	}
+	protected function _parse_mail_content( $matches ) {
+		return $this->parse( $matches, false );
+	}
+	protected function _save_mail_content( $matches ) {
+		return $this->parse( $matches, true );
 	}
 
 	/**
-	 * get_Mail_auto
-	 * @return MW_WP_Form_Mail
+	 * parse
+	 * $this->_parse_mail_content(), $this->_save_mail_content の本体
+	 * 第2引数でDB保存するか判定
+	 * @param array $matches
+	 * @param bool $do_update
+	 * @return string $value
 	 */
-	public function get_Mail_auto() {
-		return $this->Mail_auto;
+	protected function parse( $matches, $do_update = false ) {
+		$match = $matches[1];
+		// MWF_Config::TRACKINGNUMBER のときはお問い合せ番号を参照する
+		if ( $match === MWF_Config::TRACKINGNUMBER ) {
+			$form_id = $this->Setting->get( 'post_id' );
+			if ( $form_id ) {
+				$value = $this->Setting->get_tracking_number( $form_id );
+			}
+		} else {
+			$value = $this->Data->get( $match );
+			$value = apply_filters(
+				'mwform_custom_mail_tag_' . $this->form_key,
+				$value,
+				$match,
+				$this->insert_contact_data_id
+			);
+		}
+		if ( $value !== null && $do_update ) {
+			update_post_meta( $this->insert_contact_data_id, $match, $value );
+		}
+		return $value;
+	}
+
+	/**
+	 * send_reply_mail
+	 * 自動返信メールの送信
+	 */
+	public function send_reply_mail() {
+		$Mail_auto = $this->parse_mail_object( $this->Mail_auto_raw );
+		$Mail_auto = $this->set_reply_mail_reaquire_params( $Mail_auto );
+		$Mail_auto = $this->apply_filters_mwform_auto_mail( $Mail_auto );
+		$Mail_auto->send();
 	}
 
 	/**
@@ -375,116 +467,5 @@ class MW_WP_Form_Mail_Service {
 			$this->Data->gets(),
 			clone $this->Data
 		);
-	}
-
-	/**
-	 * parse_mail_object
-	 * @param MW_WP_Form_Mail $_Mail
-	 * @return MW_WP_Form_Mail $Mail
-	 */
-	protected function parse_mail_object( MW_WP_Form_Mail $_Mail ) {
-		$Mail = clone $_Mail;
-		$parsed_Mail_vars = get_object_vars( $Mail );
-		foreach ( $parsed_Mail_vars as $key => $value ) {
-			if ( is_array( $value ) || $key == 'to' || $key == 'cc' || $key == 'bcc' ) {
-				continue;
-			}
-			$value = $this->parse_mail_content( $value );
-			$Mail->$key = $value;
-		}
-		return $Mail;
-	}
-
-	/**
-	 * parse_mail_content
-	 * メール本文用に {name属性} を置換
-	 * @param string $value
-	 * @return string
-	 */
-	protected function parse_mail_content( $value ) {
-		return preg_replace_callback(
-			'/{(.+?)}/',
-			array( $this, '_parse_mail_content' ),
-			$value
-		);
-	}
-	protected function _parse_mail_content( $matches ) {
-		return $this->parse_mail_body( $matches, false );
-	}
-
-	/**
-	 * save_mail_body
-	 * DB保存用に {name属性} を置換、保存
-	 */
-	protected function save_mail_body( $value ) {
-		return preg_replace_callback(
-			'/{(.+?)}/',
-			array( $this, '_save_mail_body' ),
-			$value
-		);
-	}
-	protected function _save_mail_body( $matches ) {
-		return $this->parse_mail_body( $matches, true );
-	}
-
-	/**
-	 * save_contact_data
-	 * @param int $form_id
-	 * @param MW_WP_Form_Mail $Mail
-	 * @param array $files 保存するファイルパスの配列
-	 */
-	public function save_contact_data( MW_WP_Form_Mail $Mail, array $files = array() ) {
-		$form_id = $this->Setting->get( 'post_id' );
-		$insert_contact_data_id = wp_insert_post( array(
-			'post_title'  => $this->parse_mail_content( $Mail->subject ),
-			'post_status' => 'publish',
-			'post_type'   => MWF_Config::DBDATA . $form_id,
-		) );
-		$this->insert_contact_data_id = $insert_contact_data_id;
-
-		// 添付ファイルをメディアに保存
-		// save_mail_body 内のフックで添付ファイルの情報を使えるように、
-		// save_mail_body より前にこのブロックを実行する
-		if ( !empty( $insert_contact_data_id ) ) {
-			MWF_Functions::save_attachments_in_media(
-				$insert_contact_data_id,
-				$files,
-				$form_id
-			);
-		}
-
-		// メタデータを保存
-		$this->save_mail_body( $Mail->body );
-	}
-
-	/**
-	 * parse_mail_body
-	 * $this->create_mail_body(), $this->save_mail_body の本体
-	 * 第2引数でDB保存するか判定
-	 * @param array $matches
-	 * @param bool $doUpdate
-	 * @return string $value
-	 */
-	protected function parse_mail_body( $matches, $doUpdate = false ) {
-		$match = $matches[1];
-		// MWF_Config::TRACKINGNUMBER のときはお問い合せ番号を参照する
-		if ( $match === MWF_Config::TRACKINGNUMBER ) {
-			$form_id = $this->Setting->get( 'post_id' );
-			if ( $form_id ) {
-				$value = $this->Setting->get_tracking_number( $form_id );
-			}
-		} else {
-			$value = $this->Data->get( $match );
-			$value = apply_filters(
-				'mwform_custom_mail_tag_' . $this->form_key,
-				$value,
-				$match,
-				$this->insert_contact_data_id
-			);
-		}
-		if ( $value !== null && $doUpdate ) {
-			update_post_meta( $this->insert_contact_data_id, $match, $value );
-		}
-		return $value;
 	}
 }

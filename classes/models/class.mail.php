@@ -94,7 +94,7 @@ class MW_WP_Form_Mail {
 				$headers[] = 'Bcc: ' . $this->bcc;
 			}
 			$to = trim( $to );
-			wp_mail( $to, $subject, $body, $headers, $this->attachments );
+			@wp_mail( $to, $subject, $body, $headers, $this->attachments );
 		}
 
 		remove_action( 'phpmailer_init'   , array( $this, 'set_return_path' ) );

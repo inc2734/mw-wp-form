@@ -247,26 +247,7 @@ class MW_WP_Form_Main_Controller {
 
 		// 管理画面で作成した場合だけ自動で送信
 		if ( $this->ExecShortcode->is_generated_by_formkey() ) {
-			$Mail_admin_raw = $Mail_Service->get_Mail_admin_raw();
-
-			// save_mail_body でファイルURLではなくファイルのIDが保存されるように
-			foreach ( $attachments as $key => $attachment ) {
-				$this->Data->clear_value( $key );
-			}
-
-			// メール送信前にファイルのリネームをしないと、tempファイル名をメールで送信してしまう。
-			if ( $this->Setting->get( 'usedb' ) ) {
-				$Mail_Service->save_contact_data( $Mail_admin_raw, $attachments );
-			}
-
-			$Mail_admin = $Mail_Service->get_Mail_admin();
-			$Mail_admin->send();
-
-			// DB非保存時は管理者メール送信後、ファイルを削除
-			if ( !$this->Setting->get( 'usedb' ) ) {
-				$File = new MW_WP_Form_File();
-				$File->delete_files( $attachments );
-			}
+			$Mail_Service->send_admin_mail();
 
 			// 自動返信メールの送信
 			$automatic_reply_email = $this->Setting->get( 'automatic_reply_email' );
@@ -276,8 +257,7 @@ class MW_WP_Form_Main_Controller {
 					$automatic_reply_email
 				);
 				if ( $automatic_reply_email && !$is_invalid_mail_address ) {
-					$Mail_auto = $Mail_Service->get_Mail_auto();
-					$Mail_auto->send();
+					$Mail_Service->send_reply_mail();
 				}
 			}
 

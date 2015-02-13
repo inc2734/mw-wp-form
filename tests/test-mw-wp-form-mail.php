@@ -34,6 +34,8 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Mail_Service = new MW_WP_Form_Mail_Service(
 			$Mail, $Data, $form_key, $validation_rules, $Setting
 		);
+		$Mail_Service->send_admin_mail();
+		$Mail_Service->send_reply_mail();
 	}
 	public function clone_data_for_auto_replay_mail_mwform_auto_mail_raw( $Mail, $values, $Data ) {
 		$this->assertEquals( $Data->get( 'メールアドレス' ), 'inc@2inc.org' );
@@ -78,6 +80,8 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Mail_Service = new MW_WP_Form_Mail_Service(
 			$Mail, $Data, $form_key, $validation_rules, $Setting
 		);
+		$Mail_Service->send_admin_mail();
+		$Mail_Service->send_reply_mail();
 	}
 	public function clone_data_for_auto_replay_mail_mwform_admin_mail_raw( $Mail, $values, $Data ) {
 		$this->assertEquals( $Data->get( 'メールアドレス' ), 'inc@2inc.org' );
@@ -142,6 +146,8 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Mail_Service = new MW_WP_Form_Mail_Service(
 			$Mail, $Data, $form_key, $validation_rules, $Setting
 		);
+		$Mail_Service->send_admin_mail();
+		$Mail_Service->send_reply_mail();
 	}
 	public function for_setted_auto_replay_mail_mwform_admin_mail_raw( $Mail, $values ) {
 		$Mail->to   = 'hoge1@example.com';
@@ -222,6 +228,8 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Mail_Service = new MW_WP_Form_Mail_Service(
 			$Mail, $Data, $form_key, $validation_rules, $Setting
 		);
+		$Mail_Service->send_admin_mail();
+		$Mail_Service->send_reply_mail();
 	}
 	public function for_no_set_auto_replay_mail_mwform_admin_mail_raw( $Mail, $values ) {
 		$Mail->to   = 'hoge1@example.com';
@@ -285,6 +293,8 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Mail_Service = new MW_WP_Form_Mail_Service(
 			$Mail, $Data, $form_key, $validation_rules, $Setting
 		);
+		$Mail_Service->send_admin_mail();
+		$Mail_Service->send_reply_mail();
 	}
 	public function for_parse_post_content_mwform_admin_mail_raw( $Mail, $values ) {
 		$Mail->from = '{メールアドレス}';

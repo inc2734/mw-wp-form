@@ -72,6 +72,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 == Changelog ==
 
 = 2.2.8 =
+* Refactoring mail sending part.
 * Added   : Add "Send value by e-mail" option for checkbox, select, radio.
 * Added   : Add mwform_custom_mail_tag_mw-wp-form-xxx filter hook.
 
