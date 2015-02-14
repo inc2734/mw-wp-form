@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Contact Data Controller
- * Version    : 1.0.2
+ * Version    : 1.0.3
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : February 8, 2015
+ * Modified   : February 14, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -35,9 +35,28 @@ class MW_WP_Form_Contact_Data_Controller {
 			 preg_match( '/^' . MWF_Config::DBDATA . '\d+$/', $screen->id ) ) {
 
 			$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+			// 一覧画面・詳細ページの制限
 			if ( $screen->base ==='post' &&
 				 !in_array( $screen->post_type, $contact_data_post_types ) ) {
 				exit;
+			}
+			// 詳細ページの制限
+			if ( $screen->base ==='post' &&
+				 in_array( $screen->id, $contact_data_post_types ) ) {
+				$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $screen->post_type, array() );
+				if ( !empty( $_args ) && is_array( $_args ) ) {
+					$args = array(
+						'post_type'      => $screen->post_type,
+						'post_status'    => 'publish',
+						'posts_per_page' => 1,
+						'p'              => $_GET['post'],
+					);
+					$args = array_merge( $_args, $args );
+					$permit_posts = get_posts( $args );
+					if ( empty( $permit_posts ) ) {
+						exit;
+					}
+				}
 			}
 
 			$Contact_Data = new MW_WP_Form_Contact_Data();

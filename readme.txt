@@ -76,7 +76,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Add "Send value by e-mail" option for checkbox, select, radio.
 * Added   : Add filter hook mwform_custom_mail_tag_mw-wp-form-xxx.
 * Added   : Add filter hook mwform_contact_data_post_type.
-* Added   : Add filter hook mwform_get_chart_posts_args-mwf_xxx
+* Added   : Add filter hook mwform_get_inquiry_data_args-mwf_xxx
 * Changed : Refactoring admin pages.
 
 = 2.2.7 =

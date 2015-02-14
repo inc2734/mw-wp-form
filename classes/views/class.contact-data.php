@@ -167,10 +167,15 @@ class MW_WP_Form_Contact_Data_View extends MW_WP_Form_View {
 	 * @return numeric 投稿数
 	 */
 	protected function get_count( $post_type ) {
-		$query = new WP_Query( array(
-			'post_type' => $post_type,
+		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $post_type, array() );
+		$args  = array(
+			'post_type'      => $post_type,
 			'posts_per_page' => 1,
-		) );
+		);
+		if ( !empty( $_args ) && is_array( $_args ) ) {
+			$args = array_merge( $_args, $args );
+		}
+		$query = new WP_Query( $args );
 		return $query->found_posts;
 	}
 
