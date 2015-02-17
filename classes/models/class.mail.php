@@ -84,6 +84,13 @@ class MW_WP_Form_Mail {
 		add_filter( 'wp_mail_from'     , array( $this, 'set_mail_from' ) );
 		add_filter( 'wp_mail_from_name', array( $this, 'set_mail_from_name' ) );
 
+		if ( defined( 'MWFORM_DEBUG' ) && MWFORM_DEBUG === true ) {
+			$File     = new MW_WP_Form_File();
+			$temp_dir = $File->get_temp_dir();
+			$temp_dir = trailingslashit( $temp_dir['dir'] );
+			$temp_dir = apply_filters( 'mwform_log_directory', $temp_dir );
+		}
+
 		$tos = explode( ',', $this->to );
 		foreach ( $tos as $to ) {
 			$headers = array();
@@ -94,7 +101,20 @@ class MW_WP_Form_Mail {
 				$headers[] = 'Bcc: ' . $this->bcc;
 			}
 			$to = trim( $to );
-			@wp_mail( $to, $subject, $body, $headers, $this->attachments );
+			if ( !empty( $File ) ) {
+				$contents = sprintf(
+					"====================\n\nSend Date: %s\nTo: %s\nSubject: %s\nheaders:%s\n-----\n%s\n-----\nattachments:\n%s\n\n",
+					date( 'M j Y, H:i:s' ),
+					$to,
+					$subject,
+					implode( "\n", $headers ),
+					$body,
+					implode( "\n", $this->attachments )
+				);
+				file_put_contents( $temp_dir . '/mw-wp-form-debug.log', $contents, FILE_APPEND );
+			} else {
+				@wp_mail( $to, $subject, $body, $headers, $this->attachments );
+			}
 		}
 
 		remove_action( 'phpmailer_init'   , array( $this, 'set_return_path' ) );

@@ -77,6 +77,8 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Add filter hook mwform_custom_mail_tag_mw-wp-form-xxx.
 * Added   : Add filter hook mwform_contact_data_post_type.
 * Added   : Add filter hook mwform_get_inquiry_data_args-mwf_xxx
+* Added   : Add debug mode. no send mail and logging when set "define( 'MWFORM_DEBUG', true );".
+* Added   : Add filter hook mwform_log_directory.
 * Changed : Refactoring admin pages.
 * Changed : Changed generating method of file name that uploaded.
 * Bugfix  : Fixed ai, psd, eps file upload bug.
