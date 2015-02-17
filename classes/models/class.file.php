@@ -98,24 +98,26 @@ class MW_WP_Form_File {
 	 */
 	protected function set_upload_file_name( $extension ) {
 		$count      = 0;
-		$basename   = date( 'Ymdhis' );
-		$filename   = $basename . '.' . $extension;
-		$temp_dir = $this->get_temp_dir();
+		$basename   = uniqid( rand() );
+		$temp_dir   = $this->get_temp_dir();
 		$upload_dir = $temp_dir['dir'];
 		$upload_url = $temp_dir['url'];
 		if ( !is_writable( $temp_dir['dir'] ) ) {
 			$wp_upload_dir = wp_upload_dir();
-			$upload_dir = realpath( $wp_upload_dir['path'] );
-			$upload_url = $wp_upload_dir['url'];
+			$upload_dir    = realpath( $wp_upload_dir['path'] );
+			$upload_url    = $wp_upload_dir['url'];
 		}
+
+		$filename_no_exension = $basename;
+		$filepath_no_exension = trailingslashit( $upload_dir ) . $filename_no_exension;
+		while ( glob( $filepath_no_exension . '.*' ) ) {
+			$count ++;
+			$filename_no_exension = $basename . '-' . $count;
+			$filepath_no_exension = trailingslashit( $upload_dir ) . $filename_no_exension;
+		}
+		$filename = $filename_no_exension . '.' . $extension;
 		$uploadfile['file'] = trailingslashit( $upload_dir ) . $filename;
 		$uploadfile['url']  = trailingslashit( $upload_url ) . $filename;
-		while ( file_exists( $uploadfile['file'] ) ) {
-			$count ++;
-			$filename = $basename . '-' . $count . '.' . $extension;
-			$uploadfile['file'] = trailingslashit( $upload_dir ) . $filename;
-			$uploadfile['url']  = trailingslashit( $upload_url ) . $filename;
-		}
 		return $uploadfile;
 	}
 
