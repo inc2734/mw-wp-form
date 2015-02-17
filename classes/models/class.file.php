@@ -13,9 +13,9 @@
 class MW_WP_Form_File {
 
 	/**
-	 * initialize
+	 * __construct
 	 */
-	public function initialize() {
+	public function __construct() {
 		add_filter( 'upload_mimes', array( $this, 'upload_mimes' ) );
 	}
 
@@ -26,7 +26,7 @@ class MW_WP_Form_File {
 	public function upload_mimes( $t ) {
 		$t['psd'] = 'image/vnd.adobe.photoshop';
 		$t['eps'] = 'application/octet-stream';
-		$t['ai'] = 'application/pdf';
+		$t['ai']  = 'application/pdf';
 		return $t;
 	}
 

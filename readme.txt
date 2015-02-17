@@ -78,6 +78,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Add filter hook mwform_contact_data_post_type.
 * Added   : Add filter hook mwform_get_inquiry_data_args-mwf_xxx
 * Changed : Refactoring admin pages.
+* Bugfix  : Fixed ai, psd, eps file upload bug.
 
 = 2.2.7 =
 * Changed : Changed to be able to use ":" as value at checkbox, select, radio.
