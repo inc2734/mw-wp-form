@@ -57,7 +57,7 @@ jQuery( function( $ ) {
 				send_to_editor( mwform_create_shortcode( $( this ).attr( 'id' ) ) );
 				$( this ).dialog( 'close' );
 			},
-			'Cansel': function() {
+			'Cancel': function() {
 				$( this ).dialog( 'close' );
 			}
 		},
