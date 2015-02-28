@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.2.8\n"
+"Project-Id-Version: MW WP Form 2.3.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/mw-wp-form\n"
-"POT-Creation-Date: 2015-02-12 11:09:11+00:00\n"
+"POT-Creation-Date: 2015-02-28 09:56:10+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,72 +18,72 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: classes/controllers/class.admin-list.php:41
-#: classes/controllers/class.admin.php:102
+#: classes/controllers/class.admin-list.php:58
+#: classes/controllers/class.admin.php:106
 msgid "Form Key"
 msgstr ""
 
-#: classes/controllers/class.admin.php:63
+#: classes/controllers/class.admin.php:67
 msgid "Complete Message"
 msgstr ""
 
-#: classes/controllers/class.admin.php:75
+#: classes/controllers/class.admin.php:79
 msgid "URL Options"
 msgstr ""
 
-#: classes/controllers/class.admin.php:85
+#: classes/controllers/class.admin.php:89
 msgid "Validation Rule"
 msgstr ""
 
-#: classes/controllers/class.admin.php:93
+#: classes/controllers/class.admin.php:97
 msgid "Add-ons"
 msgstr ""
 
-#: classes/controllers/class.admin.php:115
+#: classes/controllers/class.admin.php:119
 msgid "Automatic Reply Email Options"
 msgstr ""
 
-#: classes/controllers/class.admin.php:130
+#: classes/controllers/class.admin.php:134
 msgid "Admin Email Options"
 msgstr ""
 
-#: classes/controllers/class.admin.php:144
+#: classes/controllers/class.admin.php:148
 msgid "settings"
 msgstr ""
 
-#: classes/controllers/class.admin.php:156
+#: classes/controllers/class.admin.php:160
 msgid "Style setting"
 msgstr ""
 
-#: classes/controllers/class.chart.php:65
-#: classes/controllers/class.chart.php:66 classes/views/class.chart.php:73
+#: classes/controllers/class.chart.php:78
+#: classes/controllers/class.chart.php:79 classes/views/class.chart.php:65
 msgid "Chart"
 msgstr ""
 
-#: classes/controllers/class.contact-data-list.php:120
-#: classes/controllers/class.contact-data-list.php:167
-#: classes/controllers/class.contact-data-list.php:260
+#: classes/controllers/class.contact-data-list.php:160
+#: classes/controllers/class.contact-data-list.php:207
+#: classes/controllers/class.contact-data-list.php:297
 #: classes/views/class.contact-data.php:101
 msgid "Response Status"
 msgstr ""
 
-#: classes/controllers/class.contact-data-list.php:147
-#: classes/controllers/class.contact-data-list.php:170
+#: classes/controllers/class.contact-data-list.php:187
+#: classes/controllers/class.contact-data-list.php:210
 #: classes/views/class.contact-data.php:113
 msgid "Memo"
 msgstr ""
 
-#: classes/controllers/class.contact-data-list.php:259
+#: classes/controllers/class.contact-data-list.php:296
 msgid "Registed Date"
 msgstr ""
 
-#: classes/controllers/class.contact-data.php:48
-#: classes/controllers/class.contact-data.php:49
+#: classes/controllers/class.contact-data.php:85
+#: classes/controllers/class.contact-data.php:86
 #: classes/views/class.contact-data.php:34
 msgid "Inquiry data"
 msgstr ""
 
-#: classes/controllers/class.contact-data.php:94
+#: classes/controllers/class.contact-data.php:121
 msgid "Custom Fields"
 msgstr ""
 
@@ -479,6 +479,14 @@ msgstr ""
 msgid "This is not the format of a zip code."
 msgstr ""
 
+#: classes/views/class.admin-list.php:31
+msgid "Your contribution is needed for making this plugin better."
+msgstr ""
+
+#: classes/views/class.admin-list.php:31
+msgid "Donate"
+msgstr ""
+
 #: classes/views/class.admin.php:39
 msgid "Input Page URL"
 msgstr ""
@@ -613,67 +621,59 @@ msgstr ""
 msgid "Select Style"
 msgstr ""
 
-#: classes/views/class.admin.php:316
-msgid "Your contribution is needed for making this plugin better."
-msgstr ""
-
-#: classes/views/class.admin.php:316
-msgid "Donate"
-msgstr ""
-
-#: classes/views/class.admin.php:338 classes/views/class.chart.php:94
+#: classes/views/class.admin.php:327 classes/views/class.chart.php:86
 msgid "Select this."
 msgstr ""
 
-#: classes/views/class.admin.php:339
+#: classes/views/class.admin.php:328
 msgid "Input fields"
 msgstr ""
 
-#: classes/views/class.admin.php:342
+#: classes/views/class.admin.php:331
 msgid "Select fields"
 msgstr ""
 
-#: classes/views/class.admin.php:345
+#: classes/views/class.admin.php:334
 msgid "Button fields"
 msgstr ""
 
-#: classes/views/class.admin.php:348
+#: classes/views/class.admin.php:337
 msgid "Error fields"
 msgstr ""
 
-#: classes/views/class.admin.php:351
+#: classes/views/class.admin.php:340
 msgid "Other fields"
 msgstr ""
 
-#: classes/views/class.admin.php:355
+#: classes/views/class.admin.php:344
 msgid "Add form tag"
 msgstr ""
 
-#: classes/views/class.chart.php:84
+#: classes/views/class.chart.php:76
 msgid "Add Chart"
 msgstr ""
 
-#: classes/views/class.chart.php:92
+#: classes/views/class.chart.php:84
 msgid "Item that create chart"
 msgstr ""
 
-#: classes/views/class.chart.php:100
+#: classes/views/class.chart.php:92
 msgid "Chart type"
 msgstr ""
 
-#: classes/views/class.chart.php:104
+#: classes/views/class.chart.php:96
 msgid "Pie chart"
 msgstr ""
 
-#: classes/views/class.chart.php:105
+#: classes/views/class.chart.php:97
 msgid "Bar chart"
 msgstr ""
 
-#: classes/views/class.chart.php:118
+#: classes/views/class.chart.php:110
 msgid "Separator string (If the check box. If the separator attribute is not set to \",\")"
 msgstr ""
 
-#: classes/views/class.chart.php:140 classes/views/class.contact-data.php:42
+#: classes/views/class.chart.php:132 classes/views/class.contact-data.php:42
 msgid "The number of inquiries"
 msgstr ""
 
@@ -710,51 +710,51 @@ msgstr ""
 msgid "&laquo; Back to the list"
 msgstr ""
 
-#: mw-wp-form.php:171
+#: mw-wp-form.php:185
 msgid "Add New Form"
 msgstr ""
 
-#: mw-wp-form.php:172
+#: mw-wp-form.php:186
 msgid "Edit Form"
 msgstr ""
 
-#: mw-wp-form.php:173
+#: mw-wp-form.php:187
 msgid "New Form"
 msgstr ""
 
-#: mw-wp-form.php:174
+#: mw-wp-form.php:188
 msgid "View Form"
 msgstr ""
 
-#: mw-wp-form.php:175
+#: mw-wp-form.php:189
 msgid "Search Forms"
 msgstr ""
 
-#: mw-wp-form.php:176
+#: mw-wp-form.php:190
 msgid "No Forms found"
 msgstr ""
 
-#: mw-wp-form.php:177
+#: mw-wp-form.php:191
 msgid "No Forms found in Trash"
 msgstr ""
 
-#: mw-wp-form.php:199
+#: mw-wp-form.php:208
 msgid "Edit "
 msgstr ""
 
-#: mw-wp-form.php:200
+#: mw-wp-form.php:209
 msgid "View"
 msgstr ""
 
-#: mw-wp-form.php:201
+#: mw-wp-form.php:210
 msgid "Search"
 msgstr ""
 
-#: mw-wp-form.php:202
+#: mw-wp-form.php:211
 msgid "No data found"
 msgstr ""
 
-#: mw-wp-form.php:203
+#: mw-wp-form.php:212
 msgid "No data found in Trash"
 msgstr ""
 #. Plugin Name of the plugin/theme

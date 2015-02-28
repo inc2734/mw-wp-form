@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.2.8\n"
+"Project-Id-Version: MW WP Form 2.3.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/mw-wp-form\n"
-"POT-Creation-Date: 2015-02-12 11:09:11+00:00\n"
-"PO-Revision-Date: 2015-02-12 20:11+0900\n"
+"POT-Creation-Date: 2015-02-28 09:56:10+00:00\n"
+"PO-Revision-Date: 2015-02-28 18:58+0900\n"
 "Last-Translator: Takashi Kitajima <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -19,72 +19,72 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;_x;esc_html_e;esc_html__\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: classes/controllers/class.admin-list.php:41
-#: classes/controllers/class.admin.php:102
+#: classes/controllers/class.admin-list.php:58
+#: classes/controllers/class.admin.php:106
 msgid "Form Key"
 msgstr "フォーム識別子"
 
-#: classes/controllers/class.admin.php:63
+#: classes/controllers/class.admin.php:67
 msgid "Complete Message"
 msgstr "完了画面メッセージ"
 
-#: classes/controllers/class.admin.php:75
+#: classes/controllers/class.admin.php:79
 msgid "URL Options"
 msgstr "URL設定"
 
-#: classes/controllers/class.admin.php:85
+#: classes/controllers/class.admin.php:89
 msgid "Validation Rule"
 msgstr "バリデーションルール"
 
-#: classes/controllers/class.admin.php:93
+#: classes/controllers/class.admin.php:97
 msgid "Add-ons"
 msgstr "アドオン"
 
-#: classes/controllers/class.admin.php:115
+#: classes/controllers/class.admin.php:119
 msgid "Automatic Reply Email Options"
 msgstr "自動返信メール設定"
 
-#: classes/controllers/class.admin.php:130
+#: classes/controllers/class.admin.php:134
 msgid "Admin Email Options"
 msgstr "管理者宛メール設定"
 
-#: classes/controllers/class.admin.php:144
+#: classes/controllers/class.admin.php:148
 msgid "settings"
 msgstr "設定"
 
-#: classes/controllers/class.admin.php:156
+#: classes/controllers/class.admin.php:160
 msgid "Style setting"
 msgstr "スタイル設定"
 
-#: classes/controllers/class.chart.php:65
-#: classes/controllers/class.chart.php:66 classes/views/class.chart.php:73
+#: classes/controllers/class.chart.php:78
+#: classes/controllers/class.chart.php:79 classes/views/class.chart.php:65
 msgid "Chart"
 msgstr "グラフ"
 
-#: classes/controllers/class.contact-data-list.php:120
-#: classes/controllers/class.contact-data-list.php:167
-#: classes/controllers/class.contact-data-list.php:260
+#: classes/controllers/class.contact-data-list.php:160
+#: classes/controllers/class.contact-data-list.php:207
+#: classes/controllers/class.contact-data-list.php:297
 #: classes/views/class.contact-data.php:101
 msgid "Response Status"
 msgstr "対応状況"
 
-#: classes/controllers/class.contact-data-list.php:147
-#: classes/controllers/class.contact-data-list.php:170
+#: classes/controllers/class.contact-data-list.php:187
+#: classes/controllers/class.contact-data-list.php:210
 #: classes/views/class.contact-data.php:113
 msgid "Memo"
 msgstr "メモ"
 
-#: classes/controllers/class.contact-data-list.php:259
+#: classes/controllers/class.contact-data-list.php:296
 msgid "Registed Date"
 msgstr "登録日時"
 
-#: classes/controllers/class.contact-data.php:48
-#: classes/controllers/class.contact-data.php:49
+#: classes/controllers/class.contact-data.php:85
+#: classes/controllers/class.contact-data.php:86
 #: classes/views/class.contact-data.php:34
 msgid "Inquiry data"
 msgstr "問い合わせデータ"
 
-#: classes/controllers/class.contact-data.php:94
+#: classes/controllers/class.contact-data.php:121
 msgid "Custom Fields"
 msgstr "カスタムフィールド"
 
@@ -158,7 +158,7 @@ msgstr "メールで送信する値"
 msgid ""
 "Send post value when you split the post value and display value by \":\" in "
 "choices."
-msgstr "choicesで送信値と表示値を「:」で分割したとき、送信値をメールで送信"
+msgstr "選択肢を「:」で送信値と表示値に分割したとき、送信値をメールで送信"
 
 #: classes/form-fields/class.checkbox.php:127
 #: classes/form-fields/class.datepicker.php:131
@@ -485,6 +485,14 @@ msgstr "URL"
 msgid "This is not the format of a zip code."
 msgstr "郵便番号の形式ではありません。"
 
+#: classes/views/class.admin-list.php:31
+msgid "Your contribution is needed for making this plugin better."
+msgstr "あなたの貢献があればこのプラグインをもっと良くすることができます。"
+
+#: classes/views/class.admin-list.php:31
+msgid "Donate"
+msgstr "寄付する"
+
 #: classes/views/class.admin.php:39
 msgid "Input Page URL"
 msgstr "入力画面URL"
@@ -634,70 +642,62 @@ msgstr "Akismetを使用する項目のキーを入力してください。"
 msgid "Select Style"
 msgstr "スタイルを選択"
 
-#: classes/views/class.admin.php:316
-msgid "Your contribution is needed for making this plugin better."
-msgstr "あなたの貢献があればこのプラグインをもっと良くすることができます。"
-
-#: classes/views/class.admin.php:316
-msgid "Donate"
-msgstr "寄付する"
-
-#: classes/views/class.admin.php:338 classes/views/class.chart.php:94
+#: classes/views/class.admin.php:327 classes/views/class.chart.php:86
 msgid "Select this."
 msgstr "選択してください"
 
-#: classes/views/class.admin.php:339
+#: classes/views/class.admin.php:328
 msgid "Input fields"
 msgstr "入力項目"
 
-#: classes/views/class.admin.php:342
+#: classes/views/class.admin.php:331
 msgid "Select fields"
 msgstr "選択項目"
 
-#: classes/views/class.admin.php:345
+#: classes/views/class.admin.php:334
 msgid "Button fields"
 msgstr "ボタン項目"
 
-#: classes/views/class.admin.php:348
+#: classes/views/class.admin.php:337
 msgid "Error fields"
 msgstr "エラー項目"
 
-#: classes/views/class.admin.php:351
+#: classes/views/class.admin.php:340
 msgid "Other fields"
 msgstr "その他の項目"
 
-#: classes/views/class.admin.php:355
+#: classes/views/class.admin.php:344
 msgid "Add form tag"
 msgstr "フォームタグを追加"
 
-#: classes/views/class.chart.php:84
+#: classes/views/class.chart.php:76
 msgid "Add Chart"
 msgstr "グラフを追加"
 
-#: classes/views/class.chart.php:92
+#: classes/views/class.chart.php:84
 msgid "Item that create chart"
 msgstr "グラフを作成する項目"
 
-#: classes/views/class.chart.php:100
+#: classes/views/class.chart.php:92
 msgid "Chart type"
 msgstr "グラフの種類"
 
-#: classes/views/class.chart.php:104
+#: classes/views/class.chart.php:96
 msgid "Pie chart"
 msgstr "円グラフ"
 
-#: classes/views/class.chart.php:105
+#: classes/views/class.chart.php:97
 msgid "Bar chart"
 msgstr "棒グラフ"
 
-#: classes/views/class.chart.php:118
+#: classes/views/class.chart.php:110
 msgid ""
 "Separator string (If the check box. If the separator attribute is not set to "
 "\",\")"
 msgstr ""
 "区切り文字（チェックボックスの場合。separator 属性が未設定の場合は「,」）"
 
-#: classes/views/class.chart.php:140 classes/views/class.contact-data.php:42
+#: classes/views/class.chart.php:132 classes/views/class.contact-data.php:42
 msgid "The number of inquiries"
 msgstr "問い合わせ件数"
 
@@ -738,51 +738,51 @@ msgstr "件"
 msgid "&laquo; Back to the list"
 msgstr "&laquo; 一覧に戻る"
 
-#: mw-wp-form.php:171
+#: mw-wp-form.php:185
 msgid "Add New Form"
 msgstr "フォームを追加"
 
-#: mw-wp-form.php:172
+#: mw-wp-form.php:186
 msgid "Edit Form"
 msgstr "フォームを編集"
 
-#: mw-wp-form.php:173
+#: mw-wp-form.php:187
 msgid "New Form"
 msgstr "新しいフォーム"
 
-#: mw-wp-form.php:174
+#: mw-wp-form.php:188
 msgid "View Form"
 msgstr "フォームを表示"
 
-#: mw-wp-form.php:175
+#: mw-wp-form.php:189
 msgid "Search Forms"
 msgstr "フォームを検索"
 
-#: mw-wp-form.php:176
+#: mw-wp-form.php:190
 msgid "No Forms found"
 msgstr "フォームがありません"
 
-#: mw-wp-form.php:177
+#: mw-wp-form.php:191
 msgid "No Forms found in Trash"
 msgstr "ゴミ箱にフォームはありません"
 
-#: mw-wp-form.php:199
+#: mw-wp-form.php:208
 msgid "Edit "
 msgstr "編集"
 
-#: mw-wp-form.php:200
+#: mw-wp-form.php:209
 msgid "View"
 msgstr "表示"
 
-#: mw-wp-form.php:201
+#: mw-wp-form.php:210
 msgid "Search"
 msgstr "検索"
 
-#: mw-wp-form.php:202
+#: mw-wp-form.php:211
 msgid "No data found"
 msgstr "データがありません"
 
-#: mw-wp-form.php:203
+#: mw-wp-form.php:212
 msgid "No data found in Trash"
 msgstr "ゴミ箱にデータはありません"
 
@@ -805,12 +805,14 @@ msgstr ""
 "フ機能集計などを使用することができます。"
 
 #. Author of the plugin/theme
+#, fuzzy
 msgid "Takashi Kitajima"
-msgstr ""
+msgstr "Takashi Kitajima"
 
 #. Author URI of the plugin/theme
+#, fuzzy
 msgid "http://2inc.org"
-msgstr ""
+msgstr "http://2inc.org"
 
 #~ msgid "MW WP Form can create mail form with a confirmation screen."
 #~ msgstr ""
