@@ -270,7 +270,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		$children = 'あいうえお, かきくけこ';
 		$this->assertEquals( array(
 			'あいうえお' => 'あいうえお',
-			'かきくけこ' => 'かきくけこ',
+			' かきくけこ' => ' かきくけこ',
 		), $Field->get_children( $children ) );
 
 		$children = array(
@@ -290,8 +290,8 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		
 		$children = 'abc : あいうえお, def : かきくけこ';
 		$this->assertEquals( array(
-			'abc' => 'あいうえお',
-			'def' => 'かきくけこ',
+			'abc ' => ' あいうえお',
+			' def ' => ' かきくけこ',
 		), $Field->get_children( $children ) );
 
 		$children = array(
