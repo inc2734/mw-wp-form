@@ -286,12 +286,11 @@ abstract class MW_Form_Field {
 			$_children = explode( ',', $_children );
 		}
 		if ( is_array( $_children ) ) {
-			$_children = array_map( 'trim', $_children );
 			foreach ( $_children as $child ) {
 				$temp_replacement = '@-[_-_]-@';
 				if ( preg_match( '/(^:[^:])|([^:]:[^:])/', $child ) ) {
 					$child = str_replace( '::', $temp_replacement, $child );
-					$child = array_map( 'trim', explode( ':', $child, 2 ) );
+					$child = explode( ':', $child, 2 );
 				} else {
 					$child = str_replace( '::', $temp_replacement, $child );
 					$child = array( $child );

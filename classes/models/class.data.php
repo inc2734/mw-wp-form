@@ -303,7 +303,6 @@ class MW_WP_Form_Data {
 						$children = json_decode( $this->data['__children'][$key], true );
 						$separator = $this->get_separator_value( $key );
 						$array_value = explode( $separator, $value );
-						$array_value = array_map( 'trim', $array_value );
 						$right_value = array();
 						foreach ( $array_value as $v ) {
 							if ( isset( $children[$v] ) ) {
