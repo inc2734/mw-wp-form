@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Radio
  * Description: ラジオボタンを出力
- * Version    : 1.5.4
+ * Version    : 1.5.5
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : February 12, 2015
+ * Modified   : February 28, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -43,7 +43,7 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 			'children'   => '',
 			'value'      => '',
 			'vertically' => '',
-			'post_raw'   => 'true',
+			'post_raw'   => 'false',
 			'show_error' => 'true',
 		);
 	}
@@ -60,7 +60,7 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 			'value'      => $this->atts['value'],
 			'vertically' => $this->atts['vertically'],
 		) );
-		if ( $this->atts['post_raw'] !== 'false' ) {
+		if ( $this->atts['post_raw'] === 'false' ) {
 			$_ret .= $this->Form->children( $this->atts['name'], $children );
 		}
 		if ( $this->atts['show_error'] !== 'false' ) {
@@ -80,7 +80,7 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 		$posted_value = $this->Form->get_raw( $this->atts['name'] );
 		$_ret         = esc_html( $value );
 		$_ret        .= $this->Form->hidden( $this->atts['name'], $posted_value );
-		if ( $this->atts['post_raw'] !== 'false' ) {
+		if ( $this->atts['post_raw'] === 'false' ) {
 			$_ret .= $this->Form->children( $this->atts['name'], $children );
 		}
 		return $_ret;
@@ -117,7 +117,7 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 			<strong><?php esc_html_e( 'Send value by e-mail', MWF_Config::DOMAIN ); ?></strong>
 			<?php $value = $this->get_value_for_generator( 'value', $options ); ?>
 			<?php $post_raw = $this->get_value_for_generator( 'post_raw', $options ); ?>
-			<label><input type="checkbox" name="post_raw" value="false" <?php checked( 'false', $post_raw ); ?> /> <?php esc_html_e( 'Send post value when you split the post value and display value by ":" in choices.', MWF_Config::DOMAIN ); ?></label>
+			<label><input type="checkbox" name="post_raw" value="true" <?php checked( 'true', $post_raw ); ?> /> <?php esc_html_e( 'Send post value when you split the post value and display value by ":" in choices.', MWF_Config::DOMAIN ); ?></label>
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'Default value', MWF_Config::DOMAIN ); ?></strong>
