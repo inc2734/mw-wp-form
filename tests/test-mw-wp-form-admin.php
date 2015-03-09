@@ -18,25 +18,7 @@ class MW_WP_Form_Admim_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * test_mwform_contact_data_post_types
-	 * @backupStaticAttributes enabled
-	 */
-	public function test_mwform_contact_data_post_types() {
-		add_filter(
-			'mwform_contact_data_post_types',
-			array( $this, 'mwform_contact_data_post_types' )
-		);
-		$post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
-		$this->assertEquals( 4, count( $post_types ) );
-	}
-	public function mwform_contact_data_post_types( $post_types ) {
-		unset( $post_types[0] );
-		return $post_types;
-	}
-
-	/**
 	 * test_mwform_contact_data_post_types_add_invalid_post_type
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_mwform_contact_data_post_types_add_invalid_post_type() {
 		add_filter(
@@ -49,6 +31,22 @@ class MW_WP_Form_Admim_Test extends WP_UnitTestCase {
 	public function mwform_contact_data_post_types_invalid_post_type( $post_types ) {
 		$post_types[] = 'fugafuga';
 		$post_types[] = 'hogehoge';
+		return $post_types;
+	}
+
+	/**
+	 * test_mwform_contact_data_post_types
+	 */
+	public function test_mwform_contact_data_post_types() {
+		add_filter(
+			'mwform_contact_data_post_types',
+			array( $this, 'mwform_contact_data_post_types' )
+		);
+		$post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+		$this->assertEquals( 4, count( $post_types ) );
+	}
+	public function mwform_contact_data_post_types( $post_types ) {
+		unset( $post_types[0] );
 		return $post_types;
 	}
 
