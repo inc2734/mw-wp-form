@@ -5,7 +5,9 @@ class MW_WP_Form_Test extends WP_UnitTestCase {
 	 * ショートコード mwform_formkey からデータを読めるかテスト（投稿内の場合）
 	 */
 	public function test_shortocde_mwform_formkey() {
-		global $post;
+		global $wp_query;
+		$wp_query->is_singular = true;
+
 		$form_id = $this->factory->post->create( array(
 			'post_type' => MWF_Config::NAME,
 		) );
@@ -18,14 +20,35 @@ class MW_WP_Form_Test extends WP_UnitTestCase {
 			'post_content' => sprintf( '[mwform_formkey key="%d"]', $form_id ),
 		) );
 		$post = get_post( $post_id );
-		query_posts( array(
-			'p' => $post_id,
-		) );
 
 		$ExecShortcode = new MW_WP_Form_Exec_Shortcode( $post, '' );
 		$this->assertTrue( $ExecShortcode->has_shortcode() );
 		$this->assertEquals( '/contact/', $ExecShortcode->get( 'input_url' ) );
-		wp_reset_query();
+	}
+
+	/**
+	 * 囲み型ショートコード内のショートコード mwform_formkey からデータを読めるかテスト（投稿内の場合）
+	 */
+	public function test_shortocde_mwform_formkey_in_enclosed_shortcode() {
+		global $wp_query;
+		$wp_query->is_singular = true;
+
+		$form_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$Setting = new MW_WP_Form_Setting( $form_id );
+		$Setting->set( 'input_url', '/contact/' );
+		$Setting->save();
+
+		$post_id = $this->factory->post->create( array(
+			'post_type'    => 'paga',
+			'post_content' => sprintf( '[gallery][mwform_formkey key="%d"][/gallery]', $form_id ),
+		) );
+		$post = get_post( $post_id );
+
+		$ExecShortcode = new MW_WP_Form_Exec_Shortcode( $post, '' );
+		$this->assertTrue( $ExecShortcode->has_shortcode() );
+		$this->assertEquals( '/contact/', $ExecShortcode->get( 'input_url' ) );
 	}
 
 	/**
@@ -66,21 +89,19 @@ class MW_WP_Form_Test extends WP_UnitTestCase {
 	 * ショートコード mwform からデータを読めるかテスト
 	 */
 	public function test_shortocde_mwform() {
-		global $post;
+		global $wp_query;
+		$wp_query->is_singular = true;
+		
 		$post_id = $this->factory->post->create( array(
 			'post_type'    => 'paga',
 			'post_content' => sprintf( '[mwform key="testform" input="/contact/"]hoge[/mwform]' ),
 		) );
 		$post = get_post( $post_id );
-		query_posts( array(
-			'p' => $post_id,
-		) );
 
 		$ExecShortcode = new MW_WP_Form_Exec_Shortcode( $post, '' );
 		$this->assertTrue( $ExecShortcode->has_shortcode() );
 		$this->assertEquals( 'testform', $ExecShortcode->get( 'key' ) );
 		$this->assertEquals( '/contact/', $ExecShortcode->get( 'input_url' ) );
-		wp_reset_query();
 	}
 
 	/**
