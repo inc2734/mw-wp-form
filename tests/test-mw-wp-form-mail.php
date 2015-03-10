@@ -304,4 +304,37 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$this->assertEquals( $Mail->from, 'customer@example.com' );
 		return $Mail;
 	}
+
+	/**
+	 * メール関連のフックのテスト（送信内容に応じてメール設定を書き換える）
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_update_tracking_number() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$form_key = MWF_Config::NAME . '-' . $post_id;
+
+		$Mail = new MW_WP_Form_Mail();
+		$Data = MW_WP_Form_Data::getInstance( $form_key );
+
+		$Validation_Rule_Mail = new MW_WP_Form_Validation_Rule_Mail();
+		$Validation_Rule_Mail->set_Data( $Data );
+		$validation_rules = array(
+			'mail' => $Validation_Rule_Mail,
+		);
+
+		$Setting = new MW_WP_Form_Setting( $post_id );
+		$Setting->set( 'admin_mail_content', '{' . MWF_Config::TRACKINGNUMBER . '}' );
+
+		$Mail_Service = new MW_WP_Form_Mail_Service(
+			$Mail, $Data, $form_key, $validation_rules, $Setting
+		);
+
+		$this->assertEquals( 1, $Setting->get_tracking_number() );
+		$Mail_Service->update_tracking_number();
+		$this->assertEquals( 2, $Setting->get_tracking_number() );
+		$Mail_Service->update_tracking_number();
+		$this->assertEquals( 3, $Setting->get_tracking_number() );
+	}
 }

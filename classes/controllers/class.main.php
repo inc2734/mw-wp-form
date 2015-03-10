@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Main Controller
  * Description: フロントエンドにおいて、適切な画面にリダイレクトさせる
- * Version    : 1.0.2
+ * Version    : 1.0.3
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 23, 2014
- * Modified   : January 22, 2015
+ * Modified   : March 10, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -262,9 +262,7 @@ class MW_WP_Form_Main_Controller {
 			}
 
 			// 問い合わせ番号を加算
-			if ( preg_match( '{' . MWF_Config::TRACKINGNUMBER . '}', $Mail_admin_raw->body ) ) {
-				$this->Setting->update_tracking_number();
-			}
+			$Mail_Service->update_tracking_number();
 		}
 	}
 

@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Mail Service
- * Version    : 1.1.0
+ * Version    : 1.1.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : February 13, 2015
+ * Modified   : March 10, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -467,5 +467,14 @@ class MW_WP_Form_Mail_Service {
 			$this->Data->gets(),
 			clone $this->Data
 		);
+	}
+
+	/**
+	 * 問い合わせ番号を更新
+	 */
+	public function update_tracking_number() {
+		if ( preg_match( '{' . MWF_Config::TRACKINGNUMBER . '}', $this->Mail_admin_raw->body ) ) {
+			$this->Setting->update_tracking_number();
+		}
 	}
 }
