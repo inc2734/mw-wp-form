@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Form
  * Description: フォームヘルパー
- * Version    : 1.5.2
+ * Version    : 1.5.3
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : September 25, 2012
- * Modified   : January 22, 2015
+ * Modified   : March 18, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -531,11 +531,16 @@ class MW_WP_Form_Form {
 		$value = $this->get_raw( $name );
 		if ( is_array( $value ) && isset( $value['data'] ) ) {
 			$value = $value['data'];
+			// 送信された後の画面の場合は、送信された separator で区切る
+			if ( !is_array( $value ) ) {
+				$value = explode( $separator, $value );
+			}
 		} else {
 			$value = $options['value'];
-		}
-		if ( !is_array( $value ) ) {
-			$value = explode( $separator, $value );
+			// 最初の画面（post無し）の場合は、管理画面上で children が,区切りとなっている
+			if ( !is_array( $value ) ) {
+				$value = explode( ',', $value );
+			}
 		}
 
 		$i = 0;
