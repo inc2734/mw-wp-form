@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Main View
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : 
+ * Modified   : March 24, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -209,10 +209,10 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 	}
 
 	/**
-	 * get_post_property_from_querystring
 	 * 引数 post_id が有効の場合、投稿情報を取得するために preg_replace_callback から呼び出される。
+	 *
 	 * @param array $matches
-	 * @return string
+	 * @return string|null
 	 */
 	protected function get_post_property_from_querystring( $matches ) {
 		$Setting = $this->get( 'Setting' );
@@ -224,23 +224,15 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 			if ( empty( $post->ID ) ) {
 				return;
 			}
-			if ( isset( $post->$matches[1] ) ) {
-				return $post->$matches[1];
-			} else {
-				// post_meta の処理
-				$pm = get_post_meta( $post->ID, $matches[1], true );
-				if ( !empty( $pm ) ) {
-					return $pm;
-				}
-			}
+			return $this->get_post_property( $post, $matches[1] );
 		}
 	}
 
 	/**
-	 * get_post_property_from_this
 	 * 引数 post_id が無効の場合、投稿情報を取得するために preg_replace_callback から呼び出される。
+	 *
 	 * @param array $matches
-	 * @return string
+	 * @return string|null
 	 */
 	protected function get_post_property_from_this( $matches ) {
 		global $post;
@@ -248,15 +240,27 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 			return;
 		}
 		if ( isset( $post->ID ) && MWF_Functions::is_numeric( $post->ID ) ) {
-			if ( isset( $post->$matches[1] ) ) {
-				return $post->$matches[1];
-			} else {
-				// post_meta の処理
-				$pm = get_post_meta( $post->ID, $matches[1], true );
-				if ( !empty( $pm ) ) {
-					return $pm;
-				}
-			}
+			return $this->get_post_property( $post, $matches[1] );
+		}
+	}
+
+	/**
+	 * 投稿のプロパティを取得
+	 *
+	 * @param WP_Post|null $post
+	 * @param string $meta_key
+	 * @return string|null
+	 */
+	protected function get_post_property( $post, $meta_key ) {
+		if ( !is_a( $post, 'WP_Post' ) ) {
+			return;
+		}
+		if ( isset( $post->$meta_key ) ) {
+			return $post->$meta_key;
+		}
+		$post_meta = get_post_meta( $post->ID, $meta_key, true );
+		if ( !is_array( $post_meta ) ) {
+			return $post_meta;
 		}
 	}
 
