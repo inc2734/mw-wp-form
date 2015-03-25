@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Form
  * Description: フォームヘルパー
- * Version    : 1.5.3
+ * Version    : 1.5.4
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : September 25, 2012
- * Modified   : March 18, 2015
+ * Modified   : March 26, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -35,6 +35,17 @@ class MW_WP_Form_Form {
 	 */
 	public function get_raw( $key ) {
 		return $this->Data->get_raw( $key );
+	}
+
+	/**
+	 * $children の中に値が含まれているときだけ返す
+	 *
+	 * @param string $key name属性
+	 * @param array $children
+	 * @return string
+	 */
+	public function get_raw_in_children( $key, array $children ) {
+		return $this->Data->get_raw_in_children( $key, $children );
 	}
 
 	/**

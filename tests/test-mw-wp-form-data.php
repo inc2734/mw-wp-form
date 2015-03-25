@@ -16,18 +16,18 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 			'separator' => '-',
 			'data'      => array( '123', '1234' ),
 		) );
-		$this->assertEquals( '123-1234', $Data->get_separated_value( '郵便番号' ) );
+		$this->assertEquals( $Data->get_separated_value( '郵便番号' ), '123-1234' );
 
 		$Data->set( '郵便番号', array(
 			'separator' => '-',
 			'data'      => '123-1234',
 		) );
-		$this->assertNull( $Data->get_separated_value( '郵便番号' ) );
+		$this->assertEquals( $Data->get_separated_value( '郵便番号' ), '123-1234' );
 
 		$Data->set( '郵便番号', array(
 			'separator' => '-',
 			'data'      => array( '', '' ),
 		) );
-		$this->assertEquals( '', $Data->get_separated_value( '郵便番号' ) );
+		$this->assertSame( '', $Data->get_separated_value( '郵便番号' ) );
 	}
 }

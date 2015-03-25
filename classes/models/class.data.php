@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Data
  * Description: MW WP Form のデータ操作用
- * Version    : 1.3.5
+ * Version    : 1.3.6
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : October 10, 2013
- * Modified   : January 28, 2015
+ * Modified   : March 25, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -280,48 +280,49 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * get
 	 * 整形済み（メール送信可能な）データを取得
+	 *
 	 * @param string $key データのキー
-	 * @return string データ
+	 * @return string
 	 */
 	public function get( $key ) {
 		if ( isset( $this->data[$key] ) ) {
+
+			$children = array();
+			if ( isset( $this->data['__children'][$key] ) ) {
+				$children = json_decode( $this->data['__children'][$key], true );
+			}
+
 			if ( is_array( $this->data[$key] ) ) {
 				if ( !array_key_exists( 'data', $this->data[$key] ) ) {
 					return;
 				}
+				// チェックボックス、電話番号など data を持つ項目は入力画面では配列でくるけど
+				// 確認画面では文字列でくる
 				if ( is_array( $this->data[$key]['data'] ) ) {
-					if ( isset( $this->data['__children'][$key] ) ) {
-						$children = json_decode( $this->data['__children'][$key], true );
+					if ( $children ) {
 						return $this->get_separated_value( $key, $children );
 					}
-					return $this->get_separated_value( $key );
+					return $this->get_separated_raw_value( $key );
 				} else {
 					$value = $this->data[$key]['data'];
-					if ( isset( $this->data['__children'][$key] ) ) {
-						$children = json_decode( $this->data['__children'][$key], true );
-						$separator = $this->get_separator_value( $key );
-						$array_value = explode( $separator, $value );
-						$right_value = array();
-						foreach ( $array_value as $v ) {
-							if ( isset( $children[$v] ) ) {
-								$right_value[] = $children[$v];
-							}
-						}
-						return implode( $separator, $right_value );
+					if ( $children ) {
+						return $this->get_separated_value( $key, $children );
 					}
-					return $value;
+					return $this->get_separated_raw_value( $key );
 				}
 			} else {
+				if ( $children ) {
+					return $this->get_in_children( $key, $children );
+				}
 				return $this->get_raw( $key );
 			}
 		}
 	}
 
 	/**
-	 * get_in_children
 	 * $children の中に値が含まれているときだけ返す
+	 *
 	 * @param string $key name属性
 	 * @param array $children
 	 * @return string
@@ -333,6 +334,23 @@ class MW_WP_Form_Data {
 				return $children[$value];
 			}
 		}
+	}
+
+	/**
+	 * $children の中に値が含まれているときだけ返す
+	 *
+	 * @param string $key name属性
+	 * @param array $children
+	 * @return string
+	 */
+	public function get_raw_in_children( $key, array $children ) {
+		$value = $this->get_raw( $key );
+		if ( !is_null( $value ) && !is_array( $value ) ) {
+			if ( isset( $children[$value] ) ) {
+				return $value;
+			}
+		}
+		return '';
 	}
 
 	/**
@@ -356,27 +374,43 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * get_separated_value
 	 * 配列データを整形して返す ( 郵便番号等用 )。配列の場合は表示値を連結して返す
+	 *
 	 * @param string $key name属性
 	 * @param array $children 選択肢
-	 * @return string データ
+	 * @return string
 	 */
 	public function get_separated_value( $key, array $children = array() ) {
 		$separator = $this->get_separator_value( $key );
 		$value     = $this->get_raw( $key );
-		if ( is_array( $value ) && isset( $value['data'] ) && is_array( $value['data'] ) && !empty( $separator ) ) {
-			if ( $children ) {
-				$rightData = array();
-				foreach ( $value['data'] as $child ) {
-					if ( isset( $children[$child] ) && !in_array( $children[$child], $rightData ) ) {
-						$rightData[] = $children[$child];
-					}
+
+		// チェックボックス、電話番号、郵便番号は配列
+		// ラジオボタン、セレクトボックスは文字列
+		if ( is_array( $value ) ) {
+			// $value が配列の場合、[data] が無いものは不正
+			if ( isset( $value['data'] ) ) {
+				// 入力 -> 確認のときは配列、確認 -> 入力のときは文字列
+				if ( !is_array( $value['data'] ) && $separator ) {
+					$value['data'] = explode( $separator, $value['data'] );
 				}
-				return implode( $separator, $rightData );
-			} else {
-				return $this->get_separated_value_not_children_set( $value['data'], $separator );
+				if ( $separator ) {
+					if ( $children ) {
+						$rightData = array();
+						foreach ( $value['data'] as $child ) {
+							if ( isset( $children[$child] ) && !in_array( $children[$child], $rightData ) ) {
+								$rightData[] = $children[$child];
+							}
+						}
+						return implode( $separator, $rightData );
+					}
+					return $this->get_separated_value_not_children_set( $value['data'], $separator );
+				}
 			}
+		} else {
+			if ( $children ) {
+				return $this->get_in_children( $key, $children );
+			}
+			return $value;
 		}
 	}
 	public function getSeparatedValue( $key ) {
@@ -388,33 +422,49 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * get_separated_raw_value
 	 * 配列データを整形して返す ( チェックボックス等用 )。配列の場合はpost値を連結して返す
+	 *
 	 * @param string $key name属性
 	 * @param array $children 選択肢
-	 * @return string データ
+	 * @return string
 	 */
 	public function get_separated_raw_value( $key, array $children = array() ) {
 		$separator = $this->get_separator_value( $key );
 		$value     = $this->get_raw( $key );
-		if ( is_array( $value ) && isset( $value['data'] ) && is_array( $value['data'] ) && !empty( $separator ) ) {
-			if ( $children ) {
-				$rightData = array();
-				foreach ( $value['data'] as $child ) {
-					if ( isset( $children[$child] ) && !in_array( $child, $rightData ) ) {
-						$rightData[] = $child;
-					}
+
+		// チェックボックス、電話番号、郵便番号は配列
+		// ラジオボタン、セレクトボックスは文字列
+		if ( is_array( $value ) ) {
+			// $value が配列の場合、[data] が無いものは不正
+			if ( isset( $value['data'] ) ) {
+				// 入力 -> 確認のときは配列、確認 -> 入力のときは文字列
+				if ( !is_array( $value['data'] ) && $separator ) {
+					$value['data'] = explode( $separator, $value['data'] );
 				}
-				return implode( $separator, $rightData );
-			} else {
-				return $this->get_separated_value_not_children_set( $value['data'], $separator );
+				if ( $separator ) {
+					if ( $children ) {
+						$rightData = array();
+						foreach ( $value['data'] as $child ) {
+							if ( isset( $children[$child] ) && !in_array( $child, $rightData ) ) {
+								$rightData[] = $child;
+							}
+						}
+						return implode( $separator, $rightData );
+					}
+					return $this->get_separated_value_not_children_set( $value['data'], $separator );
+				}
 			}
+		} else {
+			if ( $children ) {
+				return $this->get_raw_in_children( $key, $children );
+			}
+			return $value;
 		}
 	}
 
 	/**
-	 * get_separated_value_not_children_set
-	 * すべて空のからのときはimplodeしないように（---がいってしまうため）
+	 * すべて空のからのときはimplodeしないように（---がいってしまうため）= 一個でも値ありがあれば返す
+	 *
 	 * @param array $data
 	 * @param string $separator
 	 * @return string

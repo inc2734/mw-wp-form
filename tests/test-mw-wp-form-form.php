@@ -35,10 +35,10 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		$name = 'zip';
 
 		$Data->set( $name, '000-0000' );
-		$this->assertNull( $Form->get_zip_value( $name ) );
+		$this->assertEquals( '000-0000', $Form->get_zip_value( $name ) );
 
 		$Data->set( $name, array( 'data' => array( '000', '0000' ), 'separator' => '-' ) );
-		$this->assertEquals( $Form->get_zip_value( $name ), '000-0000' );
+		$this->assertEquals( '000-0000', $Form->get_zip_value( $name ) );
 	}
 
 	/**
@@ -55,10 +55,10 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		$name = 'tel';
 
 		$Data->set( $name, '000-0000-0000' );
-		$this->assertNull( $Form->get_tel_value( $name ) );
+		$this->assertEquals( '000-0000-0000', $Form->get_tel_value( $name ) );
 
 		$Data->set( $name, array( 'data' => array( '000', '0000', '0000' ), 'separator' => '-' ) );
-		$this->assertEquals( $Form->get_tel_value( $name ), '000-0000-0000' );
+		$this->assertEquals( '000-0000-0000', $Form->get_tel_value( $name ) );
 	}
 
 	/**
@@ -81,13 +81,13 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		);
 
 		$Data->set( $name, 'AAA' );
-		$this->assertNull( $Form->get_checked_value( $name, $arr1 ) );
+		$this->assertEquals( 'AAA', $Form->get_checked_value( $name, $arr1 ) );
 
 		$Data->set( $name, array( 'data' => array( 'AAA', 'BBB' ), 'separator' => ',' ) );
-		$this->assertEquals( $Form->get_checked_value( $name, $arr1 ), 'AAA,BBB' );
+		$this->assertEquals( 'AAA,BBB', $Form->get_checked_value( $name, $arr1 ) );
 
 		$Data->set( $name, array( 'data' => array( 'AAA', 'BBB', 'DDD' ), 'separator' => ',' ) );
-		$this->assertEquals( $Form->get_checked_value( $name, $arr1 ), 'AAA,BBB' );
+		$this->assertEquals( 'AAA,BBB', $Form->get_checked_value( $name, $arr1 ) );
 
 		$arr2 = array(
 			'a' => 'AAA',
@@ -102,16 +102,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		$this->assertEquals( $Form->get_checked_value( $name, $arr2 ), '' );
 
 		$Data->set( $name, array( 'data' => array( 'AAA', 'BBB', 'DDD' ), 'separator' => ',' ) );
-		$this->assertEquals( $Form->get_checked_value( $name, $arr2 ), '' );
+		$this->assertSame( '', $Form->get_checked_value( $name, $arr2 ) );
 
 		$Data->set( $name, 'a' );
-		$this->assertNull( $Form->get_checked_value( $name, $arr2 ) );
+		$this->assertEquals( 'AAA', $Form->get_checked_value( $name, $arr2 ) );
 
 		$Data->set( $name, array( 'data' => array( 'a', 'b' ), 'separator' => ',' ) );
-		$this->assertEquals( $Form->get_checked_value( $name, $arr2 ), 'AAA,BBB' );
+		$this->assertEquals( 'AAA,BBB', $Form->get_checked_value( $name, $arr2 ) );
 
 		$Data->set( $name, array( 'data' => array( 'a', 'b', 'd' ), 'separator' => ',' ) );
-		$this->assertEquals( $Form->get_checked_value( $name, $arr2 ), 'AAA,BBB' );
+		$this->assertEquals( 'AAA,BBB', $Form->get_checked_value( $name, $arr2 ) );
 	}
 
 	/**
@@ -222,13 +222,13 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		);
 
 		$Data->set( $name, 'AAA' );
-		$this->assertNull( $Form->get_separated_raw_value( $name, $arr1 ) );
+		$this->assertEquals( 'AAA', $Form->get_separated_raw_value( $name, $arr1 ) );
 
 		$Data->set( $name, array( 'data' => array( 'AAA', 'BBB' ), 'separator' => ',' ) );
-		$this->assertEquals( $Form->get_separated_raw_value( $name, $arr1 ), 'AAA,BBB' );
+		$this->assertEquals( 'AAA,BBB', $Form->get_separated_raw_value( $name, $arr1 ) );
 
 		$Data->set( $name, array( 'data' => array( 'AAA', 'BBB', 'DDD' ), 'separator' => ',' ) );
-		$this->assertEquals( $Form->get_separated_raw_value( $name, $arr1 ), 'AAA,BBB' );
+		$this->assertEquals( 'AAA,BBB', $Form->get_separated_raw_value( $name, $arr1 ) );
 
 		$arr2 = array(
 			'a' => 'AAA',
@@ -237,22 +237,22 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		);
 
 		$Data->set( $name, 'AAA' );
-		$this->assertNull( $Form->get_separated_raw_value( $name, $arr2 ) );
+		$this->assertSame( '', $Form->get_separated_raw_value( $name, $arr2 ) );
 
 		$Data->set( $name, array( 'data' => array( 'AAA', 'BBB' ), 'separator' => ',' ) );
-		$this->assertEquals( $Form->get_separated_raw_value( $name, $arr2 ), '' );
+		$this->assertSame( '', $Form->get_separated_raw_value( $name, $arr2 ) );
 
 		$Data->set( $name, array( 'data' => array( 'AAA', 'BBB', 'DDD' ), 'separator' => ',' ) );
-		$this->assertEquals( $Form->get_separated_raw_value( $name, $arr2 ), '' );
+		$this->assertSame( '', $Form->get_separated_raw_value( $name, $arr2 ) );
 
 		$Data->set( $name, 'a' );
-		$this->assertNull( $Form->get_separated_raw_value( $name, $arr2 ) );
+		$this->assertEquals( 'a', $Form->get_separated_raw_value( $name, $arr2 ) );
 
 		$Data->set( $name, array( 'data' => array( 'a', 'b' ), 'separator' => ',' ) );
-		$this->assertEquals( $Form->get_separated_raw_value( $name, $arr2 ), 'a,b' );
+		$this->assertEquals( 'a,b', $Form->get_separated_raw_value( $name, $arr2 ) );
 
 		$Data->set( $name, array( 'data' => array( 'a', 'b', 'd' ), 'separator' => ',' ) );
-		$this->assertEquals( $Form->get_separated_raw_value( $name, $arr2 ), 'a,b' );
+		$this->assertEquals( 'a,b', $Form->get_separated_raw_value( $name, $arr2 ) );
 	}
 
 	/**
