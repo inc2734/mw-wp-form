@@ -68,6 +68,7 @@ class MW_WP_Form_Contact_Data_View extends MW_WP_Form_View {
 		$Contact_Data_Setting = $this->get( 'Contact_Data_Setting' );
 		$post_type = $this->get( 'post_type' );
 		?>
+		<input type="hidden" name="<?php echo esc_attr( MWF_Config::NAME ); ?>_nonce" value="<?php echo wp_create_nonce( MWF_Config::NAME ); ?>" />
 		<table border="0" cellpadding="0" cellspacing="0">
 			<?php
 			$values = $Contact_Data_Setting->gets();

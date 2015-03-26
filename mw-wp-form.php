@@ -176,6 +176,10 @@ class MW_WP_Form {
 	 * 管理画面（カスタム投稿タイプ）の設定
 	 */
 	public function register_post_type() {
+		if ( !current_user_can( MWF_Config::CAPABILITY ) && is_admin() ) {
+			return;
+		}
+
 		// MW WP Form のフォーム設定を管理する投稿タイプ
 		register_post_type( MWF_Config::NAME, array(
 			'label'    => 'MW WP Form',

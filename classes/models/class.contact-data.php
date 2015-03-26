@@ -23,6 +23,8 @@ class MW_WP_Form_Contact_Data {
 			return $post_id;
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
 			return $post_id;
+		if ( !wp_verify_nonce( $_POST[MWF_Config::NAME . '_nonce'], MWF_Config::NAME ) )
+			return $post_id;
 		if ( !current_user_can( MWF_Config::CAPABILITY ) )
 			return $post_id;
 
