@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Validation
  * Description: 与えられたデータに対してバリデーションエラーがあるかチェックする
- * Version    : 1.8.2
+ * Version    : 1.8.3
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 20, 2012
- * Modified   : February 7, 2015
+ * Modified   : March 26, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -115,13 +115,6 @@ class MW_WP_Form_Validation {
 		);
 		$this->validate[$key][] = $rules;
 		return $this;
-	}
-	public function setRule( $key, $rule, array $options = array() ) {
-		MWF_Functions::deprecated_message(
-			'MW_Validations::setRule()',
-			'MW_WP_Form_Validation::set_rule()'
-		);
-		return $this->set_rule( $key, $rule, $options );
 	}
 
 	/**

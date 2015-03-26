@@ -2,7 +2,7 @@
 /**
  * Name       : MW WP Form Form
  * Description: フォームヘルパー
- * Version    : 1.5.4
+ * Version    : 1.5.5
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : September 25, 2012
@@ -57,13 +57,6 @@ class MW_WP_Form_Form {
 	public function get_zip_value( $key ) {
 		return $this->Data->get_separated_value( $key );
 	}
-	public function getZipValue( $key ) {
-		MWF_Functions::deprecated_message(
-			'MW_Form::getZipValue()',
-			'MW_WP_Form_Form::get_zip_value()'
-		);
-		return $this->get_zip_value( $key );
-	}
 
 	/**
 	 * get_tel_value
@@ -73,13 +66,6 @@ class MW_WP_Form_Form {
 	 */
 	public function get_tel_value( $key ) {
 		return $this->get_zip_value( $key );
-	}
-	public function getTelValue( $key ) {
-		MWF_Functions::deprecated_message(
-			'MW_Form::getTelValue()',
-			'MW_WP_Form_Form::get_tel_value()'
-		);
-		return $this->get_tel_value( $key );
 	}
 
 	/**
@@ -92,13 +78,6 @@ class MW_WP_Form_Form {
 	public function get_checked_value( $key, array $data ) {
 		return $this->Data->get_separated_value( $key, $data );
 	}
-	public function getCheckedValue() {
-		MWF_Functions::deprecated_message(
-			'MW_Form::getCheckedValue()',
-			'MW_WP_Form_Form::get_checked_value()'
-		);
-		return $this->get_checked_value( $key );
-	}
 
 	/**
 	 * get_radio_value
@@ -110,13 +89,6 @@ class MW_WP_Form_Form {
 	public function get_radio_value( $key, array $data ) {
 		return $this->Data->get_in_children( $key, $data );
 	}
-	public function getRadioValue( $key, array $data ) {
-		MWF_Functions::deprecated_message(
-			'MW_Form::getRadioValue()',
-			'MW_WP_Form_Form::get_radio_value()'
-		);
-		return $this->get_radio_value( $key, $data );
-	}
 
 	/**
 	 * get_selected_value
@@ -127,13 +99,6 @@ class MW_WP_Form_Form {
 	 */
 	public function get_selected_value( $key, array $data ) {
 		return $this->get_radio_value( $key, $data );
-	}
-	public function getSelectedValue( $key, array $data ) {
-		MWF_Functions::deprecated_message(
-			'MW_Form::getSelectedValue()',
-			'MW_WP_Form_Form::get_selected_value()'
-		);
-		return $this->get_selected_value( $key, $data );
 	}
 
 	/**
@@ -172,13 +137,6 @@ class MW_WP_Form_Form {
 	 */
 	public function get_separator_value( $key ) {
 		return $this->Data->get_separator_value( $key );
-	}
-	public function getSeparatorValue() {
-		MWF_Functions::deprecated_message(
-			'MW_Form::getSeparatorValue()',
-			'MW_WP_Form_Form::get_separator_value()'
-		);
-		return $this->get_separator_value( $key );
 	}
 
 	/**
@@ -692,19 +650,5 @@ class MW_WP_Form_Form {
 		if ( !empty( $placeholder ) ) {
 			return 'placeholder="' . esc_attr( $placeholder ) . '"';
 		}
-	}
-
-	/**
-	 * getValue
-	 * データを返す
-	 * @param string $key name属性値
-	 * @return mixed
-	 */
-	public function getValue( $key ) {
-		MWF_Functions::deprecated_message(
-			'MW_Form::getValue()',
-			'MW_WP_Form_Form::get_raw()'
-		);
-		return $this->Data->get_raw( $key );
 	}
 }

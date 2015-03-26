@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Data
  * Description: MW WP Form のデータ操作用
- * Version    : 1.3.6
+ * Version    : 1.3.7
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : October 10, 2013
- * Modified   : March 25, 2015
+ * Modified   : March 26, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -198,13 +198,6 @@ class MW_WP_Form_Data {
 			return $this->data[$key];
 		}
 	}
-	public function getValue( $key ) {
-		MWF_Functions::deprecated_message(
-			'MW_WP_Form_Data::getValue()',
-			'MW_WP_Form_Data::get_raw()'
-		);
-		return $this->get_raw( $key );
-	}
 
 	/**
 	 * getValues
@@ -216,13 +209,6 @@ class MW_WP_Form_Data {
 			return array();
 		}
 		return $this->data;
-	}
-	public function getValues() {
-		MWF_Functions::deprecated_message(
-			'MW_WP_Form_Data::getValues()',
-			'MW_WP_Form_Data::gets()'
-		);
-		return $this->gets();
 	}
 
 	/**
@@ -365,13 +351,6 @@ class MW_WP_Form_Data {
 			return $value['separator'];
 		}
 	}
-	public function getSeparatorValue( $key ) {
-		MWF_Functions::deprecated_message(
-			'MW_WP_Form_Data::getSeparatorValue()',
-			'MW_WP_Form_Data::get_separator_value()'
-		);
-		return $this->get_separator_value( $key );
-	}
 
 	/**
 	 * 配列データを整形して返す ( 郵便番号等用 )。配列の場合は表示値を連結して返す
@@ -412,13 +391,6 @@ class MW_WP_Form_Data {
 			}
 			return $value;
 		}
-	}
-	public function getSeparatedValue( $key ) {
-		MWF_Functions::deprecated_message(
-			'MW_WP_Form_Data::getSeparatedValue()',
-			'MW_WP_Form_Data::get_separated_value()'
-		);
-		return $this->get_separated_value( $key );
 	}
 
 	/**
