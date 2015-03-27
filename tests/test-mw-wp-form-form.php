@@ -11,7 +11,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		) );
 		$form_key = MWF_Config::NAME . '-' . $post_id;
 		$Data = MW_WP_Form_Data::getInstance( $form_key );
-		$Form = new MW_WP_Form_Form( $Data );
+		$Form = new MW_WP_Form_Form();
 		$name = 'raw';
 
 		$Data->set( $name, '000-0000' );
@@ -31,7 +31,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		) );
 		$form_key = MWF_Config::NAME . '-' . $post_id;
 		$Data = MW_WP_Form_Data::getInstance( $form_key );
-		$Form = new MW_WP_Form_Form( $Data );
+		$Form = new MW_WP_Form_Form();
 		$name = 'zip';
 
 		$Data->set( $name, '000-0000' );
@@ -51,7 +51,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		) );
 		$form_key = MWF_Config::NAME . '-' . $post_id;
 		$Data = MW_WP_Form_Data::getInstance( $form_key );
-		$Form = new MW_WP_Form_Form( $Data );
+		$Form = new MW_WP_Form_Form();
 		$name = 'tel';
 
 		$Data->set( $name, '000-0000-0000' );
@@ -71,7 +71,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		) );
 		$form_key = MWF_Config::NAME . '-' . $post_id;
 		$Data = MW_WP_Form_Data::getInstance( $form_key );
-		$Form = new MW_WP_Form_Form( $Data );
+		$Form = new MW_WP_Form_Form();
 		$name = 'check';
 
 		$arr1 = array(
@@ -124,7 +124,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		) );
 		$form_key = MWF_Config::NAME . '-' . $post_id;
 		$Data = MW_WP_Form_Data::getInstance( $form_key );
-		$Form = new MW_WP_Form_Form( $Data );
+		$Form = new MW_WP_Form_Form();
 		$name = 'radio';
 
 		$arr1 = array(
@@ -168,7 +168,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		) );
 		$form_key = MWF_Config::NAME . '-' . $post_id;
 		$Data = MW_WP_Form_Data::getInstance( $form_key );
-		$Form = new MW_WP_Form_Form( $Data );
+		$Form = new MW_WP_Form_Form();
 		$name = 'radio';
 
 		$arr1 = array(
@@ -212,7 +212,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		) );
 		$form_key = MWF_Config::NAME . '-' . $post_id;
 		$Data = MW_WP_Form_Data::getInstance( $form_key );
-		$Form = new MW_WP_Form_Form( $Data );
+		$Form = new MW_WP_Form_Form();
 		$name = 'check';
 
 		$arr1 = array(

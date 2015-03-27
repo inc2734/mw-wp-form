@@ -26,7 +26,7 @@ class MW_WP_Form_Validation_Rule_FileSize extends MW_WP_Form_Abstract_Validation
 	 * @return string エラーメッセージ
 	 */
 	public function rule( $key, array $options = array() ) {
-		$data = $this->Data->get_raw( MWF_Config::UPLOAD_FILES );
+		$data = $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILES );
 		if ( !is_null( $data ) && is_array( $data ) && array_key_exists( $key, $data ) ) {
 			$file = $data[$key];
 			if ( !empty( $file['size'] ) ) {

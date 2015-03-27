@@ -31,6 +31,11 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	protected $Form;
 
 	/**
+	 * @var MW_WP_Form_Data
+	 */
+	protected $Data;
+
+	/**
 	 * $defaults
 	 * 属性値等初期値
 	 * @var array
@@ -84,7 +89,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 		$this->_set_names();
 		$this->defaults = $this->set_defaults();
 		$this->_add_mwform_tag_generator();
-		add_action( 'mwform_add_shortcode', array( $this, 'add_shortcode' ), 10, 4 );
+		add_action( 'mwform_add_shortcode', array( $this, 'add_shortcode' ), 10, 5 );
 		add_filter( 'mwform_form_fields'  , array( $this, 'mwform_form_fields' ) );
 	}
 
@@ -185,12 +190,14 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 * @param string $view_flg
 	 * @param MW_WP_Form_Error $Error
 	 * @param string $form_key
+	 * @param MW_WP_Form_Data $Data
 	 */
-	public function add_shortcode( MW_WP_Form_Form $Form, $view_flg, MW_WP_Form_Error $Error, $form_key ) {
+	public function add_shortcode( MW_WP_Form_Form $Form, $view_flg, MW_WP_Form_Error $Error, $form_key, MW_WP_Form_Data $Data ) {
 		if ( !empty( $this->shortcode_name ) ) {
 			$this->Form     = $Form;
 			$this->Error    = $Error;
 			$this->form_key = $form_key;
+			$this->Data     = $Data;
 			switch( $view_flg ) {
 				case 'input' :
 					add_shortcode( $this->shortcode_name, array( $this, '_input_page' ) );

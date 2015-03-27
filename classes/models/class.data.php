@@ -39,19 +39,6 @@ class MW_WP_Form_Data {
 	protected $Session;
 
 	/**
-	 * $token_name
-	 * @var string
-	 */
-	protected $token_name = 'token';
-
-	/**
-	 * $complete_twice
-	 * リダイレクトされてからの complete であれば true
-	 * @var bool
-	 */
-	protected $complete_twice = false;
-
-	/**
 	 * $POST
 	 * @var array
 	 */
@@ -77,7 +64,6 @@ class MW_WP_Form_Data {
 		$this->data     = $this->Session->gets();
 		$this->set_request_valiables( $this->POST );
 		$this->set_files_valiables( $this->POST, $this->FILES );
-		add_filter( 'mwform_form_end_html', array( $this, 'mwform_form_end_html' ) );
 	}
 	
 	/**
@@ -129,80 +115,29 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * mwform_form_end_html
-	 * @param string $html
-	 * @return string $html
-	 */
-	public function mwform_form_end_html( $html ) {
-		$html .= wp_nonce_field( $this->form_key, $this->token_name, true, false );
-		return $html;
-	}
-
-	/**
-	 * check
-	 * トークンチェック
-	 * @return bool
-	 */
-	protected function token_check() {
-		if ( isset( $_POST[$this->token_name] ) ) {
-			$request_token = $_POST[$this->token_name];
-		}
-		$values = $this->gets();
-		if ( isset( $request_token ) && wp_verify_nonce( $request_token, $this->form_key ) ) {
-			return true;
-		} elseif ( empty( $_POST ) && $values ) {
-			$this->complete_twice = true;
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * is_complete_twice
-	 * リダイレクト後の complete かチェック
-	 */
-	public function is_complete_twice() {
-		if ( $this->complete_twice === true ) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * get_post_condition
 	 * 送信データからどのページを表示すべきかの状態を判定して返す
 	 * ただし実際に表示するページと同じとは限らない（バリデーション通らないとかあるので）
+	 *
+	 * @param bool $token_check
 	 * @return string back|confirm|complete|input
 	 */
-	public function get_post_condition() {
-		$backButton    = $this->get_raw( MWF_Config::BACK_BUTTON );
-		$confirmButton = $this->get_raw( MWF_Config::CONFIRM_BUTTON );
+	public function get_post_condition( $token_check ) {
+		$backButton    = $this->get_post_value_by_key( MWF_Config::BACK_BUTTON );
+		$confirmButton = $this->get_post_value_by_key( MWF_Config::CONFIRM_BUTTON );
 		if ( $backButton ) {
 			return 'back';
 		} elseif ( $confirmButton ) {
 			return 'confirm';
-		} elseif ( !$confirmButton && !$backButton && $this->token_check() ) {
+		} elseif ( !$confirmButton && !$backButton && $token_check ) {
 			return 'complete';
 		}
 		return 'input';
 	}
 
 	/**
-	 * get_raw
-	 * データを取得
-	 * @param string $key データのキー
-	 * @return string データ
-	 */
-	public function get_raw( $key ) {
-		if ( isset( $this->data[$key] ) ) {
-			return $this->data[$key];
-		}
-	}
-
-	/**
-	 * getValues
-	 * 全てのデータを取得
-	 * @return array データ
+	 * 全ての送信データを取得
+	 *
+	 * @return array
 	 */
 	public function gets() {
 		if ( $this->data === null ) {
@@ -212,8 +147,8 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * set
 	 * データを追加
+	 *
 	 * @param string $key データのキー
 	 * @param string $value 値
 	 */
@@ -235,8 +170,8 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * clear_value
 	 * データを消す
+	 *
 	 * @param string $key データのキー
 	 */
 	public function clear_value( $key ) {
@@ -245,8 +180,8 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * clear_values
-	 * データを消す
+	 * 全てのデータを消す
+	 *
 	 * @param string $key データのキー
 	 */
 	public function clear_values() {
@@ -255,8 +190,8 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * push
 	 * 指定した $key をキーと配列にデータを追加
+	 *
 	 * @param string $key データのキー
 	 * @param string $value 値
 	 */
@@ -266,171 +201,201 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * 整形済み（メール送信可能な）データを取得
+	 * 整形済み（メール送信可能な）データを取得。送信値、表示値を自動判別
 	 *
 	 * @param string $key データのキー
-	 * @return string
+	 * @param array $children
+	 * @return string|null
 	 */
-	public function get( $key ) {
+	public function get( $key, array $children = array() ) {
+		if ( !isset( $this->data[$key] ) ) {
+			return;
+		}
+
+		if ( empty( $children ) && isset( $this->data['__children'][$key] ) ) {
+			$children = json_decode( $this->data['__children'][$key], true );
+		}
+
+		if ( is_array( $this->data[$key] ) ) {
+			if ( !array_key_exists( 'data', $this->data[$key] ) ) {
+				return;
+			}
+			if ( $children ) {
+				return $this->get_separated_value( $key, $children );
+			}
+			return $this->get_separated_value_not_children_set( $key );
+		} else {
+			if ( $children ) {
+				return $this->get_in_children( $key, $children );
+			}
+			return $this->get_raw( $key );
+		}
+	}
+
+	/**
+	 * 送信データを取得
+	 *
+	 * @param string $key データのキー
+	 * @return string|null
+	 */
+	public function get_raw( $key ) {
+		if ( !isset( $this->data[$key] ) ) {
+			return;
+		}
+		if ( is_array( $this->data[$key] ) && !array_key_exists( 'data', $this->data[$key] ) ) {
+			return;
+		}
+
+		$children = array();
+		if ( isset( $this->data['__children'][$key] ) ) {
+			$children = json_decode( $this->data['__children'][$key], true );
+		}
+
+		if ( is_array( $this->data[$key] ) ) {
+			if ( $children ) {
+				return $this->get_separated_raw_value( $key, $children );
+			}
+			return $this->get_separated_value_not_children_set( $key );
+		} else {
+			if ( $children ) {
+				return $this->get_raw_in_children( $key, $children );
+			}
+			return $this->get_post_value_by_key( $key );
+		}
+	}
+
+	/**
+	 * そのキーに紐づく送信データを取得（通常の value 以外に separator や data などが紐づく）
+	 * todo: post されてないデータを取得するときも使うから名前変更する
+	 */
+	public function get_post_value_by_key( $key ) {
 		if ( isset( $this->data[$key] ) ) {
-
-			$children = array();
-			if ( isset( $this->data['__children'][$key] ) ) {
-				$children = json_decode( $this->data['__children'][$key], true );
-			}
-
-			if ( is_array( $this->data[$key] ) ) {
-				if ( !array_key_exists( 'data', $this->data[$key] ) ) {
-					return;
-				}
-				// チェックボックス、電話番号など data を持つ項目は入力画面では配列でくるけど
-				// 確認画面では文字列でくる
-				if ( is_array( $this->data[$key]['data'] ) ) {
-					if ( $children ) {
-						return $this->get_separated_value( $key, $children );
-					}
-					return $this->get_separated_raw_value( $key );
-				} else {
-					$value = $this->data[$key]['data'];
-					if ( $children ) {
-						return $this->get_separated_value( $key, $children );
-					}
-					return $this->get_separated_raw_value( $key );
-				}
-			} else {
-				if ( $children ) {
-					return $this->get_in_children( $key, $children );
-				}
-				return $this->get_raw( $key );
-			}
+			return $this->data[$key];
 		}
 	}
 
 	/**
 	 * $children の中に値が含まれているときだけ返す
+	 * 本当は protected 後方互換
 	 *
 	 * @param string $key name属性
 	 * @param array $children
 	 * @return string
 	 */
 	public function get_in_children( $key, array $children ) {
-		$value = $this->get_raw( $key );
+		$value = $this->get_post_value_by_key( $key );
 		if ( !is_null( $value ) && !is_array( $value ) ) {
 			if ( isset( $children[$value] ) ) {
 				return $children[$value];
+			} else {
+				return '';
 			}
 		}
 	}
 
 	/**
 	 * $children の中に値が含まれているときだけ返す
+	 * 本当は protected 後方互換
 	 *
 	 * @param string $key name属性
 	 * @param array $children
 	 * @return string
 	 */
 	public function get_raw_in_children( $key, array $children ) {
-		$value = $this->get_raw( $key );
+		$value = $this->get_post_value_by_key( $key );
 		if ( !is_null( $value ) && !is_array( $value ) ) {
 			if ( isset( $children[$value] ) ) {
 				return $value;
+			} else {
+				return '';
 			}
 		}
-		return '';
 	}
 
 	/**
-	 * get_separator_value
 	 * 送られてきたseparatorを返す
+	 *
 	 * @param string $key name属性
 	 * @return string
 	 */
 	public function get_separator_value( $key ) {
-		$value = $this->get_raw( $key );
+		$value = $this->get_post_value_by_key( $key );
 		if ( is_array( $value ) && isset( $value['separator'] ) ) {
 			return $value['separator'];
 		}
 	}
 
 	/**
-	 * 配列データを整形して返す ( 郵便番号等用 )。配列の場合は表示値を連結して返す
+	 * 配列データを整形して表示値を返す。separator が送信されていない場合は null
+	 * 本当は protected 後方互換
 	 *
 	 * @param string $key name属性
 	 * @param array $children 選択肢
-	 * @return string
+	 * @return string|null
 	 */
-	public function get_separated_value( $key, array $children = array() ) {
+	public function get_separated_value( $key, array $children ) {
 		$separator = $this->get_separator_value( $key );
-		$value     = $this->get_raw( $key );
+		$value     = $this->get_post_value_by_key( $key );
 
-		// チェックボックス、電話番号、郵便番号は配列
-		// ラジオボタン、セレクトボックスは文字列
-		if ( is_array( $value ) ) {
-			// $value が配列の場合、[data] が無いものは不正
-			if ( isset( $value['data'] ) ) {
-				// 入力 -> 確認のときは配列、確認 -> 入力のときは文字列
-				if ( !is_array( $value['data'] ) && $separator ) {
-					$value['data'] = explode( $separator, $value['data'] );
-				}
-				if ( $separator ) {
-					if ( $children ) {
-						$rightData = array();
-						foreach ( $value['data'] as $child ) {
-							if ( isset( $children[$child] ) && !in_array( $children[$child], $rightData ) ) {
-								$rightData[] = $children[$child];
-							}
-						}
-						return implode( $separator, $rightData );
-					}
-					return $this->get_separated_value_not_children_set( $value['data'], $separator );
+		if ( !is_array( $value ) ) {
+			return;
+		}
+		if ( !isset( $value['data'] ) ) {
+			return;
+		}
+		if ( !$separator ) {
+			return;
+		}
+
+		// 入力 -> 確認のときは配列、確認 -> 入力のときは文字列
+		if ( !is_array( $value['data'] ) ) {
+			$value['data'] = explode( $separator, $value['data'] );
+		}
+		if ( $children ) {
+			$rightData = array();
+			foreach ( $value['data'] as $child ) {
+				if ( isset( $children[$child] ) && !in_array( $children[$child], $rightData ) ) {
+					$rightData[] = $children[$child];
 				}
 			}
-		} else {
-			if ( $children ) {
-				return $this->get_in_children( $key, $children );
-			}
-			return $value;
+			return implode( $separator, $rightData );
 		}
 	}
 
 	/**
-	 * 配列データを整形して返す ( チェックボックス等用 )。配列の場合はpost値を連結して返す
+	 * 配列データを整形して送信値を返す。separator が送信されていない場合は null
+	 * 本当は protected 後方互換
 	 *
 	 * @param string $key name属性
 	 * @param array $children 選択肢
-	 * @return string
+	 * @return string|null
 	 */
-	public function get_separated_raw_value( $key, array $children = array() ) {
+	public function get_separated_raw_value( $key, array $children ) {
 		$separator = $this->get_separator_value( $key );
-		$value     = $this->get_raw( $key );
+		$value     = $this->get_post_value_by_key( $key );
 
-		// チェックボックス、電話番号、郵便番号は配列
-		// ラジオボタン、セレクトボックスは文字列
-		if ( is_array( $value ) ) {
-			// $value が配列の場合、[data] が無いものは不正
-			if ( isset( $value['data'] ) ) {
-				// 入力 -> 確認のときは配列、確認 -> 入力のときは文字列
-				if ( !is_array( $value['data'] ) && $separator ) {
-					$value['data'] = explode( $separator, $value['data'] );
-				}
-				if ( $separator ) {
-					if ( $children ) {
-						$rightData = array();
-						foreach ( $value['data'] as $child ) {
-							if ( isset( $children[$child] ) && !in_array( $child, $rightData ) ) {
-								$rightData[] = $child;
-							}
-						}
-						return implode( $separator, $rightData );
-					}
-					return $this->get_separated_value_not_children_set( $value['data'], $separator );
+		if ( !is_array( $value ) ) {
+			return;
+		}
+		if ( !isset( $value['data'] ) ) {
+			return;
+		}
+		if ( !$separator ) {
+			return;
+		}
+
+		// 入力 -> 確認のときは配列、確認 -> 入力のときは文字列
+		if ( !is_array( $value['data'] ) ) {
+			$value['data'] = explode( $separator, $value['data'] );
+		}
+		if ( $children ) {
+			$rightData = array();
+			foreach ( $value['data'] as $child ) {
+				if ( isset( $children[$child] ) && !in_array( $child, $rightData ) ) {
+					$rightData[] = $child;
 				}
 			}
-		} else {
-			if ( $children ) {
-				return $this->get_raw_in_children( $key, $children );
-			}
-			return $value;
+			return implode( $separator, $rightData );
 		}
 	}
 
@@ -439,33 +404,50 @@ class MW_WP_Form_Data {
 	 *
 	 * @param array $data
 	 * @param string $separator
-	 * @return string
+	 * @return string|null
 	 */
-	protected function get_separated_value_not_children_set( array $data, $separator ) {
-		foreach ( $data as $child ) {
+	protected function get_separated_value_not_children_set( $key ) {
+		$separator = $this->get_separator_value( $key );
+		$value     = $this->get_post_value_by_key( $key );
+
+		if ( !is_array( $value ) ) {
+			return;
+		}
+		if ( !isset( $value['data'] ) ) {
+			return;
+		}
+		if ( !$separator ) {
+			return;
+		}
+
+		if ( !is_array( $value['data'] ) ) {
+			$value['data'] = explode( $separator, $value['data'] );
+		}
+
+		foreach ( $value['data'] as $child ) {
 			if ( $child !== '' && $child !== null ) {
-				return implode( $separator, $data );
+				return implode( $separator, $value['data'] );
 			}
 		}
 		return '';
 	}
 
 	/**
-	 * set_upload_file_keys
+	 * アップロードに失敗、もしくはファイルが削除されている key を UPLOAD_FILE_KEYS から削除
 	 */
 	public function set_upload_file_keys() {
-		$upload_file_keys = $this->get_raw( MWF_Config::UPLOAD_FILE_KEYS );
+		$upload_file_keys = $this->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
 		if ( !$upload_file_keys ) {
 			$upload_file_keys = array();
 		}
 
 		$wp_upload_dir = wp_upload_dir();
-		foreach ( $upload_file_keys as $upload_file_key ) {
-			$upload_file_url = $this->get_raw( $upload_file_key );
+		foreach ( $upload_file_keys as $key => $upload_file_key ) {
+			$upload_file_url = $this->get_post_value_by_key( $upload_file_key );
 			if ( $upload_file_url ) {
 				$filepath = MWF_Functions::fileurl_to_path( $upload_file_url );
 				if ( !file_exists( $filepath ) ) {
-					unset( $upload_file_keys[$upload_file_key] );
+					unset( $upload_file_keys[$key] );
 				}
 			}
 		}
@@ -473,15 +455,15 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * push_uploaded_file_keys
-	 * アップロードに成功したファイルをフォームデータに格納
+	 * アップロードに成功したファイルを UPLOAD_FILE_KEYS に格納
+	 *
 	 * @param array $uploaded_files アップロード済みファイルのパスの配列
 	 */
 	public function push_uploaded_file_keys( array $uploaded_files = array() ) {
-		$upload_file_keys = $this->get_raw( MWF_Config::UPLOAD_FILE_KEYS );
+		$upload_file_keys = $this->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
 		foreach ( $uploaded_files as $key => $upload_file ) {
 			$this->set( $key, $upload_file );
-			if ( !in_array( $key, $upload_file_keys ) ) {
+			if ( is_array( $upload_file_keys ) && !in_array( $key, $upload_file_keys ) ) {
 				$this->push( MWF_Config::UPLOAD_FILE_KEYS, $key );
 			}
 		}

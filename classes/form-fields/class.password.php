@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Password
  * Description: パスワードフィールドを出力
- * Version    : 1.5.0
+ * Version    : 1.5.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : January 2, 2015
+ * Modified   : March 26, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -54,11 +54,16 @@ class MW_WP_Form_Field_Password extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function input_page() {
+		$value = $this->Data->get_raw( $this->atts['name'] );
+		if ( is_null( $value ) ) {
+			$value = $this->atts['value'];
+		}
+
 		$_ret = $this->Form->password( $this->atts['name'], array(
 			'id'          => $this->atts['id'],
 			'size'        => $this->atts['size'],
 			'maxlength'   => $this->atts['maxlength'],
-			'value'       => $this->atts['value'],
+			'value'       => $value,
 			'placeholder' => $this->atts['placeholder'],
 		) );
 		if ( $this->atts['show_error'] !== 'false' ) {
@@ -73,7 +78,7 @@ class MW_WP_Form_Field_Password extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function confirm_page() {
-		$value = $this->Form->get_raw( $this->atts['name'] );
+		$value = $this->Data->get_raw( $this->atts['name'] );
 		return '*****' . $this->Form->hidden( $this->atts['name'], $value );
 	}
 

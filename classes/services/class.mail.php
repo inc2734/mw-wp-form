@@ -325,7 +325,7 @@ class MW_WP_Form_Mail_Service {
 		$form_id = $this->Setting->get( 'post_id' );
 		if ( $form_id ) {
 			$automatic_reply_email = $this->Setting->get( 'automatic_reply_email' );
-			$automatic_reply_email = $this->Data->get_raw( $automatic_reply_email );
+			$automatic_reply_email = $this->Data->get_post_value_by_key( $automatic_reply_email );
 			$is_invalid_mail_address = $this->validation_rules['mail']->rule(
 				$automatic_reply_email
 			);

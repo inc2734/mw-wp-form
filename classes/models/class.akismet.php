@@ -44,20 +44,20 @@ class MW_WP_Form_Akismet {
 		$doAkismet = false;
 
 		$author = '';
-		if ( $Data->get_raw( $akismet_author ) ) {
-			$author = $Data->get_raw( $akismet_author );
+		if ( $Data->get_post_value_by_key( $akismet_author ) ) {
+			$author = $Data->get_post_value_by_key( $akismet_author );
 			$doAkismet = true;
 		}
 
 		$author_email = '';
-		if ( $Data->get_raw( $akismet_author_email ) ) {
-			$author_email = $Data->get_raw( $akismet_author_email );
+		if ( $Data->get_post_value_by_key( $akismet_author_email ) ) {
+			$author_email = $Data->get_post_value_by_key( $akismet_author_email );
 			$doAkismet = true;
 		}
 
 		$author_url = '';
-		if ( $Data->get_raw( $akismet_author_url ) ) {
-			$author_url = $Data->get_raw( $akismet_author_url );
+		if ( $Data->get_post_value_by_key( $akismet_author_url ) ) {
+			$author_url = $Data->get_post_value_by_key( $akismet_author_url );
 			$doAkismet = true;
 		}
 

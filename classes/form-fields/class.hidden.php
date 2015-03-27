@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Hidden
  * Description: hiddenフィールドを出力
- * Version    : 1.6.0
+ * Version    : 1.6.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : January 2, 2015
+ * Modified   : March 26, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -43,11 +43,14 @@ class MW_WP_Form_Field_Hidden extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function input_page() {
-		$echo_value = '';
+		$value = '';
 		if ( $this->atts['echo'] === 'true' ) {
-			$echo_value = $this->atts['value'];
+			$value = $this->atts['value'];
 		}
-		return esc_html( $echo_value ) . $this->Form->hidden( $this->atts['name'], $this->atts['value'] );
+		if ( is_null( $value ) ) {
+			$value = $this->get_raw( $this->atts['name'] );
+		}
+		return esc_html( $value ) . $this->Form->hidden( $this->atts['name'], $value );
 	}
 
 	/**
@@ -56,7 +59,7 @@ class MW_WP_Form_Field_Hidden extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function confirm_page() {
-		$value = $this->Form->get_raw( $this->atts['name'] );
+		$value = $this->Data->get_raw( $this->atts['name'] );
 		$echo_value = '';
 		if ( $this->atts['echo'] === 'true' ) {
 			$echo_value = $value;

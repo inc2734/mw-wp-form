@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field File
  * Description: 画像アップロードフィールドを出力
- * Version    : 1.5.0
+ * Version    : 1.5.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : May 17, 2013
- * Modified   : January 2, 2015
+ * Modified   : March 26, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -53,15 +53,21 @@ class MW_WP_Form_Field_File extends MW_WP_Form_Abstract_Form_Field {
 		$_ret = $this->Form->file( $this->atts['name'], array(
 			'id' => $this->atts['id'],
 		) );
-		$value = $this->Form->get_raw( $this->atts['name'] );
-		$upload_file_keys = $this->Form->get_raw( MWF_Config::UPLOAD_FILE_KEYS );
+		$value = $this->Data->get_raw( $this->atts['name'] );
+		$upload_file_keys = $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
 		if ( !empty( $value ) && is_array( $upload_file_keys ) && in_array( $this->atts['name'], $upload_file_keys ) ) {
 			$filepath = MWF_Functions::fileurl_to_path( $value );
 			if ( file_exists( $filepath ) ) {
-				$_ret .= '<div class="' . MWF_Config::NAME . '_file">';
-				$_ret .= '<a href="' . esc_attr( $value ) . '" target="_blank">' . __( 'Uploaded.', MWF_Config::DOMAIN ) . '</a>';
-				$_ret .= $this->Form->hidden( $this->atts['name'], $value );
-				$_ret .= '</div>';
+				$_ret .= sprintf(
+					'<div class="%s_file">
+						<a href="%s" target="_blank">%s</a>
+						%s
+					</div>',
+					esc_attr( MWF_Config::NAME ),
+					esc_attr( $value ),
+					esc_html__( 'Uploaded.', MWF_Config::DOMAIN ),
+					$this->Form->hidden( $this->atts['name'], $value )
+				);
 			}
 		}
 		if ( $this->atts['show_error'] !== 'false' ) {
@@ -76,7 +82,7 @@ class MW_WP_Form_Field_File extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function confirm_page() {
-		$value = $this->Form->get_raw( $this->atts['name'] );
+		$value = $this->Data->get_raw( $this->atts['name'] );
 		if ( $value ) {
 			$filepath = MWF_Functions::fileurl_to_path( $value );
 			if ( file_exists( $filepath ) ) {

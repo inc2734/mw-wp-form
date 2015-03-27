@@ -53,10 +53,15 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string html
 	 */
 	protected function input_page() {
+		$value = $this->Data->get_raw( $this->atts['name'] );
+		if ( is_null( $value ) ) {
+			$value = $this->atts['value'];
+		}
 		$children = $this->get_children( $this->atts['children'] );
+		
 		$_ret = $this->Form->select( $this->atts['name'], $children, array(
 			'id'    => $this->atts['id'],
-			'value' => $this->atts['value'],
+			'value' => $value,
 		) );
 		if ( $this->atts['post_raw'] === 'false' ) {
 			$_ret .= $this->Form->children( $this->atts['name'], $children );
@@ -74,8 +79,8 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function confirm_page() {
 		$children     = $this->get_children( $this->atts['children'] );
-		$value        = $this->Form->get_selected_value( $this->atts['name'], $children );
-		$posted_value = $this->Form->get_raw_in_children( $this->atts['name'], $children );
+		$value        = $this->Data->get( $this->atts['name'], $children );
+		$posted_value = $this->Data->get_raw( $this->atts['name'] );
 		$_ret         = esc_html( $value );
 		$_ret        .= $this->Form->hidden( $this->atts['name'], $posted_value );
 		if ( $this->atts['post_raw'] === 'false' ) {

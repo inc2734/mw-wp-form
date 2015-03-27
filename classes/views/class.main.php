@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Main View
- * Version    : 1.0.1
+ * Version    : 1.0.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : March 24, 2015
+ * Modified   : March 26, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -24,7 +24,8 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 			$this->get( 'Form' ),
 			$this->get( 'view_flg' ),
 			$this->get( 'Error' ),
-			$this->get( 'form_key' )
+			$this->get( 'form_key' ),
+			$this->get( 'Data' )
 		);
 	}
 
@@ -112,10 +113,11 @@ class MW_WP_Form_Main_View extends MW_WP_Form_View {
 		$view_flg = $this->get( 'view_flg' );
 		$Form     = $this->get( 'Form' );
 		$form_key = $this->get( 'form_key' );
+		$Data     = $this->get( 'Data' );
 
 		if ( in_array( $view_flg, array( 'input', 'confirm' ) ) ) {
 			$content            = $this->get_the_content( $content );
-			$upload_file_keys   = $Form->get_raw( MWF_Config::UPLOAD_FILE_KEYS );
+			$upload_file_keys   = $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
 			$upload_file_hidden = $this->get_upload_file_hidden( $upload_file_keys );
 			$old_confirm_class  = $this->get_old_confirm_class( $view_flg );
 			$class_by_style     = $this->get_class_by_style();
