@@ -1,98 +1,52 @@
 <?php
 /**
  * Name       : MW WP Form Contact Data Controller
- * Version    : 1.0.3
+ * Version    : 1.1.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : February 14, 2015
+ * Modified   : March 27, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Contact_Data_Controller {
 
 	/**
-	 * $contact_data_post_types
-	 * @var array
-	 */
-	protected $contact_data_post_types = array();
-
-	/**
 	 * initialize
 	 */
 	public function initialize() {
-		$this->contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
-		add_action( 'admin_menu', array( $this, 'admin_menu' ) );
-		add_action( 'current_screen', array( $this, 'current_screen' ) );
-	}
-
-	/**
-	 * current_screen
-	 * @param WP_Screen $screen
-	 */
-	public function current_screen( $screen ) {
-		if ( $screen->id === MWF_Config::NAME . '_page_' . MWF_Config::NAME . '-save-data' ||
-			 preg_match( '/^' . MWF_Config::DBDATA . '\d+$/', $screen->id ) ) {
-
-			$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
-			// 一覧画面・詳細ページの制限
-			if ( $screen->base ==='post' &&
-				 !in_array( $screen->post_type, $contact_data_post_types ) ) {
-				exit;
-			}
-			// 詳細ページの制限
-			if ( $screen->base ==='post' &&
-				 in_array( $screen->id, $contact_data_post_types ) ) {
-				$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $screen->post_type, array() );
-				if ( !empty( $_args ) && is_array( $_args ) ) {
-					$args = array(
-						'post_type'      => $screen->post_type,
-						'post_status'    => 'publish',
-						'posts_per_page' => 1,
-						'p'              => $_GET['post'],
-					);
-					$args = array_merge( $_args, $args );
-					$permit_posts = get_posts( $args );
-					if ( empty( $permit_posts ) ) {
-						exit;
-					}
+		$screen = get_current_screen();
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+		if ( $screen->base ==='post' && !in_array( $screen->id, $contact_data_post_types ) ) {
+			exit;
+		}
+		if ( $screen->base ==='post' && in_array( $screen->id, $contact_data_post_types ) ) {
+			$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $screen->post_type, array() );
+			if ( !empty( $_args ) && is_array( $_args ) ) {
+				$args = array(
+					'post_type'      => $screen->post_type,
+					'post_status'    => 'publish',
+					'posts_per_page' => 1,
+					'p'              => $_GET['post'],
+				);
+				$args = array_merge( $_args, $args );
+				$permit_posts = get_posts( $args );
+				if ( empty( $permit_posts ) ) {
+					exit;
 				}
 			}
-
-			$Contact_Data = new MW_WP_Form_Contact_Data();
-			add_action( 'add_meta_boxes'       , array( $this, 'add_meta_boxes' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-			add_action( 'admin_print_styles'   , array( $this, 'admin_print_styles' ) );
-			add_action( 'edit_form_top'        , array( $this, 'edit_form_top' ) );
-			add_action( 'save_post'            , array( $Contact_Data, 'save_post' ) );
-		}
-	}
-
-	/**
-	 * admin_menu
-	 * 問い合わせデータ閲覧ページへのメニューを追加
-	 */
-	public function admin_menu() {
-		$View = new MW_WP_Form_Contact_Data_View();
-		$View->set( 'contact_data_post_types', $this->contact_data_post_types );
-
-		if ( empty( $this->contact_data_post_types ) ) {
-			return;
 		}
 
-		add_submenu_page(
-			'edit.php?post_type=' . MWF_Config::NAME,
-			__( 'Inquiry data', MWF_Config::DOMAIN ),  // ページタイトル
-			__( 'Inquiry data', MWF_Config::DOMAIN ),  // メニュー名
-			MWF_Config::CAPABILITY, // 権限
-			MWF_Config::NAME . '-save-data', // 画面のパス
-			array( $View, 'index' ) // 表示用の関数
-		);
+		$Contact_Data = new MW_WP_Form_Contact_Data();
+		add_action( 'add_meta_boxes'       , array( $this, 'add_meta_boxes' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'admin_print_styles'   , array( $this, 'admin_print_styles' ) );
+		add_action( 'edit_form_top'        , array( $this, 'edit_form_top' ) );
+		add_action( 'save_post'            , array( $Contact_Data, 'save_post' ) );
 	}
 
 	/**
 	 * admin_enqueue_scripts
-	 * 本当は css, js のロードだけしたいけど、ここからしか post_id がとれないので渋々…
 	 */
 	public function admin_enqueue_scripts() {
 		$url = plugins_url( MWF_Config::NAME );

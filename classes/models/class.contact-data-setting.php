@@ -13,6 +13,12 @@
 class MW_WP_Form_Contact_Data_Setting {
 
 	/**
+	 * 問い合わせデータを保存しているフォームの投稿タイプの一覧
+	 * @var array
+	 */
+	protected static $contact_data_post_types;
+
+	/**
 	 * $post_id
 	 * フォームのPost ID
 	 * @var int
@@ -182,6 +188,9 @@ class MW_WP_Form_Contact_Data_Setting {
 	 * @return array
 	 */
 	public static function get_posts() {
+		if ( self::$contact_data_post_types !== null ) {
+			return self::$contact_data_post_types;
+		}
 		$contact_data_post_types = array();
 		$Admin = new MW_WP_Form_Admin();
 		$forms = $Admin->get_forms_using_database();
@@ -201,7 +210,8 @@ class MW_WP_Form_Contact_Data_Setting {
 				$new_post_types[] = $post_type;
 			}
 		}
-		return $new_post_types;
+		self::$contact_data_post_types = $new_post_types;
+		return self::$contact_data_post_types;
 	}
 
 	/**

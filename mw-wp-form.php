@@ -19,14 +19,12 @@ include_once( plugin_dir_path( __FILE__ ) . 'classes/config.php' );
 class MW_WP_Form {
 
 	/**
-	 * form_fields
 	 * フォームフィールドの配列
 	 * @var array
 	 */
 	protected $form_fields = array();
 
 	/**
-	 * $validation_rules
 	 * バリデーションルールの配列。順番を固定するために定義が必要
 	 * @var array
 	 */
@@ -52,7 +50,6 @@ class MW_WP_Form {
 	);
 
 	/**
-	 * $validation_rules_only_jp
 	 * 日本語の時のみ使用できるバリデーションルール
 	 * @var array
 	 */
@@ -62,7 +59,6 @@ class MW_WP_Form {
 	);
 
 	/**
-	 * $form_fields_only_jp
 	 * 日本語の時のみ使用できるフォーム項目
 	 * @var array
 	 */
@@ -139,40 +135,142 @@ class MW_WP_Form {
 		// フォームフィールドの読み込み、インスタンス化
 		$this->instantiate_form_fields();
 
-		// バリデーションルールの読み込み、インスタンス化
-		$validation_rules = $this->get_validation_rules();
-
 		$plugin_dir_path = plugin_dir_path( __FILE__ );
-		if ( is_admin() ) {
+		if ( current_user_can( MWF_Config::CAPABILITY ) && is_admin() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-
-			$Controller = new MW_WP_Form_Admin_Controller( $validation_rules );
-			$Controller->initialize();
-
-			$Controller = new MW_WP_Form_Admin_List_Controller();
-			$Controller->initialize();
-
-			$Controller = new MW_WP_Form_Contact_Data_Controller();
-			$Controller->initialize();
-
-			$Controller = new MW_WP_Form_Contact_Data_List_Controller();
-			$Controller->initialize();
-
-			$Controller = new MW_WP_Form_Chart_Controller();
-			$Controller->initialize();
-		} else {
+			add_action( 'admin_menu'           , array( $this, 'admin_menu_for_chart' ) );
+			add_action( 'admin_menu'           , array( $this, 'admin_menu_for_contact_data_list' ) );
+			add_action( 'admin_init'           , array( $this, 'register_setting' ) );
+			add_action( 'current_screen'       , array( $this, 'current_screen' ) );
+		} elseif ( !is_admin() ) {
+			$validation_rules = $this->get_validation_rules();
 			$Controller = new MW_WP_Form_Main_Controller( $validation_rules );
 			$Controller->initialize();
 		}
 	}
 
+	/**
+	 * 共通CSSの読み込み
+	 */
 	public function admin_enqueue_scripts() {
 		$url = plugins_url( MWF_Config::NAME );
 		wp_enqueue_style( MWF_Config::NAME . '-admin-common', $url . '/css/admin-common.css' );
 	}
 
 	/**
-	 * register_post_type
+	 * グラフページのメニューを追加
+	 */
+	public function admin_menu_for_chart() {
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+		if ( empty( $contact_data_post_types ) ) {
+			return;
+		}
+
+		$formkey      = ( !empty( $_GET['formkey'] ) ) ? $_GET['formkey'] : '';
+		$option_group = MWF_Config::NAME . '-' . 'chart-group';
+		$View = new MW_WP_Form_Chart_View();
+		$View->set( 'post_type'   , $formkey );
+		$View->set( 'option_group', $option_group );
+
+		add_submenu_page(
+			'edit.php?post_type=' . MWF_Config::NAME,
+			esc_html__( 'Chart', MWF_Config::DOMAIN ),
+			esc_html__( 'Chart', MWF_Config::DOMAIN ),
+			MWF_Config::CAPABILITY,
+			MWF_Config::NAME . '-chart',
+			array( $View, 'index' )
+		);
+	}
+
+	/**
+	 * 問い合わせデータ閲覧ページのメニューを追加
+	 */
+	public function admin_menu_for_contact_data_list() {
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+		if ( empty( $contact_data_post_types ) ) {
+			return;
+		}
+
+		$View = new MW_WP_Form_Contact_Data_View();
+		$View->set( 'contact_data_post_types', $contact_data_post_types );
+
+		add_submenu_page(
+			'edit.php?post_type=' . MWF_Config::NAME,
+			__( 'Inquiry data', MWF_Config::DOMAIN ),
+			__( 'Inquiry data', MWF_Config::DOMAIN ),
+			MWF_Config::CAPABILITY,
+			MWF_Config::NAME . '-save-data',
+			array( $View, 'index' )
+		);
+	}
+
+	/**
+	 * グラフページ用の register_setting
+	 */
+	public function register_setting() {
+		$formkey = ( !empty( $_GET['formkey'] ) ) ? $_GET['formkey'] : '';
+		if ( !empty( $_POST[MWF_Config::NAME . '-formkey'] ) ) {
+			$formkey = $_POST[MWF_Config::NAME . '-formkey'];
+		}
+		if ( !empty( $formkey ) ) {
+			$option_group = MWF_Config::NAME . '-' . 'chart-group';
+			register_setting(
+				$option_group,
+				MWF_Config::NAME . '-chart-' . $formkey,
+				array( $this, 'sanitize' )
+			);
+		}
+	}
+
+	/**
+	 * グラフページ設定データのサニタイズ
+	 *
+	 * @param array $input フォームから送信されたデータ
+	 * @return array
+	 */
+	public function sanitize( $input ) {
+		$new_input = array();
+		if ( is_array( $input ) && isset( $input['chart'] ) && is_array( $input['chart'] ) ) {
+			foreach ( $input['chart'] as $key => $value ) {
+				if ( !empty( $value['target'] ) ) {
+					$new_input['chart'][$key] = $value;
+				}
+			}
+		}
+		return $new_input;
+	}
+
+	/**
+	 * 各画面のコントローラーの呼び出し
+	 *
+	 * @param WP_Screen $screen
+	 */
+	public function current_screen( $screen ) {
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+		if ( $screen->id === MWF_Config::NAME ) {
+			$validation_rules = $this->get_validation_rules();
+			$Controller = new MW_WP_Form_Admin_Controller( $validation_rules );
+			$Controller->initialize();
+		}
+		elseif ( $screen->id === 'edit-' . MWF_Config::NAME ) {
+			$Controller = new MW_WP_Form_Admin_List_Controller();
+			$Controller->initialize();
+		}
+		elseif ( preg_match( '/^' . MWF_Config::DBDATA . '\d+$/', $screen->id ) ) {
+			$Controller = new MW_WP_Form_Contact_Data_Controller();
+			$Controller->initialize();
+		}
+		elseif ( preg_match( '/^edit-' . MWF_Config::DBDATA . '\d+$/', $screen->id ) ) {
+			$Controller = new MW_WP_Form_Contact_Data_List_Controller();
+			$Controller->initialize();
+		}
+		elseif ( $screen->id === MWF_Config::NAME . '_page_' . MWF_Config::NAME . '-chart' ) {
+			$Controller = new MW_WP_Form_Chart_Controller();
+			$Controller->initialize();
+		}
+	}
+
+	/**
 	 * 管理画面（カスタム投稿タイプ）の設定
 	 */
 	public function register_post_type() {
@@ -225,14 +323,12 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * activation
 	 * 有効化した時の処理
 	 */
 	public static function activation() {
 	}
 
 	/**
-	 * uninstall
 	 * アンインストールした時の処理
 	 */
 	public static function uninstall() {
@@ -267,7 +363,6 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * instantiate_form_fields
 	 * フォームフィールドのインスタンス化。配列にはフックを通して格納する。
 	 */
 	protected function instantiate_form_fields() {
@@ -289,7 +384,8 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * get_class_name_from_form_field_filename
+	 * フォーム項目クラスのファイル名からクラス名を取得
+	 *
 	 * @param string $filename ファイル名
 	 * @return string クラス名
 	 */
@@ -301,8 +397,8 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * get_validation_rules
 	 * バリデーションルールのインスタンス化。配列にはフックを通して格納する。
+	 *
 	 * @param string $key フォーム識別子
 	 * @return $validation_rules バリデーションルールオブジェクトの配列
 	 */
@@ -332,7 +428,8 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * get_class_name_from_validation_rule_filename
+	 * バリデーションルールクラスのファイル名からクラス名を取得
+	 *
 	 * @param string $filename ファイル名
 	 * @return string クラス名
 	 */

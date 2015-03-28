@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Admin Controller
- * Version    : 1.0.2
+ * Version    : 1.1.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : February 8, 2015
+ * Modified   : March 27, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -34,24 +34,14 @@ class MW_WP_Form_Admin_Controller {
 	 * initialize
 	 */
 	public function initialize() {
-		add_action( 'current_screen', array( $this , 'current_screen' ) );
-	}
-
-	/**
-	 * current_screen
-	 * @param WP_Screen $screen
-	 */
-	public function current_screen( $screen ) {
-		if ( $screen->id === MWF_Config::NAME ) {
-			$View  = new MW_WP_Form_Admin_View();
-			$Admin = new MW_WP_Form_Admin();
-			add_action( 'add_meta_boxes'            , array( $this , 'add_meta_boxes' ) );
-			add_filter( 'default_content'           , array( $this , 'default_content' ) );
-			add_action( 'media_buttons'             , array( $View , 'tag_generator' ) );
-			add_action( 'admin_enqueue_scripts'     , array( $this , 'admin_enqueue_scripts' ) );
-			add_action( 'admin_print_footer_scripts', array( $View , 'quicktag' ) );
-			add_action( 'save_post'                 , array( $Admin, 'save_post' ) );
-		}
+		$View  = new MW_WP_Form_Admin_View();
+		$Admin = new MW_WP_Form_Admin();
+		add_action( 'add_meta_boxes'            , array( $this , 'add_meta_boxes' ) );
+		add_filter( 'default_content'           , array( $this , 'default_content' ) );
+		add_action( 'media_buttons'             , array( $View , 'tag_generator' ) );
+		add_action( 'admin_enqueue_scripts'     , array( $this , 'admin_enqueue_scripts' ) );
+		add_action( 'admin_print_footer_scripts', array( $View , 'quicktag' ) );
+		add_action( 'save_post'                 , array( $Admin, 'save_post' ) );
 	}
 
 	/**

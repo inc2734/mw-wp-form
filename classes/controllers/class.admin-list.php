@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Admin List Controller
- * Version    : 1.0.1
+ * Version    : 1.1.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : February 8, 2015
+ * Modified   : March 27, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -15,20 +15,11 @@ class MW_WP_Form_Admin_List_Controller {
 	 * initialize
 	 */
 	public function initialize() {
-		add_action( 'current_screen', array( $this , 'current_screen' ) );
-	}
-
-	/**
-	 * current_screen
-	 * @param WP_Screen $screen
-	 */
-	public function current_screen( $screen ) {
-		if ( $screen->id === 'edit-' . MWF_Config::NAME ) {
-			$View = new MW_WP_Form_Admin_List_View();
-			add_filter( 'views_' . $screen->id , array( $View, 'donate_link' ) );
-			add_action( 'admin_head'           , array( $this, 'add_columns' ) );
-			add_action( 'admin_enqueue_scripts', array( $this , 'admin_enqueue_scripts' ) );
-		}
+		$screen = get_current_screen();
+		$View = new MW_WP_Form_Admin_List_View();
+		add_filter( 'views_' . $screen->id , array( $View, 'donate_link' ) );
+		add_action( 'admin_head'           , array( $this, 'add_columns' ) );
+		add_action( 'admin_enqueue_scripts', array( $this , 'admin_enqueue_scripts' ) );
 	}
 
 	/**

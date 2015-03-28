@@ -1,40 +1,35 @@
 <?php
 /**
  * Name       : MW WP Form Contact Data List Controller
- * Version    : 1.0.2
+ * Version    : 1.1.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : February 14, 2015
+ * Modified   : March 27, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-class MW_WP_Form_Contact_Data_List_Controller {
+class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 
 	/**
 	 * initialize
 	 */
 	public function initialize() {
-		add_action( 'current_screen', array( $this, 'current_screen' ) );
-	}
-
-	/**
-	 * current_screen
-	 * @param WP_Screen $screen
-	 */
-	public function current_screen( $screen ) {
-		if ( preg_match( '/^edit-' . MWF_Config::DBDATA . '\d+$/', $screen->id ) ) {
-			if ( !$this->is_contact_data_list() ) {
-				exit;
-			}
-			$this->csv_download();
-			add_action( 'pre_get_posts'        , array( $this, 'pre_get_posts' ) );
-			add_action( 'admin_head'           , array( $this, 'add_columns' ) );
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-			add_action( 'admin_print_styles'   , array( $this, 'admin_print_styles' ) );
-			add_action( 'in_admin_footer'      , array( $this, 'add_csv_download_button' ) );
-			add_filter( 'wp_count_posts'       , array( $this, 'wp_count_posts' ), 10, 2 );
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+		if ( !isset( $_GET['post_type'] ) ) {
+			exit;
 		}
+		$post_type = $_GET['post_type'];
+		if ( !in_array( $post_type, $contact_data_post_types ) ) {
+			exit;
+		}
+		$this->csv_download();
+		add_action( 'pre_get_posts'        , array( $this, 'pre_get_posts' ) );
+		add_action( 'admin_head'           , array( $this, 'add_columns' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_action( 'admin_print_styles'   , array( $this, 'admin_print_styles' ) );
+		add_action( 'in_admin_footer'      , array( $this, 'add_csv_download_button' ) );
+		add_filter( 'wp_count_posts'       , array( $this, 'wp_count_posts' ), 10, 2 );
 	}
 
 	/**
@@ -85,9 +80,13 @@ class MW_WP_Form_Contact_Data_List_Controller {
 			return;
 		}
 		$action = $_SERVER['REQUEST_URI'];
+		$this->assign( 'action', $action );
+		$this->render( 'contact-data-list/csv-button' );
+/*
 		$View = new MW_WP_Form_Contact_Data_List_View();
 		$View->set( 'action', $action );
 		$View->csv_button();
+		*/
 	}
 
 	/**
@@ -95,9 +94,6 @@ class MW_WP_Form_Contact_Data_List_Controller {
 	 * CSVを生成、出力
 	 */
 	public function csv_download() {
-		if ( !$this->is_contact_data_list() ) {
-			return;
-		}
 		if ( !isset( $_GET['post_type'] ) ) {
 			return ;
 		}
@@ -349,20 +345,5 @@ class MW_WP_Form_Contact_Data_List_Controller {
 			}
 		}
 		return $counts;
-	}
-
-	/**
-	 * is_contact_data_list
-	 * @return bool
-	 */
-	protected function is_contact_data_list() {
-		if ( isset( $_GET['post_type'] ) ) {
-			$post_type = $_GET['post_type'];
-			$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
-			if ( in_array( $post_type, $contact_data_post_types ) ) {
-				return true;
-			}
-		}
-		return false;
 	}
 }
