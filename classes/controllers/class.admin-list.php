@@ -9,17 +9,34 @@
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-class MW_WP_Form_Admin_List_Controller {
+class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 	
 	/**
 	 * initialize
 	 */
 	public function initialize() {
 		$screen = get_current_screen();
-		$View = new MW_WP_Form_Admin_List_View();
-		add_filter( 'views_' . $screen->id , array( $View, 'donate_link' ) );
+		add_filter( 'views_' . $screen->id , array( $this, 'donate_link' ) );
 		add_action( 'admin_head'           , array( $this, 'add_columns' ) );
-		add_action( 'admin_enqueue_scripts', array( $this , 'admin_enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+	}
+
+	/**
+	 * 寄付リンクを出力
+	 *
+	 * @param array $views
+	 * @return array
+	 */
+	public function donate_link( $views ) {
+		$donation = array(
+			'donation' =>
+				'<div class="donation"><p>' .
+				__( 'Your contribution is needed for making this plugin better.', MWF_Config::DOMAIN ) .
+				' <a href="http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40" class="button">' .
+				__( 'Donate', MWF_Config::DOMAIN ) . '</a></p></div>'
+		);
+		$views = array_merge( $donation, $views );
+		return $views;
 	}
 
 	/**
@@ -57,10 +74,9 @@ class MW_WP_Form_Admin_List_Controller {
 	 * @param int $post_id
 	 */
 	public function manage_posts_custom_column( $column_name, $post_id ) {
-		$View = new MW_WP_Form_Admin_List_View();
-		$View->set( 'post_id', get_the_ID() );
+		$this->assign( 'post_id', get_the_ID() );
 		if ( $column_name === 'mwform_form_key' ) {
-			$View->form_key();
+			$this->render( 'admin-list/form-key' );
 		}
 	}
 }

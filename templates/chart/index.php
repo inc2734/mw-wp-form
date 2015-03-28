@@ -1,64 +1,3 @@
-<?php
-/**
- * Name       : MW WP Form Chart View
- * Version    : 1.0.3
- * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
- * Created    : January 2, 2015
- * Modified   : February 14, 2015
- * License    : GPLv2
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
- */
-class MW_WP_Form_Chart_View extends MW_WP_Form_View {
-	
-	/**
-	 * index
-	 */
-	public function index() {
-		$post_type    = $this->get( 'post_type' );
-		$option_group = $this->get( 'option_group' );
-		$default_args = array(
-			'posts_per_page' => -1,
-		);
-		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $post_type, $default_args );
-		$args = array(
-			'post_type' => $post_type,
-		);
-		if ( !empty( $_args ) && is_array( $_args ) ) {
-			$args = array_merge( $_args, $args );
-		} else {
-			$args = array_merge( $_args, $default_args );
-		}
-		$form_posts = get_posts( $args );
-
-		$custom_keys = array();
-		foreach ( $form_posts as $post ) {
-			$post_custom_keys = get_post_custom_keys( $post->ID );
-			if ( is_array( $post_custom_keys ) ) {
-				foreach ( $post_custom_keys as $post_custom_key ) {
-					if ( preg_match( '/^_/', $post_custom_key ) ) {
-						continue;
-					}
-					$post_meta = get_post_meta( $post->ID, $post_custom_key, true );
-					$custom_keys[$post_custom_key][$post_meta][] = $post->ID;
-				}
-			}
-		}
-
-		$postdata = array();
-		$option   = get_option( MWF_Config::NAME . '-chart-' . $post_type );
-		if ( is_array( $option ) && isset( $option['chart'] ) && is_array( $option['chart'] ) ) {
-			$postdata = $option['chart'];
-		}
-
-		$default_keys = array(
-			'target'    => '',
-			'separator' => '',
-			'chart'     => '',
-		);
-		// 空の隠れフィールド（コピー元）を挿入
-		array_unshift( $postdata, $default_keys );
-		?>
 <div class="wrap">
 	<?php $post_id = preg_replace( '/^(.+_)(\d+)$/', '$2', $post_type ); ?>
 	<h2>
@@ -199,6 +138,3 @@ class MW_WP_Form_Chart_View extends MW_WP_Form_View {
 	}
 	</script>
 <!-- end .wrap --></div>
-		<?php
-	}
-}

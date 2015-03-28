@@ -33,7 +33,8 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * pre_get_posts
+	 * フックで表示するレコードに変更があれば変更
+	 *
 	 * @param WP_Query $wp_query
 	 */
 	public function pre_get_posts( $wp_query ) {
@@ -49,7 +50,7 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * admin_enqueue_scripts
+	 * CSS と JS の読み込み
 	 */
 	public function admin_enqueue_scripts() {
 		$url = plugins_url( MWF_Config::NAME );
@@ -58,16 +59,13 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * admin_print_styles
 	 * DB登録データの一覧で新規追加のリンクを消す
 	 */
 	public function admin_print_styles() {
-		$View = new MW_WP_Form_Contact_Data_List_View();
-		$View->admin_print_styles_for_list();
+		$this->render( 'contact-data-list/admin-print-styles' );
 	}
 
 	/**
-	 * add_csv_download_button
 	 * CSVダウンロードボタンを表示
 	 */
 	public function add_csv_download_button() {
@@ -82,15 +80,9 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 		$action = $_SERVER['REQUEST_URI'];
 		$this->assign( 'action', $action );
 		$this->render( 'contact-data-list/csv-button' );
-/*
-		$View = new MW_WP_Form_Contact_Data_List_View();
-		$View->set( 'action', $action );
-		$View->csv_button();
-		*/
 	}
 
 	/**
-	 * csv_download
 	 * CSVを生成、出力
 	 */
 	public function csv_download() {
@@ -146,7 +138,8 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * get_csv_headings
+	 * CSVの見出しを生成
+	 *
 	 * @param array $posts
 	 * @return array
 	 */
@@ -185,7 +178,8 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * get_rows
+	 * CSVの各行を生成
+	 *
 	 * @param array $posts
 	 * @param array $headings
 	 * @return array
@@ -222,7 +216,8 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * escape_double_quote
+	 * CSVのダブルクオートのエスケープ
+	 *
 	 * @param string $value
 	 * @return string
 	 */
@@ -232,7 +227,8 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * get_posts_per_page
+	 * CSVで出力する件数を取得
+	 *
 	 * @return int
 	 */
 	protected function get_posts_per_page() {
@@ -248,7 +244,8 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * get_paged
+	 * CSVで出力するページ番号を取得
+	 *
 	 * @return int
 	 */
 	protected function get_paged() {
@@ -264,7 +261,6 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * add_columns
 	 * DB登録使用時に問い合わせデータ一覧にカラムを追加
 	 */
 	public function add_columns() {
@@ -282,7 +278,8 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * add_form_columns_name
+	 * カラム名を取得
+	 *
 	 * @param array $columns
 	 * @return array $columns
 	 */
@@ -310,23 +307,75 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * add_form_columns_name
+	 * 各カラムのデータを出力
+	 *
 	 * @param string $column カラム名
 	 * @param int $post_id
 	 */
 	public function add_form_columns( $column, $post_id ) {
+		$post                 = get_post( $post_id );
 		$post_custom_keys     = get_post_custom_keys( $post_id );
 		$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $post_id );
-		$View = new MW_WP_Form_Contact_Data_List_View();
-		$View->set( 'column', $column );
-		$View->set( 'post_id', $post_id );
-		$View->set( 'post_custom_keys', $post_custom_keys );
-		$View->set( 'Contact_Data_Setting', $Contact_Data_Setting );
-		$View->manage_posts_custom_column();
+
+		if ( $column === 'post_date' ) {
+			$value = esc_html( $post->post_date );
+		} elseif ( $column === 'response_status' ) {
+			$response_statuses = $Contact_Data_Setting->get_response_statuses();
+			$response_status   = $Contact_Data_Setting->get( 'response_status' );
+			$value = $response_statuses[$response_status];
+		} elseif ( is_array( $post_custom_keys ) && in_array( $column, $post_custom_keys ) ) {
+			$post_meta = get_post_meta( $post_id, $column, true );
+			if ( $Contact_Data_Setting->is_upload_file_key( $post, $column ) ) {
+				$value = $this->get_multimedia_data( $post_meta );
+			} elseif ( $post_meta ) {
+				$value = esc_html( $post_meta );
+			} else {
+				$value = '&nbsp;';
+			}
+		} else {
+			$value = '&nbsp;';
+		}
+
+		$this->assign( 'column', $value );
+		$this->render( 'contact-data-list/column' );
 	}
 
 	/**
-	 * wp_count_posts
+	 * 添付データを適切なHTMLに変換して返す
+	 *
+	 * @param string $value
+	 * @return string
+	 */
+	protected function get_multimedia_data( $value ) {
+		$mimetype = get_post_mime_type( $value );
+		if ( $mimetype ) {
+			// 画像だったら
+			if ( preg_match( '/^image\/.+?$/', $mimetype ) ) {
+				$src = wp_get_attachment_image_src( $value, 'thumbnail' );
+				return sprintf(
+					'<img src="%s" alt="" style="width:50px;height:50px" />',
+					esc_url( $src[0] )
+				);
+			}
+			// 画像以外
+			else {
+				$src = wp_get_attachment_image_src( $value, 'none', true );
+				return sprintf(
+					'<a href="%s" target="_blank"><img src="%s" alt="" style="height:50px" /></a>',
+					esc_url( wp_get_attachment_url( $value ) ),
+					esc_url( $src[0] )
+				);
+			}
+		}
+		// 添付されているけど、フック等でメタ情報が書き換えられて添付ファイルID以外になってしまった場合
+		else {
+			return esc_html( $value );
+		}
+	}
+
+	/**
+	 * 件数をカスタマイズ
+	 *
 	 * @param object $counts
 	 * @param string $type 投稿タイプ名
 	 * @return object

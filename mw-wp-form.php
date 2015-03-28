@@ -80,13 +80,14 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * load_initialize_files
 	 * initialize に必要なファイルをロード
 	 */
 	public function load_initialize_files() {
 		$plugin_dir_path = plugin_dir_path( __FILE__ );
+		include_once( $plugin_dir_path . 'classes/controllers/class.controller.php' );
 		include_once( $plugin_dir_path . 'classes/controllers/class.admin.php' );
 		include_once( $plugin_dir_path . 'classes/controllers/class.admin-list.php' );
+		include_once( $plugin_dir_path . 'classes/controllers/class.stores-inquiry-data-form-list.php' );
 		include_once( $plugin_dir_path . 'classes/controllers/class.contact-data.php' );
 		include_once( $plugin_dir_path . 'classes/controllers/class.contact-data-list.php' );
 		include_once( $plugin_dir_path . 'classes/controllers/class.chart.php' );
@@ -109,12 +110,7 @@ class MW_WP_Form {
 		include_once( $plugin_dir_path . 'classes/services/class.mail.php' );
 		include_once( $plugin_dir_path . 'classes/services/class.redirected.php' );
 		include_once( $plugin_dir_path . 'classes/views/class.view.php' );
-		include_once( $plugin_dir_path . 'classes/views/class.admin.php' );
-		include_once( $plugin_dir_path . 'classes/views/class.admin-list.php' );
-		include_once( $plugin_dir_path . 'classes/views/class.chart.php' );
 		include_once( $plugin_dir_path . 'classes/views/class.main.php' );
-		include_once( $plugin_dir_path . 'classes/views/class.contact-data.php' );
-		include_once( $plugin_dir_path . 'classes/views/class.contact-data-list.php' );
 	}
 
 	/**
@@ -166,20 +162,24 @@ class MW_WP_Form {
 			return;
 		}
 
-		$formkey      = ( !empty( $_GET['formkey'] ) ) ? $_GET['formkey'] : '';
-		$option_group = MWF_Config::NAME . '-' . 'chart-group';
-		$View = new MW_WP_Form_Chart_View();
-		$View->set( 'post_type'   , $formkey );
-		$View->set( 'option_group', $option_group );
-
 		add_submenu_page(
 			'edit.php?post_type=' . MWF_Config::NAME,
 			esc_html__( 'Chart', MWF_Config::DOMAIN ),
 			esc_html__( 'Chart', MWF_Config::DOMAIN ),
 			MWF_Config::CAPABILITY,
 			MWF_Config::NAME . '-chart',
-			array( $View, 'index' )
+			array( $this, 'display_chart' )
 		);
+	}
+
+	/**
+	 * グラフページを表示
+	 */
+	public function display_chart() {
+		// ここでは画面の呼び出しだけ。
+		// JSの読み込みや画面の表示可否判定は current_screen() で行う（ここでは遅い）。
+		$Controller = new MW_WP_Form_Chart_Controller();
+		$Controller->index();
 	}
 
 	/**
@@ -191,17 +191,22 @@ class MW_WP_Form {
 			return;
 		}
 
-		$View = new MW_WP_Form_Contact_Data_View();
-		$View->set( 'contact_data_post_types', $contact_data_post_types );
-
 		add_submenu_page(
 			'edit.php?post_type=' . MWF_Config::NAME,
 			__( 'Inquiry data', MWF_Config::DOMAIN ),
 			__( 'Inquiry data', MWF_Config::DOMAIN ),
 			MWF_Config::CAPABILITY,
 			MWF_Config::NAME . '-save-data',
-			array( $View, 'index' )
+			array( $this, 'display_stores_inquiry_data_form_list' )
 		);
+	}
+
+	/**
+	 * 問い合わせデータ閲覧ページを表示
+	 */
+	public function display_stores_inquiry_data_form_list() {
+		$Controller = new MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller();
+		$Controller->index();
 	}
 
 	/**

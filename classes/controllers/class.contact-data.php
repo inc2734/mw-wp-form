@@ -9,7 +9,7 @@
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-class MW_WP_Form_Contact_Data_Controller {
+class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 
 	/**
 	 * initialize
@@ -46,7 +46,7 @@ class MW_WP_Form_Contact_Data_Controller {
 	}
 
 	/**
-	 * admin_enqueue_scripts
+	 * CSSの読み込み
 	 */
 	public function admin_enqueue_scripts() {
 		$url = plugins_url( MWF_Config::NAME );
@@ -54,40 +54,45 @@ class MW_WP_Form_Contact_Data_Controller {
 	}
 
 	/**
-	 * admin_print_styles
 	 * 詳細画面で新規追加のリンクを消す
 	 */
 	public function admin_print_styles() {
-		$View = new MW_WP_Form_Contact_Data_View();
-		$View->admin_print_styles_for_detail();
+		$this->redner( 'contact-data/admin-print-styles' );
 	}
 
 	/**
-	 * add_meta_boxes
+	 * メタボックスを追加
 	 */
 	public function add_meta_boxes() {
 		$post_type = get_post_type();
-		$View = new MW_WP_Form_Contact_Data_View();
-		$View->set( 'post_type', $post_type );
-		$View->set( 'Contact_Data_Setting', new MW_WP_Form_Contact_Data_Setting( get_the_ID() ) );
 		add_meta_box(
 			substr( MWF_Config::CONTACT_DATA_NAME, 1 ) . '_custom_fields',
 			__( 'Custom Fields', MWF_Config::DOMAIN ),
-			array( $View, 'detail' ),
+			array( $this, 'detail' ),
 			$post_type
 		);
 	}
 
 	/**
-	 * edit_form_top 
+	 * 詳細
+	 */
+	public function detail() {
+		global $post;
+		$this->assign( 'post', $post );
+		$this->assign( 'post_type', $post_type );
+		$this->assign( 'Contact_Data_Setting', new MW_WP_Form_Contact_Data_Setting( get_the_ID() ) );
+		$this->render( 'contact-data/detail' );
+	}
+
+	/**
 	 * 問い合わせデータ詳細画面で一覧に戻るリンクを表示
+	 *
 	 * @param object $post
 	 */
 	public function edit_form_top( $post ) {
 		$post_type = get_post_type();
 		$link = admin_url( '/edit.php?post_type=' . $post_type );
-		$View = new MW_WP_Form_Contact_Data_View();
-		$View->set( 'link', $link );
-		$View->returning_link();
+		$this->assign( 'link', $link );
+		$this->render( 'contact-data/returning-link' );
 	}
 }

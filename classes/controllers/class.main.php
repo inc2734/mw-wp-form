@@ -362,9 +362,7 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * is_complete_twice
 	 * リダイレクト後の complete かチェック
-	 * todo: ここ？
 	 */
 	protected function is_complete_twice() {
 		if ( $this->complete_twice === true ) {
