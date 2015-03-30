@@ -52,7 +52,6 @@ class MW_WP_Form_Field_Tel extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function input_page() {
 		$value = $this->Data->get_raw( $this->atts['name'] );
-		var_dump( $this->atts['name'] );
 		if ( is_array( $value ) && isset( $value['data'] ) ) {
 			$value = $value['data'];
 		}

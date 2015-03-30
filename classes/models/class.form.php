@@ -13,8 +13,8 @@
 class MW_WP_Form_Form {
 
 	/**
-	 * get_raw
 	 * データを返す
+	 *
 	 * @param string $key name属性値
 	 * @return mixed
 	 */
@@ -23,7 +23,8 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_raw()',
 			'MW_WP_Form_Data::get_raw()'
 		);
-		return $this->Data->get_raw( $key );
+		$Data = MW_WP_Form_Data::getInstance( null );
+		return $Data->get_raw( $key );
 	}
 
 	/**
@@ -38,12 +39,13 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_raw_in_children()',
 			'MW_WP_Form_Data::get_raw_in_children()'
 		);
-		return $this->Data->get_raw_in_children( $key, $children );
+		$Data = MW_WP_Form_Data::getInstance( null );
+		return $Data->get_raw_in_children( $key, $children );
 	}
 
 	/**
-	 * get_zip_value
 	 * データを返す ( 郵便番号用 )
+	 *
 	 * @param string $key name属性
 	 * @return string データ
 	 */
@@ -52,12 +54,13 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_zip_value()',
 			'MW_WP_Form_Data::get_separated_value()'
 		);
-		return $this->Data->get_separated_value( $key );
+		$Data = MW_WP_Form_Data::getInstance( null );
+		return $Data->get_separated_value( $key );
 	}
 
 	/**
-	 * get_tel_value
 	 * データを返す ( 電話番号用 )
+	 *
 	 * @param string $key name属性
 	 * @return string データ
 	 */
@@ -66,12 +69,13 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_zip_value()',
 			'MW_WP_Form_Data::get_separated_value()'
 		);
-		return $this->Data->get_separated_value( $key );
+		$Data = MW_WP_Form_Data::getInstance( null );
+		return $Data->get_separated_value( $key );
 	}
 
 	/**
-	 * get_checked_value
 	 * データを返す（ checkbox用 ）。$dataに含まれる値のみ返す
+	 *
 	 * @param string $key name属性
 	 * @param array $data
 	 * @return string データ
@@ -81,12 +85,13 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_checked_value()',
 			'MW_WP_Form_Data::get_separated_value()'
 		);
-		return $this->Data->get_separated_value( $key, $data );
+		$Data = MW_WP_Form_Data::getInstance( null );
+		return $Data->get_separated_value( $key, $data );
 	}
 
 	/**
-	 * get_radio_value
 	 * データを返す（ radio用 ）。$dataに含まれる値のみ返す
+	 *
 	 * @param string name属性値
 	 * @param array $data データ
 	 * @return string
@@ -96,12 +101,13 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_radio_value()',
 			'MW_WP_Form_Data::get_in_children()'
 		);
-		return $this->Data->get_in_children( $key, $data );
+		$Data = MW_WP_Form_Data::getInstance( null );
+		return $Data->get_in_children( $key, $data );
 	}
 
 	/**
-	 * get_selected_value
 	 * データを返す（ selectbox用 ）。$dataに含まれる値のみ返す
+	 *
 	 * @param string $key name属性
 	 * @param array $data データ
 	 * @return string データ
@@ -111,12 +117,13 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_selected_value()',
 			'MW_WP_Form_Data::get_in_children()'
 		);
-		return $this->Data->get_in_children( $key, $data );
+		$Data = MW_WP_Form_Data::getInstance( null );
+		return $Data->get_in_children( $key, $data );
 	}
 
 	/**
-	 * get_separated_raw_value
 	 * 配列データを整形して返す ( チェックボックス等用 )。配列の場合はpost値を連結して返す
+	 *
 	 * @param string $key name属性
 	 * @param array $children 選択肢
 	 * @return string データ
@@ -126,12 +133,13 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_separated_raw_value()',
 			'MW_WP_Form_Data::get_separated_raw_value()'
 		);
-		return $this->Data->get_separated_raw_value( $key, $children );
+		$Data = MW_WP_Form_Data::getInstance( null );
+		return $Data->get_separated_raw_value( $key, $children );
 	}
 
 	/**
-	 * separator
-	 * separatorを設定するためのhiddenを返す
+	 * separator を設定するためのhiddenを返す
+	 *
 	 * @param string $key name属性
 	 * @param string $separator 区切り文字
 	 * @return string HTML
@@ -143,8 +151,8 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * get_separator_value
-	 * 送られてきたseparatorを返す
+	 * 送られてきた separator を返す
+	 *
 	 * @param string $key name属性
 	 * @return string
 	 */
@@ -153,12 +161,12 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_separator_value()',
 			'MW_WP_Form_Data::get_separator_value()'
 		);
-		return $this->Data->get_separator_value( $key );
+		return $Data->get_separator_value( $key );
 	}
 
 	/**
-	 * children
-	 * childrenを設定するためのhiddenを返す
+	 * children を設定するためのhiddenを返す
+	 *
 	 * @param string $key name属性
 	 * @param array $children 選択肢の配列（必ず MW_WP_Form_Abstract_Form_Field::get_children の値 ）
 	 * @return string HTML
@@ -169,8 +177,8 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * start
 	 * フォームタグ生成
+	 *
 	 * @param array $options
 	 * @return string form開始タグ
 	 */
@@ -188,8 +196,8 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * end
 	 * トークンタグ、閉じタグ生成
+	 *
 	 * @return string input[type=hidden]
 	 */
 	public function end() {
@@ -242,23 +250,6 @@ class MW_WP_Form_Form {
 	 * @return string HTML
 	 */
 	public function hidden( $name, $value ) {
-		// todo
-		if ( is_null( $value ) ) {
-			var_dump( 'this is null !' );
-			var_dump( $name );
-		}
-		if ( is_array( $value ) ) {
-			var_dump( 'this is array !' );
-			var_dump( $name );
-		}
-		/*
-		if ( is_null( $value ) ) {
-			$value = $this->get_raw( $name );
-		}
-		if ( is_array( $value ) ) {
-			$value = $this->get_zip_value( $name );
-		}
-		*/
 		return sprintf(
 			'<input type="hidden" name="%s" value="%s" />',
 			esc_attr( $name ),
