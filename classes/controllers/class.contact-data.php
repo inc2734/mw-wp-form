@@ -57,7 +57,7 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 	 * 詳細画面で新規追加のリンクを消す
 	 */
 	public function admin_print_styles() {
-		$this->redner( 'contact-data/admin-print-styles' );
+		$this->render( 'contact-data/admin-print-styles' );
 	}
 
 	/**
@@ -76,10 +76,9 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 	/**
 	 * 詳細
 	 */
-	public function detail() {
-		global $post;
+	public function detail( $post ) {
 		$this->assign( 'post', $post );
-		$this->assign( 'post_type', $post_type );
+		$this->assign( 'post_type', $post->post_type );
 		$this->assign( 'Contact_Data_Setting', new MW_WP_Form_Contact_Data_Setting( get_the_ID() ) );
 		$this->render( 'contact-data/detail' );
 	}

@@ -326,7 +326,7 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 		} elseif ( is_array( $post_custom_keys ) && in_array( $column, $post_custom_keys ) ) {
 			$post_meta = get_post_meta( $post_id, $column, true );
 			if ( $Contact_Data_Setting->is_upload_file_key( $post, $column ) ) {
-				$value = $this->get_multimedia_data( $post_meta );
+				$value = MWF_Functions::get_multimedia_data( $post_meta );
 			} elseif ( $post_meta ) {
 				$value = esc_html( $post_meta );
 			} else {
@@ -338,39 +338,6 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 
 		$this->assign( 'column', $value );
 		$this->render( 'contact-data-list/column' );
-	}
-
-	/**
-	 * 添付データを適切なHTMLに変換して返す
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	protected function get_multimedia_data( $value ) {
-		$mimetype = get_post_mime_type( $value );
-		if ( $mimetype ) {
-			// 画像だったら
-			if ( preg_match( '/^image\/.+?$/', $mimetype ) ) {
-				$src = wp_get_attachment_image_src( $value, 'thumbnail' );
-				return sprintf(
-					'<img src="%s" alt="" style="width:50px;height:50px" />',
-					esc_url( $src[0] )
-				);
-			}
-			// 画像以外
-			else {
-				$src = wp_get_attachment_image_src( $value, 'none', true );
-				return sprintf(
-					'<a href="%s" target="_blank"><img src="%s" alt="" style="height:50px" /></a>',
-					esc_url( wp_get_attachment_url( $value ) ),
-					esc_url( $src[0] )
-				);
-			}
-		}
-		// 添付されているけど、フック等でメタ情報が書き換えられて添付ファイルID以外になってしまった場合
-		else {
-			return esc_html( $value );
-		}
 	}
 
 	/**

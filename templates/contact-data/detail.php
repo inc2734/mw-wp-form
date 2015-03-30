@@ -20,7 +20,7 @@
 		<td>
 			<?php
 			if ( $Contact_Data_Setting->is_upload_file_key( $post, $key ) ) {
-				echo $this->get_multimedia_data( $value );
+				echo MWF_Functions::get_multimedia_data( $value );
 			} else {
 				echo nl2br( esc_html( $value ) );
 			}

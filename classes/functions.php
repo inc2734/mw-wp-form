@@ -2,19 +2,19 @@
 /**
  * Name       : MWF Functions
  * Description: 関数
- * Version    : 1.3.0
+ * Version    : 1.4.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : May 29, 2013
- * Modified   : July 24, 2014
+ * Modified   : March 30, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MWF_Functions {
 
 	/**
-	 * is_numeric
 	 * 引数で渡された変数が存在し、かつ数値であるなら true
+	 *
 	 * @param string $value 参照渡し
 	 * @return bool
 	 */
@@ -26,8 +26,8 @@ class MWF_Functions {
 	}
 
 	/**
-	 * array_clean
 	 * 配列の空要素を削除
+	 *
 	 * @param array $array
 	 * @return array
 	 */
@@ -36,8 +36,8 @@ class MWF_Functions {
 	}
 
 	/**
-	 * is_empty
 	 * 値が空（0は許可）
+	 *
 	 * @param mixed
 	 * @return bool
 	 */
@@ -50,8 +50,8 @@ class MWF_Functions {
 	}
 
 	/**
-	 * fileurl_to_path
 	 * ファイルURLをファイルパスに変換
+	 *
 	 * @param string $fileurl
 	 * @return string
 	 */
@@ -70,8 +70,8 @@ class MWF_Functions {
 	}
 
 	/**
-	 * filepath_to_url
 	 * ファイルパスをURLに変換
+	 *
 	 * @param string $filepath
 	 * @return string
 	 */
@@ -89,8 +89,8 @@ class MWF_Functions {
 	}
 
 	/**
-	 * convert_eol
 	 * 改行コードを \n に統一
+	 *
 	 * @param sring $string
 	 * @return string $string
 	 */
@@ -99,8 +99,8 @@ class MWF_Functions {
 	}
 
 	/**
-	 * deprecated_message
 	 * 古いメソッドを使った場合にエラーを出力
+	 *
 	 * @param string $function_name メソッド名
 	 * @param string $new_function 代替のメソッド名
 	 */
@@ -151,8 +151,8 @@ class MWF_Functions {
 	}
 
 	/**
-	 * move_temp_file_to_upload_dir
-	 * Tempディレクトリからuploadディレクトリにファイルを移動。
+	 * Tempディレクトリからuploadディレクトリにファイルを移動
+	 *
 	 * @param string ファイルパス
 	 * @return bool
 	 */
@@ -173,9 +173,9 @@ class MWF_Functions {
 	}
 
 	/**
-	 * save_attachments_in_media
 	 * 添付ファイルをメディアに保存、投稿データに添付ファイルのキー（配列）を保存
 	 * $this->settings が確定した後でのみ利用可能
+	 *
 	 * @param int post_id
 	 * @param array ( ファイルのname属性値 => ファイルパス, … )
 	 * @param int 生成フォーム（usedb）の post_id
@@ -213,7 +213,8 @@ class MWF_Functions {
 	}
 
 	/**
-	 * check_file_type
+	 * ファイルタイプのチェック
+	 *
 	 * @param string $filepath アップロードされたファイルのパス
 	 * @param string $filename ファイル名（未アップロード時の$_FILEの検査の場合、temp_nameは乱数になっているため）
 	 * @return bool
@@ -281,7 +282,8 @@ class MWF_Functions {
 	}
 
 	/**
-	 * get_tracking_number_title
+	 * 問い合わせ番号の表示名を取得
+	 *
 	 * @param string $post_type　問い合わせデータの投稿タイプ名
 	 * @return string
 	 */
@@ -298,7 +300,8 @@ class MWF_Functions {
 	}
 
 	/**
-	 * contact_data_post_type_to_form_key
+	 * 問い合わせデータの投稿タイプ名をフォーム識別子に変換
+	 *
 	 * @param string $post_type 問い合わせデータの投稿タイプ名
 	 * @return string|null フォーム識別子
 	 */
@@ -306,6 +309,39 @@ class MWF_Functions {
 		if ( preg_match( '/^' . MWF_Config::DBDATA . '(\d+)$/', $post_type, $match ) ) {
 			$form_key = MWF_Config::NAME . '-' . $match[1];
 			return $form_key;
+		}
+	}
+
+	/**
+	 * 添付データを適切なHTMLに変換して返す
+	 *
+	 * @param string $value
+	 * @return string
+	 */
+	public static function get_multimedia_data( $value ) {
+		$mimetype = get_post_mime_type( $value );
+		if ( $mimetype ) {
+			// 画像だったら
+			if ( preg_match( '/^image\/.+?$/', $mimetype ) ) {
+				$src = wp_get_attachment_image_src( $value, 'thumbnail' );
+				return sprintf(
+					'<img src="%s" alt="" style="width:50px;height:50px" />',
+					esc_url( $src[0] )
+				);
+			}
+			// 画像以外
+			else {
+				$src = wp_get_attachment_image_src( $value, 'none', true );
+				return sprintf(
+					'<a href="%s" target="_blank"><img src="%s" alt="" style="height:50px" /></a>',
+					esc_url( wp_get_attachment_url( $value ) ),
+					esc_url( $src[0] )
+				);
+			}
+		}
+		// 添付されているけど、フック等でメタ情報が書き換えられて添付ファイルID以外になってしまった場合
+		else {
+			return esc_html( $value );
 		}
 	}
 }
