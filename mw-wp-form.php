@@ -109,8 +109,6 @@ class MW_WP_Form {
 		include_once( $plugin_dir_path . 'classes/services/class.exec-shortcode.php' );
 		include_once( $plugin_dir_path . 'classes/services/class.mail.php' );
 		include_once( $plugin_dir_path . 'classes/services/class.redirected.php' );
-		include_once( $plugin_dir_path . 'classes/views/class.view.php' );
-		include_once( $plugin_dir_path . 'classes/views/class.main.php' );
 	}
 
 	/**

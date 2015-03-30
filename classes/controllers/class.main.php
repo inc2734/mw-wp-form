@@ -13,43 +13,36 @@
 class MW_WP_Form_Main_Controller {
 
 	/**
-	 * $Data
 	 * @var MW_WP_Form_Data
 	 */
 	protected $Data;
 
 	/**
-	 * $ExecShortcode
 	 * @var MW_WP_Form_Exec_Shortcode
 	 */
 	protected $ExecShortcode;
 
 	/**
-	 * $Redirected
 	 * @var MW_WP_Form_Redrected
 	 */
 	protected $Redirected;
 
 	/**
-	 * $Setting
 	 * @var MW_WP_Form_Setting
 	 */
 	protected $Setting;
 
 	/**
-	 * $validation_rules
 	 * @var array
 	 */
 	protected $validation_rules = array();
 
 	/**
-	 * $token_name
 	 * @var string
 	 */
 	protected $token_name = 'token';
 
 	/**
-	 * $complete_twice
 	 * リダイレクトされてからの complete であれば true
 	 * @var bool
 	 */
@@ -67,14 +60,13 @@ class MW_WP_Form_Main_Controller {
 	 * initialize
 	 */
 	public function initialize() {
-		add_filter( 'nocache_headers' , array( $this, 'nocache_headers' ) , 1 );
-		add_action( 'parse_request'   , array( $this, 'remove_query_vars_from_post' ) );
-		add_filter( 'template_include', array( $this, 'template_include' ), 10000 );
+		add_filter( 'nocache_headers'     , array( $this, 'nocache_headers' ) , 1 );
+		add_action( 'parse_request'       , array( $this, 'remove_query_vars_from_post' ) );
+		add_filter( 'template_include'    , array( $this, 'template_include' ), 10000 );
 		add_filter( 'mwform_form_end_html', array( $this, 'mwform_form_end_html' ) );
 	}
 
 	/**
-	 * remove_query_vars_from_post
 	 * WordPressへのリクエストに含まれている、$_POSTの値を削除
 	 */
 	public function remove_query_vars_from_post( $wp_query ) {
@@ -94,8 +86,8 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * template_include
 	 * 表示画面でのプラグインの処理等
+	 *
 	 * @param string $template
 	 * @return string $template
 	 */
@@ -172,15 +164,17 @@ class MW_WP_Form_Main_Controller {
 		}
 
 		// 画面表示用のショートコードを登録
+		do_action(
+			'mwform_add_shortcode',
+			new MW_WP_Form_Form(),
+			$view_flg,
+			$Error,
+			$form_key,
+			$this->Data
+		);
+
 		$Form = new MW_WP_Form_Form();
-		$View = new MW_WP_Form_Main_View();
-		$View->set( 'Form'    , $Form );
-		$View->set( 'Error'   , $Error );
-		$View->set( 'Setting' , $this->Setting );
-		$View->set( 'form_key', $form_key );
-		$View->set( 'view_flg', $view_flg );
-		$View->set( 'Data'    , $this->Data );
-		$View->add_shortcode_that_display_content();
+		$this->ExecShortcode->add_shortcode( $view_flg, $this->Setting, $Form, $this->Data );
 
 		add_action( 'wp_footer'         , array( $this->Data, 'clear_values' ) );
 		add_action( 'wp_enqueue_scripts', array( $this      , 'wp_enqueue_scripts' ) );
@@ -189,8 +183,8 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * redirect
 	 * 現在のURLと引数で渡されたリダイレクトURLが同じであればリダイレクトしない
+	 *
 	 * @param string リダイレクトURL
 	 */
 	private function redirect( $url ) {
@@ -241,8 +235,8 @@ class MW_WP_Form_Main_Controller {
 	}
 	
 	/**
-	 * nocache_headers
-	 * Nginx Cache Controller用
+	 * Nginx Cache Controller 用に header をカスタマイズ
+	 *
 	 * @param array $headers
 	 * @return array $headers
 	 */
@@ -252,7 +246,6 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * send
 	 * メール送信
 	 */
 	protected function send() {
@@ -283,7 +276,8 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * get_attachments
+	 * 送信されたデータをもとに添付ファイル用の配列を生成して返す
+	 *
 	 * @return array $attachments pathの配列
 	 */
 	protected function get_attachments() {
@@ -309,7 +303,6 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * file_upload
 	 * ファイルアップロード処理。実際のアップロード状況に合わせてフォームデータも再生成する。
 	 */
 	protected function file_upload() {
@@ -363,6 +356,8 @@ class MW_WP_Form_Main_Controller {
 
 	/**
 	 * リダイレクト後の complete かチェック
+	 *
+	 * @return bool
 	 */
 	protected function is_complete_twice() {
 		if ( $this->complete_twice === true ) {
