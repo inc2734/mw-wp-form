@@ -56,8 +56,9 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	 * @backupStaticAttributes enabled
 	 */
 	public function test_自動返信メール関連フックのテスト_raw_でDataを変更しても影響されない() {
+		$self = $this;
 		add_filter( 'mwform_auto_mail_raw_' . $this->form_key,
-			function( $Mail, $values, $Data ) {
+			function( $Mail, $values, $Data ) use( $self ) {
 				$this->assertEquals( 'info@example.com', $Data->get( 'メールアドレス' ) );
 				$Data->set( 'メールアドレス', 'hoge' );
 				return $Mail;
@@ -65,7 +66,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 			10, 3
 		);
 		add_filter( 'mwform_auto_mail_' . $this->form_key,
-			function( $Mail, $values, $Data ) {
+			function( $Mail, $values, $Data ) use( $self ) {
 				// mwform_auto_mail_raw で Data を書き換えても影響されない
 				$this->assertEquals( 'info@example.com', $Data->get( 'メールアドレス' ) );
 				return $Mail;
@@ -86,8 +87,9 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	 * @backupStaticAttributes enabled
 	 */
 	public function test_管理者宛メール関連フックのテスト_raw_でDataを変更しても影響されない() {
+		$self = $this;
 		add_filter( 'mwform_admin_mail_raw_' . $this->form_key,
-			function( $Mail, $values, $Data ) {
+			function( $Mail, $values, $Data ) use( $self ) {
 				$this->assertEquals( $Data->get( 'メールアドレス' ), 'info@example.com' );
 				$Data->set( 'メールアドレス', 'hoge' );
 				return $Mail;
@@ -95,7 +97,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 			10, 3
 		);
 		add_filter( 'mwform_admin_mail_' . $this->form_key,
-			function( $Mail, $values, $Data ) {
+			function( $Mail, $values, $Data ) use( $self ) {
 				// mwform_admin_mail_raw で Data を書き換えても影響されない
 				$this->assertEquals( $Data->get( 'メールアドレス' ), 'info@example.com' );
 				return $Mail;
@@ -115,21 +117,18 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	/**
 	 * @backupStaticAttributes enabled
 	 */
-
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_全メール関連フックのテスト_自動返信設定あり() {
+		$self = $this;
 		add_filter(
 			'mwform_admin_mail_raw_' . $this->form_key,
-			function( $Mail, $values ) {
+			function( $Mail, $values ) use( $self ) {
 				$Mail->to = 'admin_mail_raw_to@example.com';
 				return $Mail;
 			},
 			10, 2
 		);
 		add_filter( 'mwform_auto_mail_raw_' . $this->form_key,
-			function( $Mail, $values ) {
+			function( $Mail, $values ) use( $self ) {
 				// admin、mail での Mail の変更はひきつがない
 				$this->assertEquals( $Mail->to  , 'info@example.com' );
 				$Mail->to = 'mwform_auto_mail_raw_to@example.com';
@@ -139,7 +138,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		);
 		add_filter(
 			'mwform_mail_' . $this->form_key,
-			function( $Mail, $values ) {
+			function( $Mail, $values ) use( $self ) {
 				// raw での Mail の変更はひきつぐ
 				$this->assertEquals( $Mail->to, 'admin_mail_raw_to@example.com' );
 				$Mail->to = 'mwform_mail_to@example.com';
@@ -148,7 +147,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 			10, 2
 		);
 		add_filter( 'mwform_admin_mail_' . $this->form_key,
-			function( $Mail, $values ) {
+			function( $Mail, $values ) use( $self ) {
 				// mail での Mail の変更はひきつぐ
 				$this->assertEquals( $Mail->to, 'mwform_mail_to@example.com' );
 				return $Mail;
@@ -156,7 +155,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 			10, 2
 		);
 		add_filter( 'mwform_auto_mail_' . $this->form_key,
-			function( $Mail, $values ) {
+			function( $Mail, $values ) use( $self ) {
 				// raw での Mail の変更はひきつぐ
 				$this->assertEquals( $Mail->to, 'mwform_auto_mail_raw_to@example.com' );
 				return $Mail;
@@ -177,9 +176,10 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	 * @backupStaticAttributes enabled
 	 */
 	public function test_全メール関連フックのテスト_自動返信設定なし() {
+		$self = $this;
 		add_filter(
 			'mwform_admin_mail_raw_' . $this->form_key,
-			function( $Mail, $values ) {
+			function( $Mail, $values ) use( $self ) {
 				$Mail->to   = 'mwform_admin_mail_raw_to@example.com';
 				return $Mail;
 			},
@@ -187,7 +187,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		);
 		add_filter(
 			'mwform_auto_mail_raw_' . $this->form_key,
-			function( $Mail, $values ) {
+			function( $Mail, $values ) use( $self ) {
 				$this->assertEquals( $Mail->to, '' );
 				$Mail->to = 'mwform_auto_mail_raw_to@example.com';
 				return $Mail;
@@ -196,7 +196,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		);
 		add_filter(
 			'mwform_mail_' . $this->form_key,
-			function( $Mail, $values ) {
+			function( $Mail, $values ) use( $self ) {
 				$this->assertEquals( $Mail->to, 'mwform_admin_mail_raw_to@example.com' );
 				$Mail->to = 'mwform_mail_to@example.com';
 				return $Mail;
@@ -205,7 +205,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		);
 		add_filter(
 			'mwform_admin_mail_' . $this->form_key,
-			function( $Mail, $values ) {
+			function( $Mail, $values ) use( $self ) {
 				$this->assertEquals( $Mail->to, 'mwform_mail_to@example.com' );
 				return $Mail;
 			},
@@ -213,7 +213,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		);
 		add_filter(
 			'mwform_auto_mail_' . $this->form_key,
-			function( $Mail, $values ) {
+			function( $Mail, $values ) use( $self ) {
 				$this->assertEquals( $Mail->to, 'mwform_auto_mail_raw_to@example.com' );
 				return $Mail;
 			},
@@ -231,9 +231,10 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	 * @backupStaticAttributes enabled
 	 */
 	public function test_管理者宛メール関連フックのテスト_送信内容に応じてメール設定を書き換える() {
+		$self = $this;
 		add_filter(
 			'mwform_admin_mail_raw_' . $this->form_key,
-			function( $Mail, $values ) {
+			function( $Mail, $values ) use( $self ) {
 				$Mail->from = '{メールアドレス}';
 				return $Mail;
 			},
@@ -241,7 +242,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		);
 		add_filter(
 			'mwform_admin_mail_' . $this->form_key,
-			function( $Mail, $values ) {
+			function( $Mail, $values ) use( $self ) {
 				$this->assertEquals( $Mail->from, 'customer@example.com' );
 				return $Mail;
 			},
@@ -276,9 +277,10 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	 * @backupStaticAttributes enabled
 	 */
 	public function test_mwform_custom_mail_tag() {
+		$self = $this;
 		add_filter(
 			'mwform_custom_mail_tag_' . $this->form_key,
-			function( $value, $key, $insert_id ) {
+			function( $value, $key, $insert_id ) use( $self ) {
 				if ( $key === 'custom_tag' ) {
 					$this->custom_tag_value = 'hoge';
 					return $this->custom_tag_value;
@@ -302,9 +304,10 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	 * @backupStaticAttributes enabled
 	 */
 	public function test_mwform_custom_mail_tag_1回だけ実行ならtrue() {
+		$self = $this;
 		add_filter(
 			'mwform_custom_mail_tag_' . $this->form_key,
-			function( $value, $key, $insert_id ) {
+			function( $value, $key, $insert_id ) use( $self ) {
 				if ( $key === 'custom_tag' ) {
 					$this->custom_tag_value ++;
 				}
