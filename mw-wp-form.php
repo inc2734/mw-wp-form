@@ -93,6 +93,7 @@ class MW_WP_Form {
 		include_once( $plugin_dir_path . 'classes/controllers/class.chart.php' );
 		include_once( $plugin_dir_path . 'classes/controllers/class.main.php' );
 		include_once( $plugin_dir_path . 'classes/models/class.abstract-validation-rule.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.csv.php' );
 		include_once( $plugin_dir_path . 'classes/models/class.admin.php' );
 		include_once( $plugin_dir_path . 'classes/models/class.akismet.php' );
 		include_once( $plugin_dir_path . 'classes/models/class.contact-data.php' );
