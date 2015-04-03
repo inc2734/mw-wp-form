@@ -291,7 +291,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		wp_enqueue_style( MWF_Config::NAME . '-admin', $url . '/css/admin.css' );
 		wp_enqueue_style( MWF_Config::NAME . '-admin-repeatable', $url . '/css/admin-repeatable.css' );
 		wp_enqueue_script( MWF_Config::NAME . '-repeatable', $url . '/js/mw-wp-form-repeatable.js' );
-		wp_enqueue_script( MWF_Config::NAME . '-admin', $url . '/js/admin.js' );
+		wp_enqueue_script( MWF_Config::NAME . '-admin', $url . '/js/admin.js', array( 'jquery-ui-dialog', 'jquery-ui-sortable' ) );
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( 'jquery-ui-sortable' );
 
