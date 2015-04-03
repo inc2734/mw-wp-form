@@ -20,7 +20,8 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * upload_mimes
+	 * 独自の mimes を追加
+	 *
 	 * @param array $t MIMEタイプの配列
 	 */
 	public function upload_mimes( $t ) {
@@ -31,8 +32,8 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * upload
-	 * ファイルアップロード処理。
+	 * 全てのファイルをアップロード
+	 *
 	 * @param array $files アップロードするファイルの配列
 	 * @return array ( name属性値 => アップロードできたファイルのURL, … )
 	 */
@@ -48,12 +49,12 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * single_file_upload
-	 * ファイルアップロード処理。
+	 * 指定したファイルをアップロード
+	 *
 	 * @param string $key アップロードしたいファイルの name 属性
 	 * @return string アップロードできたファイルのURL
 	 */
-	public function single_file_upload( $key ) {
+	protected function single_file_upload( $key ) {
 		$this->create_temp_dir();
 		$this->clean_temp_dir();
 
@@ -65,8 +66,8 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * _file_upload
-	 * ファイルアップロードの実処理。
+	 * ファイルアップロードの実処理
+	 *
 	 * @param arary $file $_FILES['hoge'] の配列
 	 * @return string アップロードしたファイルの URL
 	 */
@@ -91,8 +92,8 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * set_upload_file_name
 	 * 一時ファイル名を生成。Tempディレクトリの生成に失敗していた場合はUploadディレクトリを使用
+	 *
 	 * @param string 拡張子 ( ex: jpg )
 	 * @return array ( file =>, url => )
 	 */
@@ -122,8 +123,8 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * get_temp_dir
-	 * Tempディレクトリ名（パス、URL）を返す。ディレクトリの存在可否は関係なし
+	 * Temp ディレクトリ名（パス、URL）を返す。ディレクトリの存在可否は関係なし
+	 *
 	 * @return array ( dir => Tempディレクトリのパス, url => Tempディレクトリのurl )
 	 */
 	public function get_temp_dir() {
@@ -135,8 +136,8 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * create_temp_dir
-	 * Tempディレクトリを作成
+	 * Temp ディレクトリを作成
+	 *
 	 * @return bool
 	 */
 	public function create_temp_dir() {
@@ -152,8 +153,8 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * remove_temp_dir
-	 * Tempディレクトリを削除
+	 * Temp ディレクトリを削除
+	 *
 	 * @param string $sub_dir サブディレクトリ名
 	 */
 	public function remove_temp_dir( $sub_dir = '' ) {
@@ -185,7 +186,6 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * clean_temp_dir
 	 * Tempディレクトリ内のファイルを削除
 	 */
 	protected function clean_temp_dir() {
@@ -211,7 +211,8 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * delete_files
+	 * 指定したパスのファイルを削除
+	 *
 	 * @param array $attachments 消去するファイルパスの配列
 	 */
 	public function delete_files( array $files ) {

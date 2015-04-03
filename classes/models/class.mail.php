@@ -13,63 +13,54 @@
 class MW_WP_Form_Mail {
 
 	/**
-	 * $to
 	 * 宛先
 	 * @var string
 	 */
 	public $to;
 
 	/**
-	 * $cc
 	 * CC
 	 * @var string
 	 */
 	public $cc;
 
 	/**
-	 * $bcc
 	 * BCC
 	 * @var string
 	 */
 	public $bcc;
 
 	/**
-	 * $from
 	 * 送信元
 	 * @var string
 	 */
 	public $from;
 
 	/**
-	 * $sender
 	 * 送信者
 	 * @var string
 	 */
 	public $sender;
 
 	/**
-	 * $subject
 	 * 件名
 	 * @var string
 	 */
 	public $subject;
 
 	/**
-	 * $body
 	 * 本文
 	 * @var string
 	 */
 	public $body;
 
 	/**
-	 * $attachments
 	 * 添付
 	 * @var array
 	 */
 	public $attachments = array();
 
 	/**
-	 * send
 	 * メール送信
 	 */
 	public function send() {
@@ -123,7 +114,8 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * set_mail_from
+	 * 送信元を設定
+	 *
 	 * @param string $email fromメールアドレス
 	 * @return string
 	 */
@@ -132,7 +124,8 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * set_mail_from_name
+	 * 送信者名を設定
+	 *
 	 * @param string $sender 送信者名
 	 * @return string
 	 */
@@ -141,7 +134,8 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * set_return_path
+	 * 返信先を設定
+	 *
 	 * @param phpmailer $phpmailer
 	 */
 	public function set_return_path( $phpmailer ) {
@@ -149,8 +143,8 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * createBody
 	 * 配列からbodyを生成
+	 *
 	 * @param array ( 見出し => 内容, … )
 	 * @param array ( 'exclude' => array( 除外したいキー1, … ) )
 	 * @return string メール本文

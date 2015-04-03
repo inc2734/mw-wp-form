@@ -13,20 +13,17 @@
 class MW_WP_Form_Validation {
 
 	/**
-	 * $Error
 	 * @var MW_WP_Form_Error
 	 */
 	protected $Error;
 
 	/**
-	 * $validate
 	 * バリデートをかける項目（name属性）と、それにかけるバリデーションの配列
 	 * @var array
 	 */
-	public $validate = array();
+	protected $validate = array();
 
 	/**
-	 * $validation_rules
 	 * バリデーションルールの配列
 	 * @var array
 	 */
@@ -34,6 +31,7 @@ class MW_WP_Form_Validation {
 
 	/**
 	 * __construct
+	 *
 	 * @param MW_WP_Form_Error $Error
 	 */
 	public function __construct( MW_WP_Form_Error $Error ) {
@@ -41,8 +39,8 @@ class MW_WP_Form_Validation {
 	}
 
 	/**
-	 * set_validation_rules
 	 * 各バリデーションルールクラスのインスタンスをセット
+	 *
 	 * @param array $validation_rules
 	 */
 	public function set_validation_rules( array $validation_rules ) {
@@ -54,8 +52,17 @@ class MW_WP_Form_Validation {
 	}
 
 	/**
-	 * is_valid
+	 * セットされたバリデーションルールクラスを取得
+	 *
+	 * @return array
+	 */
+	public function get_validation_rules() {
+		return $this->validation_rules;
+	}
+
+	/**
 	 * バリデートが通っているかチェック
+	 *
 	 * @return bool
 	 */
 	protected function is_valid() {
@@ -69,9 +76,9 @@ class MW_WP_Form_Validation {
 
 	/**
 	 * set_rules
+	 *
 	 * @param MW_WP_Form_Setting $Setting
 	 * @param MW_WP_Form_Data $Data
-	 * @return array $rules
 	 */
 	public function set_rules( MW_WP_Form_Setting $Setting, MW_WP_Form_Data $Data ) {
 		$rules = array();
@@ -103,12 +110,13 @@ class MW_WP_Form_Validation {
 
 	/**
 	 * set_rule
+	 *
 	 * @param string ターゲットのname属性
 	 * @param string バリデーションルール名
 	 * @param array オプション
-	 * @return bool
+	 * @return MW_WP_Form_Validation
 	 */
-	public function set_rule( $key, $rule, array $options = array() ) {
+	protected function set_rule( $key, $rule, array $options = array() ) {
 		$rules = array(
 			'rule'    => strtolower( $rule ),
 			'options' => $options
@@ -118,8 +126,8 @@ class MW_WP_Form_Validation {
 	}
 
 	/**
-	 * check
 	 * validate実行
+	 *
 	 * @return bool エラーがなければ true
 	 */
 	public function check() {
@@ -130,8 +138,8 @@ class MW_WP_Form_Validation {
 	}
 
 	/**
-	 * single_check
 	 * 特定の項目のvalidate実行
+	 *
 	 * @param string $key
 	 * @return bool エラーがなければ true
 	 */
@@ -148,8 +156,8 @@ class MW_WP_Form_Validation {
 	}
 
 	/**
-	 * _check
 	 * validate実行の実体
+	 *
 	 * @param string $key
 	 * @param array $rules
 	 */

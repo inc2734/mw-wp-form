@@ -12,15 +12,14 @@
 class MW_WP_Form_Error {
 
 	/**
-	 * $errors
 	 * エラー格納用の配列
 	 * @var array [key => rule = message]
 	 */
 	protected $errors = array();
 
 	/**
-	 * set_error
 	 * エラーメッセージをセット
+	 *
 	 * @param string $key name属性
 	 * @param string $rule
 	 * @param string $message
@@ -31,8 +30,8 @@ class MW_WP_Form_Error {
 	}
 
 	/**
-	 * get_error
 	 * エラーメッセージを返す
+	 *
 	 * @param string $key name属性
 	 * @return array
 	 */
@@ -44,8 +43,8 @@ class MW_WP_Form_Error {
 	}
 
 	/**
-	 * get_errors
 	 * 全てのエラーメッセージを返す
+	 *
 	 * @return array
 	 */
 	public function get_errors() {

@@ -1,43 +1,40 @@
 <?php
 /**
  * Name       : MW WP Form Redirected
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : 
+ * Modified   : April 3, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Redirected {
 
 	/**
-	 * $mode_check
 	 * 現在のモード
 	 * @var string input|confirm|complete|back
 	 */
 	protected $mode_check = 'input';
 
 	/**
-	 * $view_flg
 	 * @var string input|confirm|complete
 	 */
 	protected $view_flg = 'input';
 
 	/**
-	 * $url
 	 * @var string
 	 */
 	protected $url;
 
 	/**
-	 * $querystring
 	 * @var bool
 	 */
 	protected $querystring;
 	
 	/**
 	 * __construct
+	 *
 	 * @param string $input
 	 * @param string $confirm
 	 * @param string $complete
@@ -53,7 +50,8 @@ class MW_WP_Form_Redirected {
 	}
 	
 	/**
-	 * __construct
+	 * initialize
+	 *
 	 * @param string $input
 	 * @param string $confirm
 	 * @param string $complete
@@ -130,16 +128,17 @@ class MW_WP_Form_Redirected {
 	}
 
 	/**
-	 * get_url
 	 * リダイレクト先の URL を返す
+	 *
+	 * @return string
 	 */
 	public function get_url() {
 		return $this->url;
 	}
 
 	/**
-	 * get_view_flg
 	 * 表示すべき画面を示すフラグを返す
+	 *
 	 * @return string $this->view_flg
 	 */
 	public function get_view_flg() {
@@ -147,8 +146,8 @@ class MW_WP_Form_Redirected {
 	}
 
 	/**
-	 * get_request_uri
 	 * $_SERVER['REQUEST_URI'] を http:// からはじまるURLに変換する
+	 *
 	 * @return string URL
 	 */
 	public function get_request_uri() {
@@ -170,8 +169,8 @@ class MW_WP_Form_Redirected {
 	}
 
 	/**
-	 * parse_url
 	 * http:// からはじまるURLに変換する
+	 *
 	 * @param string URL
 	 * @return string URL
 	 */

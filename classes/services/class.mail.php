@@ -1,74 +1,66 @@
 <?php
 /**
  * Name       : MW WP Form Mail Service
- * Version    : 1.1.1
+ * Version    : 1.1.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : March 10, 2015
+ * Modified   : April 2, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Mail_Service {
 
 	/**
-	 * $insert_contact_data_id
 	 * 保存した問い合わせデータの Post ID
 	 * @var int
 	 */
 	protected $insert_contact_data_id;
 
 	/**
-	 * $Mail_raw
 	 * @var MW_WP_Form_Mail
 	 */
 	protected $Mail_raw;
 
 	/**
-	 * $Mail_admin_raw
 	 * @var MW_WP_Form_Mail
 	 */
 	protected $Mail_admin_raw;
 
 	/**
-	 * $Mail_auto_raw
 	 * @var MW_WP_Form_Mail
 	 */
 	protected $Mail_auto_raw;
 
 	/**
-	 * $Data
 	 * @var MW_WP_Form_Data
 	 */
 	protected $Data;
 
 	/**
-	 * $form_key
 	 * フォーム識別子
 	 * @var string
 	 */
 	protected $form_key;
 
 	/**
-	 * $validation_rules
 	 * @var array
 	 */
 	protected $validation_rules = array();
 
 	/**
-	 * $attachments
 	 * @var array
 	 */
 	protected $attachments = array();
 
 	/**
-	 * $Setting
 	 * @var MW_WP_Form_Setting
 	 */
 	protected $Setting;
 
 	/**
 	 * __construct
+	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @param MW_WP_Form_Data $Data
 	 * @param strign $form_key
@@ -99,7 +91,6 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * send_admin_mail
 	 * 管理者メールの送信とデータベースへの保存
 	 */
 	public function send_admin_mail() {
@@ -127,8 +118,8 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * get_parsed_mail_object
 	 * パースしたMailオブジェクトの取得とデータベースへの保存
+	 *
 	 * @param MW_WP_Form_Mail $_Mail
 	 * @param bool $do_update
 	 * @return MW_WP_Form_Mail
@@ -159,7 +150,8 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * parse_mail_object
+	 * メールオブジェクトの各プロパティを変換
+	 *
 	 * @param MW_WP_Form_Mail $_Mail
 	 * @param bool $do_update
 	 * @return MW_WP_Form_Mail $Mail
@@ -182,8 +174,8 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * parse_mail_content
 	 * メール本文用に {name属性} を置換
+	 *
 	 * @param string $value
 	 * @param bool $do_update
 	 * @return string
@@ -208,9 +200,9 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * parse
 	 * $this->_parse_mail_content(), $this->_save_mail_content の本体
 	 * 第2引数でDB保存するか判定
+	 *
 	 * @param array $matches
 	 * @param bool $do_update
 	 * @return string $value
@@ -239,7 +231,6 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * send_reply_mail
 	 * 自動返信メールの送信
 	 */
 	public function send_reply_mail() {
@@ -250,7 +241,8 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * set_attachments
+	 * メールオブジェクトに添付ファイルを添付
+	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 */
 	protected function set_attachments( MW_WP_Form_Mail $Mail ) {
@@ -258,7 +250,6 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * set_admin_mail_raw_params
 	 * 管理者メールに項目を設定
 	 */
 	protected function set_admin_mail_raw_params() {
@@ -313,7 +304,6 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * set_reply_mail_raw_params
 	 * 自動返信メールに項目を設定
 	 */
 	private function set_reply_mail_raw_params() {
@@ -358,8 +348,8 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * set_admin_mail_reaquire_params
 	 * 管理者メールに必須の項目を設定
+	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
@@ -381,8 +371,8 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * set_reply_mail_reaquire_params
 	 * 自動返信メールに必須の項目を設定
+	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
@@ -401,6 +391,7 @@ class MW_WP_Form_Mail_Service {
 
 	/**
 	 * apply_filters_mwform_admin_mail_raw
+	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
@@ -415,6 +406,7 @@ class MW_WP_Form_Mail_Service {
 
 	/**
 	 * apply_filters_mwform_mail
+	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
@@ -429,6 +421,7 @@ class MW_WP_Form_Mail_Service {
 
 	/**
 	 * apply_filters_mwform_admin_mail
+	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
@@ -443,6 +436,7 @@ class MW_WP_Form_Mail_Service {
 
 	/**
 	 * apply_filters_mwform_auto_mail_raw
+	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
@@ -457,6 +451,7 @@ class MW_WP_Form_Mail_Service {
 
 	/**
 	 * apply_filters_mwform_auto_mail
+	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
