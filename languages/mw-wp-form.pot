@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.3.1\n"
+"Project-Id-Version: MW WP Form 2.4.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/mw-wp-form\n"
-"POT-Creation-Date: 2015-02-28 09:56:10+00:00\n"
+"POT-Creation-Date: 2015-04-03 07:04:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,76 +14,66 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.7.4\n"
+"X-Generator: Poedit 1.7.5\n"
 "X-Poedit-KeywordsList: __;_e\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: classes/controllers/class.admin-list.php:58
-#: classes/controllers/class.admin.php:106
+#: classes/controllers/class.admin-list.php:34
+msgid "Your contribution is needed for making this plugin better."
+msgstr ""
+
+#: classes/controllers/class.admin-list.php:36
+msgid "Donate"
+msgstr ""
+
+#: classes/controllers/class.admin-list.php:66
+#: classes/controllers/class.admin.php:89
 msgid "Form Key"
 msgstr ""
 
-#: classes/controllers/class.admin.php:67
+#: classes/controllers/class.admin.php:57
 msgid "Complete Message"
 msgstr ""
 
-#: classes/controllers/class.admin.php:79
+#: classes/controllers/class.admin.php:65
 msgid "URL Options"
 msgstr ""
 
-#: classes/controllers/class.admin.php:89
+#: classes/controllers/class.admin.php:73
 msgid "Validation Rule"
 msgstr ""
 
-#: classes/controllers/class.admin.php:97
+#: classes/controllers/class.admin.php:81
 msgid "Add-ons"
 msgstr ""
 
-#: classes/controllers/class.admin.php:119
+#: classes/controllers/class.admin.php:97
 msgid "Automatic Reply Email Options"
 msgstr ""
 
-#: classes/controllers/class.admin.php:134
+#: classes/controllers/class.admin.php:105
 msgid "Admin Email Options"
 msgstr ""
 
-#: classes/controllers/class.admin.php:148
+#: classes/controllers/class.admin.php:113
 msgid "settings"
 msgstr ""
 
-#: classes/controllers/class.admin.php:160
+#: classes/controllers/class.admin.php:122
 msgid "Style setting"
 msgstr ""
 
-#: classes/controllers/class.chart.php:78
-#: classes/controllers/class.chart.php:79 classes/views/class.chart.php:65
-msgid "Chart"
-msgstr ""
-
-#: classes/controllers/class.contact-data-list.php:160
-#: classes/controllers/class.contact-data-list.php:207
-#: classes/controllers/class.contact-data-list.php:297
-#: classes/views/class.contact-data.php:101
-msgid "Response Status"
-msgstr ""
-
-#: classes/controllers/class.contact-data-list.php:187
-#: classes/controllers/class.contact-data-list.php:210
-#: classes/views/class.contact-data.php:113
-msgid "Memo"
-msgstr ""
-
-#: classes/controllers/class.contact-data-list.php:296
+#: classes/controllers/class.contact-data-list.php:117
 msgid "Registed Date"
 msgstr ""
 
-#: classes/controllers/class.contact-data.php:85
-#: classes/controllers/class.contact-data.php:86
-#: classes/views/class.contact-data.php:34
-msgid "Inquiry data"
+#: classes/controllers/class.contact-data-list.php:118
+#: classes/models/class.csv.php:122 classes/models/class.csv.php:169
+#: templates/contact-data/detail.php:32
+msgid "Response Status"
 msgstr ""
 
-#: classes/controllers/class.contact-data.php:121
+#: classes/controllers/class.contact-data.php:70
 msgid "Custom Fields"
 msgstr ""
 
@@ -111,97 +101,97 @@ msgstr ""
 msgid "Checkbox"
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:110
-#: classes/form-fields/class.radio.php:106
-#: classes/form-fields/class.select.php:104
-msgid "Choices"
-msgstr ""
-
-#: classes/form-fields/class.checkbox.php:114
-#: classes/form-fields/class.error.php:78
-#: classes/form-fields/class.radio.php:110
-#: classes/form-fields/class.select.php:108
-msgid "Input one line about one item."
-msgstr ""
-
 #: classes/form-fields/class.checkbox.php:115
 #: classes/form-fields/class.radio.php:111
 #: classes/form-fields/class.select.php:109
+msgid "Choices"
+msgstr ""
+
+#: classes/form-fields/class.checkbox.php:119
+#: classes/form-fields/class.error.php:78
+#: classes/form-fields/class.radio.php:115
+#: classes/form-fields/class.select.php:113
+msgid "Input one line about one item."
+msgstr ""
+
+#: classes/form-fields/class.checkbox.php:120
+#: classes/form-fields/class.radio.php:116
+#: classes/form-fields/class.select.php:114
 msgid "Example: value1&crarr;value2 or key1:value1&crarr;key2:value2"
-msgstr ""
-
-#: classes/form-fields/class.checkbox.php:116
-#: classes/form-fields/class.radio.php:112
-#: classes/form-fields/class.select.php:110
-msgid "You can split the post value and display value by \":\". But display value is sent in e-mail."
-msgstr ""
-
-#: classes/form-fields/class.checkbox.php:117
-#: classes/form-fields/class.radio.php:113
-#: classes/form-fields/class.select.php:111
-msgid "When you want to use \":\", please enter \"::\"."
 msgstr ""
 
 #: classes/form-fields/class.checkbox.php:121
 #: classes/form-fields/class.radio.php:117
 #: classes/form-fields/class.select.php:115
+msgid "You can split the post value and display value by \":\". But display value is sent in e-mail."
+msgstr ""
+
+#: classes/form-fields/class.checkbox.php:122
+#: classes/form-fields/class.radio.php:118
+#: classes/form-fields/class.select.php:116
+msgid "When you want to use \":\", please enter \"::\"."
+msgstr ""
+
+#: classes/form-fields/class.checkbox.php:126
+#: classes/form-fields/class.radio.php:122
+#: classes/form-fields/class.select.php:120
 msgid "Send value by e-mail"
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:124
-#: classes/form-fields/class.radio.php:120
-#: classes/form-fields/class.select.php:118
+#: classes/form-fields/class.checkbox.php:129
+#: classes/form-fields/class.radio.php:125
+#: classes/form-fields/class.select.php:123
 msgid "Send post value when you split the post value and display value by \":\" in choices."
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:127
-#: classes/form-fields/class.datepicker.php:131
-#: classes/form-fields/class.hidden.php:79
-#: classes/form-fields/class.password.php:107
-#: classes/form-fields/class.radio.php:123
-#: classes/form-fields/class.select.php:121
-#: classes/form-fields/class.text.php:115
-#: classes/form-fields/class.textarea.php:109
+#: classes/form-fields/class.checkbox.php:132
+#: classes/form-fields/class.datepicker.php:136
+#: classes/form-fields/class.hidden.php:82
+#: classes/form-fields/class.password.php:112
+#: classes/form-fields/class.radio.php:128
+#: classes/form-fields/class.select.php:126
+#: classes/form-fields/class.text.php:119
+#: classes/form-fields/class.textarea.php:114
 msgid "Default value"
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:132
+#: classes/form-fields/class.checkbox.php:137
 msgid "Separator string"
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:137
-#: classes/form-fields/class.radio.php:128
+#: classes/form-fields/class.checkbox.php:142
+#: classes/form-fields/class.radio.php:133
 msgid "Display method"
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:139
-#: classes/form-fields/class.radio.php:130
+#: classes/form-fields/class.checkbox.php:144
+#: classes/form-fields/class.radio.php:135
 msgid "Arranged vertically."
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:142
-#: classes/form-fields/class.datepicker.php:136
-#: classes/form-fields/class.file.php:109
-#: classes/form-fields/class.image.php:110
-#: classes/form-fields/class.password.php:117
-#: classes/form-fields/class.radio.php:133
-#: classes/form-fields/class.select.php:126
-#: classes/form-fields/class.tel.php:89 classes/form-fields/class.text.php:125
-#: classes/form-fields/class.textarea.php:119
-#: classes/form-fields/class.zip.php:89
+#: classes/form-fields/class.checkbox.php:147
+#: classes/form-fields/class.datepicker.php:141
+#: classes/form-fields/class.file.php:115
+#: classes/form-fields/class.image.php:119
+#: classes/form-fields/class.password.php:122
+#: classes/form-fields/class.radio.php:138
+#: classes/form-fields/class.select.php:131
+#: classes/form-fields/class.tel.php:102 classes/form-fields/class.text.php:129
+#: classes/form-fields/class.textarea.php:124
+#: classes/form-fields/class.zip.php:101
 msgid "Dsiplay error"
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:144
-#: classes/form-fields/class.datepicker.php:138
-#: classes/form-fields/class.file.php:111
-#: classes/form-fields/class.image.php:112
-#: classes/form-fields/class.password.php:119
-#: classes/form-fields/class.radio.php:135
-#: classes/form-fields/class.select.php:128
-#: classes/form-fields/class.tel.php:91 classes/form-fields/class.text.php:127
-#: classes/form-fields/class.textarea.php:121
-#: classes/form-fields/class.zip.php:91
+#: classes/form-fields/class.checkbox.php:149
+#: classes/form-fields/class.datepicker.php:143
+#: classes/form-fields/class.file.php:117
+#: classes/form-fields/class.image.php:121
+#: classes/form-fields/class.password.php:124
+#: classes/form-fields/class.radio.php:140
+#: classes/form-fields/class.select.php:133
+#: classes/form-fields/class.tel.php:104 classes/form-fields/class.text.php:131
+#: classes/form-fields/class.textarea.php:126
+#: classes/form-fields/class.zip.php:103
 msgid "Don't display error."
 msgstr ""
 
@@ -230,7 +220,7 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-#: classes/form-fields/class.file.php:62 classes/form-fields/class.file.php:84
+#: classes/form-fields/class.file.php:68 classes/form-fields/class.file.php:90
 msgid "Uploaded."
 msgstr ""
 
@@ -238,11 +228,11 @@ msgstr ""
 msgid "Hidden"
 msgstr ""
 
-#: classes/form-fields/class.hidden.php:84
+#: classes/form-fields/class.hidden.php:87
 msgid "Display"
 msgstr ""
 
-#: classes/form-fields/class.hidden.php:86
+#: classes/form-fields/class.hidden.php:89
 msgid "Display hidden value."
 msgstr ""
 
@@ -284,16 +274,16 @@ msgid "Submit Button"
 msgstr ""
 
 #: classes/form-fields/class.tel.php:30
-#: classes/validation-rules/class.tel.php:54
+#: classes/validation-rules/class.tel.php:56
 msgid "Tel"
 msgstr ""
 
-#: classes/form-fields/class.tel.php:94 classes/form-fields/class.text.php:130
-#: classes/form-fields/class.zip.php:94
+#: classes/form-fields/class.tel.php:107 classes/form-fields/class.text.php:134
+#: classes/form-fields/class.zip.php:106
 msgid "Convert half alphanumeric"
 msgstr ""
 
-#: classes/form-fields/class.tel.php:96 classes/form-fields/class.zip.php:96
+#: classes/form-fields/class.tel.php:109 classes/form-fields/class.zip.php:108
 msgid "Don't Convert."
 msgstr ""
 
@@ -301,7 +291,7 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: classes/form-fields/class.text.php:132
+#: classes/form-fields/class.text.php:136
 msgid "Convert."
 msgstr ""
 
@@ -310,7 +300,7 @@ msgid "Textarea"
 msgstr ""
 
 #: classes/form-fields/class.zip.php:30
-#: classes/validation-rules/class.zip.php:48
+#: classes/validation-rules/class.zip.php:49
 msgid "Zip Code"
 msgstr ""
 
@@ -318,20 +308,25 @@ msgstr ""
 msgid "Uploaded from "
 msgstr ""
 
-#: classes/functions.php:289
+#: classes/functions.php:291
 msgid "Tracking Number"
 msgstr ""
 
-#: classes/models/class.contact-data-setting.php:56
+#: classes/models/class.contact-data-setting.php:60
 msgid "Not supported"
 msgstr ""
 
-#: classes/models/class.contact-data-setting.php:57
+#: classes/models/class.contact-data-setting.php:61
 msgid "Reservation"
 msgstr ""
 
-#: classes/models/class.contact-data-setting.php:58
+#: classes/models/class.contact-data-setting.php:62
 msgid "Supported"
+msgstr ""
+
+#: classes/models/class.csv.php:148 classes/models/class.csv.php:172
+#: templates/contact-data/detail.php:44
+msgid "Memo"
 msgstr ""
 
 #: classes/validation-rules/class.akismet.php:30
@@ -342,7 +337,7 @@ msgstr ""
 msgid "Please enter with a half-width alphabetic character."
 msgstr ""
 
-#: classes/validation-rules/class.alpha.php:48
+#: classes/validation-rules/class.alpha.php:49
 msgid "Alphabet"
 msgstr ""
 
@@ -350,7 +345,7 @@ msgstr ""
 msgid "Please enter with a half-width alphanumeric character."
 msgstr ""
 
-#: classes/validation-rules/class.alphanumeric.php:48
+#: classes/validation-rules/class.alphanumeric.php:49
 msgid "Alphabet and Numeric"
 msgstr ""
 
@@ -358,7 +353,7 @@ msgstr ""
 msgid "The number of characters is invalid."
 msgstr ""
 
-#: classes/validation-rules/class.between.php:76
+#: classes/validation-rules/class.between.php:77
 msgid "The range of the number of characters"
 msgstr ""
 
@@ -366,7 +361,7 @@ msgstr ""
 msgid "This is not the format of a date."
 msgstr ""
 
-#: classes/validation-rules/class.date.php:59
+#: classes/validation-rules/class.date.php:60
 msgid "Date"
 msgstr ""
 
@@ -374,7 +369,7 @@ msgstr ""
 msgid "This is not in agreement."
 msgstr ""
 
-#: classes/validation-rules/class.eq.php:56
+#: classes/validation-rules/class.eq.php:57
 msgid "The key at same value"
 msgstr ""
 
@@ -382,11 +377,11 @@ msgstr ""
 msgid "This file size is too big."
 msgstr ""
 
-#: classes/validation-rules/class.filesize.php:58
+#: classes/validation-rules/class.filesize.php:59
 msgid "Permitted file size"
 msgstr ""
 
-#: classes/validation-rules/class.filesize.php:59
+#: classes/validation-rules/class.filesize.php:60
 msgid "bytes"
 msgstr ""
 
@@ -394,11 +389,11 @@ msgstr ""
 msgid "This file is invalid."
 msgstr ""
 
-#: classes/validation-rules/class.filetype.php:61
+#: classes/validation-rules/class.filetype.php:62
 msgid "Permitted Extension"
 msgstr ""
 
-#: classes/validation-rules/class.filetype.php:62
+#: classes/validation-rules/class.filetype.php:63
 msgid "Example:jpg or jpg,txt,…"
 msgstr ""
 
@@ -406,7 +401,7 @@ msgstr ""
 msgid "Please enter with a Japanese Hiragana."
 msgstr ""
 
-#: classes/validation-rules/class.hiragana.php:48
+#: classes/validation-rules/class.hiragana.php:49
 msgid "Japanese Hiragana"
 msgstr ""
 
@@ -418,7 +413,7 @@ msgstr ""
 msgid "Please enter with a Japanese Katakana."
 msgstr ""
 
-#: classes/validation-rules/class.katakana.php:48
+#: classes/validation-rules/class.katakana.php:49
 msgid "Japanese Katakana"
 msgstr ""
 
@@ -426,7 +421,7 @@ msgstr ""
 msgid "This is not the format of a mail address."
 msgstr ""
 
-#: classes/validation-rules/class.mail.php:48
+#: classes/validation-rules/class.mail.php:49
 msgid "E-mail"
 msgstr ""
 
@@ -434,7 +429,7 @@ msgstr ""
 msgid "The number of characters is a few."
 msgstr ""
 
-#: classes/validation-rules/class.minlength.php:57
+#: classes/validation-rules/class.minlength.php:58
 msgid "The number of the minimum characters"
 msgstr ""
 
@@ -443,7 +438,7 @@ msgstr ""
 msgid "Please enter."
 msgstr ""
 
-#: classes/validation-rules/class.noempty.php:46
+#: classes/validation-rules/class.noempty.php:47
 msgid "No empty"
 msgstr ""
 
@@ -451,7 +446,7 @@ msgstr ""
 msgid "Please enter with a half-width number."
 msgstr ""
 
-#: classes/validation-rules/class.numeric.php:48
+#: classes/validation-rules/class.numeric.php:49
 msgid "Numeric"
 msgstr ""
 
@@ -459,7 +454,7 @@ msgstr ""
 msgid "This is required."
 msgstr ""
 
-#: classes/validation-rules/class.required.php:48
+#: classes/validation-rules/class.required.php:49
 msgid "No empty( with checkbox )"
 msgstr ""
 
@@ -471,7 +466,7 @@ msgstr ""
 msgid "This is not the format of a url."
 msgstr ""
 
-#: classes/validation-rules/class.url.php:48
+#: classes/validation-rules/class.url.php:49
 msgid "URL"
 msgstr ""
 
@@ -479,283 +474,289 @@ msgstr ""
 msgid "This is not the format of a zip code."
 msgstr ""
 
-#: classes/views/class.admin-list.php:31
-msgid "Your contribution is needed for making this plugin better."
+#: mw-wp-form.php:165 mw-wp-form.php:166 templates/chart/index.php:4
+msgid "Chart"
 msgstr ""
 
-#: classes/views/class.admin-list.php:31
-msgid "Donate"
+#: mw-wp-form.php:194 mw-wp-form.php:195
+#: templates/stores-inquiry-data-form-list/index.php:2
+msgid "Inquiry data"
 msgstr ""
 
-#: classes/views/class.admin.php:39
-msgid "Input Page URL"
-msgstr ""
-
-#: classes/views/class.admin.php:45
-msgid "Confirmation Page URL"
-msgstr ""
-
-#: classes/views/class.admin.php:51
-msgid "Complete Page URL"
-msgstr ""
-
-#: classes/views/class.admin.php:57
-msgid "Validation Error Page URL"
-msgstr ""
-
-#: classes/views/class.admin.php:64
-msgid "This urls are the redirection urls at the time of button press. When URL setting is empty, The page redirect on the same page."
-msgstr ""
-
-#: classes/views/class.admin.php:65
-msgid "When a URL doesn't begin http or https, %s is complemented."
-msgstr ""
-
-#: classes/views/class.admin.php:90
-msgid "Add Validation rule"
-msgstr ""
-
-#: classes/views/class.admin.php:98
-msgid "The key which applies validation"
-msgstr ""
-
-#: classes/views/class.admin.php:122
-msgid "You can use more easy and useful to the MW WP Form in add-on!"
-msgstr ""
-
-#: classes/views/class.admin.php:123
-msgid "View Add-ons"
-msgstr ""
-
-#: classes/views/class.admin.php:138
-msgid "Copy and Paste this shortcode."
-msgstr ""
-
-#: classes/views/class.admin.php:139
-msgid "The key to use with hook is "
-msgstr ""
-
-#: classes/views/class.admin.php:157 classes/views/class.admin.php:203
-msgid "{key} is converted form data."
-msgstr ""
-
-#: classes/views/class.admin.php:159 classes/views/class.admin.php:205
-msgid "It is automatically converted to Tracking number when you input {%s}."
-msgstr ""
-
-#: classes/views/class.admin.php:164 classes/views/class.admin.php:226
-msgid "Subject"
-msgstr ""
-
-#: classes/views/class.admin.php:168 classes/views/class.admin.php:230
-msgid "Sender"
-msgstr ""
-
-#: classes/views/class.admin.php:170 classes/views/class.admin.php:175
-#: classes/views/class.admin.php:215 classes/views/class.admin.php:232
-#: classes/views/class.admin.php:237
-msgid "If empty:"
-msgstr ""
-
-#: classes/views/class.admin.php:173 classes/views/class.admin.php:235
-msgid "From ( E-mail address )"
-msgstr ""
-
-#: classes/views/class.admin.php:178 classes/views/class.admin.php:240
-msgid "Content"
-msgstr ""
-
-#: classes/views/class.admin.php:182
-msgid "Automatic reply email"
-msgstr ""
-
-#: classes/views/class.admin.php:184
-msgid "Input the key to use as transmission to automatic reply email. {} is unnecessary."
-msgstr ""
-
-#: classes/views/class.admin.php:210
-msgid "If Admin Email Options is a blank, Automatic Replay Email Options is used as Admin Email Options."
-msgstr ""
-
-#: classes/views/class.admin.php:213
-msgid "To ( E-mail address )"
-msgstr ""
-
-#: classes/views/class.admin.php:218
-msgid "CC ( E-mail address )"
-msgstr ""
-
-#: classes/views/class.admin.php:222
-msgid "BCC ( E-mail address )"
-msgstr ""
-
-#: classes/views/class.admin.php:259
-msgid "Activate Query string of post"
-msgstr ""
-
-#: classes/views/class.admin.php:260
-msgid "If this field is active, MW WP Form get query string. And get post data from query string \"post_id\". You can use $post's property in editor."
-msgstr ""
-
-#: classes/views/class.admin.php:261
-msgid "Example: {ID}, {post_title}, {post_meta} etc..."
-msgstr ""
-
-#: classes/views/class.admin.php:264
-msgid "Saving inquiry data in database"
-msgstr ""
-
-#: classes/views/class.admin.php:267
-msgid "Enable scrolling of screen transition."
-msgstr ""
-
-#: classes/views/class.admin.php:271
-msgid "Akismet Setting"
-msgstr ""
-
-#: classes/views/class.admin.php:286
-msgid "Input the key to use Akismet."
-msgstr ""
-
-#: classes/views/class.admin.php:299
-msgid "Select Style"
-msgstr ""
-
-#: classes/views/class.admin.php:327 classes/views/class.chart.php:86
-msgid "Select this."
-msgstr ""
-
-#: classes/views/class.admin.php:328
-msgid "Input fields"
-msgstr ""
-
-#: classes/views/class.admin.php:331
-msgid "Select fields"
-msgstr ""
-
-#: classes/views/class.admin.php:334
-msgid "Button fields"
-msgstr ""
-
-#: classes/views/class.admin.php:337
-msgid "Error fields"
-msgstr ""
-
-#: classes/views/class.admin.php:340
-msgid "Other fields"
-msgstr ""
-
-#: classes/views/class.admin.php:344
-msgid "Add form tag"
-msgstr ""
-
-#: classes/views/class.chart.php:76
-msgid "Add Chart"
-msgstr ""
-
-#: classes/views/class.chart.php:84
-msgid "Item that create chart"
-msgstr ""
-
-#: classes/views/class.chart.php:92
-msgid "Chart type"
-msgstr ""
-
-#: classes/views/class.chart.php:96
-msgid "Pie chart"
-msgstr ""
-
-#: classes/views/class.chart.php:97
-msgid "Bar chart"
-msgstr ""
-
-#: classes/views/class.chart.php:110
-msgid "Separator string (If the check box. If the separator attribute is not set to \",\")"
-msgstr ""
-
-#: classes/views/class.chart.php:132 classes/views/class.contact-data.php:42
-msgid "The number of inquiries"
-msgstr ""
-
-#: classes/views/class.contact-data-list.php:34
-msgid "CSV Download"
-msgstr ""
-
-#: classes/views/class.contact-data.php:36
-msgid "You can see the inquiry data that are saved in the database by clicking on the link below."
-msgstr ""
-
-#: classes/views/class.contact-data.php:40
-msgid "Form title"
-msgstr ""
-
-#: classes/views/class.contact-data.php:41
-#: classes/views/class.contact-data.php:51
-msgid "Display Chart"
-msgstr ""
-
-#: classes/views/class.contact-data.php:43
-msgid "Updated date"
-msgstr ""
-
-#: classes/views/class.contact-data.php:44
-msgid "Created date"
-msgstr ""
-
-#: classes/views/class.contact-data.php:52
-msgid "cases"
-msgstr ""
-
-#: classes/views/class.contact-data.php:127
-msgid "&laquo; Back to the list"
-msgstr ""
-
-#: mw-wp-form.php:185
+#: mw-wp-form.php:290
 msgid "Add New Form"
 msgstr ""
 
-#: mw-wp-form.php:186
+#: mw-wp-form.php:291
 msgid "Edit Form"
 msgstr ""
 
-#: mw-wp-form.php:187
+#: mw-wp-form.php:292
 msgid "New Form"
 msgstr ""
 
-#: mw-wp-form.php:188
+#: mw-wp-form.php:293
 msgid "View Form"
 msgstr ""
 
-#: mw-wp-form.php:189
+#: mw-wp-form.php:294
 msgid "Search Forms"
 msgstr ""
 
-#: mw-wp-form.php:190
+#: mw-wp-form.php:295
 msgid "No Forms found"
 msgstr ""
 
-#: mw-wp-form.php:191
+#: mw-wp-form.php:296
 msgid "No Forms found in Trash"
 msgstr ""
 
-#: mw-wp-form.php:208
+#: mw-wp-form.php:313
 msgid "Edit "
 msgstr ""
 
-#: mw-wp-form.php:209
+#: mw-wp-form.php:314
 msgid "View"
 msgstr ""
 
-#: mw-wp-form.php:210
+#: mw-wp-form.php:315
 msgid "Search"
 msgstr ""
 
-#: mw-wp-form.php:211
+#: mw-wp-form.php:316
 msgid "No data found"
 msgstr ""
 
-#: mw-wp-form.php:212
+#: mw-wp-form.php:317
 msgid "No data found in Trash"
+msgstr ""
+
+#: templates/admin/add-ons.php:2
+msgid "You can use more easy and useful to the MW WP Form in add-on!"
+msgstr ""
+
+#: templates/admin/add-ons.php:3
+msgid "View Add-ons"
+msgstr ""
+
+#: templates/admin/admin-mail-options.php:2 templates/admin/mail-options.php:2
+msgid "{key} is converted form data."
+msgstr ""
+
+#: templates/admin/admin-mail-options.php:4 templates/admin/mail-options.php:4
+msgid "It is automatically converted to Tracking number when you input {%s}."
+msgstr ""
+
+#: templates/admin/admin-mail-options.php:9
+msgid "If Admin Email Options is a blank, Automatic Replay Email Options is used as Admin Email Options."
+msgstr ""
+
+#: templates/admin/admin-mail-options.php:12
+msgid "To ( E-mail address )"
+msgstr ""
+
+#: templates/admin/admin-mail-options.php:14
+#: templates/admin/admin-mail-options.php:31
+#: templates/admin/admin-mail-options.php:36
+#: templates/admin/mail-options.php:15 templates/admin/mail-options.php:20
+msgid "If empty:"
+msgstr ""
+
+#: templates/admin/admin-mail-options.php:17
+msgid "CC ( E-mail address )"
+msgstr ""
+
+#: templates/admin/admin-mail-options.php:21
+msgid "BCC ( E-mail address )"
+msgstr ""
+
+#: templates/admin/admin-mail-options.php:25 templates/admin/mail-options.php:9
+msgid "Subject"
+msgstr ""
+
+#: templates/admin/admin-mail-options.php:29
+#: templates/admin/mail-options.php:13
+msgid "Sender"
+msgstr ""
+
+#: templates/admin/admin-mail-options.php:34
+#: templates/admin/mail-options.php:18
+msgid "From ( E-mail address )"
+msgstr ""
+
+#: templates/admin/admin-mail-options.php:39
+#: templates/admin/mail-options.php:23
+msgid "Content"
+msgstr ""
+
+#: templates/admin/form-key.php:4
+msgid "Copy and Paste this shortcode."
+msgstr ""
+
+#: templates/admin/form-key.php:5
+msgid "The key to use with hook is "
+msgstr ""
+
+#: templates/admin/mail-options.php:27
+msgid "Automatic reply email"
+msgstr ""
+
+#: templates/admin/mail-options.php:29
+msgid "Input the key to use as transmission to automatic reply email. {} is unnecessary."
+msgstr ""
+
+#: templates/admin/settings.php:2
+msgid "Activate Query string of post"
+msgstr ""
+
+#: templates/admin/settings.php:3
+msgid "If this field is active, MW WP Form get query string. And get post data from query string \"post_id\". You can use $post's property in editor."
+msgstr ""
+
+#: templates/admin/settings.php:4
+msgid "Example: {ID}, {post_title}, {post_meta} etc..."
+msgstr ""
+
+#: templates/admin/settings.php:7
+msgid "Saving inquiry data in database"
+msgstr ""
+
+#: templates/admin/settings.php:10
+msgid "Enable scrolling of screen transition."
+msgstr ""
+
+#: templates/admin/settings.php:14
+msgid "Akismet Setting"
+msgstr ""
+
+#: templates/admin/settings.php:29
+msgid "Input the key to use Akismet."
+msgstr ""
+
+#: templates/admin/style.php:3
+msgid "Select Style"
+msgstr ""
+
+#: templates/admin/tag-generator.php:6 templates/chart/index.php:25
+msgid "Select this."
+msgstr ""
+
+#: templates/admin/tag-generator.php:7
+msgid "Input fields"
+msgstr ""
+
+#: templates/admin/tag-generator.php:10
+msgid "Select fields"
+msgstr ""
+
+#: templates/admin/tag-generator.php:13
+msgid "Button fields"
+msgstr ""
+
+#: templates/admin/tag-generator.php:16
+msgid "Error fields"
+msgstr ""
+
+#: templates/admin/tag-generator.php:19
+msgid "Other fields"
+msgstr ""
+
+#: templates/admin/tag-generator.php:23
+msgid "Add form tag"
+msgstr ""
+
+#: templates/admin/url.php:4
+msgid "Input Page URL"
+msgstr ""
+
+#: templates/admin/url.php:10
+msgid "Confirmation Page URL"
+msgstr ""
+
+#: templates/admin/url.php:16
+msgid "Complete Page URL"
+msgstr ""
+
+#: templates/admin/url.php:22
+msgid "Validation Error Page URL"
+msgstr ""
+
+#: templates/admin/url.php:29
+msgid "This urls are the redirection urls at the time of button press. When URL setting is empty, The page redirect on the same page."
+msgstr ""
+
+#: templates/admin/url.php:30
+msgid "When a URL doesn't begin http or https, %s is complemented."
+msgstr ""
+
+#: templates/admin/validation-rule.php:1
+msgid "Add Validation rule"
+msgstr ""
+
+#: templates/admin/validation-rule.php:9
+msgid "The key which applies validation"
+msgstr ""
+
+#: templates/chart/index.php:15
+msgid "Add Chart"
+msgstr ""
+
+#: templates/chart/index.php:23
+msgid "Item that create chart"
+msgstr ""
+
+#: templates/chart/index.php:31
+msgid "Chart type"
+msgstr ""
+
+#: templates/chart/index.php:35
+msgid "Pie chart"
+msgstr ""
+
+#: templates/chart/index.php:36
+msgid "Bar chart"
+msgstr ""
+
+#: templates/chart/index.php:49
+msgid "Separator string (If the check box. If the separator attribute is not set to \",\")"
+msgstr ""
+
+#: templates/chart/index.php:71
+#: templates/stores-inquiry-data-form-list/index.php:10
+msgid "The number of inquiries"
+msgstr ""
+
+#: templates/contact-data/returning-link.php:2
+msgid "&laquo; Back to the list"
+msgstr ""
+
+#: templates/contact-data-list/csv-button.php:2
+msgid "CSV Download"
+msgstr ""
+
+#: templates/stores-inquiry-data-form-list/index.php:4
+msgid "You can see the inquiry data that are saved in the database by clicking on the link below."
+msgstr ""
+
+#: templates/stores-inquiry-data-form-list/index.php:8
+msgid "Form title"
+msgstr ""
+
+#: templates/stores-inquiry-data-form-list/index.php:9
+#: templates/stores-inquiry-data-form-list/index.php:18
+msgid "Display Chart"
+msgstr ""
+
+#: templates/stores-inquiry-data-form-list/index.php:11
+msgid "Updated date"
+msgstr ""
+
+#: templates/stores-inquiry-data-form-list/index.php:12
+msgid "Created date"
+msgstr ""
+
+#: templates/stores-inquiry-data-form-list/index.php:19
+msgid "cases"
 msgstr ""
 #. Plugin Name of the plugin/theme
 msgid "MW WP Form"

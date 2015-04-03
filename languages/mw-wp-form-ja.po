@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.3.1\n"
+"Project-Id-Version: MW WP Form 2.4.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/mw-wp-form\n"
-"POT-Creation-Date: 2015-02-28 09:56:10+00:00\n"
-"PO-Revision-Date: 2015-02-28 18:58+0900\n"
+"POT-Creation-Date: 2015-04-03 07:04:28+00:00\n"
+"PO-Revision-Date: 2015-04-03 16:05+0900\n"
 "Last-Translator: Takashi Kitajima <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -15,76 +15,66 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.7.4\n"
+"X-Generator: Poedit 1.7.5\n"
 "X-Poedit-KeywordsList: __;_e;_x;esc_html_e;esc_html__\n"
 "X-Poedit-SearchPath-0: ..\n"
 
-#: classes/controllers/class.admin-list.php:58
-#: classes/controllers/class.admin.php:106
+#: classes/controllers/class.admin-list.php:34
+msgid "Your contribution is needed for making this plugin better."
+msgstr "あなたの貢献があればこのプラグインをもっと良くすることができます。"
+
+#: classes/controllers/class.admin-list.php:36
+msgid "Donate"
+msgstr "寄付する"
+
+#: classes/controllers/class.admin-list.php:66
+#: classes/controllers/class.admin.php:89
 msgid "Form Key"
 msgstr "フォーム識別子"
 
-#: classes/controllers/class.admin.php:67
+#: classes/controllers/class.admin.php:57
 msgid "Complete Message"
 msgstr "完了画面メッセージ"
 
-#: classes/controllers/class.admin.php:79
+#: classes/controllers/class.admin.php:65
 msgid "URL Options"
 msgstr "URL設定"
 
-#: classes/controllers/class.admin.php:89
+#: classes/controllers/class.admin.php:73
 msgid "Validation Rule"
 msgstr "バリデーションルール"
 
-#: classes/controllers/class.admin.php:97
+#: classes/controllers/class.admin.php:81
 msgid "Add-ons"
 msgstr "アドオン"
 
-#: classes/controllers/class.admin.php:119
+#: classes/controllers/class.admin.php:97
 msgid "Automatic Reply Email Options"
 msgstr "自動返信メール設定"
 
-#: classes/controllers/class.admin.php:134
+#: classes/controllers/class.admin.php:105
 msgid "Admin Email Options"
 msgstr "管理者宛メール設定"
 
-#: classes/controllers/class.admin.php:148
+#: classes/controllers/class.admin.php:113
 msgid "settings"
 msgstr "設定"
 
-#: classes/controllers/class.admin.php:160
+#: classes/controllers/class.admin.php:122
 msgid "Style setting"
 msgstr "スタイル設定"
 
-#: classes/controllers/class.chart.php:78
-#: classes/controllers/class.chart.php:79 classes/views/class.chart.php:65
-msgid "Chart"
-msgstr "グラフ"
-
-#: classes/controllers/class.contact-data-list.php:160
-#: classes/controllers/class.contact-data-list.php:207
-#: classes/controllers/class.contact-data-list.php:297
-#: classes/views/class.contact-data.php:101
-msgid "Response Status"
-msgstr "対応状況"
-
-#: classes/controllers/class.contact-data-list.php:187
-#: classes/controllers/class.contact-data-list.php:210
-#: classes/views/class.contact-data.php:113
-msgid "Memo"
-msgstr "メモ"
-
-#: classes/controllers/class.contact-data-list.php:296
+#: classes/controllers/class.contact-data-list.php:117
 msgid "Registed Date"
 msgstr "登録日時"
 
-#: classes/controllers/class.contact-data.php:85
-#: classes/controllers/class.contact-data.php:86
-#: classes/views/class.contact-data.php:34
-msgid "Inquiry data"
-msgstr "問い合わせデータ"
+#: classes/controllers/class.contact-data-list.php:118
+#: classes/models/class.csv.php:122 classes/models/class.csv.php:169
+#: templates/contact-data/detail.php:32
+msgid "Response Status"
+msgstr "対応状況"
 
-#: classes/controllers/class.contact-data.php:121
+#: classes/controllers/class.contact-data.php:70
 msgid "Custom Fields"
 msgstr "カスタムフィールド"
 
@@ -112,102 +102,104 @@ msgstr "ボタン"
 msgid "Checkbox"
 msgstr "チェックボックス"
 
-#: classes/form-fields/class.checkbox.php:110
-#: classes/form-fields/class.radio.php:106
-#: classes/form-fields/class.select.php:104
-msgid "Choices"
-msgstr "選択肢"
-
-#: classes/form-fields/class.checkbox.php:114
-#: classes/form-fields/class.error.php:78
-#: classes/form-fields/class.radio.php:110
-#: classes/form-fields/class.select.php:108
-msgid "Input one line about one item."
-msgstr "1項目につき1行で入力してください。"
-
 #: classes/form-fields/class.checkbox.php:115
 #: classes/form-fields/class.radio.php:111
 #: classes/form-fields/class.select.php:109
+msgid "Choices"
+msgstr "選択肢"
+
+#: classes/form-fields/class.checkbox.php:119
+#: classes/form-fields/class.error.php:78
+#: classes/form-fields/class.radio.php:115
+#: classes/form-fields/class.select.php:113
+msgid "Input one line about one item."
+msgstr "1項目につき1行で入力してください。"
+
+#: classes/form-fields/class.checkbox.php:120
+#: classes/form-fields/class.radio.php:116
+#: classes/form-fields/class.select.php:114
 msgid "Example: value1&crarr;value2 or key1:value1&crarr;key2:value2"
 msgstr "例：値1&crarr;値2 もしくは キー1:値1&crarr;キー2:値2"
 
-#: classes/form-fields/class.checkbox.php:116
-#: classes/form-fields/class.radio.php:112
-#: classes/form-fields/class.select.php:110
+#: classes/form-fields/class.checkbox.php:121
+#: classes/form-fields/class.radio.php:117
+#: classes/form-fields/class.select.php:115
 msgid ""
 "You can split the post value and display value by \":\". But display value "
 "is sent in e-mail."
 msgstr ""
 "送信値と表示値を「:」で分割できます。ただし、メールでは表示値が送信されます。"
 
-#: classes/form-fields/class.checkbox.php:117
-#: classes/form-fields/class.radio.php:113
-#: classes/form-fields/class.select.php:111
+#: classes/form-fields/class.checkbox.php:122
+#: classes/form-fields/class.radio.php:118
+#: classes/form-fields/class.select.php:116
 msgid "When you want to use \":\", please enter \"::\"."
 msgstr "「:」を使いたいときは「::」と入力してください。"
 
-#: classes/form-fields/class.checkbox.php:121
-#: classes/form-fields/class.radio.php:117
-#: classes/form-fields/class.select.php:115
+#: classes/form-fields/class.checkbox.php:126
+#: classes/form-fields/class.radio.php:122
+#: classes/form-fields/class.select.php:120
 msgid "Send value by e-mail"
 msgstr "メールで送信する値"
 
-#: classes/form-fields/class.checkbox.php:124
-#: classes/form-fields/class.radio.php:120
-#: classes/form-fields/class.select.php:118
+#: classes/form-fields/class.checkbox.php:129
+#: classes/form-fields/class.radio.php:125
+#: classes/form-fields/class.select.php:123
 msgid ""
 "Send post value when you split the post value and display value by \":\" in "
 "choices."
 msgstr "選択肢を「:」で送信値と表示値に分割したとき、送信値をメールで送信"
 
-#: classes/form-fields/class.checkbox.php:127
-#: classes/form-fields/class.datepicker.php:131
-#: classes/form-fields/class.hidden.php:79
-#: classes/form-fields/class.password.php:107
-#: classes/form-fields/class.radio.php:123
-#: classes/form-fields/class.select.php:121
-#: classes/form-fields/class.text.php:115
-#: classes/form-fields/class.textarea.php:109
+#: classes/form-fields/class.checkbox.php:132
+#: classes/form-fields/class.datepicker.php:136
+#: classes/form-fields/class.hidden.php:82
+#: classes/form-fields/class.password.php:112
+#: classes/form-fields/class.radio.php:128
+#: classes/form-fields/class.select.php:126
+#: classes/form-fields/class.text.php:119
+#: classes/form-fields/class.textarea.php:114
 msgid "Default value"
 msgstr "初期値"
 
-#: classes/form-fields/class.checkbox.php:132
+#: classes/form-fields/class.checkbox.php:137
 msgid "Separator string"
 msgstr "区切り文字"
 
-#: classes/form-fields/class.checkbox.php:137
-#: classes/form-fields/class.radio.php:128
+#: classes/form-fields/class.checkbox.php:142
+#: classes/form-fields/class.radio.php:133
 msgid "Display method"
 msgstr "表示方法"
 
-#: classes/form-fields/class.checkbox.php:139
-#: classes/form-fields/class.radio.php:130
+#: classes/form-fields/class.checkbox.php:144
+#: classes/form-fields/class.radio.php:135
 msgid "Arranged vertically."
 msgstr "垂直に配置する"
 
-#: classes/form-fields/class.checkbox.php:142
-#: classes/form-fields/class.datepicker.php:136
-#: classes/form-fields/class.file.php:109
-#: classes/form-fields/class.image.php:110
-#: classes/form-fields/class.password.php:117
-#: classes/form-fields/class.radio.php:133
-#: classes/form-fields/class.select.php:126
-#: classes/form-fields/class.tel.php:89 classes/form-fields/class.text.php:125
-#: classes/form-fields/class.textarea.php:119
-#: classes/form-fields/class.zip.php:89
+#: classes/form-fields/class.checkbox.php:147
+#: classes/form-fields/class.datepicker.php:141
+#: classes/form-fields/class.file.php:115
+#: classes/form-fields/class.image.php:119
+#: classes/form-fields/class.password.php:122
+#: classes/form-fields/class.radio.php:138
+#: classes/form-fields/class.select.php:131
+#: classes/form-fields/class.tel.php:102
+#: classes/form-fields/class.text.php:129
+#: classes/form-fields/class.textarea.php:124
+#: classes/form-fields/class.zip.php:101
 msgid "Dsiplay error"
 msgstr "エラー表示"
 
-#: classes/form-fields/class.checkbox.php:144
-#: classes/form-fields/class.datepicker.php:138
-#: classes/form-fields/class.file.php:111
-#: classes/form-fields/class.image.php:112
-#: classes/form-fields/class.password.php:119
-#: classes/form-fields/class.radio.php:135
-#: classes/form-fields/class.select.php:128
-#: classes/form-fields/class.tel.php:91 classes/form-fields/class.text.php:127
-#: classes/form-fields/class.textarea.php:121
-#: classes/form-fields/class.zip.php:91
+#: classes/form-fields/class.checkbox.php:149
+#: classes/form-fields/class.datepicker.php:143
+#: classes/form-fields/class.file.php:117
+#: classes/form-fields/class.image.php:121
+#: classes/form-fields/class.password.php:124
+#: classes/form-fields/class.radio.php:140
+#: classes/form-fields/class.select.php:133
+#: classes/form-fields/class.tel.php:104
+#: classes/form-fields/class.text.php:131
+#: classes/form-fields/class.textarea.php:126
+#: classes/form-fields/class.zip.php:103
 msgid "Don't display error."
 msgstr "エラーを表示しない"
 
@@ -236,7 +228,7 @@ msgstr "エラーを表示したい要素のname属性"
 msgid "File"
 msgstr "ファイルフィールド"
 
-#: classes/form-fields/class.file.php:62 classes/form-fields/class.file.php:84
+#: classes/form-fields/class.file.php:68 classes/form-fields/class.file.php:90
 msgid "Uploaded."
 msgstr "アップロードしました。"
 
@@ -244,11 +236,11 @@ msgstr "アップロードしました。"
 msgid "Hidden"
 msgstr "hiddenフィールド"
 
-#: classes/form-fields/class.hidden.php:84
+#: classes/form-fields/class.hidden.php:87
 msgid "Display"
 msgstr "表示する"
 
-#: classes/form-fields/class.hidden.php:86
+#: classes/form-fields/class.hidden.php:89
 msgid "Display hidden value."
 msgstr "hiddenの値を表示"
 
@@ -290,16 +282,17 @@ msgid "Submit Button"
 msgstr "送信ボタン"
 
 #: classes/form-fields/class.tel.php:30
-#: classes/validation-rules/class.tel.php:54
+#: classes/validation-rules/class.tel.php:56
 msgid "Tel"
 msgstr "電話番号"
 
-#: classes/form-fields/class.tel.php:94 classes/form-fields/class.text.php:130
-#: classes/form-fields/class.zip.php:94
+#: classes/form-fields/class.tel.php:107
+#: classes/form-fields/class.text.php:134
+#: classes/form-fields/class.zip.php:106
 msgid "Convert half alphanumeric"
 msgstr "半角英数字に変換"
 
-#: classes/form-fields/class.tel.php:96 classes/form-fields/class.zip.php:96
+#: classes/form-fields/class.tel.php:109 classes/form-fields/class.zip.php:108
 msgid "Don't Convert."
 msgstr "変換しない"
 
@@ -307,7 +300,7 @@ msgstr "変換しない"
 msgid "Text"
 msgstr "テキストフィールド"
 
-#: classes/form-fields/class.text.php:132
+#: classes/form-fields/class.text.php:136
 msgid "Convert."
 msgstr "変換する"
 
@@ -316,7 +309,7 @@ msgid "Textarea"
 msgstr "テキストエリア"
 
 #: classes/form-fields/class.zip.php:30
-#: classes/validation-rules/class.zip.php:48
+#: classes/validation-rules/class.zip.php:49
 msgid "Zip Code"
 msgstr "郵便番号"
 
@@ -324,21 +317,26 @@ msgstr "郵便番号"
 msgid "Uploaded from "
 msgstr "Uploaded from "
 
-#: classes/functions.php:289
+#: classes/functions.php:291
 msgid "Tracking Number"
 msgstr "問い合わせ番号"
 
-#: classes/models/class.contact-data-setting.php:56
+#: classes/models/class.contact-data-setting.php:60
 msgid "Not supported"
 msgstr "未対応"
 
-#: classes/models/class.contact-data-setting.php:57
+#: classes/models/class.contact-data-setting.php:61
 msgid "Reservation"
 msgstr "保留"
 
-#: classes/models/class.contact-data-setting.php:58
+#: classes/models/class.contact-data-setting.php:62
 msgid "Supported"
 msgstr "対応済み"
+
+#: classes/models/class.csv.php:148 classes/models/class.csv.php:172
+#: templates/contact-data/detail.php:44
+msgid "Memo"
+msgstr "メモ"
 
 #: classes/validation-rules/class.akismet.php:30
 msgid "The contents which you input were judged with spam."
@@ -348,7 +346,7 @@ msgstr "あなたの入力した内容はスパムと判定されました。"
 msgid "Please enter with a half-width alphabetic character."
 msgstr "半角英字で入力してください。"
 
-#: classes/validation-rules/class.alpha.php:48
+#: classes/validation-rules/class.alpha.php:49
 msgid "Alphabet"
 msgstr "半角英字"
 
@@ -356,7 +354,7 @@ msgstr "半角英字"
 msgid "Please enter with a half-width alphanumeric character."
 msgstr "半角英数字で入力してください。"
 
-#: classes/validation-rules/class.alphanumeric.php:48
+#: classes/validation-rules/class.alphanumeric.php:49
 msgid "Alphabet and Numeric"
 msgstr "半角英数字"
 
@@ -364,7 +362,7 @@ msgstr "半角英数字"
 msgid "The number of characters is invalid."
 msgstr "文字数が正しくありません。"
 
-#: classes/validation-rules/class.between.php:76
+#: classes/validation-rules/class.between.php:77
 msgid "The range of the number of characters"
 msgstr "文字数の範囲"
 
@@ -372,7 +370,7 @@ msgstr "文字数の範囲"
 msgid "This is not the format of a date."
 msgstr "日付の形式ではありません。"
 
-#: classes/validation-rules/class.date.php:59
+#: classes/validation-rules/class.date.php:60
 msgid "Date"
 msgstr "日付"
 
@@ -380,7 +378,7 @@ msgstr "日付"
 msgid "This is not in agreement."
 msgstr "一致しません。"
 
-#: classes/validation-rules/class.eq.php:56
+#: classes/validation-rules/class.eq.php:57
 msgid "The key at same value"
 msgstr "一致する項目"
 
@@ -388,11 +386,11 @@ msgstr "一致する項目"
 msgid "This file size is too big."
 msgstr "ファイルサイズが大きすぎます。"
 
-#: classes/validation-rules/class.filesize.php:58
+#: classes/validation-rules/class.filesize.php:59
 msgid "Permitted file size"
 msgstr "サイズ制限"
 
-#: classes/validation-rules/class.filesize.php:59
+#: classes/validation-rules/class.filesize.php:60
 msgid "bytes"
 msgstr "バイト"
 
@@ -400,11 +398,11 @@ msgstr "バイト"
 msgid "This file is invalid."
 msgstr "許可されたファイルではありません。"
 
-#: classes/validation-rules/class.filetype.php:61
+#: classes/validation-rules/class.filetype.php:62
 msgid "Permitted Extension"
 msgstr "拡張子制限"
 
-#: classes/validation-rules/class.filetype.php:62
+#: classes/validation-rules/class.filetype.php:63
 msgid "Example:jpg or jpg,txt,…"
 msgstr "例：jpg もしくは jpg,txt…"
 
@@ -412,7 +410,7 @@ msgstr "例：jpg もしくは jpg,txt…"
 msgid "Please enter with a Japanese Hiragana."
 msgstr "ひらがなで入力してください。"
 
-#: classes/validation-rules/class.hiragana.php:48
+#: classes/validation-rules/class.hiragana.php:49
 msgid "Japanese Hiragana"
 msgstr "ひらがな"
 
@@ -424,7 +422,7 @@ msgstr "値が不正です。"
 msgid "Please enter with a Japanese Katakana."
 msgstr "カタカナで入力してください。"
 
-#: classes/validation-rules/class.katakana.php:48
+#: classes/validation-rules/class.katakana.php:49
 msgid "Japanese Katakana"
 msgstr "カタカナ"
 
@@ -432,7 +430,7 @@ msgstr "カタカナ"
 msgid "This is not the format of a mail address."
 msgstr "メールアドレスの形式ではありません。"
 
-#: classes/validation-rules/class.mail.php:48
+#: classes/validation-rules/class.mail.php:49
 msgid "E-mail"
 msgstr "メールアドレス"
 
@@ -440,7 +438,7 @@ msgstr "メールアドレス"
 msgid "The number of characters is a few."
 msgstr "文字数が足りません。"
 
-#: classes/validation-rules/class.minlength.php:57
+#: classes/validation-rules/class.minlength.php:58
 msgid "The number of the minimum characters"
 msgstr "最小文字数"
 
@@ -449,7 +447,7 @@ msgstr "最小文字数"
 msgid "Please enter."
 msgstr "未入力です。"
 
-#: classes/validation-rules/class.noempty.php:46
+#: classes/validation-rules/class.noempty.php:47
 msgid "No empty"
 msgstr "必須項目"
 
@@ -457,7 +455,7 @@ msgstr "必須項目"
 msgid "Please enter with a half-width number."
 msgstr "半角数字で入力してください。"
 
-#: classes/validation-rules/class.numeric.php:48
+#: classes/validation-rules/class.numeric.php:49
 msgid "Numeric"
 msgstr "半角数字"
 
@@ -465,7 +463,7 @@ msgstr "半角数字"
 msgid "This is required."
 msgstr "必須項目です。"
 
-#: classes/validation-rules/class.required.php:48
+#: classes/validation-rules/class.required.php:49
 msgid "No empty( with checkbox )"
 msgstr "必須項目（チェックボックス）"
 
@@ -477,7 +475,7 @@ msgstr "電話番号の形式ではありません。"
 msgid "This is not the format of a url."
 msgstr "URLの形式ではありません。"
 
-#: classes/validation-rules/class.url.php:48
+#: classes/validation-rules/class.url.php:49
 msgid "URL"
 msgstr "URL"
 
@@ -485,107 +483,80 @@ msgstr "URL"
 msgid "This is not the format of a zip code."
 msgstr "郵便番号の形式ではありません。"
 
-#: classes/views/class.admin-list.php:31
-msgid "Your contribution is needed for making this plugin better."
-msgstr "あなたの貢献があればこのプラグインをもっと良くすることができます。"
+#: mw-wp-form.php:165 mw-wp-form.php:166 templates/chart/index.php:4
+msgid "Chart"
+msgstr "グラフ"
 
-#: classes/views/class.admin-list.php:31
-msgid "Donate"
-msgstr "寄付する"
+#: mw-wp-form.php:194 mw-wp-form.php:195
+#: templates/stores-inquiry-data-form-list/index.php:2
+msgid "Inquiry data"
+msgstr "問い合わせデータ"
 
-#: classes/views/class.admin.php:39
-msgid "Input Page URL"
-msgstr "入力画面URL"
+#: mw-wp-form.php:290
+msgid "Add New Form"
+msgstr "フォームを追加"
 
-#: classes/views/class.admin.php:45
-msgid "Confirmation Page URL"
-msgstr "確認画面URL"
+#: mw-wp-form.php:291
+msgid "Edit Form"
+msgstr "フォームを編集"
 
-#: classes/views/class.admin.php:51
-msgid "Complete Page URL"
-msgstr "完了画面URL"
+#: mw-wp-form.php:292
+msgid "New Form"
+msgstr "新しいフォーム"
 
-#: classes/views/class.admin.php:57
-msgid "Validation Error Page URL"
-msgstr "エラー画面URL"
+#: mw-wp-form.php:293
+msgid "View Form"
+msgstr "フォームを表示"
 
-#: classes/views/class.admin.php:64
-msgid ""
-"This urls are the redirection urls at the time of button press. When URL "
-"setting is empty, The page redirect on the same page."
-msgstr ""
-"上記URLはボタン押下時のリダイレクトURLです。URLの設定が空のときは、同一ページ"
-"上でリダイレクトします。"
+#: mw-wp-form.php:294
+msgid "Search Forms"
+msgstr "フォームを検索"
 
-#: classes/views/class.admin.php:65
-msgid "When a URL doesn't begin http or https, %s is complemented."
-msgstr "URLが http または https で始まっていない場合は %s が補完されます。"
+#: mw-wp-form.php:295
+msgid "No Forms found"
+msgstr "フォームがありません"
 
-#: classes/views/class.admin.php:90
-msgid "Add Validation rule"
-msgstr "バリデーションルールを追加"
+#: mw-wp-form.php:296
+msgid "No Forms found in Trash"
+msgstr "ゴミ箱にフォームはありません"
 
-#: classes/views/class.admin.php:98
-msgid "The key which applies validation"
-msgstr "バリデーションを適用する項目"
+#: mw-wp-form.php:313
+msgid "Edit "
+msgstr "編集"
 
-#: classes/views/class.admin.php:122
+#: mw-wp-form.php:314
+msgid "View"
+msgstr "表示"
+
+#: mw-wp-form.php:315
+msgid "Search"
+msgstr "検索"
+
+#: mw-wp-form.php:316
+msgid "No data found"
+msgstr "データがありません"
+
+#: mw-wp-form.php:317
+msgid "No data found in Trash"
+msgstr "ゴミ箱にデータはありません"
+
+#: templates/admin/add-ons.php:2
 msgid "You can use more easy and useful to the MW WP Form in add-on!"
 msgstr "アドオンで MW WP Form をもっと簡単・便利に使うことができます！"
 
-#: classes/views/class.admin.php:123
+#: templates/admin/add-ons.php:3
 msgid "View Add-ons"
 msgstr "アドオンを見る"
 
-#: classes/views/class.admin.php:138
-msgid "Copy and Paste this shortcode."
-msgstr "このショートコードをコピー＆ペーストしてください。"
-
-#: classes/views/class.admin.php:139
-msgid "The key to use with hook is "
-msgstr "各フックで使用する修飾子は"
-
-#: classes/views/class.admin.php:157 classes/views/class.admin.php:203
+#: templates/admin/admin-mail-options.php:2 templates/admin/mail-options.php:2
 msgid "{key} is converted form data."
 msgstr "{キー}でそのフォーム項目に変換されます。"
 
-#: classes/views/class.admin.php:159 classes/views/class.admin.php:205
+#: templates/admin/admin-mail-options.php:4 templates/admin/mail-options.php:4
 msgid "It is automatically converted to Tracking number when you input {%s}."
 msgstr "{%s} と入力すると問い合わせ番号に自動的に変換されます。"
 
-#: classes/views/class.admin.php:164 classes/views/class.admin.php:226
-msgid "Subject"
-msgstr "件名"
-
-#: classes/views/class.admin.php:168 classes/views/class.admin.php:230
-msgid "Sender"
-msgstr "送信者"
-
-#: classes/views/class.admin.php:170 classes/views/class.admin.php:175
-#: classes/views/class.admin.php:215 classes/views/class.admin.php:232
-#: classes/views/class.admin.php:237
-msgid "If empty:"
-msgstr "未入力の場合:"
-
-#: classes/views/class.admin.php:173 classes/views/class.admin.php:235
-msgid "From ( E-mail address )"
-msgstr "送信元（E-mailアドレス）"
-
-#: classes/views/class.admin.php:178 classes/views/class.admin.php:240
-msgid "Content"
-msgstr "本文"
-
-#: classes/views/class.admin.php:182
-msgid "Automatic reply email"
-msgstr "自動返信メール"
-
-#: classes/views/class.admin.php:184
-msgid ""
-"Input the key to use as transmission to automatic reply email. {} is "
-"unnecessary."
-msgstr "自動返信メールに使用する項目のキーを入力してください。{ }は不要です。"
-
-#: classes/views/class.admin.php:210
+#: templates/admin/admin-mail-options.php:9
 msgid ""
 "If Admin Email Options is a blank, Automatic Replay Email Options is used as "
 "Admin Email Options."
@@ -593,23 +564,68 @@ msgstr ""
 "管理者宛メール設定が空のときは自動返信メール設定に管理者宛メール設定が使用さ"
 "れます。"
 
-#: classes/views/class.admin.php:213
+#: templates/admin/admin-mail-options.php:12
 msgid "To ( E-mail address )"
 msgstr "送信先（E-mailアドレス）"
 
-#: classes/views/class.admin.php:218
+#: templates/admin/admin-mail-options.php:14
+#: templates/admin/admin-mail-options.php:31
+#: templates/admin/admin-mail-options.php:36
+#: templates/admin/mail-options.php:15 templates/admin/mail-options.php:20
+msgid "If empty:"
+msgstr "未入力の場合:"
+
+#: templates/admin/admin-mail-options.php:17
 msgid "CC ( E-mail address )"
 msgstr "CC（E-mailアドレス）"
 
-#: classes/views/class.admin.php:222
+#: templates/admin/admin-mail-options.php:21
 msgid "BCC ( E-mail address )"
 msgstr "BCC（E-mailアドレス）"
 
-#: classes/views/class.admin.php:259
+#: templates/admin/admin-mail-options.php:25
+#: templates/admin/mail-options.php:9
+msgid "Subject"
+msgstr "件名"
+
+#: templates/admin/admin-mail-options.php:29
+#: templates/admin/mail-options.php:13
+msgid "Sender"
+msgstr "送信者"
+
+#: templates/admin/admin-mail-options.php:34
+#: templates/admin/mail-options.php:18
+msgid "From ( E-mail address )"
+msgstr "送信元（E-mailアドレス）"
+
+#: templates/admin/admin-mail-options.php:39
+#: templates/admin/mail-options.php:23
+msgid "Content"
+msgstr "本文"
+
+#: templates/admin/form-key.php:4
+msgid "Copy and Paste this shortcode."
+msgstr "このショートコードをコピー＆ペーストしてください。"
+
+#: templates/admin/form-key.php:5
+msgid "The key to use with hook is "
+msgstr "各フックで使用する修飾子は"
+
+#: templates/admin/mail-options.php:27
+msgid "Automatic reply email"
+msgstr "自動返信メール"
+
+#: templates/admin/mail-options.php:29
+msgid ""
+"Input the key to use as transmission to automatic reply email. {} is "
+"unnecessary."
+msgstr "自動返信メールに使用する項目のキーを入力してください。{ }は不要です。"
+
+#: templates/admin/settings.php:2
 msgid "Activate Query string of post"
 msgstr "URL引数を有効にする"
 
-#: classes/views/class.admin.php:260
+#: templates/admin/settings.php:3
 msgid ""
 "If this field is active, MW WP Form get query string. And get post data from "
 "query string \"post_id\". You can use $post's property in editor."
@@ -618,94 +634,135 @@ msgstr ""
 "とに投稿を取得します。その投稿（$post） のプロパティを使用できるようになりま"
 "す。"
 
-#: classes/views/class.admin.php:261
+#: templates/admin/settings.php:4
 msgid "Example: {ID}, {post_title}, {post_meta} etc..."
 msgstr "例：{ID}、{post_title}、{post_meta}など…"
 
-#: classes/views/class.admin.php:264
+#: templates/admin/settings.php:7
 msgid "Saving inquiry data in database"
 msgstr "問い合わせデータをデータベースに保存"
 
-#: classes/views/class.admin.php:267
+#: templates/admin/settings.php:10
 msgid "Enable scrolling of screen transition."
 msgstr "画面変遷時のスクロールを有効にする"
 
-#: classes/views/class.admin.php:271
+#: templates/admin/settings.php:14
 msgid "Akismet Setting"
 msgstr "Akismet 設定"
 
-#: classes/views/class.admin.php:286
+#: templates/admin/settings.php:29
 msgid "Input the key to use Akismet."
 msgstr "Akismetを使用する項目のキーを入力してください。"
 
-#: classes/views/class.admin.php:299
+#: templates/admin/style.php:3
 msgid "Select Style"
 msgstr "スタイルを選択"
 
-#: classes/views/class.admin.php:327 classes/views/class.chart.php:86
+#: templates/admin/tag-generator.php:6 templates/chart/index.php:25
 msgid "Select this."
 msgstr "選択してください"
 
-#: classes/views/class.admin.php:328
+#: templates/admin/tag-generator.php:7
 msgid "Input fields"
 msgstr "入力項目"
 
-#: classes/views/class.admin.php:331
+#: templates/admin/tag-generator.php:10
 msgid "Select fields"
 msgstr "選択項目"
 
-#: classes/views/class.admin.php:334
+#: templates/admin/tag-generator.php:13
 msgid "Button fields"
 msgstr "ボタン項目"
 
-#: classes/views/class.admin.php:337
+#: templates/admin/tag-generator.php:16
 msgid "Error fields"
 msgstr "エラー項目"
 
-#: classes/views/class.admin.php:340
+#: templates/admin/tag-generator.php:19
 msgid "Other fields"
 msgstr "その他の項目"
 
-#: classes/views/class.admin.php:344
+#: templates/admin/tag-generator.php:23
 msgid "Add form tag"
 msgstr "フォームタグを追加"
 
-#: classes/views/class.chart.php:76
+#: templates/admin/url.php:4
+msgid "Input Page URL"
+msgstr "入力画面URL"
+
+#: templates/admin/url.php:10
+msgid "Confirmation Page URL"
+msgstr "確認画面URL"
+
+#: templates/admin/url.php:16
+msgid "Complete Page URL"
+msgstr "完了画面URL"
+
+#: templates/admin/url.php:22
+msgid "Validation Error Page URL"
+msgstr "エラー画面URL"
+
+#: templates/admin/url.php:29
+msgid ""
+"This urls are the redirection urls at the time of button press. When URL "
+"setting is empty, The page redirect on the same page."
+msgstr ""
+"上記URLはボタン押下時のリダイレクトURLです。URLの設定が空のときは、同一ページ"
+"上でリダイレクトします。"
+
+#: templates/admin/url.php:30
+msgid "When a URL doesn't begin http or https, %s is complemented."
+msgstr "URLが http または https で始まっていない場合は %s が補完されます。"
+
+#: templates/admin/validation-rule.php:1
+msgid "Add Validation rule"
+msgstr "バリデーションルールを追加"
+
+#: templates/admin/validation-rule.php:9
+msgid "The key which applies validation"
+msgstr "バリデーションを適用する項目"
+
+#: templates/chart/index.php:15
 msgid "Add Chart"
 msgstr "グラフを追加"
 
-#: classes/views/class.chart.php:84
+#: templates/chart/index.php:23
 msgid "Item that create chart"
 msgstr "グラフを作成する項目"
 
-#: classes/views/class.chart.php:92
+#: templates/chart/index.php:31
 msgid "Chart type"
 msgstr "グラフの種類"
 
-#: classes/views/class.chart.php:96
+#: templates/chart/index.php:35
 msgid "Pie chart"
 msgstr "円グラフ"
 
-#: classes/views/class.chart.php:97
+#: templates/chart/index.php:36
 msgid "Bar chart"
 msgstr "棒グラフ"
 
-#: classes/views/class.chart.php:110
+#: templates/chart/index.php:49
 msgid ""
 "Separator string (If the check box. If the separator attribute is not set to "
 "\",\")"
 msgstr ""
 "区切り文字（チェックボックスの場合。separator 属性が未設定の場合は「,」）"
 
-#: classes/views/class.chart.php:132 classes/views/class.contact-data.php:42
+#: templates/chart/index.php:71
+#: templates/stores-inquiry-data-form-list/index.php:10
 msgid "The number of inquiries"
 msgstr "問い合わせ件数"
 
-#: classes/views/class.contact-data-list.php:34
+#: templates/contact-data/returning-link.php:2
+msgid "&laquo; Back to the list"
+msgstr "&laquo; 一覧に戻る"
+
+#: templates/contact-data-list/csv-button.php:2
 msgid "CSV Download"
 msgstr "CSVダウンロード"
 
-#: classes/views/class.contact-data.php:36
+#: templates/stores-inquiry-data-form-list/index.php:4
 msgid ""
 "You can see the inquiry data that are saved in the database by clicking on "
 "the link below."
@@ -713,78 +770,26 @@ msgstr ""
 "リンクをクリックすることでデータベースに保存された問い合わせデータを見ること"
 "ができます。"
 
-#: classes/views/class.contact-data.php:40
+#: templates/stores-inquiry-data-form-list/index.php:8
 msgid "Form title"
 msgstr "フォーム名"
 
-#: classes/views/class.contact-data.php:41
-#: classes/views/class.contact-data.php:51
+#: templates/stores-inquiry-data-form-list/index.php:9
+#: templates/stores-inquiry-data-form-list/index.php:18
 msgid "Display Chart"
 msgstr "グラフを表示"
 
-#: classes/views/class.contact-data.php:43
+#: templates/stores-inquiry-data-form-list/index.php:11
 msgid "Updated date"
 msgstr "更新日"
 
-#: classes/views/class.contact-data.php:44
+#: templates/stores-inquiry-data-form-list/index.php:12
 msgid "Created date"
 msgstr "作成日"
 
-#: classes/views/class.contact-data.php:52
+#: templates/stores-inquiry-data-form-list/index.php:19
 msgid "cases"
 msgstr "件"
-
-#: classes/views/class.contact-data.php:127
-msgid "&laquo; Back to the list"
-msgstr "&laquo; 一覧に戻る"
-
-#: mw-wp-form.php:185
-msgid "Add New Form"
-msgstr "フォームを追加"
-
-#: mw-wp-form.php:186
-msgid "Edit Form"
-msgstr "フォームを編集"
-
-#: mw-wp-form.php:187
-msgid "New Form"
-msgstr "新しいフォーム"
-
-#: mw-wp-form.php:188
-msgid "View Form"
-msgstr "フォームを表示"
-
-#: mw-wp-form.php:189
-msgid "Search Forms"
-msgstr "フォームを検索"
-
-#: mw-wp-form.php:190
-msgid "No Forms found"
-msgstr "フォームがありません"
-
-#: mw-wp-form.php:191
-msgid "No Forms found in Trash"
-msgstr "ゴミ箱にフォームはありません"
-
-#: mw-wp-form.php:208
-msgid "Edit "
-msgstr "編集"
-
-#: mw-wp-form.php:209
-msgid "View"
-msgstr "表示"
-
-#: mw-wp-form.php:210
-msgid "Search"
-msgstr "検索"
-
-#: mw-wp-form.php:211
-msgid "No data found"
-msgstr "データがありません"
-
-#: mw-wp-form.php:212
-msgid "No data found in Trash"
-msgstr "ゴミ箱にデータはありません"
 
 #. Plugin Name of the plugin/theme
 msgid "MW WP Form"
