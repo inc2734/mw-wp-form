@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Select
  * Description: セレクトボックスを出力
- * Version    : 1.5.6
+ * Version    : 1.5.7
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : March 26, 2015
+ * Modified   : April 1, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -39,7 +39,7 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_defaults() {
 		return array(
 			'name'       => '',
-			'id'         => '',
+			'id'         => null,
 			'children'   => '',
 			'value'      => '',
 			'post_raw'   => 'false',

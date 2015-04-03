@@ -39,10 +39,10 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_defaults() {
 		return array(
 			'name'       => '',
-			'id'         => '',
+			'id'         => null,
 			'children'   => '',
 			'value'      => '',
-			'vertically' => '',
+			'vertically' => null,
 			'post_raw'   => 'false',
 			'show_error' => 'true',
 		);

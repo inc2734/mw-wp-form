@@ -165,7 +165,7 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * children を設定するためのhiddenを返す
+	 * children を設定するための hidden を返す
 	 *
 	 * @param string $key name属性
 	 * @param array $children 選択肢の配列（必ず MW_WP_Form_Abstract_Form_Field::get_children の値 ）
@@ -216,29 +216,20 @@ class MW_WP_Form_Form {
 	 */
 	public function text( $name, $options = array() ) {
 		$defaults = array(
-			'id'          => '',
+			'id'          => null,
 			'size'        => 60,
 			'maxlength'   => 255,
 			'value'       => '',
-			'conv-half-alphanumeric' => false,
-			'placeholder' => '',
+			'placeholder' => null,
+			'conv-half-alphanumeric' => null,
 		);
 		$options = array_merge( $defaults, $options );
-		$placeholder = $this->get_attr_placeholder( $options['placeholder'] );
-		$data_conv_half_alphanumeric = null;
-		if ( $options['conv-half-alphanumeric'] === true ) {
-			$data_conv_half_alphanumeric = 'data-conv-half-alphanumeric="true"';
-		}
-		$id = $this->get_attr_id( $options['id'] );
+		$attributes = $this->generate_attributes( $options );
+
 		return sprintf(
-			'<input type="text" name="%s" value="%s" size="%d" maxlength="%d" %s %s %s />',
+			'<input type="text" name="%s"%s />',
 			esc_attr( $name ),
-			esc_attr( $options['value'] ),
-			esc_attr( $options['size'] ),
-			esc_attr( $options['maxlength'] ),
-			$placeholder,
-			$data_conv_half_alphanumeric,
-			$id
+			$attributes
 		);
 	}
 
@@ -266,23 +257,19 @@ class MW_WP_Form_Form {
 	 */
 	public function password( $name, $options = array() ) {
 		$defaults = array(
-			'id'          => '',
+			'id'          => null,
 			'size'        => 60,
 			'maxlength'   => 255,
 			'value'       => '',
-			'placeholder' => '',
+			'placeholder' => null,
 		);
 		$options = array_merge( $defaults, $options );
-		$placeholder = $this->get_attr_placeholder( $options['placeholder'] );
-		$id = $this->get_attr_id( $options['id'] );
+		$attributes = $this->generate_attributes( $options );
+
 		return sprintf(
-			'<input type="password" name="%s" value="%s" size="%d" maxlength="%d" %s %s />',
+			'<input type="password" name="%s"%s />',
 			esc_attr( $name ),
-			esc_attr( $options['value'] ),
-			esc_attr( $options['size'] ),
-			esc_attr( $options['maxlength'] ),
-			$placeholder,
-			$id
+			$attributes
 		);
 	}
 
@@ -295,7 +282,7 @@ class MW_WP_Form_Form {
 	 */
 	public function zip( $name, $options = array() ) {
 		$defaults = array(
-			'conv-half-alphanumeric' => false,
+			'conv-half-alphanumeric' => null,
 			'value' => '',
 		);
 		$options = array_merge( $defaults, $options );
@@ -345,7 +332,7 @@ class MW_WP_Form_Form {
 	 */
 	public function tel( $name, $options = array() ) {
 		$defaults = array(
-			'conv-half-alphanumeric' => false,
+			'conv-half-alphanumeric' => null,
 			'value' => '',
 		);
 		$options = array_merge( $defaults, $options );
@@ -401,20 +388,21 @@ class MW_WP_Form_Form {
 	 */
 	public function textarea( $name, $options = array() ) {
 		$defaults = array(
-			'id'          => '',
+			'id'          => null,
 			'cols'        => 50,
 			'rows'        => 5,
 			'value'       => '',
-			'placeholder' => '',
+			'placeholder' => null,
 		);
 		$options = array_merge( $defaults, $options );
+		$_options = $options;
+		unset( $_options['value'] );
+		$attributes = $this->generate_attributes( $_options );
+
 		return sprintf(
-			'<textarea name="%s" cols="%d" rows="%d" %s %s>%s</textarea>',
+			'<textarea name="%s"%s>%s</textarea>',
 			esc_attr( $name ),
-			esc_attr( $options['cols'] ),
-			esc_attr( $options['rows'] ),
-			$this->get_attr_placeholder( $options['placeholder'] ),
-			$this->get_attr_id( $options['id'] ),
+			$attributes,
 			esc_html( $options['value'] )
 		);
 	}
@@ -429,15 +417,20 @@ class MW_WP_Form_Form {
 	 */
 	public function select( $name, $children = array(), $options = array() ) {
 		$defaults = array(
-			'id'    => '',
+			'id'    => null,
 			'value' => '',
 		);
 		$options = array_merge( $defaults, $options );
+
+		$attributes = $this->generate_attributes( array(
+			'id' => $options['id'],
+		) );
 		$_ret = sprintf(
-			'<select name="%s" %s>',
+			'<select name="%s"%s>',
 			esc_attr( $name ),
-			$this->get_attr_id( $options['id'] )
+			$attributes
 		);
+
 		foreach ( $children as $key => $_value ) {
 			$_ret .= sprintf(
 				'<option value="%s" %s>%s</option>',
@@ -462,7 +455,7 @@ class MW_WP_Form_Form {
 		$defaults = array(
 			'id'         => '',
 			'value'      => '',
-			'vertically' => '',
+			'vertically' => null,
 		);
 		$options = array_merge( $defaults, $options );
 
@@ -471,14 +464,20 @@ class MW_WP_Form_Form {
 		foreach ( $children as $key => $_value ) {
 			$i ++;
 			$vertically = ( $options['vertically'] === 'true' ) ? 'vertical-item' : '';
+			$attributes_for_label = $this->generate_attributes( array(
+				'for' => $this->get_attr_id( $options['id'], $i ),
+			) );
+			$attributes = $this->generate_attributes( array(
+				'id' => $this->get_attr_id( $options['id'], $i ),
+			) );
 			$_ret .= sprintf(
-				'<span class="%s"><label %s><input type="radio" name="%s" value="%s" %s %s />%s</label></span>',
+				'<span class="%s"><label%s><input type="radio" name="%s" value="%s"%s %s />%s</label></span>',
 				$vertically,
-				$this->get_attr_for( $options['id'], $i ),
+				$attributes_for_label,
 				esc_attr( $name ),
 				esc_attr( $key ),
 				checked( $key, $options['value'], false ),
-				$this->get_attr_id( $options['id'], $i ),
+				$attributes,
 				esc_html( $_value )
 			);
 		}
@@ -498,46 +497,34 @@ class MW_WP_Form_Form {
 		$defaults = array(
 			'id'         => '',
 			'value'      => '',
-			'vertically' => '',
+			'vertically' => null,
 		);
 		$options = array_merge( $defaults, $options );
 
-		$value = array();
+		$value = $options['value'];
 		if ( !is_array( $options['value'] ) ) {
 			$value = explode( $separator, $options['value'] );
 		}
-
-		/*
-		$value = $this->get_raw( $name );
-		if ( is_array( $value ) && isset( $value['data'] ) ) {
-			$value = $value['data'];
-			// 送信された後の画面の場合は、送信された separator で区切る
-			if ( !is_array( $value ) ) {
-				$value = explode( $separator, $value );
-			}
-		} else {
-			$value = $options['value'];
-			// 最初の画面（post無し）の場合は、管理画面上で children が,区切りとなっている
-			if ( !is_array( $value ) ) {
-				$value = explode( ',', $value );
-			}
-		}
-		*/
 
 		$i    = 0;
 		$_ret = '';
 		foreach ( $children as $key => $_value ) {
 			$i ++;
 			$vertically = ( $options['vertically'] === 'true' ) ? 'vertical-item' : '';
-			$checked = ( is_array( $value ) && in_array( $key, $value ) )? ' checked="checked"' : '';
+			$attributes_for_label = $this->generate_attributes( array(
+				'for' => $this->get_attr_id( $options['id'], $i ),
+			) );
+			$attributes = $this->generate_attributes( array(
+				'id' => $this->get_attr_id( $options['id'], $i ),
+			) );
 			$_ret .= sprintf(
-				'<span class="%s"><label %s><input type="checkbox" name="%s" value="%s"%s %s />%s</label></span>',
+				'<span class="%s"><label%s><input type="checkbox" name="%s" value="%s"%s %s />%s</label></span>',
 				$vertically,
-				$this->get_attr_for( $options['id'], $i ),
+				$attributes_for_label,
 				esc_attr( $name . '[data][]' ),
 				esc_attr( $key ),
+				$attributes,
 				checked( ( is_array( $value ) && in_array( $key, $value ) ), true, false ),
-				$this->get_attr_id( $options['id'], $i ),
 				esc_html( $_value )
 			);
 		}
@@ -584,26 +571,23 @@ class MW_WP_Form_Form {
 	 */
 	public function datepicker( $name, $options = array() ) {
 		$defaults = array(
-			'id'    => '',
+			'id'    => null,
 			'size'  => 30,
 			'js'    => '',
 			'value' => '',
 		);
 		$options = array_merge( $defaults, $options );
+		$_options = $options;
+		unset( $_options['js'] );
+		$attributes = $this->generate_attributes( $_options );
 
 		$_ret = sprintf(
-			'<input type="text" name="%s" value="%s" size="%d" %s />',
+			'<input type="text" name="%s"%s />',
 			esc_attr( $name ),
-			esc_attr( $options['value'] ),
-			esc_attr( $options['size'] ),
-			$this->get_attr_id( $options['id'] )
+			$attributes
 		);
 		$_ret .= sprintf(
-			'<script type="text/javascript">
-			jQuery( function( $ ) {
-				$("input[name=\'%s\']").datepicker( { %s } );
-			} );
-			</script>',
+			'<script type="text/javascript">jQuery( function( $ ) { $("input[name=\'%s\']").datepicker( { %s } ); } );</script>',
 			esc_js( $name ),
 			$options['js']
 		);
@@ -622,55 +606,47 @@ class MW_WP_Form_Form {
 			'id' => '',
 		);
 		$options = array_merge( $defaults, $options );
+		$attributes = $this->generate_attributes( $options );
+
 		return sprintf(
-			'<input type="file" name="%s" %s />
-			<span data-mwform-file-delete="%1$s" class="mwform-file-delete">&times;</span>',
+			'<input type="file" name="%s" /><span data-mwform-file-delete="%1$s" class="mwform-file-delete">&times;</span>',
 			esc_attr( $name ),
-			$this->get_attr_id( $options['id'] )
+			$attributes
 		);
 	}
 
 	/**
-	 * ID属性を返す
+	 * タグの属性を最適化して生成する
+	 *
+	 * @param array $_attributes キーが属性名、要素が属性値の配列。要素が null のときは無視する
+	 */
+	protected function generate_attributes( array $_attributes ) {
+		$attributes = array();
+		foreach ( $_attributes as $key => $value ) {
+			if ( is_null( $value ) ) {
+				continue;
+			}
+			$attributes[] = sprintf( '%s="%s"', $key, esc_attr( $value ) );
+		}
+		$attributes = implode( ' ', $attributes );
+		if ( $attributes ) {
+			return ' ' . $attributes;
+		}
+	}
+
+	/**
+	 * id属性を返す
 	 *
 	 * @param string $id
 	 * @param string $suffix
-	 * @return string id="hoge"
+	 * @return string
 	 */
 	protected function get_attr_id( $id, $suffix = '' ) {
-		if ( !empty( $id ) ) {
+		if ( !MWF_Functions::is_empty( $id ) ) {
 			if ( $suffix ) {
 				$id .= '-' . $suffix;
 			}
-			return 'id="' . esc_attr( $id ) . '"';
-		}
-	}
-
-	/**
-	 * for属性を返す
-	 *
-	 * @param string $id
-	 * @param string $suffix
-	 * @return string for="hoge"
-	 */
-	protected function get_attr_for( $id, $suffix = '' ) {
-		if ( !empty( $id ) ) {
-			if ( $suffix ) {
-				$id .= '-' . $suffix;
-			}
-			return 'for="' . esc_attr( $id ) . '"';
-		}
-	}
-
-	/**
-	 * placeholder属性を返す
-	 *
-	 * @param string $placeholder
-	 * @return string placeholder="hoge"
-	 */
-	protected function get_attr_placeholder( $placeholder ) {
-		if ( !empty( $placeholder ) ) {
-			return 'placeholder="' . esc_attr( $placeholder ) . '"';
+			return $id;
 		}
 	}
 }

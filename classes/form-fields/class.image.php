@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Image
  * Description: 画像アップロードフィールドを出力
- * Version    : 1.5.1
+ * Version    : 1.5.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : May 17, 2013
- * Modified   : March 26, 2015
+ * Modified   : April 1, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -39,7 +39,7 @@ class MW_WP_Form_Field_Image extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_defaults() {
 		return array(
 			'name' => '',
-			'id'   => '',
+			'id'   => null,
 			'show_error' => 'true',
 		);
 	}
