@@ -66,7 +66,7 @@ class MW_WP_Form_Form {
 	 */
 	public function get_tel_value( $key ) {
 		MWF_Functions::deprecated_message(
-			'MW_WP_Form_Form::get_zip_value()',
+			'MW_WP_Form_Form::get_tel_value()',
 			'MW_WP_Form_Data::get_separated_value()'
 		);
 		$Data = MW_WP_Form_Data::getInstance( null );

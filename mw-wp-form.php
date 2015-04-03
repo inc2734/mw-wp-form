@@ -7,7 +7,7 @@
  * Author: Takashi Kitajima
  * Author URI: http://2inc.org
  * Created : September 25, 2012
- * Modified: March 26, 2015
+ * Modified: April 3, 2015
  * Text Domain: mw-wp-form
  * Domain Path: /languages/
  * License: GPLv2
@@ -123,7 +123,6 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * after_setup_theme
 	 * 各管理画面の初期化、もしくはフロント画面の初期化
 	 */
 	public function after_setup_theme() {

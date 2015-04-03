@@ -13,6 +13,7 @@ class MW_WP_Form_Contact_Data {
 
 	/**
 	 * save_post
+	 *
 	 * @param int $post_id
 	 */
 	public function save_post( $post_id ) {

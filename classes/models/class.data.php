@@ -13,45 +13,40 @@
 class MW_WP_Form_Data {
 
 	/**
-	 * $Instance
 	 * @var MW_WP_Form_Data
 	 */
 	protected static $Instance;
 
 	/**
-	 * $form_key
 	 * フォーム識別子
 	 * @var string
 	 */
 	protected $form_key;
 
 	/**
-	 * $data
 	 * フォームから送信された内容を保存した配列
 	 * @var array
 	 */
 	protected $data = array();
 
 	/**
-	 * $Session
 	 * @var MW_WP_Form_Sesion
 	 */
 	protected $Session;
 
 	/**
-	 * $POST
 	 * @var array
 	 */
 	protected $POST = array();
 
 	/**
-	 * $FILES
 	 * @var array
 	 */
 	protected $FILES = array();
 
 	/**
 	 * __construct
+	 *
 	 * @param string $form_key フォーム識別子
 	 * @param array $POST $_POSTを想定
 	 * @param array $FILES $_FILESを想定
@@ -68,6 +63,7 @@ class MW_WP_Form_Data {
 	
 	/**
 	 * getInstance
+	 *
 	 * @param string $form_key フォーム識別子
 	 * @param array $POST $_POSTを想定
 	 * @param array $FILES $_FILESを想定
@@ -80,7 +76,8 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * set_request_valiables
+	 * $_POST をセット
+	 *
 	 * @param array $POST $_POSTを想定
 	 */
 	protected function set_request_valiables( array $POST ) {
@@ -90,7 +87,8 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * set_files_valiables
+	 * $_FILES をセット
+	 *
 	 * @param array $POST $_POSTを想定
 	 * @param array $FILES $_FILESを想定
 	 */
@@ -158,8 +156,8 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * set
 	 * 複数のデータを一括で追加
+	 *
 	 * @param array 値
 	 */
 	public function sets( array $array ) {

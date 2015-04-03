@@ -13,21 +13,17 @@
 class MW_WP_Form_Session {
 
 	/**
-	 * $name
 	 * セッション名
 	 * @var string
 	 */
 	protected $name;
 
 	/**
-	 * $session_id
-	 * セッションID
 	 * @var string
 	 */
 	protected $session_id;
 
 	/**
-	 * $expiration
 	 * Transient の生存時間
 	 * @var int
 	 */
@@ -35,6 +31,7 @@ class MW_WP_Form_Session {
 
 	/**
 	 * __construct
+	 *
 	 * @param string $name 識別子
 	 */
 	public function __construct( $name ) {
@@ -50,8 +47,8 @@ class MW_WP_Form_Session {
 	}
 
 	/**
-	 * save
 	 * セッション変数にセット
+	 *
 	 * @param array $data
 	 */
 	public function save( array $data ) {
@@ -67,8 +64,8 @@ class MW_WP_Form_Session {
 	}
 
 	/**
-	 * set
 	 * セッション変数にセット
+	 *
 	 * @param string $key キー
 	 * @param mixed $value 値
 	 */
@@ -83,8 +80,8 @@ class MW_WP_Form_Session {
 	}
 
 	/**
-	 * push
 	 * セッション変数にセット
+	 *
 	 * @param string $key キー
 	 * @param mixed $value 値
 	 */
@@ -99,8 +96,8 @@ class MW_WP_Form_Session {
 	}
 
 	/**
-	 * get
 	 * セッション変数から取得
+	 *
 	 * @param string $key キー
 	 * @return mixed セッション値
 	 */
@@ -113,8 +110,8 @@ class MW_WP_Form_Session {
 	}
 
 	/**
-	 * getValues
 	 * セッション変数から取得
+	 *
 	 * @return array セッション値
 	 */
 	public function gets() {
@@ -126,8 +123,8 @@ class MW_WP_Form_Session {
 	}
 
 	/**
-	 * clear_value
 	 * セッション変数を空に
+	 *
 	 * @param string $key キー
 	 */
 	public function clear_value( $key ) {
@@ -139,7 +136,6 @@ class MW_WP_Form_Session {
 	}
 
 	/**
-	 * clear_values
 	 * セッション変数を空に
 	 */
 	public function clear_values() {
@@ -147,7 +143,7 @@ class MW_WP_Form_Session {
 	}
 
 	/**
-	 * get_remote_addr
+	 * $_SERVER['REMOTE_ADDR'] を取得
 	 */
 	protected function get_remote_addr() {
 		if ( isset( $_SERVER['REMOTE_ADDR'] ) ) {

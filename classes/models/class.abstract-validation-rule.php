@@ -13,14 +13,12 @@
 abstract class MW_WP_Form_Abstract_Validation_Rule {
 
 	/**
-	 * $name
 	 * バリデーションルール名を指定
 	 * @var string
 	 */
 	protected $name;
 
 	/**
-	 * $Data
 	 * @var MW_WP_Form_Data
 	 */
 	protected $Data;
@@ -35,7 +33,8 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	}
 
 	/**
-	 * set_Data
+	 * MW_WP_Form_Data を注入
+	 *
 	 * @param MW_WP_Form_Data $Data
 	 */
 	public function set_Data( MW_WP_Form_Data $Data ) {
@@ -43,8 +42,8 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	}
 
 	/**
-	 * getName
 	 * バリデーションルール名を返す
+	 *
 	 * @return string $this->name バリデーションルール名
 	 */
 	public function getName() {
@@ -52,7 +51,8 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	}
 
 	/**
-	 * rule
+	 * バリデーションチェック
+	 *
 	 * @param string $key name属性
 	 * @param array $option
 	 * @return string エラーメッセージ
@@ -60,7 +60,8 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	abstract public function rule( $key, array $options = array() );
 
 	/**
-	 * admin
+	 * 設定パネルに追加
+	 *
 	 * @param numeric $key バリデーションルールセットの識別番号
 	 * @param array $value バリデーションルールセットの内容
 	 */

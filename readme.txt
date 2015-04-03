@@ -73,9 +73,18 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.4.0 =
 * Refactoring
-* Added   : Add filter hook mwform_csv_encoding-mwf_xxx.
-* Deleted : mwform_add_qtags hook.
-* Bugfix  : Fixed a csv bug.
+* Added     : Add filter hook mwform_csv_encoding-mwf_xxx.
+* Deleted   : Delete some Deprecated hooks, methods.
+* Bugfix    : Fixed a csv bug.
+* Deprecated: MW_WP_Form_Form::get_raw()
+* Deprecated: MW_WP_Form_Form::get_raw_in_children()
+* Deprecated: MW_WP_Form_Form::get_zip_value()
+* Deprecated: MW_WP_Form_Form::get_tel_value()
+* Deprecated: MW_WP_Form_Form::get_checked_value()
+* Deprecated: MW_WP_Form_Form::get_radio_value()
+* Deprecated: MW_WP_Form_Form::get_selected_value()
+* Deprecated: MW_WP_Form_Form::get_separated_raw_value()
+* Deprecated: MW_WP_Form_Form::get_separator_value()
 
 = 2.3.5 =
 * Bugfix  : Fixed a post_raw bug at select and radio.
