@@ -59,7 +59,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		$self = $this;
 		add_filter( 'mwform_auto_mail_raw_' . $this->form_key,
 			function( $Mail, $values, $Data ) use( $self ) {
-				$this->assertEquals( 'info@example.com', $Data->get( 'メールアドレス' ) );
+				$self->assertEquals( 'info@example.com', $Data->get( 'メールアドレス' ) );
 				$Data->set( 'メールアドレス', 'hoge' );
 				return $Mail;
 			},
@@ -68,7 +68,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter( 'mwform_auto_mail_' . $this->form_key,
 			function( $Mail, $values, $Data ) use( $self ) {
 				// mwform_auto_mail_raw で Data を書き換えても影響されない
-				$this->assertEquals( 'info@example.com', $Data->get( 'メールアドレス' ) );
+				$self->assertEquals( 'info@example.com', $Data->get( 'メールアドレス' ) );
 				return $Mail;
 			},
 			10, 3
@@ -90,7 +90,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		$self = $this;
 		add_filter( 'mwform_admin_mail_raw_' . $this->form_key,
 			function( $Mail, $values, $Data ) use( $self ) {
-				$this->assertEquals( $Data->get( 'メールアドレス' ), 'info@example.com' );
+				$self->assertEquals( $Data->get( 'メールアドレス' ), 'info@example.com' );
 				$Data->set( 'メールアドレス', 'hoge' );
 				return $Mail;
 			},
@@ -99,7 +99,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter( 'mwform_admin_mail_' . $this->form_key,
 			function( $Mail, $values, $Data ) use( $self ) {
 				// mwform_admin_mail_raw で Data を書き換えても影響されない
-				$this->assertEquals( $Data->get( 'メールアドレス' ), 'info@example.com' );
+				$self->assertEquals( $Data->get( 'メールアドレス' ), 'info@example.com' );
 				return $Mail;
 			},
 			10, 3
@@ -130,7 +130,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter( 'mwform_auto_mail_raw_' . $this->form_key,
 			function( $Mail, $values ) use( $self ) {
 				// admin、mail での Mail の変更はひきつがない
-				$this->assertEquals( $Mail->to  , 'info@example.com' );
+				$self->assertEquals( $Mail->to  , 'info@example.com' );
 				$Mail->to = 'mwform_auto_mail_raw_to@example.com';
 				return $Mail;
 			},
@@ -140,7 +140,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 			'mwform_mail_' . $this->form_key,
 			function( $Mail, $values ) use( $self ) {
 				// raw での Mail の変更はひきつぐ
-				$this->assertEquals( $Mail->to, 'admin_mail_raw_to@example.com' );
+				$self->assertEquals( $Mail->to, 'admin_mail_raw_to@example.com' );
 				$Mail->to = 'mwform_mail_to@example.com';
 				return $Mail;
 			},
@@ -149,7 +149,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter( 'mwform_admin_mail_' . $this->form_key,
 			function( $Mail, $values ) use( $self ) {
 				// mail での Mail の変更はひきつぐ
-				$this->assertEquals( $Mail->to, 'mwform_mail_to@example.com' );
+				$self->assertEquals( $Mail->to, 'mwform_mail_to@example.com' );
 				return $Mail;
 			},
 			10, 2
@@ -157,7 +157,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter( 'mwform_auto_mail_' . $this->form_key,
 			function( $Mail, $values ) use( $self ) {
 				// raw での Mail の変更はひきつぐ
-				$this->assertEquals( $Mail->to, 'mwform_auto_mail_raw_to@example.com' );
+				$self->assertEquals( $Mail->to, 'mwform_auto_mail_raw_to@example.com' );
 				return $Mail;
 			},
 			10, 2
@@ -180,7 +180,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter(
 			'mwform_admin_mail_raw_' . $this->form_key,
 			function( $Mail, $values ) use( $self ) {
-				$Mail->to   = 'mwform_admin_mail_raw_to@example.com';
+				$Mail->to = 'mwform_admin_mail_raw_to@example.com';
 				return $Mail;
 			},
 			10, 2
@@ -188,7 +188,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter(
 			'mwform_auto_mail_raw_' . $this->form_key,
 			function( $Mail, $values ) use( $self ) {
-				$this->assertEquals( $Mail->to, '' );
+				$self->assertEquals( $Mail->to, '' );
 				$Mail->to = 'mwform_auto_mail_raw_to@example.com';
 				return $Mail;
 			},
@@ -197,7 +197,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter(
 			'mwform_mail_' . $this->form_key,
 			function( $Mail, $values ) use( $self ) {
-				$this->assertEquals( $Mail->to, 'mwform_admin_mail_raw_to@example.com' );
+				$self->assertEquals( $Mail->to, 'mwform_admin_mail_raw_to@example.com' );
 				$Mail->to = 'mwform_mail_to@example.com';
 				return $Mail;
 			},
@@ -206,7 +206,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter(
 			'mwform_admin_mail_' . $this->form_key,
 			function( $Mail, $values ) use( $self ) {
-				$this->assertEquals( $Mail->to, 'mwform_mail_to@example.com' );
+				$self->assertEquals( $Mail->to, 'mwform_mail_to@example.com' );
 				return $Mail;
 			},
 			10, 2
@@ -214,7 +214,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter(
 			'mwform_auto_mail_' . $this->form_key,
 			function( $Mail, $values ) use( $self ) {
-				$this->assertEquals( $Mail->to, 'mwform_auto_mail_raw_to@example.com' );
+				$self->assertEquals( $Mail->to, 'mwform_auto_mail_raw_to@example.com' );
 				return $Mail;
 			},
 			10, 2
@@ -243,7 +243,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter(
 			'mwform_admin_mail_' . $this->form_key,
 			function( $Mail, $values ) use( $self ) {
-				$this->assertEquals( $Mail->from, 'customer@example.com' );
+				$self->assertEquals( $Mail->from, 'customer@example.com' );
 				return $Mail;
 			},
 			10, 2
@@ -282,8 +282,8 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 			'mwform_custom_mail_tag_' . $this->form_key,
 			function( $value, $key, $insert_id ) use( $self ) {
 				if ( $key === 'custom_tag' ) {
-					$this->custom_tag_value = 'hoge';
-					return $this->custom_tag_value;
+					$self->custom_tag_value = 'hoge';
+					return $self->custom_tag_value;
 				}
 				return $value;
 			},
@@ -309,7 +309,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 			'mwform_custom_mail_tag_' . $this->form_key,
 			function( $value, $key, $insert_id ) use( $self ) {
 				if ( $key === 'custom_tag' ) {
-					$this->custom_tag_value ++;
+					$self->custom_tag_value ++;
 				}
 				return $value;
 			},
