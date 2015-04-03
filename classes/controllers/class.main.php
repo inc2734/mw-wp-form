@@ -349,9 +349,11 @@ class MW_WP_Form_Main_Controller {
 	 * @return string
 	 */
 	public function mwform_form_end_html( $html ) {
-		$form_key = $this->ExecShortcode->get( 'key' );
-		$html .= wp_nonce_field( $form_key, $this->token_name, true, false );
-		return $html;
+		if ( is_a( $this->ExecShortcode, 'MW_WP_Form_Exec_Shortcode' ) ) {
+			$form_key = $this->ExecShortcode->get( 'key' );
+			$html .= wp_nonce_field( $form_key, $this->token_name, true, false );
+			return $html;
+		}
 	}
 
 	/**

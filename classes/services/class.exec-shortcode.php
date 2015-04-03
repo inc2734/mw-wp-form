@@ -288,7 +288,7 @@ class MW_WP_Form_Exec_Shortcode {
 	 */
 	public function mwform_formkey( $attributes ) {
 		$view_flg = $this->view_flg;
-		$post_id  = $attributes['key'];
+		$post_id  = $this->get_form_id_by_mwform_formkey( $attributes );
 
 		// 入力画面
 		if ( $view_flg === 'input' ) {
@@ -301,6 +301,8 @@ class MW_WP_Form_Exec_Shortcode {
 		// 完了画面
 		elseif ( $view_flg === 'complete' ) {
 			$content = $this->get_complete_page_content();
+		} else {
+			$content = '';
 		}
 		return do_shortcode( $content );
 	}
@@ -393,7 +395,7 @@ class MW_WP_Form_Exec_Shortcode {
 	 * @param string $content
 	 * @return string $content
 	 */
-	protected function get_the_content( $content ) {
+	public function get_the_content( $content ) {
 		$content = $this->replace_user_property( $content );
 		$content = $this->replace_post_property( $content );
 		return $content;
@@ -568,7 +570,7 @@ class MW_WP_Form_Exec_Shortcode {
 				%s
 			<!-- end .mw_wp_form --></div>',
 			esc_attr( $form_key ),
-			esc_attr( $view_flg ),
+			esc_attr( $this->view_flg ),
 			$content
 		);
 	}

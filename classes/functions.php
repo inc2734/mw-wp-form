@@ -42,7 +42,7 @@ class MWF_Functions {
 	 * @return bool
 	 */
 	public static function is_empty( $value ) {
-		if ( $value === array() || $value === '' || $value === null ) {
+		if ( $value === array() || $value === '' || $value === null || $value === false ) {
 			return true;
 		} else {
 			return false;

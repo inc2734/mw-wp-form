@@ -1,8 +1,14 @@
 <?php
 class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 
+	/**
+	 * @var MW_WP_Form_Data
+	 */
 	protected $Data;
 
+	/**
+	 * setUp
+	 */
 	public function setUp() {
 		parent::setUp();
 		$post_id = $this->factory->post->create( array(
@@ -12,6 +18,9 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		$this->Data = MW_WP_Form_Data::getInstance( $form_key );
 	}
 
+	/**
+	 * tearDown
+	 */
 	public function tearDown() {
 		parent::tearDown();
 		$this->Data->clear_values();
