@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Validation Rule In
  * Description: 値が、配列で指定された中に含まれている
- * Version    : 1.1.1
+ * Version    : 1.1.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 21, 2014
- * Modified   : January 17, 2014
+ * Modified   : April 1, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -28,7 +28,7 @@ class MW_WP_Form_Validation_Rule_In extends MW_WP_Form_Abstract_Validation_Rule 
 	public function rule( $key, array $options = array() ) {
 		$value = $this->Data->get( $key );
 		$value = ( string ) $value;
-		if ( !is_null( $value ) && !MWF_Functions::is_empty( $value ) ) {
+		if ( !MWF_Functions::is_empty( $value ) ) {
 			$defaults = array(
 				'options' => array(),
 				'message' => __( 'This value is invalid.', MWF_Config::DOMAIN )
