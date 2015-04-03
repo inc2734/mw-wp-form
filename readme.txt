@@ -71,6 +71,10 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 == Changelog ==
 
+= 2.4.0 =
+* Refactoring
+* Remove mwform_add_qtags hook.
+
 = 2.3.5 =
 * Bugfix  : Fixed a post_raw bug at select and radio.
 
