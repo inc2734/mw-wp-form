@@ -30,7 +30,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	 * カスタムメールタグのテストに使用
 	 * @var string
 	 */
-	protected $custom_tag_value;
+	public $custom_tag_value;
 
 	/**
 	 * setUp
