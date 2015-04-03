@@ -4,7 +4,7 @@ Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 3.7
 Tested up to: 4.1.1
-Stable tag: 2.3.5
+Stable tag: 2.4.0
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -73,7 +73,9 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.4.0 =
 * Refactoring
-* Remove mwform_add_qtags hook.
+* Added   : Add filter hook mwform_csv_encoding-mwf_xxx.
+* Deleted : mwform_add_qtags hook.
+* Bugfix  : Fixed a csv bug.
 
 = 2.3.5 =
 * Bugfix  : Fixed a post_raw bug at select and radio.

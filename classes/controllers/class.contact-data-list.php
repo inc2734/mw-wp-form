@@ -12,6 +12,11 @@
 class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 
 	/**
+	 * @var string
+	 */
+	protected $post_type;
+
+	/**
 	 * initialize
 	 */
 	public function initialize() {
@@ -19,8 +24,8 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 		if ( !isset( $_GET['post_type'] ) ) {
 			exit;
 		}
-		$post_type = $_GET['post_type'];
-		if ( !in_array( $post_type, $contact_data_post_types ) ) {
+		$this->post_type = $_GET['post_type'];
+		if ( !in_array( $this->post_type, $contact_data_post_types ) ) {
 			exit;
 		}
 		$this->csv_download();
@@ -69,8 +74,7 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	 * CSVダウンロードボタンを表示
 	 */
 	public function add_csv_download_button() {
-		$post_type = get_post_type();
-		if ( true !== apply_filters( 'mwform_csv_button_' . $post_type, true ) ) {
+		if ( true !== apply_filters( 'mwform_csv_button_' . $this->post_type, true ) ) {
 			return;
 		}
 		$page = ( basename( $_SERVER['PHP_SELF'] ) );
@@ -86,11 +90,6 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	 * CSVを生成、出力
 	 */
 	public function csv_download() {
-		if ( !isset( $_GET['post_type'] ) ) {
-			return ;
-		}
-
-		$post_type           = $_GET['post_type'];
 		$key_of_csv_download = MWF_Config::NAME . '-csv-download';
 
 		if ( !isset( $_POST[$key_of_csv_download] ) || !check_admin_referer( MWF_Config::NAME ) ) {
@@ -100,9 +99,9 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 		$posts_per_page = $this->get_posts_per_page();
 		$paged          = $this->get_paged();
 
-		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $post_type, array() );
+		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $this->post_type, array() );
 		$args  = array(
-			'post_type'      => $post_type,
+			'post_type'      => $this->post_type,
 			'posts_per_page' => $posts_per_page,
 			'paged'          => $paged,
 			'post_status'    => 'any',
@@ -128,6 +127,7 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 			}
 			$csv .= implode( ',', $row ) . "\r\n";
 		}
+		$to_encoding = apply_filters( 'mwform_csv_encoding-' . $this->post_type, 'sjis-win' );
 		$csv = mb_convert_encoding( $csv, 'sjis-win', get_option( 'blog_charset' ) );
 
 		$file_name = 'mw_wp_form_' . date( 'YmdHis' ) . '.csv';
@@ -154,9 +154,7 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 		$rows[] = $default_headings;
 		$columns = array();
 		foreach ( $posts as $post ) {
-			$post_type        = get_post_type( $post->ID );
 			$post_custom_keys = get_post_custom_keys( $post->ID );
-			$columns          = array();
 			if ( !is_array( $post_custom_keys ) ) {
 				continue;
 			}
@@ -165,13 +163,14 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 					continue;
 				}
 				if ( $key === MWF_Config::TRACKINGNUMBER ) {
-					$column = MWF_Functions::get_tracking_number_title( $post_type );
+					$column = MWF_Functions::get_tracking_number_title( $this->post_type );
 				} else {
 					$column = $key;
 				}
 				$columns[$key] = $column;
 			}
 		}
+		ksort( $columns );
 		$rows[0] = array_merge( $rows[0], $columns );
 		$rows[0] = array_merge( $rows[0], array( __( 'Memo', MWF_Config::DOMAIN ) ) );
 		return $rows[0];
@@ -199,6 +198,8 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 					$column = $response_statuses[$response_status];
 				} elseif ( $value === __( 'Memo', MWF_Config::DOMAIN ) ) {
 					$column = $Contact_Data_Setting->get( 'memo' );
+				} elseif ( $value === MWF_Functions::get_tracking_number_title( $this->post_type ) ) {
+					$column = get_post_meta( get_the_ID(), MWF_Config::TRACKINGNUMBER, true );
 				} elseif ( isset( $post->$value ) ) {
 					$post_meta = $post->$value;
 					if ( $Contact_Data_Setting->is_upload_file_key( $post, $value ) ) {
@@ -235,9 +236,11 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 		$posts_per_page = -1;
 		if ( ( isset( $_POST['download-all'] ) && $_POST['download-all'] === 'true' ) === false ) {
 			$current_user = wp_get_current_user();
-			$_posts_per_page = get_user_meta( $current_user->ID, 'edit_' . $post_type . '_per_page', true );
+			$_posts_per_page = get_user_meta( $current_user->ID, 'edit_' . $this->post_type . '_per_page', true );
 			if ( !empty( $_posts_per_page ) ) {
 				$posts_per_page = $_posts_per_page;
+			} else {
+				$posts_per_page = 20;
 			}
 		}
 		return $posts_per_page;
@@ -264,13 +267,12 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	 * DB登録使用時に問い合わせデータ一覧にカラムを追加
 	 */
 	public function add_columns() {
-		$post_type = get_post_type();
 		add_filter(
-			'manage_' . $post_type . '_posts_columns',
+			'manage_' . $this->post_type . '_posts_columns',
 			array( $this, 'add_form_columns_name' )
 		);
 		add_action(
-			'manage_' . $post_type . '_posts_custom_column',
+			'manage_' . $this->post_type . '_posts_custom_column',
 			array( $this, 'add_form_columns' ),
 			10,
 			2
@@ -288,6 +290,7 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 		unset( $columns['date'] );
 		$columns['post_date']       = __( 'Registed Date', MWF_Config::DOMAIN );
 		$columns['response_status'] = __( 'Response Status', MWF_Config::DOMAIN );
+		$_columns = array();
 		foreach ( $posts as $post ) {
 			$post_custom_keys = get_post_custom_keys( $post->ID );
 			if ( ! empty( $post_custom_keys ) && is_array( $post_custom_keys ) ) {
@@ -296,13 +299,15 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 						continue;
 					}
 					if ( $key === MWF_Config::TRACKINGNUMBER ) {
-						$columns[$key] = MWF_Functions::get_tracking_number_title( get_post_type( $post->ID ) );
+						$_columns[$key] = MWF_Functions::get_tracking_number_title( $this->post_type );
 						continue;
 					}
-					$columns[$key] = $key;
+					$_columns[$key] = $key;
 				}
 			}
 		}
+		ksort( $_columns );
+		$columns = array_merge( $columns, $_columns );
 		return $columns;
 	}
 
