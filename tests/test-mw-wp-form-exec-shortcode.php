@@ -39,7 +39,7 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 		$wp_query->is_singular = true;
 
 		$post_id = $this->factory->post->create( array(
-			'post_type'    => 'paga',
+			'post_type'    => 'page',
 			'post_content' => sprintf( '[gallery][mwform_formkey key="%d"][/gallery]', $this->Setting->get( 'post_id' ) ),
 		) );
 		$post = get_post( $post_id );
@@ -397,7 +397,7 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 	 */
 	protected function generate_page_has_mwform_formkey( $Setting ) {
 		$post_id = $this->factory->post->create( array(
-			'post_type'    => 'paga',
+			'post_type'    => 'page',
 			'post_content' => sprintf( '[mwform_formkey key="%d"]', $Setting->get( 'post_id' ) ),
 		) );
 		return get_post( $post_id );
