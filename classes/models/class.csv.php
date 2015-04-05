@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form CSV
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : April 3, 2015
- * Modified   : 
+ * Modified   : April 5, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -65,7 +65,7 @@ class MW_WP_Form_CSV {
 			$csv .= implode( ',', $row ) . "\r\n";
 		}
 		$to_encoding = apply_filters( 'mwform_csv_encoding-' . $this->post_type, 'sjis-win' );
-		$csv = mb_convert_encoding( $csv, 'sjis-win', get_option( 'blog_charset' ) );
+		$csv = mb_convert_encoding( $csv, $to_encoding, get_option( 'blog_charset' ) );
 
 		$file_name = 'mw_wp_form_' . date( 'YmdHis' ) . '.csv';
 		header( 'Content-Type: application/octet-stream' );
