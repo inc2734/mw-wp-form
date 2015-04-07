@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Hidden
  * Description: hiddenフィールドを出力
- * Version    : 1.6.1
+ * Version    : 1.6.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : March 26, 2015
+ * Modified   : April 7, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -43,14 +43,16 @@ class MW_WP_Form_Field_Hidden extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function input_page() {
-		$value = '';
-		if ( $this->atts['echo'] === 'true' ) {
+		$value = $this->Data->get_raw( $this->atts['name'] );
+		if ( is_null( $value ) ) {
 			$value = $this->atts['value'];
 		}
-		if ( is_null( $value ) ) {
-			$value = $this->get_raw( $this->atts['name'] );
+
+		$echo = '';
+		if ( $this->atts['echo'] === 'true' ) {
+			$echo = $value;
 		}
-		return esc_html( $value ) . $this->Form->hidden( $this->atts['name'], $value );
+		return esc_html( $echo ) . $this->Form->hidden( $this->atts['name'], $value );
 	}
 
 	/**

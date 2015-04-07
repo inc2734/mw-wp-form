@@ -119,7 +119,7 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 		$_columns = array();
 		foreach ( $posts as $post ) {
 			$post_custom_keys = get_post_custom_keys( $post->ID );
-			if ( ! empty( $post_custom_keys ) && is_array( $post_custom_keys ) ) {
+			if ( !empty( $post_custom_keys ) && is_array( $post_custom_keys ) ) {
 				foreach ( $post_custom_keys as $key ) {
 					if ( preg_match( '/^_/', $key ) ) {
 						continue;
