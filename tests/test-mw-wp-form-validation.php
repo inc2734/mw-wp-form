@@ -23,4 +23,17 @@ class MW_WP_Form_Validation_Test extends WP_UnitTestCase {
 		$this->Validation->set_validation_rules( $validations );
 		$this->assertEquals( $validations, $this->Validation->get_validation_rules() );
 	}
+
+	/**
+	 * @group set_rule
+	 */
+	public function test_set_rule_MW_WP_Form_Validationオブジェクトを返す() {
+		// set_rule はフック経由で使用されることがあるので必ず public である必要がある
+		$this->assertTrue(
+			is_a(
+				$this->Validation->set_rule( 'text', 'noEmpty' ),
+				'MW_WP_Form_Validation'
+			)
+		);
+	}
 }
