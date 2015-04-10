@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Zip
  * Description: 郵便番号フィールドを出力
- * Version    : 1.5.0
+ * Version    : 1.5.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : January 2, 2015
+ * Modified   : April 10, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -58,9 +58,9 @@ class MW_WP_Form_Field_Zip extends MW_WP_Form_Abstract_Form_Field {
 		if ( is_null( $value ) ) {
 			$value = $this->atts['value'];
 		}
-		$conv_half_alphanumeric = false;
-		if ( $this->atts['conv_half_alphanumeric'] === 'true' ) {
-			$conv_half_alphanumeric = true;
+		$conv_half_alphanumeric = 'true';
+		if ( $this->atts['conv_half_alphanumeric'] !== 'true' ) {
+			$conv_half_alphanumeric = null;
 		}
 		$_ret = $this->Form->zip( $this->atts['name'], array(
 			'conv-half-alphanumeric' => $conv_half_alphanumeric,

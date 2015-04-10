@@ -4,7 +4,7 @@ Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 3.7
 Tested up to: 4.1.1
-Stable tag: 2.4.3
+Stable tag: 2.4.4
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -71,7 +71,10 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 == Changelog ==
 
-= 2.4.2 =
+= 2.4.4 =
+* Bugfix  : Fixed a conv_half_alphanumeric attribute bug.
+
+= 2.4.3 =
 * Changed : Changed visibility of MW_WP_Form_Validation::set_rule() protected to public.
 
 = 2.4.2 =

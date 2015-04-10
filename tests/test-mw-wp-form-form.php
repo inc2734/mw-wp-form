@@ -129,7 +129,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_text_data_conv_half_alphanumeric() {
 		$this->assertEquals(
-			'<input type="text" name="text" size="60" maxlength="255" value="" conv-half-alphanumeric="true" />',
+			'<input type="text" name="text" size="60" maxlength="255" value="" data-conv-half-alphanumeric="true" />',
 			$this->Form->text( 'text', array( 'conv-half-alphanumeric' => 'true' ) )
 		);
 	}
@@ -239,7 +239,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_zip_conv_half_alphanumeric() {
 		$this->assertEquals(
-			'<span class="mwform-zip-field">〒<input type="text" name="zip[data][0]" size="4" maxlength="3" value="" conv-half-alphanumeric="true" /> - <input type="text" name="zip[data][1]" size="5" maxlength="4" value="" conv-half-alphanumeric="true" /><input type="hidden" name="zip[separator]" value="-" /></span>',
+			'<span class="mwform-zip-field">〒<input type="text" name="zip[data][0]" size="4" maxlength="3" value="" data-conv-half-alphanumeric="true" /> - <input type="text" name="zip[data][1]" size="5" maxlength="4" value="" data-conv-half-alphanumeric="true" /><input type="hidden" name="zip[separator]" value="-" /></span>',
 			$this->Form->zip( 'zip', array( 'conv-half-alphanumeric' => 'true' ) )
 		);
 	}
@@ -269,7 +269,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_tel_conv_half_alphanumeric() {
 		$this->assertEquals(
-			'<span class="mwform-tel-field"><input type="text" name="tel[data][0]" size="6" maxlength="5" value="" conv-half-alphanumeric="true" /> - <input type="text" name="tel[data][1]" size="5" maxlength="4" value="" conv-half-alphanumeric="true" /> - <input type="text" name="tel[data][2]" size="5" maxlength="4" value="" conv-half-alphanumeric="true" /><input type="hidden" name="tel[separator]" value="-" /></span>',
+			'<span class="mwform-tel-field"><input type="text" name="tel[data][0]" size="6" maxlength="5" value="" data-conv-half-alphanumeric="true" /> - <input type="text" name="tel[data][1]" size="5" maxlength="4" value="" data-conv-half-alphanumeric="true" /> - <input type="text" name="tel[data][2]" size="5" maxlength="4" value="" data-conv-half-alphanumeric="true" /><input type="hidden" name="tel[separator]" value="-" /></span>',
 			$this->Form->tel( 'tel', array( 'conv-half-alphanumeric' => 'true' ) )
 		);
 	}
@@ -644,6 +644,38 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		$this->assertEquals(
 			'<input type="file" name="file" /><span data-mwform-file-delete="file" class="mwform-file-delete">&times;</span>',
 			$this->Form->file( 'file', array( 'id' => 'id' ) )
+		);
+	}
+
+	/**
+	 * @group generate_attributes
+	 */
+	public function test_generate_attributes_空のときはNull() {
+		$this->assertNull( $this->Form->generate_attributes( array() ) );
+	}
+
+	/**
+	 * @group generate_attributes
+	 */
+	public function test_generate_attributes_全てNullのときはNull() {
+		$attributes = array(
+			'conv-half-alphanumeric' => null,
+			'size' => null,
+		);
+		$this->assertNull( $this->Form->generate_attributes( $attributes ) );
+	}
+
+	/**
+	 * @group generate_attributes
+	 */
+	public function test_generate_attributes_conv_half_alphanumericのときはキーを変換() {
+		$attributes = array(
+			'conv-half-alphanumeric' => 'true',
+			'size' => '60',
+		);
+		$this->assertEquals(
+			' data-conv-half-alphanumeric="true" size="60"',
+			$this->Form->generate_attributes( $attributes )
 		);
 	}
 }

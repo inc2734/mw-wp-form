@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Form
  * Description: フォームヘルパー
- * Version    : 1.6.0
+ * Version    : 1.6.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : September 25, 2012
- * Modified   : March 26, 2015
+ * Modified   : April 10, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -617,14 +617,18 @@ class MW_WP_Form_Form {
 
 	/**
 	 * タグの属性を最適化して生成する
+	 * ※テストしやすいようにアクセス修飾子を public に
 	 *
 	 * @param array $_attributes キーが属性名、要素が属性値の配列。要素が null のときは無視する
 	 */
-	protected function generate_attributes( array $_attributes ) {
+	public function generate_attributes( array $_attributes ) {
 		$attributes = array();
 		foreach ( $_attributes as $key => $value ) {
 			if ( is_null( $value ) ) {
 				continue;
+			}
+			if ( $key === 'conv-half-alphanumeric' ) {
+				$key = 'data-conv-half-alphanumeric';
 			}
 			$attributes[] = sprintf( '%s="%s"', $key, esc_attr( $value ) );
 		}

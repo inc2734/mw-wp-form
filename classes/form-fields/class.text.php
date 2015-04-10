@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Text
  * Description: テキストフィールドを出力
- * Version    : 1.5.2
+ * Version    : 1.5.3
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : April 1, 2015
+ * Modified   : April 10, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -55,6 +55,7 @@ class MW_WP_Form_Field_Text extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string html
 	 */
 	protected function input_page() {
+		$conv_half_alphanumeric = 'true';
 		if ( $this->atts['conv_half_alphanumeric'] !== 'true' ) {
 			$conv_half_alphanumeric = null;
 		}
