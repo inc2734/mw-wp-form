@@ -1,12 +1,12 @@
 <?php
 /**
  * Name       : MW WP Form Exec Shortcode
- * Version    : 1.1.0
+ * Version    : 1.1.1
  * Description: ExecShortcode（mwform、mwform_formkey）の存在有無のチェックとそれらの抽象化レイヤー
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : March 30, 2015
+ * Modified   : April 14, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -192,7 +192,7 @@ class MW_WP_Form_Exec_Shortcode {
 			foreach ( $this->settings as $key => $value ) {
 				$settings[$key] = $Setting->get( $key );
 			}
-			$settings['key'] = MWF_Config::NAME . '-' . $post_id;
+			$settings['key'] = MWF_Functions::get_form_key_from_form_id( $post_id );
 		}
 		$this->set_settings( $settings );
 	}

@@ -2,11 +2,11 @@
 /**
  * Name       : MWF Functions
  * Description: 関数
- * Version    : 1.4.0
+ * Version    : 1.4.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : May 29, 2013
- * Modified   : March 30, 2015
+ * Modified   : April 14, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -307,9 +307,20 @@ class MWF_Functions {
 	 */
 	public static function contact_data_post_type_to_form_key( $post_type ) {
 		if ( preg_match( '/^' . MWF_Config::DBDATA . '(\d+)$/', $post_type, $match ) ) {
-			$form_key = MWF_Config::NAME . '-' . $match[1];
+			$form_key = self::get_form_key_from_form_id( $match[1] );
 			return $form_key;
 		}
+	}
+
+	/**
+	 * フォームの投稿ID をフォーム識別子に変換
+	 *
+	 * @param int $form_id
+	 * @return string フォーム識別子
+	 */
+	public static function get_form_key_from_form_id( $form_id ) {
+		$form_key = MWF_Config::NAME . '-' . $form_id;
+		return $form_key;
 	}
 
 	/**
