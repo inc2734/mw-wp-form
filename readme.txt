@@ -73,6 +73,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.4.5 =
 * Added   : Add MW_WP_Form_Mail_Parse class.
+* Bugfix  : Fixed a bug that sometimes icon is not displayed in contact data list.
 
 = 2.4.4 =
 * Bugfix  : Fixed a conv_half_alphanumeric attribute bug.

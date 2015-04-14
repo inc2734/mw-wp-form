@@ -2,7 +2,7 @@
 /**
  * Name       : MWF Functions
  * Description: 関数
- * Version    : 1.4.1
+ * Version    : 1.4.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : May 29, 2013
@@ -333,7 +333,7 @@ class MWF_Functions {
 		$mimetype = get_post_mime_type( $value );
 		if ( $mimetype ) {
 			// 画像だったら
-			if ( preg_match( '/^image\/.+?$/', $mimetype ) ) {
+			if ( in_array( $mimetype, array( 'image/jpeg', 'image/gif', 'image/png', 'image/bmp' ) ) ) {
 				$src = wp_get_attachment_image_src( $value, 'thumbnail' );
 				return sprintf(
 					'<img src="%s" alt="" style="width:50px;height:50px" />',
@@ -342,11 +342,11 @@ class MWF_Functions {
 			}
 			// 画像以外
 			else {
-				$src = wp_get_attachment_image_src( $value, 'none', true );
+				$src = wp_mime_type_icon( $mimetype );
 				return sprintf(
-					'<a href="%s" target="_blank"><img src="%s" alt="" style="height:50px" /></a>',
+					'<a href="%s" target="_blank"><img src="%s" alt="" style="height:32px" /></a>',
 					esc_url( wp_get_attachment_url( $value ) ),
-					esc_url( $src[0] )
+					esc_url( $src )
 				);
 			}
 		}
