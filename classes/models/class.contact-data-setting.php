@@ -19,7 +19,7 @@ class MW_WP_Form_Contact_Data_Setting {
 	protected static $contact_data_post_types;
 
 	/**
-	 * フォームのPost ID
+	 * 保存された問い合わせデータの Post ID
 	 * @var int
 	 */
 	protected $post_id;

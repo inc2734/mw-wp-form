@@ -264,7 +264,6 @@ class MW_WP_Form_Data {
 
 	/**
 	 * そのキーに紐づく送信データを取得（通常の value 以外に separator や data などが紐づく）
-	 * todo: post されてないデータを取得するときも使うから名前変更する
 	 */
 	public function get_post_value_by_key( $key ) {
 		if ( isset( $this->data[$key] ) ) {
