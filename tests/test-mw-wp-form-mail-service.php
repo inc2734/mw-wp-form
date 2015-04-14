@@ -22,11 +22,6 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	protected $Data;
 
 	/**
-	 * @var array
-	 */
-	protected $validation_rules;
-
-	/**
 	 * カスタムメールタグのテストに使用
 	 * @var string
 	 */
@@ -46,9 +41,6 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		$this->Data = MW_WP_Form_Data::getInstance( $this->form_key );
 		$Validation_Rule_Mail = new MW_WP_Form_Validation_Rule_Mail();
 		$Validation_Rule_Mail->set_Data( $this->Data );
-		$this->validation_rules = array(
-			'mail' => $Validation_Rule_Mail,
-		);
 		$this->Setting = new MW_WP_Form_Setting( $post_id );
 	}
 
@@ -77,7 +69,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		$this->Data->set( 'メールアドレス', 'info@example.com' );
 		$this->Setting->set( 'automatic_reply_email', 'メールアドレス' );
 		$Mail_Service = new MW_WP_Form_Mail_Service(
-			$this->Mail, $this->Data, $this->form_key, $this->validation_rules, $this->Setting
+			$this->Mail, $this->Data, $this->form_key, $this->Setting
 		);
 		$Mail_Service->send_admin_mail();
 		$Mail_Service->send_reply_mail();
@@ -108,7 +100,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		$this->Data->set( 'メールアドレス', 'info@example.com' );
 		$this->Setting->set( 'automatic_reply_email', 'メールアドレス' );
 		$Mail_Service = new MW_WP_Form_Mail_Service(
-			$this->Mail, $this->Data, $this->form_key, $this->validation_rules, $this->Setting
+			$this->Mail, $this->Data, $this->form_key, $this->Setting
 		);
 		$Mail_Service->send_admin_mail();
 		$Mail_Service->send_reply_mail();
@@ -130,7 +122,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter( 'mwform_auto_mail_raw_' . $this->form_key,
 			function( $Mail, $values ) use( $self ) {
 				// admin、mail での Mail の変更はひきつがない
-				$self->assertEquals( $Mail->to  , 'info@example.com' );
+				$self->assertEquals( $Mail->to , 'info@example.com' );
 				$Mail->to = 'mwform_auto_mail_raw_to@example.com';
 				return $Mail;
 			},
@@ -166,7 +158,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		$this->Data->set( 'メールアドレス', 'info@example.com' );
 		$this->Setting->set( 'automatic_reply_email', 'メールアドレス' );
 		$Mail_Service = new MW_WP_Form_Mail_Service(
-			$this->Mail, $this->Data, $this->form_key, $this->validation_rules, $this->Setting
+			$this->Mail, $this->Data, $this->form_key, $this->Setting
 		);
 		$Mail_Service->send_admin_mail();
 		$Mail_Service->send_reply_mail();
@@ -221,7 +213,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		);
 
 		$Mail_Service = new MW_WP_Form_Mail_Service(
-			$this->Mail, $this->Data, $this->form_key, $this->validation_rules, $this->Setting
+			$this->Mail, $this->Data, $this->form_key, $this->Setting
 		);
 		$Mail_Service->send_admin_mail();
 		$Mail_Service->send_reply_mail();
@@ -251,7 +243,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 
 		$this->Data->set( 'メールアドレス', 'customer@example.com' );
 		$Mail_Service = new MW_WP_Form_Mail_Service(
-			$this->Mail, $this->Data, $this->form_key, $this->validation_rules, $this->Setting
+			$this->Mail, $this->Data, $this->form_key, $this->Setting
 		);
 		$Mail_Service->send_admin_mail();
 		$Mail_Service->send_reply_mail();
@@ -263,7 +255,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	public function test_tracking_number() {
 		$this->Setting->set( 'admin_mail_content', '{' . MWF_Config::TRACKINGNUMBER . '}' );
 		$Mail_Service = new MW_WP_Form_Mail_Service(
-			$this->Mail, $this->Data, $this->form_key, $this->validation_rules, $this->Setting
+			$this->Mail, $this->Data, $this->form_key, $this->Setting
 		);
 
 		$this->assertEquals( 1, $this->Setting->get_tracking_number() );
@@ -293,7 +285,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 
 		$this->Setting->set( 'admin_mail_content', '{custom_tag}' );
 		$Mail_Service = new MW_WP_Form_Mail_Service(
-			$this->Mail, $this->Data, $this->form_key, $this->validation_rules, $this->Setting
+			$this->Mail, $this->Data, $this->form_key, $this->Setting
 		);
 		$Mail_Service->send_admin_mail();
 		$Mail_Service->send_reply_mail();
@@ -319,7 +311,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 
 		$this->Setting->set( 'admin_mail_content', '{custom_tag}' );
 		$Mail_Service = new MW_WP_Form_Mail_Service(
-			$this->Mail, $this->Data, $this->form_key, $this->validation_rules, $this->Setting
+			$this->Mail, $this->Data, $this->form_key, $this->Setting
 		);
 		$Mail_Service->send_admin_mail();
 		$Mail_Service->send_reply_mail();
@@ -332,7 +324,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	public function test_データベースに保存() {
 		$this->Setting->set( 'usedb', 1 );
 		$Mail_Service = new MW_WP_Form_Mail_Service(
-			$this->Mail, $this->Data, $this->form_key, $this->validation_rules, $this->Setting
+			$this->Mail, $this->Data, $this->form_key, $this->Setting
 		);
 		$Mail_Service->send_admin_mail();
 		$Mail_Service->send_reply_mail();

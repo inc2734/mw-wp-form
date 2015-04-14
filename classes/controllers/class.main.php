@@ -252,7 +252,7 @@ class MW_WP_Form_Main_Controller {
 		$Mail         = new MW_WP_Form_Mail();
 		$form_key     = $this->ExecShortcode->get( 'key' );
 		$attachments  = $this->get_attachments();
-		$Mail_Service = new MW_WP_Form_Mail_Service( $Mail, $this->Data, $form_key, $this->validation_rules, $this->Setting, $attachments );
+		$Mail_Service = new MW_WP_Form_Mail_Service( $Mail, $this->Data, $form_key, $this->Setting, $attachments );
 
 		// 管理画面で作成した場合だけ自動で送信
 		if ( $this->ExecShortcode->is_generated_by_formkey() ) {

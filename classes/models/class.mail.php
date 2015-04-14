@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Mail
  * Description: メールクラス
- * Version    : 1.5.0
+ * Version    : 1.5.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 20, 2012
- * Modified   : January 1, 2015
+ * Modified   : April 14, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -178,5 +178,156 @@ class MW_WP_Form_Mail {
 			}
 		}
 		return $_ret;
+	}
+
+	/**
+	 * 管理者メール用に初期値を設定
+	 *
+	 * @param MW_WP_Form_Setting $Setting
+	 */
+	public function set_admin_mail_raw_params( MW_WP_Form_Setting $Setting ) {
+		// タイトルを指定
+		$admin_mail_subject = $Setting->get( 'mail_subject' );
+		if ( $Setting->get( 'admin_mail_subject' ) ) {
+			$admin_mail_subject = $Setting->get( 'admin_mail_subject' );
+		}
+		$this->subject = $admin_mail_subject;
+
+		// 本文を指定
+		$admin_mail_content = $Setting->get( 'mail_content' );
+		if ( $Setting->get( 'admin_mail_content' ) ) {
+			$admin_mail_content = $Setting->get( 'admin_mail_content' );
+		}
+		$this->body = $admin_mail_content;
+
+		// 送信先を指定
+		$admin_mail_to = get_bloginfo( 'admin_email' );
+		if ( $Setting->get( 'mail_to' ) ) {
+			$admin_mail_to = $Setting->get( 'mail_to' );
+		}
+		$this->to = $admin_mail_to;
+
+		// CCを指定
+		$admin_mail_cc = '';
+		if ( $Setting->get( 'mail_cc' ) ) {
+			$admin_mail_cc = $Setting->get( 'mail_cc' );
+		}
+		$this->cc = $admin_mail_cc;
+
+		// BCCを指定
+		$admin_mail_bcc = '';
+		if ( $Setting->get( 'mail_bcc' ) ) {
+			$admin_mail_bcc = $Setting->get( 'mail_bcc' );
+		}
+		$this->bcc = $admin_mail_bcc;
+
+		// 送信元を指定
+		$admin_mail_from = get_bloginfo( 'admin_email' );
+		if ( $Setting->get( 'admin_mail_from' ) ) {
+			$admin_mail_from = $Setting->get( 'admin_mail_from' );
+		}
+		$this->from = $admin_mail_from;
+
+		// 送信者を指定
+		$admin_mail_sender = get_bloginfo( 'name' );
+		if ( $Setting->get( 'admin_mail_sender' ) ) {
+			$admin_mail_sender = $Setting->get( 'admin_mail_sender' );
+		}
+		$this->sender = $admin_mail_sender;
+	}
+
+	/**
+	 * 自動返信メール用に初期値を設定
+	 *
+	 * @param MW_WP_Form_Setting $Setting
+	 * @param MW_WP_Form_Data $Data
+	 */
+	public function set_reply_mail_raw_params( MW_WP_Form_Setting $Setting, MW_WP_Form_Data $Data ) {
+		$this->to  = '';
+		$this->cc  = '';
+		$this->bcc = '';
+
+		$automatic_reply_email = $Setting->get( 'automatic_reply_email' );
+
+		// 自動返信メールからは添付ファイルを削除
+		$this->attachments = array();
+		$form_id = $Setting->get( 'post_id' );
+		if ( $form_id ) {
+			$Validation = new MW_WP_Form_Validation_Rule_Mail();
+			$Validation->set_Data( $Data );
+			$is_invalid_mail_address = $Validation->rule(
+				$automatic_reply_email
+			);
+
+			// 送信先を指定
+			if ( $automatic_reply_email && !$is_invalid_mail_address ) {
+				$this->to = $Data->get_post_value_by_key( $automatic_reply_email );
+			}
+
+			// 送信元を指定
+			$reply_mail_from = get_bloginfo( 'admin_email' );
+			if ( $Setting->get( 'mail_from' ) ) {
+				$reply_mail_from = $Setting->get( 'mail_from' );
+			}
+			$this->from = $reply_mail_from;
+
+			// 送信者を指定
+			$reply_mail_sender = get_bloginfo( 'name' );
+			if ( $Setting->get( 'mail_sender' ) ) {
+				$reply_mail_sender = $Setting->get( 'mail_sender' );
+			}
+			$this->sender = $reply_mail_sender;
+
+			// タイトルを指定
+			$this->subject = $Setting->get( 'mail_subject' );
+
+			// 本文を指定
+			$this->body = $Setting->get( 'mail_content' );
+		}
+	}
+
+	/**
+	 * 管理者メールに必須の項目を設定
+	 */
+	public function set_admin_mail_reaquire_params() {
+		$admin_mail_to     = get_bloginfo( 'admin_email' );
+		$admin_mail_from   = get_bloginfo( 'admin_email' );
+		$admin_mail_sender = get_bloginfo( 'name' );
+
+		if ( !$this->to ) {
+			$this->to = $admin_mail_to;
+		}
+		if ( !$this->from ) {
+			$this->from = $admin_mail_from;;
+		}
+		if ( !$this->sender ) {
+			$this->sender = $admin_mail_sender;;
+		}
+	}
+
+	/**
+	 * 自動返信メールに必須の項目を設定
+	 */
+	public function set_reply_mail_reaquire_params() {
+		$reply_mail_from   = get_bloginfo( 'admin_email' );
+		$reply_mail_sender = get_bloginfo( 'name' );
+
+		if ( !$this->from ) {
+			$this->from = $reply_mail_from;;
+		}
+		if ( !$this->sender ) {
+			$this->sender = $reply_mail_sender;;
+		}
+	}
+
+	/**
+	 * メールを送信内容に置換
+	 */
+	public function parse( $Data, $Setting, $do_update = false ) {
+		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this, $Data, $Setting );
+		$Mail = $Mail_Parser->get_parsed_mail_object( $do_update );
+		foreach ( get_object_vars( $Mail ) as $key => $value ) {
+			$this->$key = $value;
+		}
 	}
 }

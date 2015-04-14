@@ -48,4 +48,379 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 			$phpmailer->Sender
 		);
 	}
+
+	/**
+	 * @group set_admin_mail_raw_params
+	 */
+	public function test_set_admin_mail_raw_params_未設定() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$Setting = new MW_WP_Form_Setting( $post_id );
+		$this->Mail->set_admin_mail_raw_params( $Setting );
+
+		$this->assertEquals(
+			'',
+			$this->Mail->subject
+		);
+
+		$this->assertEquals(
+			'',
+			$this->Mail->body
+		);
+
+		$this->assertEquals(
+			get_bloginfo( 'admin_email' ),
+			$this->Mail->to
+		);
+
+		$this->assertEquals(
+			'',
+			$this->Mail->cc
+		);
+
+		$this->assertEquals(
+			'',
+			$this->Mail->bcc
+		);
+
+		$this->assertEquals(
+			get_bloginfo( 'admin_email' ),
+			$this->Mail->from
+		);
+
+		$this->assertEquals(
+			get_bloginfo( 'name' ),
+			$this->Mail->sender
+		);
+	}
+
+	/**
+	 * @group set_admin_mail_raw_params
+	 */
+	public function test_set_admin_mail_raw_params_設定あり() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$Setting = new MW_WP_Form_Setting( $post_id );
+		$Setting->set( 'mail_subject'     , 'subject' );
+		$Setting->set( 'mail_content'     , 'body' );
+		$Setting->set( 'mail_to'          , 'to@example.com' );
+		$Setting->set( 'mail_cc'          , 'cc@example.com' );
+		$Setting->set( 'mail_bcc'         , 'bcc@example.com' );
+		$Setting->set( 'admin_mail_from'  , 'from@example.com' );
+		$Setting->set( 'admin_mail_sender', 'sender' );
+		$this->Mail->set_admin_mail_raw_params( $Setting );
+
+		$this->assertEquals(
+			'subject',
+			$this->Mail->subject
+		);
+
+		$this->assertEquals(
+			'body',
+			$this->Mail->body
+		);
+
+		$this->assertEquals(
+			'to@example.com',
+			$this->Mail->to
+		);
+
+		$this->assertEquals(
+			'cc@example.com',
+			$this->Mail->cc
+		);
+
+		$this->assertEquals(
+			'bcc@example.com',
+			$this->Mail->bcc
+		);
+
+		$this->assertEquals(
+			'from@example.com',
+			$this->Mail->from
+		);
+
+		$this->assertEquals(
+			'sender',
+			$this->Mail->sender
+		);
+	}
+
+	/**
+	 * @group set_reply_mail_raw_params
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_set_reply_mail_raw_params_未設定() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$Setting = new MW_WP_Form_Setting( $post_id );
+		$Data = MW_WP_Form_Data::getInstance( MWF_Functions::get_form_key_from_form_id( $post_id ), array(), array() );
+		$this->Mail->set_reply_mail_raw_params( $Setting, $Data );
+
+		$this->assertEquals(
+			'',
+			$this->Mail->to
+		);
+
+		$this->assertEquals(
+			get_bloginfo( 'admin_email' ),
+			$this->Mail->from
+		);
+
+		$this->assertEquals(
+			get_bloginfo( 'name' ),
+			$this->Mail->sender
+		);
+
+		$this->assertEquals(
+			'',
+			$this->Mail->subject
+		);
+
+		$this->assertEquals(
+			'',
+			$this->Mail->body
+		);
+	}
+
+	/**
+	 * @group set_reply_mail_raw_params
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_set_reply_mail_raw_params_設定あり() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$Setting = new MW_WP_Form_Setting( $post_id );
+		$Setting->set( 'automatic_reply_email', 'メールアドレス' );
+		$Setting->set( 'mail_from'            , 'from@example.com' );
+		$Setting->set( 'mail_sender'          , 'sender' );
+		$Setting->set( 'mail_subject'         , 'subject' );
+		$Setting->set( 'mail_content'         , 'body' );
+		$Data = MW_WP_Form_Data::getInstance( MWF_Functions::get_form_key_from_form_id( $post_id ), array(), array() );
+		$Data->set( 'メールアドレス', 'to@example.com' );
+		$this->Mail->set_reply_mail_raw_params( $Setting, $Data );
+
+		$this->assertEquals(
+			'to@example.com',
+			$this->Mail->to
+		);
+
+		$this->assertEquals(
+			'from@example.com',
+			$this->Mail->from
+		);
+
+		$this->assertEquals(
+			'sender',
+			$this->Mail->sender
+		);
+
+		$this->assertEquals(
+			'subject',
+			$this->Mail->subject
+		);
+
+		$this->assertEquals(
+			'body',
+			$this->Mail->body
+		);
+	}
+
+	/**
+	 * @group set_reply_mail_raw_params
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_set_reply_mail_raw_params_ToとCCとBCCとattachmentsは直接設定されてもに空値() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$Setting = new MW_WP_Form_Setting( $post_id );
+		$Data = MW_WP_Form_Data::getInstance( MWF_Functions::get_form_key_from_form_id( $post_id ), array(), array() );
+		$this->Mail->cc  = 'cc@example.com';
+		$this->Mail->bcc = 'bcc@example.com';
+		$this->Mail->set_reply_mail_raw_params( $Setting, $Data );
+
+		$this->assertSame(
+			array(),
+			$this->Mail->attachments
+		);
+
+		$this->assertEquals(
+			'',
+			$this->Mail->cc
+		);
+
+		$this->assertEquals(
+			'',
+			$this->Mail->bcc
+		);
+	}
+
+	/**
+	 * @group set_admin_mail_reaquire_params
+	 */
+	public function test_set_admin_mail_reaquire_params_ToとFromとSenderが空なら上書き() {
+		$this->Mail->set_admin_mail_reaquire_params();
+
+		$this->assertEquals(
+			get_bloginfo( 'admin_email' ),
+			$this->Mail->to
+		);
+
+		$this->assertEquals(
+			get_bloginfo( 'admin_email' ),
+			$this->Mail->from
+		);
+
+		$this->assertEquals(
+			get_bloginfo( 'name' ),
+			$this->Mail->sender
+		);
+	}
+
+	/**
+	 * @group set_admin_mail_reaquire_params
+	 */
+	public function test_set_admin_mail_reaquire_params_ToとFromとSenderが空でなければそのまま() {
+		$this->Mail->to     = 'to@example.com';
+		$this->Mail->from   = 'from@example.com';
+		$this->Mail->sender = 'Sender';
+		$this->Mail->set_admin_mail_reaquire_params();
+
+		$this->assertEquals(
+			'to@example.com',
+			$this->Mail->to
+		);
+
+		$this->assertEquals(
+			'from@example.com',
+			$this->Mail->from
+		);
+
+		$this->assertEquals(
+			'Sender',
+			$this->Mail->sender
+		);
+	}
+
+	/**
+	 * @group set_reply_mail_reaquire_params
+	 */
+	public function test_set_reply_mail_reaquire_params_FromとSenderが空なら上書き() {
+		$this->Mail->set_reply_mail_reaquire_params();
+
+		$this->assertEquals(
+			get_bloginfo( 'admin_email' ),
+			$this->Mail->from
+		);
+
+		$this->assertEquals(
+			get_bloginfo( 'name' ),
+			$this->Mail->sender
+		);
+	}
+
+	/**
+	 * @group set_reply_mail_reaquire_params
+	 */
+	public function test_set_reply_mail_reaquire_params_FromとSenderが空でなければそのまま() {
+		$this->Mail->from   = 'from@example.com';
+		$this->Mail->sender = 'Sender';
+		$this->Mail->set_reply_mail_reaquire_params();
+
+		$this->assertEquals(
+			'from@example.com',
+			$this->Mail->from
+		);
+
+		$this->assertEquals(
+			'Sender',
+			$this->Mail->sender
+		);
+	}
+
+	/**
+	 * @group parse
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_parse_ToとCCとBCCは上書きされない() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$Setting = new MW_WP_Form_Setting( $post_id );
+		$Data = MW_WP_Form_Data::getInstance( MWF_Functions::get_form_key_from_form_id( $post_id ), array(), array() );
+		$Data->set( 'to'    , 'to@example.com' );
+		$Data->set( 'cc'    , 'cc@example.com' );
+		$Data->set( 'bcc'   , 'bcc@example.com' );
+		$Data->set( 'from'  , 'from@example.com' );
+		$Data->set( 'sender', 'Sender' );
+		$Data->set( 'body'  , 'body' );
+		$this->Mail->to     = '{to}';
+		$this->Mail->cc     = '{cc}';
+		$this->Mail->bcc    = '{bcc}';
+		$this->Mail->from   = '{from}';
+		$this->Mail->sender = '{sender}';
+		$this->Mail->body   = '{body}';
+		$this->Mail->parse( $Data, $Setting, false );
+
+		$this->assertEquals(
+			'{to}',
+			$this->Mail->to
+		);
+
+		$this->assertEquals(
+			'{cc}',
+			$this->Mail->cc
+		);
+
+		$this->assertEquals(
+			'{bcc}',
+			$this->Mail->bcc
+		);
+
+		$this->assertEquals(
+			'from@example.com',
+			$this->Mail->from
+		);
+
+		$this->assertEquals(
+			'Sender',
+			$this->Mail->sender
+		);
+
+		$this->assertEquals(
+			'body',
+			$this->Mail->body
+		);
+	}
+
+	/**
+	 * @group parse
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_parse_データベースに保存() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$Setting = new MW_WP_Form_Setting( $post_id );
+		$Data = MW_WP_Form_Data::getInstance( MWF_Functions::get_form_key_from_form_id( $post_id ), array(), array() );
+		$Data->set( 'example', 'example' );
+		$this->Mail->body = '{example}';
+		$this->Mail->parse( $Data, $Setting, true );
+
+		$posts = get_posts( array(
+			'post_type' => MWF_Config::DBDATA . $post_id,
+		) );
+		foreach ( $posts as $post ) {
+			$this->assertEquals(
+				'example',
+				get_post_meta( $post->ID, 'example', true )
+			);
+			break;
+		}
+	}
 }
