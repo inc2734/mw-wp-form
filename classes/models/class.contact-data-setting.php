@@ -54,7 +54,7 @@ class MW_WP_Form_Contact_Data_Setting {
 	 * @param int $post_id
 	 */
 	public function __construct( $post_id ) {
-		if ( preg_match( '/^' . MWF_Config::DBDATA . '/', get_post_type( $post_id ) ) ) {
+		if ( MWF_Functions::is_contact_data_post_type( get_post_type( $post_id ) ) ) {
 			$this->post_id = $post_id;
 			$this->response_statuses = array(
 				'not-supported' => esc_html__( 'Not supported', MWF_Config::DOMAIN ),

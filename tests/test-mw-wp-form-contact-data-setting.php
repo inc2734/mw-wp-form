@@ -33,17 +33,11 @@ class MW_WP_Form_Contact_Data_Setting_Test extends WP_UnitTestCase {
 			update_post_meta( $post_id, MWF_Config::NAME, $meta );
 		}
 
-		// 問い合わせデータを保存
+		// 問い合わせデータを保存（最初のフォームに1件だけ）
 		foreach ( $post_ids as $post_id ) {
-			$post_ids = $this->factory->post->create_many(
-				5,
-				array(
-					'post_type' => MWF_Functions::get_contact_data_post_type_from_form_id( $post_id ),
-				)
-			);
-			break;
-		}
-		foreach ( $post_ids as $post_id ) {
+			$post_id = $this->factory->post->create( array(
+				'post_type' => MWF_Functions::get_contact_data_post_type_from_form_id( $post_id ),
+			) );
 			update_post_meta( $post_id, MWF_config::CONTACT_DATA_NAME, array(
 				'test-1' => 'aaa',
 				'test-2' => 'bbb',

@@ -306,9 +306,11 @@ class MWF_Functions {
 	 * @return string|null フォーム識別子
 	 */
 	public static function contact_data_post_type_to_form_key( $post_type ) {
-		if ( preg_match( '/^' . MWF_Config::DBDATA . '(\d+)$/', $post_type, $match ) ) {
-			$form_key = self::get_form_key_from_form_id( $match[1] );
-			return $form_key;
+		if ( self::is_contact_data_post_type( $post_type ) ) {
+			if ( preg_match( '/(\d+)$/', $post_type, $match ) ) {
+				$form_key = self::get_form_key_from_form_id( $match[1] );
+				return $form_key;
+			}
 		}
 	}
 
@@ -332,6 +334,19 @@ class MWF_Functions {
 	public static function get_contact_data_post_type_from_form_id( $form_id ) {
 		$contact_data_post_type = MWF_Config::DBDATA . $form_id;
 		return $contact_data_post_type;
+	}
+
+	/**
+	 * 問い合わせデータ投稿タイプかどうか
+	 *
+	 * @param string $post_type
+	 * @return bool
+	 */
+	public static function is_contact_data_post_type( $post_type ) {
+		if ( preg_match( '/^' . MWF_Config::DBDATA . '\d+$/', $post_type ) ) {
+			return true;
+		}
+		return false;
 	}
 
 	/**

@@ -260,7 +260,7 @@ class MW_WP_Form {
 			$Controller = new MW_WP_Form_Admin_List_Controller();
 			$Controller->initialize();
 		}
-		elseif ( preg_match( '/^' . MWF_Config::DBDATA . '\d+$/', $screen->id ) ) {
+		elseif ( MWF_Functions::is_contact_data_post_type( $screen->id ) ) {
 			$Controller = new MW_WP_Form_Contact_Data_Controller();
 			$Controller->initialize();
 		}
