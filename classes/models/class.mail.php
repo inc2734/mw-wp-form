@@ -327,7 +327,7 @@ class MW_WP_Form_Mail {
 	 * @param bool $do_update
 	 */
 	public function parse( $Setting, $do_update = false ) {
-		$Data     = MW_WP_Form_Data::getInstance();
+		$Data = MW_WP_Form_Data::getInstance();
 		
 		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this, $Setting );
 		$Mail = $Mail_Parser->get_parsed_mail_object( $do_update );

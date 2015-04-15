@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Validation
  * Description: 与えられたデータに対してバリデーションエラーがあるかチェックする
- * Version    : 1.8.4
+ * Version    : 1.8.5
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 20, 2012
- * Modified   : April 8, 2015
+ * Modified   : April 15, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
