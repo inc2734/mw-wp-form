@@ -39,7 +39,7 @@ class MW_WP_Form_Mail_Parser {
 	 * @param MW_WP_Form_Setting $Setting
 	 */
 	public function __construct( MW_WP_Form_Mail $Mail, MW_WP_Form_Data $Data, MW_WP_Form_Setting $Setting ) {
-		$this->Mail    = $Mail;
+		$this->Mail    = clone $Mail;
 		$this->Data    = $Data;
 		$this->Setting = $Setting;
 	}
