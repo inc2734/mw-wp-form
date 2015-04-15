@@ -22,12 +22,6 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	protected $Data;
 
 	/**
-	 * カスタムメールタグのテストに使用
-	 * @var string
-	 */
-	public $custom_tag_value;
-
-	/**
 	 * setUp
 	 */
 	public function setUp() {
@@ -250,6 +244,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @group tracking_number
 	 * @backupStaticAttributes enabled
 	 */
 	public function test_tracking_number() {
@@ -261,61 +256,6 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		$this->assertEquals( 1, $this->Setting->get_tracking_number() );
 		$Mail_Service->update_tracking_number();
 		$this->assertEquals( 2, $this->Setting->get_tracking_number() );
-		$Mail_Service->update_tracking_number();
-		$this->assertEquals( 3, $this->Setting->get_tracking_number() );
-	}
-
-	/**
-	 * @backupStaticAttributes enabled
-	 */
-	public function test_mwform_custom_mail_tag() {
-		$self = $this;
-		add_filter(
-			'mwform_custom_mail_tag_' . $this->form_key,
-			function( $value, $key, $insert_id ) use( $self ) {
-				if ( $key === 'custom_tag' ) {
-					$self->custom_tag_value = 'hoge';
-					return $self->custom_tag_value;
-				}
-				return $value;
-			},
-			10,
-			3
-		);
-
-		$this->Setting->set( 'admin_mail_content', '{custom_tag}' );
-		$Mail_Service = new MW_WP_Form_Mail_Service(
-			$this->Mail, $this->Data, $this->form_key, $this->Setting
-		);
-		$Mail_Service->send_admin_mail();
-		$Mail_Service->send_reply_mail();
-		$this->assertEquals( 'hoge', $this->custom_tag_value );
-	}
-
-	/**
-	 * @backupStaticAttributes enabled
-	 */
-	public function test_mwform_custom_mail_tag_1回だけ実行ならtrue() {
-		$self = $this;
-		add_filter(
-			'mwform_custom_mail_tag_' . $this->form_key,
-			function( $value, $key, $insert_id ) use( $self ) {
-				if ( $key === 'custom_tag' ) {
-					$self->custom_tag_value ++;
-				}
-				return $value;
-			},
-			10,
-			3
-		);
-
-		$this->Setting->set( 'admin_mail_content', '{custom_tag}' );
-		$Mail_Service = new MW_WP_Form_Mail_Service(
-			$this->Mail, $this->Data, $this->form_key, $this->Setting
-		);
-		$Mail_Service->send_admin_mail();
-		$Mail_Service->send_reply_mail();
-		$this->assertEquals( $this->custom_tag_value, 1 );
 	}
 
 	/**
