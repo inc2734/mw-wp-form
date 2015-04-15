@@ -56,13 +56,13 @@ class MW_WP_Form_Mail_Service {
 	 * @param array $attachments
 	 */
 	public function __construct( MW_WP_Form_Mail $Mail, $form_key, MW_WP_Form_Setting $Setting, array $attachments = array() ) {
-		$this->form_key         = $form_key;
-		$this->Data             = MW_WP_Form_Data::getInstance( $form_key );
-		$this->Mail_raw         = $Mail;
-		$this->Mail_admin_raw   = clone $Mail;
-		$this->Mail_auto_raw    = clone $Mail;
-		$this->attachments      = $attachments;
-		$this->Setting          = $Setting;
+		$this->form_key       = $form_key;
+		$this->Data           = MW_WP_Form_Data::getInstance();
+		$this->Mail_raw       = $Mail;
+		$this->Mail_admin_raw = clone $Mail;
+		$this->Mail_auto_raw  = clone $Mail;
+		$this->attachments    = $attachments;
+		$this->Setting        = $Setting;
 
 		if ( $this->Setting->get( 'post_id' ) ) {
 			$this->set_admin_mail_raw_params();

@@ -269,13 +269,10 @@ class MW_WP_Form_Exec_Shortcode {
 	 * @param MW_WP_Form_Form $Form
 	 */
 	public function add_shortcode( $view_flg, MW_WP_Form_Setting $Setting, MW_WP_Form_Form $Form ) {
-		$form_id  = $Setting->get( 'post_id' );
-		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
-
 		$this->view_flg = $view_flg;
 		$this->Setting  = $Setting;
 		$this->Form     = $Form;
-		$this->Data     = MW_WP_Form_Data::getInstance( $form_key );;
+		$this->Data     = MW_WP_Form_Data::getInstance();
 		add_shortcode( 'mwform_formkey'         , array( $this, 'mwform_formkey' ) );
 		add_shortcode( 'mwform'                 , array( $this, 'mwform' ) );
 		add_shortcode( 'mwform_complete_message', array( $this, 'mwform_complete_message' ) );

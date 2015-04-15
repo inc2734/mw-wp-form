@@ -14,7 +14,7 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		$post_id = $this->factory->post->create( array(
 			'post_type' => MWF_Config::NAME,
 		) );
-		$form_key   = MWF_Config::NAME . '-' . $post_id;
+		$form_key   = MWF_Functions::get_form_key_from_form_id( $post_id );
 		$this->Data = MW_WP_Form_Data::getInstance( $form_key );
 	}
 

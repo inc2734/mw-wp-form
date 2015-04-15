@@ -64,15 +64,25 @@ class MW_WP_Form_Data {
 	/**
 	 * getInstance
 	 *
-	 * @param string $form_key フォーム識別子
-	 * @param array $POST $_POSTを想定
-	 * @param array $FILES $_FILESを想定
+	 * @param null|string $form_key フォーム識別子
+	 * @param null|array $POST $_POSTを想定
+	 * @param null|array $FILES $_FILESを想定
 	 */
-	public static function getInstance( $form_key, array $POST = array(), array $FILES = array() ) {
-		if ( is_null( self::$Instance ) ) {
-			self::$Instance = new self( $form_key, $POST, $FILES );
+	public static function getInstance( $form_key = null, $POST = null, $FILES = null ) {
+		if ( is_null( $POST ) || !is_array( $POST ) ) {
+			$POST = array();
 		}
-		return self::$Instance;
+		if ( is_null( $FILES ) || !is_array( $FILES ) ) {
+			$FILES = array();
+		}
+		if ( is_null( $form_key ) && !is_null( self::$Instance ) ) {
+			return self::$Instance;
+		}
+		if ( !is_null( $form_key ) ) {
+			self::$Instance = new self( $form_key, $POST, $FILES );
+			return self::$Instance;
+		}
+		exit( 'MW_WP_Form_Data instantiation error.' );
 	}
 
 	/**

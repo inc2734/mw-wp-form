@@ -196,7 +196,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 			$this->Form     = $Form;
 			$this->Error    = $Error;
 			$this->form_key = $form_key;
-			$this->Data     = MW_WP_Form_Data::getInstance( $form_key );
+			$this->Data     = MW_WP_Form_Data::getInstance();
 			switch( $view_flg ) {
 				case 'input' :
 					add_shortcode( $this->shortcode_name, array( $this, '_input_page' ) );

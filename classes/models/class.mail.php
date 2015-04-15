@@ -242,14 +242,11 @@ class MW_WP_Form_Mail {
 	 * @param MW_WP_Form_Setting $Setting
 	 */
 	public function set_reply_mail_raw_params( MW_WP_Form_Setting $Setting ) {
-		$form_id  = $Setting->get( 'post_id' );
-		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
-		$Data     = MW_WP_Form_Data::getInstance( $form_key );
-
 		$this->to  = '';
 		$this->cc  = '';
 		$this->bcc = '';
 
+		$Data = MW_WP_Form_Data::getInstance();
 		$automatic_reply_email = $Setting->get( 'automatic_reply_email' );
 
 		// 自動返信メールからは添付ファイルを削除
@@ -330,9 +327,7 @@ class MW_WP_Form_Mail {
 	 * @param bool $do_update
 	 */
 	public function parse( $Setting, $do_update = false ) {
-		$form_id  = $Setting->get( 'post_id' );
-		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
-		$Data     = MW_WP_Form_Data::getInstance( $form_key );
+		$Data     = MW_WP_Form_Data::getInstance();
 		
 		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this, $Setting );
 		$Mail = $Mail_Parser->get_parsed_mail_object( $do_update );
