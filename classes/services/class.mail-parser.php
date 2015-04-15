@@ -35,12 +35,14 @@ class MW_WP_Form_Mail_Parser {
 
 	/**
 	 * @param MW_WP_Form_Mail $Mail
-	 * @param MW_WP_Form_Data $Data
 	 * @param MW_WP_Form_Setting $Setting
 	 */
-	public function __construct( MW_WP_Form_Mail $Mail, MW_WP_Form_Data $Data, MW_WP_Form_Setting $Setting ) {
+	public function __construct( MW_WP_Form_Mail $Mail, MW_WP_Form_Setting $Setting ) {
+		$form_id  = $Setting->get( 'post_id' );
+		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
+
 		$this->Mail    = clone $Mail;
-		$this->Data    = $Data;
+		$this->Data    = MW_WP_Form_Data::getInstance( $form_key );
 		$this->Setting = $Setting;
 	}
 

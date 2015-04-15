@@ -51,14 +51,13 @@ class MW_WP_Form_Mail_Service {
 	 * __construct
 	 *
 	 * @param MW_WP_Form_Mail $Mail
-	 * @param MW_WP_Form_Data $Data
 	 * @param strign $form_key
 	 * @param MW_WP_Form_Setting $Setting
 	 * @param array $attachments
 	 */
-	public function __construct( MW_WP_Form_Mail $Mail, MW_WP_Form_Data $Data, $form_key, MW_WP_Form_Setting $Setting, array $attachments = array() ) {
+	public function __construct( MW_WP_Form_Mail $Mail, $form_key, MW_WP_Form_Setting $Setting, array $attachments = array() ) {
 		$this->form_key         = $form_key;
-		$this->Data             = $Data;
+		$this->Data             = MW_WP_Form_Data::getInstance( $form_key );
 		$this->Mail_raw         = $Mail;
 		$this->Mail_admin_raw   = clone $Mail;
 		$this->Mail_auto_raw    = clone $Mail;
@@ -113,7 +112,7 @@ class MW_WP_Form_Mail_Service {
 	 */
 	protected function get_parsed_mail_object( MW_WP_Form_Mail $_Mail, $do_update = false ) {
 		$Mail = clone $_Mail;
-		$Mail->parse( $this->Data, $this->Setting, $do_update );
+		$Mail->parse( $this->Setting, $do_update );
 		return $Mail;
 	}
 
@@ -147,7 +146,7 @@ class MW_WP_Form_Mail_Service {
 	 * 自動返信メールに項目を設定
 	 */
 	private function set_reply_mail_raw_params() {
-		$this->Mail_auto_raw->set_reply_mail_raw_params( $this->Setting, $this->Data );
+		$this->Mail_auto_raw->set_reply_mail_raw_params( $this->Setting );
 	}
 
 	/**

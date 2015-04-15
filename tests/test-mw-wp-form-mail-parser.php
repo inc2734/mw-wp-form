@@ -29,7 +29,7 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 		$this->form_key = MWF_Config::NAME . '-' . $post_id;
 		$this->Mail    = new MW_WP_Form_Mail();
 		$this->Setting = new MW_WP_Form_Setting( $post_id );
-		$this->Data    = MW_WP_Form_Data::getInstance( MWF_Functions::get_form_key_from_form_id( $post_id ), array(), array() );
+		$this->Data    = MW_WP_Form_Data::getInstance( MWF_Functions::get_form_key_from_form_id( $post_id ) );
 	}
 
 	/**
@@ -49,7 +49,7 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 		$this->Mail->from   = '{from}';
 		$this->Mail->sender = '{sender}';
 		$this->Mail->body   = '{body}';
-		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Data, $this->Setting );
+		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Setting );
 		$Mail = $Mail_Parser->get_parsed_mail_object( false );
 
 		$this->assertEquals(
@@ -90,7 +90,7 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 	public function test_get_parsed_mail_object_データベースに保存() {
 		$this->Data->set( 'example', 'example' );
 		$this->Mail->body = '{example}';
-		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Data, $this->Setting );
+		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Setting );
 		$Mail_Parser->get_parsed_mail_object( true );
 
 		$posts = get_posts( array(
@@ -112,7 +112,7 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 	 */
 	public function test_get_parsed_mail_object_tracking_number() {
 		$this->Mail->body = '{' . MWF_Config::TRACKINGNUMBER . '}';
-		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Data, $this->Setting );
+		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Setting );
 
 		$Mail = $Mail_Parser->get_parsed_mail_object( false );
 		$this->assertEquals( 1, $Mail->body );
@@ -138,7 +138,7 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 		);
 
 		$this->Mail->body = '{custom_tag}';
-		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Data, $this->Setting );
+		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Setting );
 		$Mail = $Mail_Parser->get_parsed_mail_object( false );
 
 		$this->assertEquals(

@@ -190,14 +190,13 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 * @param string $view_flg
 	 * @param MW_WP_Form_Error $Error
 	 * @param string $form_key
-	 * @param MW_WP_Form_Data $Data
 	 */
-	public function add_shortcode( MW_WP_Form_Form $Form, $view_flg, MW_WP_Form_Error $Error, $form_key, MW_WP_Form_Data $Data ) {
+	public function add_shortcode( MW_WP_Form_Form $Form, $view_flg, MW_WP_Form_Error $Error, $form_key ) {
 		if ( !empty( $this->shortcode_name ) ) {
 			$this->Form     = $Form;
 			$this->Error    = $Error;
 			$this->form_key = $form_key;
-			$this->Data     = $Data;
+			$this->Data     = MW_WP_Form_Data::getInstance( $form_key );
 			switch( $view_flg ) {
 				case 'input' :
 					add_shortcode( $this->shortcode_name, array( $this, '_input_page' ) );

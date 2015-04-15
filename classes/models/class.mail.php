@@ -240,9 +240,12 @@ class MW_WP_Form_Mail {
 	 * 自動返信メール用に初期値を設定
 	 *
 	 * @param MW_WP_Form_Setting $Setting
-	 * @param MW_WP_Form_Data $Data
 	 */
-	public function set_reply_mail_raw_params( MW_WP_Form_Setting $Setting, MW_WP_Form_Data $Data ) {
+	public function set_reply_mail_raw_params( MW_WP_Form_Setting $Setting ) {
+		$form_id  = $Setting->get( 'post_id' );
+		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
+		$Data     = MW_WP_Form_Data::getInstance( $form_key );
+
 		$this->to  = '';
 		$this->cc  = '';
 		$this->bcc = '';
@@ -322,9 +325,16 @@ class MW_WP_Form_Mail {
 
 	/**
 	 * メールを送信内容に置換
+	 *
+	 * @param MW_WP_Form_Setting $Setting
+	 * @param bool $do_update
 	 */
-	public function parse( $Data, $Setting, $do_update = false ) {
-		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this, $Data, $Setting );
+	public function parse( $Setting, $do_update = false ) {
+		$form_id  = $Setting->get( 'post_id' );
+		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
+		$Data     = MW_WP_Form_Data::getInstance( $form_key );
+		
+		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this, $Setting );
 		$Mail = $Mail_Parser->get_parsed_mail_object( $do_update );
 		foreach ( get_object_vars( $Mail ) as $key => $value ) {
 			$this->$key = $value;
