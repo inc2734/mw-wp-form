@@ -17,7 +17,7 @@ class MW_WP_Form_Test extends WP_UnitTestCase {
 			$data_post_ids = $this->factory->post->create_many(
 				5,
 				array(
-					'post_type' => MWF_Config::DBDATA . $post_id,
+					'post_type' => MWF_Functions::get_contact_data_post_type_from_form_id( $post_id ),
 				)
 			);
 		}
@@ -45,7 +45,7 @@ class MW_WP_Form_Test extends WP_UnitTestCase {
 			$this->assertEquals( null, $option );
 
 			$data_posts = get_posts( array(
-				'post_type' => MWF_Config::DBDATA . $post_id,
+				'post_type' => MWF_Functions::get_contact_data_post_type_from_form_id( $post_id ),
 				'posts_per_page' => -1,
 			) );
 			$this->assertEquals( 0, count( $data_posts ) );

@@ -26,7 +26,7 @@ class MW_WP_Form_CSV_Test extends WP_UnitTestCase {
 		$post_ids = $this->factory->post->create_many(
 			50,
 			array(
-				'post_type' => MWF_Config::DBDATA . $Setting->get( 'post_id' ),
+				'post_type' => MWF_Functions::get_contact_data_post_type_from_form_id( $Setting->get( 'post_id' ) ),
 			)
 		);
 

@@ -56,7 +56,7 @@ class MW_WP_Form_Mail_Parser {
 			$insert_contact_data_id = wp_insert_post( array(
 				'post_title'  => $this->parse_mail_content( $this->Mail->subject ),
 				'post_status' => 'publish',
-				'post_type'   => MWF_Config::DBDATA . $form_id,
+				'post_type'   => MWF_Functions::get_contact_data_post_type_from_form_id( $form_id ),
 			) );
 
 			// 添付ファイルをメディアに保存

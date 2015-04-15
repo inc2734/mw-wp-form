@@ -94,7 +94,7 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 		$Mail_Parser->get_parsed_mail_object( true );
 
 		$posts = get_posts( array(
-			'post_type' => MWF_Config::DBDATA . $this->Setting->get( 'post_id' ),
+			'post_type' => MWF_Functions::get_contact_data_post_type_from_form_id( $this->Setting->get( 'post_id' ) ),
 		) );
 		foreach ( $posts as $post ) {
 			$this->assertEquals(

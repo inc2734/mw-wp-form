@@ -305,7 +305,7 @@ class MW_WP_Form {
 		$Admin = new MW_WP_Form_Admin();
 		$forms = $Admin->get_forms_using_database();
 		foreach ( $forms as $form ) {
-			$post_type = MWF_Config::DBDATA . $form->ID;
+			$post_type = MWF_Functions::get_contact_data_post_type_from_form_id( $form->ID );
 			register_post_type( $post_type, array(
 				'label'  => $form->post_title,
 				'labels' => array(
@@ -350,7 +350,7 @@ class MW_WP_Form {
 		foreach ( $data_post_ids as $data_post_id ) {
 			delete_option( MWF_Config::NAME . '-chart-' . $data_post_id );
 			$data_posts = get_posts( array(
-				'post_type'      => MWF_Config::DBDATA . $data_post_id,
+				'post_type'      => MWF_Functions::get_contact_data_post_type_from_form_id( $data_post_id ),
 				'posts_per_page' => -1,
 			) );
 			if ( empty( $data_posts ) ) continue;

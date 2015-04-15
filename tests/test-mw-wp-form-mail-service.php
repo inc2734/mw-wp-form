@@ -270,7 +270,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		$Mail_Service->send_reply_mail();
 
 		$this->assertEquals( 1, count( get_posts( array(
-			'post_type'      => MWF_Config::DBDATA . $this->Setting->get( 'post_id' ),
+			'post_type'      => MWF_Functions::get_contact_data_post_type_from_form_id( $this->Setting->get( 'post_id' ) ),
 			'posts_per_page' => -1,
 		) ) ) );
 	}

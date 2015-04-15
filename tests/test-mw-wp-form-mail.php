@@ -413,7 +413,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$this->Mail->parse( $Data, $Setting, true );
 
 		$posts = get_posts( array(
-			'post_type' => MWF_Config::DBDATA . $post_id,
+			'post_type' => MWF_Functions::get_contact_data_post_type_from_form_id( $post_id ),
 		) );
 		foreach ( $posts as $post ) {
 			$this->assertEquals(

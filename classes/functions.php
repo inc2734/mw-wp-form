@@ -180,7 +180,7 @@ class MWF_Functions {
 	 * @param array ( ファイルのname属性値 => ファイルパス, … )
 	 * @param int 生成フォーム（usedb）の post_id
 	 */
-	public static function save_attachments_in_media( $post_id, $attachments, $form_key_post_id ) {
+	public static function save_attachments_in_media( $post_id, $attachments, $form_id ) {
 		require_once( ABSPATH . 'wp-admin' . '/includes/media.php' );
 		require_once( ABSPATH . 'wp-admin' . '/includes/image.php' );
 		$save_attached_key = array();
@@ -190,7 +190,7 @@ class MWF_Functions {
 			}
 
 			$wp_check_filetype = wp_check_filetype( $filepath );
-			$post_type = get_post_type_object( MWF_Config::DBDATA . $form_key_post_id );
+			$post_type = get_post_type_object( self::get_contact_data_post_type_from_form_id( $form_id ) );
 			$attachment = array(
 				'post_mime_type' => $wp_check_filetype['type'],
 				'post_title'     => $key,
@@ -313,7 +313,7 @@ class MWF_Functions {
 	}
 
 	/**
-	 * フォームの投稿ID をフォーム識別子に変換
+	 * フォームの投稿 ID をフォーム識別子に変換
 	 *
 	 * @param int $form_id
 	 * @return string フォーム識別子
@@ -321,6 +321,17 @@ class MWF_Functions {
 	public static function get_form_key_from_form_id( $form_id ) {
 		$form_key = MWF_Config::NAME . '-' . $form_id;
 		return $form_key;
+	}
+
+	/**
+	 * フォームの投稿 ID を問い合わせデータの投稿タイプに変換
+	 *
+	 * @param int $form_id
+	 * @return string フォーム識別子
+	 */
+	public static function get_contact_data_post_type_from_form_id( $form_id ) {
+		$contact_data_post_type = MWF_Config::DBDATA . $form_id;
+		return $contact_data_post_type;
 	}
 
 	/**
