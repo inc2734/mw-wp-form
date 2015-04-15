@@ -68,6 +68,8 @@ class MW_WP_Form_Mail {
 			return;
 		}
 
+		$sender  = $this->sender;
+		$from    = $this->from;
 		$subject = $this->subject;
 		$body    = $this->body;
 
@@ -95,9 +97,11 @@ class MW_WP_Form_Mail {
 			$to = trim( $to );
 			if ( !empty( $File ) ) {
 				$contents = sprintf(
-					"====================\n\nSend Date: %s\nTo: %s\nSubject: %s\nheaders:%s\n-----\n%s\n-----\nattachments:\n%s\n\n",
+					"====================\n\nSend Date: %s\nTo: %s\nSender: %s\nFrom: %s\nSubject: %s\nheaders:%s\n-----\n%s\n-----\nattachments:\n%s\n\n",
 					date( 'M j Y, H:i:s' ),
 					$to,
+					$sender,
+					$from,
 					$subject,
 					implode( "\n", $headers ),
 					$body,

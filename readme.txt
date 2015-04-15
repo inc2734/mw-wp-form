@@ -75,6 +75,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Refactoring MW_WP_Form_Data Class.
 * Added   : Add MW_WP_Form_Mail_Parse class.
 * Added   : Add Tracking Number setting field.
+* Added   : Sender and From are written to the debug log.
 * Bugfix  : Fixed a bug that sometimes icon is not displayed in contact data list.
 
 = 2.4.4 =
