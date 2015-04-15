@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Admin Controller
- * Version    : 1.1.0
+ * Version    : 1.1.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : March 27, 2015
+ * Modified   : April 15, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -223,6 +223,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		$this->assign( 'akismet_author'      , $this->get_option( 'akismet_author' ) );
 		$this->assign( 'akismet_author_email', $this->get_option( 'akismet_author_email' ) );
 		$this->assign( 'akismet_author_url'  , $this->get_option( 'akismet_author_url' ) );
+		$this->assign( 'tracking_number'     , $this->get_option( MWF_Config::TRACKINGNUMBER ) );
 		$this->render( 'admin/settings' );
 	}
 
@@ -270,7 +271,13 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	protected function get_option( $key ) {
 		global $post;
 		$Setting = new MW_WP_Form_Setting( $post->ID );
-		$value = $Setting->get( $key );
+
+		if ( $key === MWF_Config::TRACKINGNUMBER ) {
+			$value = $Setting->get_tracking_number();
+		} else {
+			$value = $Setting->get( $key );
+		}
+
 		if ( !is_null( $value ) ) {
 			return $value;
 		} else {

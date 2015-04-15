@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Admin
  * Description: 管理画面クラス
- * Version    : 2.0.1
+ * Version    : 2.0.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : February 21, 2013
- * Modified   : February 7, 2015
+ * Modified   : April 15, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -84,6 +84,12 @@ class MW_WP_Form_Admin {
 
 		$Setting = new MW_WP_Form_Setting( $post_id );
 		$Setting->sets( $data );
+
+		if ( isset( $_POST[MWF_Config::TRACKINGNUMBER] ) ) {
+			$tracking_number = $_POST[MWF_Config::TRACKINGNUMBER];
+			$Setting->update_tracking_number( $tracking_number );
+		}
+
 		$Setting->save();
 	}
 

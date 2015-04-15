@@ -76,4 +76,17 @@ jQuery( function( $ ) {
 		items : '> .repeatable-box',
 		handle: '.sortable-icon-handle'
 	} );
+
+	/**
+	 * 問い合わせ番号フィールド
+	 */
+	$( 'input[name="open_tracking_number_field"]' ).click( function() {
+		var tracking_number_field = $( '#tracking_number_field' );
+		var is_open = $( this ).prop( 'checked' );
+		if ( is_open ) {
+			tracking_number_field.removeAttr( 'disabled' );
+		} else {
+			tracking_number_field.attr( 'disabled', 'disabled' );
+		}
+	} );
 } );

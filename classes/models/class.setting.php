@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Setting
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   :
+ * Modified   : April 15, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -263,10 +263,19 @@ class MW_WP_Form_Setting {
 
 	/**
 	 * 問い合わせ番号を更新
+	 *
+	 * @param null|int $count 指定があればそれに更新
 	 */
-	public function update_tracking_number() {
-		$tracking_number     = $this->get_tracking_number();
-		$new_tracking_number = $tracking_number + 1;
-		update_post_meta( $this->post_id, MWF_Config::TRACKINGNUMBER, $new_tracking_number );
+	public function update_tracking_number( $count = null ) {
+		$new_tracking_number = null;
+		if ( is_null( $count ) ) {
+			$tracking_number     = $this->get_tracking_number();
+			$new_tracking_number = $tracking_number + 1;
+		} elseif ( MWF_Functions::is_numeric( $count ) ) {
+			$new_tracking_number = $count;
+		}
+		if ( !is_null( $new_tracking_number ) ) {
+			update_post_meta( $this->post_id, MWF_Config::TRACKINGNUMBER, $new_tracking_number );
+		}
 	}
 }

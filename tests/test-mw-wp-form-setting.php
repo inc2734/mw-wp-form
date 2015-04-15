@@ -65,8 +65,24 @@ class MW_WP_Form_Setting_Test extends WP_UnitTestCase {
 	/**
 	 * @group update_tracking_number
 	 */
-	public function test_update_tracking_number() {
+	public function test_update_tracking_number_引数がないときは1カウントアップ() {
 		$this->Setting->update_tracking_number();
 		$this->assertEquals( 2, $this->Setting->get_tracking_number() );
+	}
+
+	/**
+	 * @group update_tracking_number
+	 */
+	public function test_update_tracking_number_引数が数字のときはそれに更新() {
+		$this->Setting->update_tracking_number( 100 );
+		$this->assertEquals( 100, $this->Setting->get_tracking_number() );
+	}
+
+	/**
+	 * @group update_tracking_number
+	 */
+	public function test_update_tracking_number_引数が文字のときは無視() {
+		$this->Setting->update_tracking_number( 'dummy' );
+		$this->assertEquals( 1, $this->Setting->get_tracking_number() );
 	}
 }
