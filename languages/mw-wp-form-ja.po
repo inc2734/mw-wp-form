@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.4.0\n"
+"Project-Id-Version: MW WP Form 2.4.5\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/mw-wp-form\n"
-"POT-Creation-Date: 2015-04-03 07:04:28+00:00\n"
-"PO-Revision-Date: 2015-04-03 16:05+0900\n"
+"POT-Creation-Date: 2015-04-15 01:18:20+00:00\n"
+"PO-Revision-Date: 2015-04-15 10:20+0900\n"
 "Last-Translator: Takashi Kitajima <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -152,11 +152,11 @@ msgstr "選択肢を「:」で送信値と表示値に分割したとき、送�
 
 #: classes/form-fields/class.checkbox.php:132
 #: classes/form-fields/class.datepicker.php:136
-#: classes/form-fields/class.hidden.php:82
+#: classes/form-fields/class.hidden.php:84
 #: classes/form-fields/class.password.php:112
 #: classes/form-fields/class.radio.php:128
 #: classes/form-fields/class.select.php:126
-#: classes/form-fields/class.text.php:119
+#: classes/form-fields/class.text.php:120
 #: classes/form-fields/class.textarea.php:114
 msgid "Default value"
 msgstr "初期値"
@@ -183,7 +183,7 @@ msgstr "垂直に配置する"
 #: classes/form-fields/class.radio.php:138
 #: classes/form-fields/class.select.php:131
 #: classes/form-fields/class.tel.php:102
-#: classes/form-fields/class.text.php:129
+#: classes/form-fields/class.text.php:130
 #: classes/form-fields/class.textarea.php:124
 #: classes/form-fields/class.zip.php:101
 msgid "Dsiplay error"
@@ -197,7 +197,7 @@ msgstr "エラー表示"
 #: classes/form-fields/class.radio.php:140
 #: classes/form-fields/class.select.php:133
 #: classes/form-fields/class.tel.php:104
-#: classes/form-fields/class.text.php:131
+#: classes/form-fields/class.text.php:132
 #: classes/form-fields/class.textarea.php:126
 #: classes/form-fields/class.zip.php:103
 msgid "Don't display error."
@@ -236,11 +236,11 @@ msgstr "アップロードしました。"
 msgid "Hidden"
 msgstr "hiddenフィールド"
 
-#: classes/form-fields/class.hidden.php:87
+#: classes/form-fields/class.hidden.php:89
 msgid "Display"
 msgstr "表示する"
 
-#: classes/form-fields/class.hidden.php:89
+#: classes/form-fields/class.hidden.php:91
 msgid "Display hidden value."
 msgstr "hiddenの値を表示"
 
@@ -287,7 +287,7 @@ msgid "Tel"
 msgstr "電話番号"
 
 #: classes/form-fields/class.tel.php:107
-#: classes/form-fields/class.text.php:134
+#: classes/form-fields/class.text.php:135
 #: classes/form-fields/class.zip.php:106
 msgid "Convert half alphanumeric"
 msgstr "半角英数字に変換"
@@ -300,7 +300,7 @@ msgstr "変換しない"
 msgid "Text"
 msgstr "テキストフィールド"
 
-#: classes/form-fields/class.text.php:136
+#: classes/form-fields/class.text.php:137
 msgid "Convert."
 msgstr "変換する"
 
@@ -483,60 +483,60 @@ msgstr "URL"
 msgid "This is not the format of a zip code."
 msgstr "郵便番号の形式ではありません。"
 
-#: mw-wp-form.php:165 mw-wp-form.php:166 templates/chart/index.php:4
+#: mw-wp-form.php:166 mw-wp-form.php:167 templates/chart/index.php:4
 msgid "Chart"
 msgstr "グラフ"
 
-#: mw-wp-form.php:194 mw-wp-form.php:195
+#: mw-wp-form.php:195 mw-wp-form.php:196
 #: templates/stores-inquiry-data-form-list/index.php:2
 msgid "Inquiry data"
 msgstr "問い合わせデータ"
 
-#: mw-wp-form.php:290
+#: mw-wp-form.php:291
 msgid "Add New Form"
 msgstr "フォームを追加"
 
-#: mw-wp-form.php:291
+#: mw-wp-form.php:292
 msgid "Edit Form"
 msgstr "フォームを編集"
 
-#: mw-wp-form.php:292
+#: mw-wp-form.php:293
 msgid "New Form"
 msgstr "新しいフォーム"
 
-#: mw-wp-form.php:293
+#: mw-wp-form.php:294
 msgid "View Form"
 msgstr "フォームを表示"
 
-#: mw-wp-form.php:294
+#: mw-wp-form.php:295
 msgid "Search Forms"
 msgstr "フォームを検索"
 
-#: mw-wp-form.php:295
+#: mw-wp-form.php:296
 msgid "No Forms found"
 msgstr "フォームがありません"
 
-#: mw-wp-form.php:296
+#: mw-wp-form.php:297
 msgid "No Forms found in Trash"
 msgstr "ゴミ箱にフォームはありません"
 
-#: mw-wp-form.php:313
+#: mw-wp-form.php:314
 msgid "Edit "
 msgstr "編集"
 
-#: mw-wp-form.php:314
+#: mw-wp-form.php:315
 msgid "View"
 msgstr "表示"
 
-#: mw-wp-form.php:315
+#: mw-wp-form.php:316
 msgid "Search"
 msgstr "検索"
 
-#: mw-wp-form.php:316
+#: mw-wp-form.php:317
 msgid "No data found"
 msgstr "データがありません"
 
-#: mw-wp-form.php:317
+#: mw-wp-form.php:318
 msgid "No data found in Trash"
 msgstr "ゴミ箱にデータはありません"
 
@@ -646,11 +646,19 @@ msgstr "問い合わせデータをデータベースに保存"
 msgid "Enable scrolling of screen transition."
 msgstr "画面変遷時のスクロールを有効にする"
 
-#: templates/admin/settings.php:14
+#: templates/admin/settings.php:13
+msgid "Next Tracking Number"
+msgstr "次の問い合わせ番号"
+
+#: templates/admin/settings.php:16
+msgid "I want to change."
+msgstr "変更する"
+
+#: templates/admin/settings.php:20
 msgid "Akismet Setting"
 msgstr "Akismet 設定"
 
-#: templates/admin/settings.php:29
+#: templates/admin/settings.php:35
 msgid "Input the key to use Akismet."
 msgstr "Akismetを使用する項目のキーを入力してください。"
 

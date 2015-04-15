@@ -13,7 +13,7 @@
 	<?php esc_html_e( 'Next Tracking Number', MWF_Config::DOMAIN ); ?><br />
 	<input type="number" name="<?php echo esc_attr( MWF_Config::TRACKINGNUMBER ); ?>" id="tracking_number_field" value="<?php echo esc_attr( $tracking_number ); ?>" step="1" min="1" disabled="disabled" /><br />
 	<input type="checkbox" name="open_tracking_number_field" />
-	<?php esc_html_e( 'I want to change.' ); ?>
+	<?php esc_html_e( 'I want to change.', MWF_Config::DOMAIN ); ?>
 </p>
 <table border="0" cellpadding="0" cellspacing="0" class="akismet">
 	<tr>
