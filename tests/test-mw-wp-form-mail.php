@@ -51,6 +51,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group set_admin_mail_raw_params
+	 * @backupStaticAttributes enabled
 	 */
 	public function test_set_admin_mail_raw_params_未設定() {
 		$post_id = $this->factory->post->create( array(
@@ -59,93 +60,67 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Setting = new MW_WP_Form_Setting( $post_id );
 		$this->Mail->set_admin_mail_raw_params( $Setting );
 
-		$this->assertEquals(
-			'',
-			$this->Mail->subject
-		);
-
-		$this->assertEquals(
-			'',
-			$this->Mail->body
-		);
-
-		$this->assertEquals(
-			get_bloginfo( 'admin_email' ),
-			$this->Mail->to
-		);
-
-		$this->assertEquals(
-			'',
-			$this->Mail->cc
-		);
-
-		$this->assertEquals(
-			'',
-			$this->Mail->bcc
-		);
-
-		$this->assertEquals(
-			get_bloginfo( 'admin_email' ),
-			$this->Mail->from
-		);
-
-		$this->assertEquals(
-			get_bloginfo( 'name' ),
-			$this->Mail->sender
-		);
+		$this->assertEquals( '', $this->Mail->subject );
+		$this->assertEquals( '', $this->Mail->body );
+		$this->assertEquals( get_bloginfo( 'admin_email' ), $this->Mail->to );
+		$this->assertEquals( '', $this->Mail->cc );
+		$this->assertEquals( '', $this->Mail->bcc );
+		$this->assertEquals( get_bloginfo( 'admin_email' ), $this->Mail->from );
+		$this->assertEquals( get_bloginfo( 'name' ), $this->Mail->sender );
 	}
 
 	/**
 	 * @group set_admin_mail_raw_params
+	 * @backupStaticAttributes enabled
 	 */
 	public function test_set_admin_mail_raw_params_設定あり() {
 		$post_id = $this->factory->post->create( array(
 			'post_type' => MWF_Config::NAME,
 		) );
 		$Setting = new MW_WP_Form_Setting( $post_id );
-		$Setting->set( 'mail_subject'     , 'subject' );
-		$Setting->set( 'mail_content'     , 'body' );
-		$Setting->set( 'mail_to'          , 'to@example.com' );
-		$Setting->set( 'mail_cc'          , 'cc@example.com' );
-		$Setting->set( 'mail_bcc'         , 'bcc@example.com' );
-		$Setting->set( 'admin_mail_from'  , 'from@example.com' );
-		$Setting->set( 'admin_mail_sender', 'sender' );
+		$Setting->set( 'admin_mail_subject', 'subject' );
+		$Setting->set( 'mail_content'      , 'body' );
+		$Setting->set( 'mail_to'           , 'to@example.com' );
+		$Setting->set( 'mail_cc'           , 'cc@example.com' );
+		$Setting->set( 'mail_bcc'          , 'bcc@example.com' );
+		$Setting->set( 'admin_mail_from'   , 'from@example.com' );
+		$Setting->set( 'admin_mail_sender' , 'sender' );
 		$this->Mail->set_admin_mail_raw_params( $Setting );
 
-		$this->assertEquals(
-			'subject',
-			$this->Mail->subject
-		);
+		$this->assertEquals( 'subject', $this->Mail->subject );
+		$this->assertEquals( 'body', $this->Mail->body );
+		$this->assertEquals( 'to@example.com', $this->Mail->to );
+		$this->assertEquals( 'cc@example.com', $this->Mail->cc );
+		$this->assertEquals( 'bcc@example.com', $this->Mail->bcc );
+		$this->assertEquals( 'from@example.com', $this->Mail->from );
+		$this->assertEquals( 'sender', $this->Mail->sender );
+	}
 
-		$this->assertEquals(
-			'body',
-			$this->Mail->body
-		);
+	/**
+	 * @group set_admin_mail_raw_params
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_set_admin_mail_raw_params_未設定_自動返信設定あり() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$Setting = new MW_WP_Form_Setting( $post_id );
+		$Setting->set( 'automatic_reply_email', 'メールアドレス' );
+		$Setting->set( 'mail_from'            , 'from@example.com' );
+		$Setting->set( 'mail_sender'          , 'sender' );
+		$Setting->set( 'mail_subject'         , 'subject' );
+		$Setting->set( 'mail_content'         , 'body' );
+		$Data = MW_WP_Form_Data::getInstance( MWF_Functions::get_form_key_from_form_id( $post_id ) );
+		$Data->set( 'メールアドレス', 'to@example.com' );
+		$this->Mail->set_admin_mail_raw_params( $Setting );
 
-		$this->assertEquals(
-			'to@example.com',
-			$this->Mail->to
-		);
-
-		$this->assertEquals(
-			'cc@example.com',
-			$this->Mail->cc
-		);
-
-		$this->assertEquals(
-			'bcc@example.com',
-			$this->Mail->bcc
-		);
-
-		$this->assertEquals(
-			'from@example.com',
-			$this->Mail->from
-		);
-
-		$this->assertEquals(
-			'sender',
-			$this->Mail->sender
-		);
+		$this->assertEquals( 'subject', $this->Mail->subject );
+		$this->assertEquals( 'body', $this->Mail->body );
+		$this->assertEquals( get_bloginfo( 'admin_email' ), $this->Mail->to );
+		$this->assertEquals( '', $this->Mail->cc );
+		$this->assertEquals( '', $this->Mail->bcc );
+		$this->assertEquals( 'from@example.com', $this->Mail->from );
+		$this->assertEquals( 'sender', $this->Mail->sender );
 	}
 
 	/**
@@ -160,30 +135,11 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Data = MW_WP_Form_Data::getInstance( MWF_Functions::get_form_key_from_form_id( $post_id ) );
 		$this->Mail->set_reply_mail_raw_params( $Setting );
 
-		$this->assertEquals(
-			'',
-			$this->Mail->to
-		);
-
-		$this->assertEquals(
-			get_bloginfo( 'admin_email' ),
-			$this->Mail->from
-		);
-
-		$this->assertEquals(
-			get_bloginfo( 'name' ),
-			$this->Mail->sender
-		);
-
-		$this->assertEquals(
-			'',
-			$this->Mail->subject
-		);
-
-		$this->assertEquals(
-			'',
-			$this->Mail->body
-		);
+		$this->assertEquals( '', $this->Mail->to );
+		$this->assertEquals( get_bloginfo( 'admin_email' ), $this->Mail->from );
+		$this->assertEquals( get_bloginfo( 'name' ), $this->Mail->sender );
+		$this->assertEquals( '', $this->Mail->subject );
+		$this->assertEquals( '', $this->Mail->body );
 	}
 
 	/**
@@ -204,30 +160,11 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Data->set( 'メールアドレス', 'to@example.com' );
 		$this->Mail->set_reply_mail_raw_params( $Setting );
 
-		$this->assertEquals(
-			'to@example.com',
-			$this->Mail->to
-		);
-
-		$this->assertEquals(
-			'from@example.com',
-			$this->Mail->from
-		);
-
-		$this->assertEquals(
-			'sender',
-			$this->Mail->sender
-		);
-
-		$this->assertEquals(
-			'subject',
-			$this->Mail->subject
-		);
-
-		$this->assertEquals(
-			'body',
-			$this->Mail->body
-		);
+		$this->assertEquals( 'to@example.com', $this->Mail->to );
+		$this->assertEquals( 'from@example.com', $this->Mail->from );
+		$this->assertEquals( 'sender', $this->Mail->sender );
+		$this->assertEquals( 'subject', $this->Mail->subject );
+		$this->assertEquals( 'body', $this->Mail->body );
 	}
 
 	/**

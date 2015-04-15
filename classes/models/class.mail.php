@@ -227,6 +227,9 @@ class MW_WP_Form_Mail {
 
 		// 送信元を指定
 		$admin_mail_from = get_bloginfo( 'admin_email' );
+		if ( $Setting->get( 'mail_from' ) ) {
+			$admin_mail_from = $Setting->get( 'mail_from' );
+		}
 		if ( $Setting->get( 'admin_mail_from' ) ) {
 			$admin_mail_from = $Setting->get( 'admin_mail_from' );
 		}
@@ -234,6 +237,9 @@ class MW_WP_Form_Mail {
 
 		// 送信者を指定
 		$admin_mail_sender = get_bloginfo( 'name' );
+		if ( $Setting->get( 'mail_sender' ) ) {
+			$admin_mail_sender = $Setting->get( 'mail_sender' );
+		}
 		if ( $Setting->get( 'admin_mail_sender' ) ) {
 			$admin_mail_sender = $Setting->get( 'admin_mail_sender' );
 		}
