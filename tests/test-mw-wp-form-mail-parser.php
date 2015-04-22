@@ -141,9 +141,40 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Setting );
 		$Mail = $Mail_Parser->get_parsed_mail_object( false );
 
-		$this->assertEquals(
-			'hoge',
-			$Mail->body
+		$this->assertEquals( 'hoge', $Mail->body );
+	}
+
+	/**
+	 * @group get_parsed_mail_object
+	 * @group custom_mail_tag
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_get_parsed_mail_object_mwform_custom_mail_tag_TO_CC_BCCも対応() {
+		$self = $this;
+		add_filter(
+			'mwform_custom_mail_tag_' . $this->form_key,
+			function( $value, $key, $insert_id ) use( $self ) {
+				if ( $key === 'to' ) {
+					return 'to@example.com';
+				} elseif ( $key === 'cc' ) {
+					return 'cc@example.com';
+				} elseif ( $key === 'bcc' ) {
+					return 'bcc@example.com';
+				}
+				return $value;
+			},
+			10,
+			3
 		);
+
+		$this->Mail->to  = '{to}';
+		$this->Mail->cc  = '{cc}';
+		$this->Mail->bcc = '{bcc}';
+		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Setting );
+		$Mail = $Mail_Parser->get_parsed_mail_object( false );
+
+		$this->assertEquals( 'to@example.com', $Mail->to );
+		$this->assertEquals( 'cc@example.com', $Mail->cc );
+		$this->assertEquals( 'bcc@example.com', $Mail->bcc );
 	}
 }
