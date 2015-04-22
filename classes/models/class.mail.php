@@ -252,15 +252,14 @@ class MW_WP_Form_Mail {
 	 * @param MW_WP_Form_Setting $Setting
 	 */
 	public function set_reply_mail_raw_params( MW_WP_Form_Setting $Setting ) {
-		$this->to  = '';
-		$this->cc  = '';
-		$this->bcc = '';
+		$this->to          = '';
+		$this->cc          = '';
+		$this->bcc         = '';
+		$this->attachments = array();
 
 		$Data = MW_WP_Form_Data::getInstance();
 		$automatic_reply_email = $Setting->get( 'automatic_reply_email' );
 
-		// 自動返信メールからは添付ファイルを削除
-		$this->attachments = array();
 		$form_id = $Setting->get( 'post_id' );
 		if ( $form_id ) {
 			$Validation = new MW_WP_Form_Validation_Rule_Mail();

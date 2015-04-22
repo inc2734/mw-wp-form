@@ -66,6 +66,7 @@ class MW_WP_Form_Mail_Service {
 
 		if ( $this->Setting->get( 'post_id' ) ) {
 			$this->set_admin_mail_raw_params();
+			// 管理者宛メールにだけ添付ファイルを添付
 			$this->set_attachments( $this->Mail_admin_raw );
 			$this->Mail_admin_raw = $this->apply_filters_mwform_admin_mail_raw( $this->Mail_admin_raw );
 
