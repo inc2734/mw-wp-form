@@ -73,6 +73,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.4.6 =
 * Changed : The custom_mail_tag filter hook applied to To, CC and BCC.
+* Changed : Full size image is displayed when you click the thumbnail of the attached image in saving contact data list.
 
 = 2.4.5 =
 * Refactoring MW_WP_Form_Data Class.

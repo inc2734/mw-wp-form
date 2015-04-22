@@ -2,11 +2,11 @@
 /**
  * Name       : MWF Functions
  * Description: 関数
- * Version    : 1.4.2
+ * Version    : 1.4.3
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : May 29, 2013
- * Modified   : April 14, 2015
+ * Modified   : April 23, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -360,10 +360,12 @@ class MWF_Functions {
 		if ( $mimetype ) {
 			// 画像だったら
 			if ( in_array( $mimetype, array( 'image/jpeg', 'image/gif', 'image/png', 'image/bmp' ) ) ) {
-				$src = wp_get_attachment_image_src( $value, 'thumbnail' );
+				$src_thumbnail = wp_get_attachment_image_src( $value, 'thumbnail' );
+				$src_full      = wp_get_attachment_image_src( $value, 'full' );
 				return sprintf(
-					'<img src="%s" alt="" style="width:50px;height:50px" />',
-					esc_url( $src[0] )
+					'<a href="%s" target="_blank"><img src="%s" alt="" style="max-height:50px" /></a>',
+					esc_url( $src_full[0] ),
+					esc_url( $src_thumbnail[0] )
 				);
 			}
 			// 画像以外
