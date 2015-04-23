@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Mail Parser
  * Description: メールパーサー
- * Version    : 1.0.1
+ * Version    : 1.0.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : April 14, 2015
- * Modified   : April 22, 2015
+ * Modified   : April 23, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -87,12 +87,7 @@ class MW_WP_Form_Mail_Parser {
 			}
 
 			if ( $key == 'to' || $key == 'cc' || $key == 'bcc' ) {
-				$form_id  = $this->Setting->get( 'post_id' );
-				$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
-				$value = $this->apply_filters_mwform_custom_mail_tag( $form_key, null, $key );
-				if ( !is_null( $value ) ) {
-					$this->Mail->$key = $value;
-				}
+				$this->Mail->$key = $this->parse_mail_destination( $value );
 				continue;
 			}
 
@@ -104,6 +99,32 @@ class MW_WP_Form_Mail_Parser {
 			$this->Mail->$key = $value;
 		}
 		return $this->Mail;
+	}
+
+	/**
+	 * メール送信先用に {name属性} を置換。Data からの取得は行わない
+	 *
+	 * @param string $value
+	 * @return string
+	 */
+	protected function parse_mail_destination( $value ) {
+		return preg_replace_callback(
+			'/{(.+?)}/',
+			array( $this, '_parse_mail_destination' ),
+			$value
+		);
+	}
+	protected function _parse_mail_destination( $matches ) {
+		$match    = $matches[1];
+		$form_id  = $this->Setting->get( 'post_id' );
+		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
+		$value    = $this->apply_filters_mwform_custom_mail_tag( $form_key, null, $match );
+
+		// カスタムメールタグが利用されていない = null ときは送信先の初期値である空白を返す
+		if ( !is_null( $value ) ) {
+			return $value;
+		}
+		return '';
 	}
 
 	/**

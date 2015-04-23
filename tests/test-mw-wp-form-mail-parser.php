@@ -52,35 +52,12 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Setting );
 		$Mail = $Mail_Parser->get_parsed_mail_object( false );
 
-		$this->assertEquals(
-			'{to}',
-			$Mail->to
-		);
-
-		$this->assertEquals(
-			'{cc}',
-			$Mail->cc
-		);
-
-		$this->assertEquals(
-			'{bcc}',
-			$Mail->bcc
-		);
-
-		$this->assertEquals(
-			'from@example.com',
-			$Mail->from
-		);
-
-		$this->assertEquals(
-			'Sender',
-			$Mail->sender
-		);
-
-		$this->assertEquals(
-			'body',
-			$Mail->body
-		);
+		$this->assertEquals( '', $Mail->to );
+		$this->assertEquals( '', $Mail->cc );
+		$this->assertEquals( '', $Mail->bcc );
+		$this->assertEquals( 'from@example.com', $Mail->from );
+		$this->assertEquals( 'Sender', $Mail->sender );
+		$this->assertEquals( 'body', $Mail->body );
 	}
 
 	/**
@@ -154,11 +131,11 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 		add_filter(
 			'mwform_custom_mail_tag_' . $this->form_key,
 			function( $value, $key, $insert_id ) use( $self ) {
-				if ( $key === 'to' ) {
+				if ( $key === '_to' ) {
 					return 'to@example.com';
-				} elseif ( $key === 'cc' ) {
+				} elseif ( $key === '_cc' ) {
 					return 'cc@example.com';
-				} elseif ( $key === 'bcc' ) {
+				} elseif ( $key === '_bcc' ) {
 					return 'bcc@example.com';
 				}
 				return $value;
@@ -167,9 +144,9 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 			3
 		);
 
-		$this->Mail->to  = '{to}';
-		$this->Mail->cc  = '{cc}';
-		$this->Mail->bcc = '{bcc}';
+		$this->Mail->to  = '{_to}';
+		$this->Mail->cc  = '{_cc}';
+		$this->Mail->bcc = '{_bcc}';
 		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Setting );
 		$Mail = $Mail_Parser->get_parsed_mail_object( false );
 

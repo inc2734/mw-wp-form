@@ -304,35 +304,12 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$this->Mail->body   = '{body}';
 		$this->Mail->parse( $Setting, false );
 
-		$this->assertEquals(
-			'{to}',
-			$this->Mail->to
-		);
-
-		$this->assertEquals(
-			'{cc}',
-			$this->Mail->cc
-		);
-
-		$this->assertEquals(
-			'{bcc}',
-			$this->Mail->bcc
-		);
-
-		$this->assertEquals(
-			'from@example.com',
-			$this->Mail->from
-		);
-
-		$this->assertEquals(
-			'Sender',
-			$this->Mail->sender
-		);
-
-		$this->assertEquals(
-			'body',
-			$this->Mail->body
-		);
+		$this->assertEquals( '', $this->Mail->to );
+		$this->assertEquals( '', $this->Mail->cc );
+		$this->assertEquals( '', $this->Mail->bcc );
+		$this->assertEquals( 'from@example.com', $this->Mail->from );
+		$this->assertEquals( 'Sender', $this->Mail->sender );
+		$this->assertEquals( 'body', $this->Mail->body );
 	}
 
 	/**

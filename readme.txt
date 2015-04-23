@@ -4,7 +4,7 @@ Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 3.7
 Tested up to: 4.1.1
-Stable tag: 2.4.6
+Stable tag: 2.4.7
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,6 +70,9 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 5. Supports chart display of saved inquiry data.
 
 == Changelog ==
+
+= 2.4.7 =
+* Bugfix  : Fixed a bug the custom_mail_tag from To, CC and BCC.
 
 = 2.4.6 =
 * Changed : The custom_mail_tag filter hook applied to To, CC and BCC.
