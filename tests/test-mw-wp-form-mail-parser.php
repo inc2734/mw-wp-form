@@ -83,6 +83,26 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @group get_parsed_mail_object
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_get_parsed_mail_object_Nullでもデータベースに保存() {
+		$this->Data->set( 'example', null );
+		$this->Mail->body = '{example}';
+		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Setting );
+		$Mail_Parser->get_parsed_mail_object( true );
+
+		$posts = get_posts( array(
+			'post_type' => MWF_Functions::get_contact_data_post_type_from_form_id( $this->Setting->get( 'post_id' ) ),
+		) );
+		foreach ( $posts as $post ) {
+			$post_metas = get_post_meta( $post->ID );
+			$this->assertTrue( isset( $post_metas['example'] ) );
+			break;
+		}
+	}
+
+	/**
 	 * @group get_parsed_mail_oabject
 	 * @group tracking_number
 	 * @backupStaticAttributes enabled
