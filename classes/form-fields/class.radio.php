@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Radio
  * Description: ラジオボタンを出力
- * Version    : 1.5.6
+ * Version    : 1.5.7
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : March 26, 2015
+ * Modified   : April 24, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -41,7 +41,7 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 			'name'       => '',
 			'id'         => null,
 			'children'   => '',
-			'value'      => '',
+			'value'      => null,
 			'vertically' => null,
 			'post_raw'   => 'false',
 			'show_error' => 'true',
@@ -84,7 +84,9 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 		$value        = $this->Data->get( $this->atts['name'], $children );
 		$posted_value = $this->Data->get_raw( $this->atts['name'] );
 		$_ret         = esc_html( $value );
-		$_ret        .= $this->Form->hidden( $this->atts['name'], $posted_value );
+		if ( !is_null( $value ) ) {
+			$_ret .= $this->Form->hidden( $this->atts['name'], $posted_value );
+		}
 		if ( $this->atts['post_raw'] === 'false' ) {
 			$_ret .= $this->Form->children( $this->atts['name'], $children );
 		}
