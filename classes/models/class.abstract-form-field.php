@@ -213,8 +213,8 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * get_children
 	 * 選択肢の配列を返す（:が含まれている場合は分割して前をキーに、後ろを表示名にする）
+	 *
 	 * @param string $_children
 	 * @return array $children
 	 */

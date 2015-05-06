@@ -36,7 +36,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	public function test_children() {
 		$children = array( 'a' => 'aaa', 'b' => 'bbb' );
 		$this->assertEquals(
-			'<input type="hidden" name="__children[test]" value="' . esc_attr( json_encode( $children ) ) . '" />',
+			'<input type="hidden" name="__children[test][]" value="' . esc_attr( json_encode( $children ) ) . '" />',
 			$this->Form->children( 'test', $children )
 		);
 	}

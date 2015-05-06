@@ -98,7 +98,9 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		$this->Data->sets(
 			array(
 				'__children' => array(
-					'test' => json_encode( array( 'a' => 'aaa' ) ),
+					'test' => array(
+						json_encode( array( 'a' => 'aaa' ) )
+					),
 				),
 			)
 		);
@@ -113,7 +115,9 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		$this->Data->sets(
 			array(
 				'__children' => array(
-					'test' => json_encode( array( 'b' => 'bbb' ) ),
+					'test' => array(
+						json_encode( array( 'b' => 'bbb' ) ),
+					),
 				),
 			)
 		);
@@ -155,11 +159,13 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 					'separator' => ',',
 				),
 				'__children' => array(
-					'test' => json_encode( array(
-						'a' => 'aaa',
-						'b' => 'bbb',
-						'c' => 'ccc',
-					) ),
+					'test' => array(
+						json_encode( array(
+							'a' => 'aaa',
+							'b' => 'bbb',
+							'c' => 'ccc',
+						) ),
+					),
 				),
 			)
 		);
@@ -192,11 +198,13 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 					'separator' => ',',
 				),
 				'__children' => array(
-					'test' => json_encode( array(
-						'c' => 'ccc',
-						'e' => 'ddd',
-						'e' => 'eee',
-					) ),
+					'test' => array(
+						json_encode( array(
+							'c' => 'ccc',
+							'e' => 'ddd',
+							'e' => 'eee',
+						) ),
+					),
 				),
 			)
 		);
@@ -214,11 +222,13 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 					'separator' => ',',
 				),
 				'__children' => array(
-					'test' => json_encode( array(
-						'a' => 'aaa',
-						'b' => 'bbb',
-						'c' => 'ccc',
-					) ),
+					'test' => array(
+						json_encode( array(
+							'a' => 'aaa',
+							'b' => 'bbb',
+							'c' => 'ccc',
+						) ),
+					),
 				),
 			)
 		);
@@ -251,11 +261,13 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 					'separator' => ',',
 				),
 				'__children' => array(
-					'test' => json_encode( array(
-						'c' => 'ccc',
-						'e' => 'ddd',
-						'e' => 'eee',
-					) ),
+					'test' => array(
+						json_encode( array(
+							'c' => 'ccc',
+							'e' => 'ddd',
+							'e' => 'eee',
+						) ),
+					),
 				),
 			)
 		);
@@ -278,7 +290,9 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		$this->Data->sets(
 			array(
 				'__children' => array(
-					'test' => json_encode( array( 'a' => 'aaa' ) ),
+					'test' => array(
+						json_encode( array( 'a' => 'aaa' ) ),
+					),
 				),
 			)
 		);
@@ -293,7 +307,9 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		$this->Data->sets(
 			array(
 				'__children' => array(
-					'test' => json_encode( array( 'b' => 'bbb' ) ),
+					'test' => array(
+						json_encode( array( 'b' => 'bbb' ) ),
+					),
 				),
 			)
 		);
@@ -335,11 +351,13 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 					'separator' => ',',
 				),
 				'__children' => array(
-					'test' => json_encode( array(
-						'a' => 'aaa',
-						'b' => 'bbb',
-						'c' => 'ccc',
-					) ),
+					'test' => array(
+						json_encode( array(
+							'a' => 'aaa',
+							'b' => 'bbb',
+							'c' => 'ccc',
+						) ),
+					),
 				),
 			)
 		);
@@ -372,11 +390,13 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 					'separator' => ',',
 				),
 				'__children' => array(
-					'test' => json_encode( array(
-						'c' => 'ccc',
-						'e' => 'ddd',
-						'e' => 'eee',
-					) ),
+					'test' => array(
+						json_encode( array(
+							'c' => 'ccc',
+							'e' => 'ddd',
+							'e' => 'eee',
+						) ),
+					),
 				),
 			)
 		);
@@ -394,11 +414,13 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 					'separator' => ',',
 				),
 				'__children' => array(
-					'test' => json_encode( array(
-						'a' => 'aaa',
-						'b' => 'bbb',
-						'c' => 'ccc',
-					) ),
+					'test' => array(
+						json_encode( array(
+							'a' => 'aaa',
+							'b' => 'bbb',
+							'c' => 'ccc',
+						) ),
+					),
 				),
 			)
 		);
@@ -431,11 +453,13 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 					'separator' => ',',
 				),
 				'__children' => array(
-					'test' => json_encode( array(
-						'c' => 'ccc',
-						'e' => 'ddd',
-						'e' => 'eee',
-					) ),
+					'test' => array(
+						json_encode( array(
+							'c' => 'ccc',
+							'e' => 'ddd',
+							'e' => 'eee',
+						) ),
+					),
 				),
 			)
 		);

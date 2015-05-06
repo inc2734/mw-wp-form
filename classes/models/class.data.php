@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Data
  * Description: MW WP Form のデータ操作用
- * Version    : 1.3.8
+ * Version    : 1.3.9
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : October 10, 2013
- * Modified   : April 15, 2015
+ * Modified   : May 6, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -220,8 +220,14 @@ class MW_WP_Form_Data {
 			return;
 		}
 
-		if ( empty( $children ) && isset( $this->data['__children'][$key] ) ) {
-			$children = json_decode( $this->data['__children'][$key], true );
+		if ( empty( $children ) && isset( $this->data['__children'][$key] ) && is_array( $this->data['__children'][$key] ) ) {
+			$_children = $this->data['__children'][$key];
+			foreach ( $_children as $_child ) {
+				$_child = json_decode( $_child, true );
+				foreach ( $_child as $_child_key => $_child_value ) {
+					$children[$_child_key] = $_child_value;
+				}
+			}
 		}
 
 		if ( is_array( $this->data[$key] ) ) {
@@ -255,10 +261,16 @@ class MW_WP_Form_Data {
 		}
 
 		$children = array();
-		if ( isset( $this->data['__children'][$key] ) ) {
-			$children = json_decode( $this->data['__children'][$key], true );
+		if ( isset( $this->data['__children'][$key] ) && is_array( $this->data['__children'][$key] ) ) {
+			$_children = $this->data['__children'][$key];
+			foreach ( $_children as $_child ) {
+				$_child = json_decode( $_child, true );
+				foreach ( $_child as $_child_key => $_child_value ) {
+					$children[$_child_key] = $_child_value;
+				}
+			}
 		}
-
+		
 		if ( is_array( $this->data[$key] ) ) {
 			if ( $children ) {
 				return $this->get_separated_raw_value( $key, $children );
