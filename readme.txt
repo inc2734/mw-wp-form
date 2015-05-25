@@ -1,5 +1,5 @@
 === MW WP Form ===
-Contributors: inc2734, ryu263
+Contributors: inc2734, ryu263, tomothumb
 Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 3.7
@@ -47,6 +47,7 @@ Source: https://developers.google.com/chart/
 
 * [Takashi Kitajima](http://2inc.org) ( [inc2734](http://profiles.wordpress.org/inc2734) )
 * [Ryujiro Yamamoto](http://webcre-archive.com) ( [ryu263](http://profiles.wordpress.org/ryu263) )
+* [Tsujimoto Tomoyuki](http://kee-non.com) ( [tomothumb](http://profiles.wordpress.org/tomothumb) )
 
 == Installation ==
 
@@ -73,6 +74,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.4.11
 = Bugfix  : Fixed a bug that attachment file does not displayed in contact data list page.
+= Changed : Trim email address on inputs.
 
 = 2.4.10
 = Bugfix  : Fixed a bug that does not scroll when you return to the input screen.
