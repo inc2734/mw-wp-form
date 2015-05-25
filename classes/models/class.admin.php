@@ -29,6 +29,10 @@ class MW_WP_Form_Admin {
 			return $post_id;
 
 		$data = $_POST[MWF_Config::NAME];
+		$triminglists = array("mail_from","mail_to","admin_mail_from");
+		foreach ($triminglists as $name) {
+			$data[$name] = trim(mb_convert_kana($data[$name], "s", 'UTF-8'));
+		}
 		if ( !empty( $data['validation'] ) && is_array( $data['validation'] ) ) {
 			$validation = array();
 			foreach ( $data['validation'] as $_validation ) {
