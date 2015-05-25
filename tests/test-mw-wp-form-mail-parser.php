@@ -103,6 +103,39 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @group get_parsed_mail_object
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_get_parsed_mail_object_Nullでもデータベースに保存_ただし添付の場合は保存しない() {
+		$MW_WP_Form_File = new MW_WP_Form_File;
+		$temp_dir = $MW_WP_Form_File->get_temp_dir();
+		$temp_dir = $temp_dir['dir'];
+		system( "sudo chmod 777 " . WP_CONTENT_DIR . '/uploads' );
+		$MW_WP_Form_File->create_temp_dir();
+		file_put_contents( $temp_dir . '/attachment_1.txt', 'hoge' );
+		file_put_contents( $temp_dir . '/attachment_2.txt', 'fuga' );
+
+		$this->Data->set( 'attachment_1', null );
+		$this->Mail->body = '{attachment_1}';
+		$this->Mail->attachments = array(
+			'attachment_1' => $temp_dir . '/attachment_1.txt',
+			'attachment_2' => $temp_dir . '/attachment_2.txt',
+		);
+
+		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Setting );
+		$Mail_Parser->get_parsed_mail_object( true );
+
+		$posts = get_posts( array(
+			'post_type' => MWF_Functions::get_contact_data_post_type_from_form_id( $this->Setting->get( 'post_id' ) ),
+		) );
+		foreach ( $posts as $post ) {
+			$post_metas = get_post_meta( $post->ID );
+			$this->assertFalse( isset( $post_metas['attachment_1'] ) );
+			break;
+		}
+	}
+
+	/**
 	 * @group get_parsed_mail_oabject
 	 * @group tracking_number
 	 * @backupStaticAttributes enabled
