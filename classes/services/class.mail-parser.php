@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Mail Parser
  * Description: メールパーサー
- * Version    : 1.0.3
+ * Version    : 1.0.4
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : April 14, 2015
- * Modified   : April 24, 2015
+ * Modified   : May 25, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -176,8 +176,11 @@ class MW_WP_Form_Mail_Parser {
 		}
 
 		// 値が null でも保存（チェッボックス未チェックで直送信でも保存させるため）
+		// ただし、画像の場合はURLが保存されないように調整がはいるため除外が必要
 		if ( $do_update ) {
-			update_post_meta( $this->insert_contact_data_id, $match, $value );
+			if ( !array_key_exists( $match, $this->Mail->attachments ) ) {
+				update_post_meta( $this->insert_contact_data_id, $match, $value );
+			}
 		}
 		return $value;
 	}
