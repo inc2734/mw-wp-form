@@ -191,6 +191,9 @@ class MWF_Functions {
 
 			$wp_check_filetype = wp_check_filetype( $filepath );
 			$post_type = get_post_type_object( self::get_contact_data_post_type_from_form_id( $form_id ) );
+			if ( empty( $post_type->label ) ) {
+				continue;
+			}
 			$attachment = array(
 				'post_mime_type' => $wp_check_filetype['type'],
 				'post_title'     => $key,
@@ -266,14 +269,20 @@ class MWF_Functions {
 		}
 
 		if ( version_compare( phpversion(), '5.3.0' ) >= 0 ) {
+			if ( !file_exists( $filepath ) ) {
+				return false;
+			}
 			$finfo = new finfo( FILEINFO_MIME_TYPE );
 			$type = $finfo->file( $filepath );
+			if ( $finfo === false ) {
+				return false;
+			}
 			if ( is_array( $wp_check_filetype['type'] ) ) {
-				if ( !( $finfo !== false && in_array( $type, $wp_check_filetype['type'] ) ) ) {
+				if ( !in_array( $type, $wp_check_filetype['type'] ) ) {
 					return false;
 				}
 			} else {
-				if ( !( $finfo !== false && $type === $wp_check_filetype['type'] ) ) {
+				if ( $type !== $wp_check_filetype['type'] ) {
 					return false;
 				}
 			}
