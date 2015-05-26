@@ -2,11 +2,11 @@
 /**
  * Name       : MWF Functions
  * Description: 関数
- * Version    : 1.4.3
+ * Version    : 1.4.4
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : May 29, 2013
- * Modified   : April 23, 2015
+ * Modified   : May 26, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -390,6 +390,28 @@ class MWF_Functions {
 		// 添付されているけど、フック等でメタ情報が書き換えられて添付ファイルID以外になってしまった場合
 		else {
 			return esc_html( $value );
+		}
+	}
+
+	/**
+	 * 添付データのIDを返す
+	 * 過去バージョンでの不具合でアップロードファイルを示すメタデータが空になっていることがあるのでその場合の代替処理
+	 *
+	 * @param WP_Post $post
+	 * @param int $meta_key
+	 * @return int
+	 */
+	public static function get_multimedia_id__fallback( $post, $meta_key ) {
+		$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $post->ID );
+		$key = $Contact_Data_Setting->get_key_in_upload_file_keys( $post, $meta_key );
+		$attachments = get_posts( array(
+			'post_type'      => 'attachment',
+			'post_parent'    => $post->ID,
+			'posts_per_page' => 1,
+			'offset'         => $key,
+		) );
+		if ( isset( $attachments[0] ) ) {
+			return $attachments[0]->ID;
 		}
 	}
 }

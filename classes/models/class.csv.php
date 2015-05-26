@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form CSV
- * Version    : 1.0.1
+ * Version    : 1.0.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : April 3, 2015
- * Modified   : April 5, 2015
+ * Modified   : May 26, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -176,6 +176,10 @@ class MW_WP_Form_CSV {
 				} elseif ( isset( $post->$value ) ) {
 					$post_meta = $post->$value;
 					if ( $Contact_Data_Setting->is_upload_file_key( $post, $value ) ) {
+						// 過去バージョンでの不具合でメタデータが空になっていることがあるのでその場合は代替処理
+						if ( $post_meta === '' ) {
+							$post_meta = MWF_Functions::get_multimedia_id__fallback( $post, $value );
+						}
 						$column = wp_get_attachment_url( $post_meta );
 					} else {
 						$column = ( $post_meta ) ? $post_meta : '';

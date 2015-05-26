@@ -20,6 +20,10 @@
 		<td>
 			<?php
 			if ( $Contact_Data_Setting->is_upload_file_key( $post, $key ) ) {
+				// 過去バージョンでの不具合でメタデータが空になっていることがあるのでその場合は代替処理
+				if ( $value === '' ) {
+					$value = MWF_Functions::get_multimedia_id__fallback( $post, $key );
+				}
 				echo MWF_Functions::get_multimedia_data( $value );
 			} else {
 				echo nl2br( esc_html( $value ) );
