@@ -32,9 +32,10 @@ class MW_WP_Form_Field_Checkbox_Test extends WP_UnitTestCase {
 		$Error    = new MW_WP_Form_Error();
 
 		$this->is_through = false;
-		add_filter( 'mwform_value_' . $this->form_key, function( $value, $name ) {
+		$self = $this;
+		add_filter( 'mwform_value_' . $this->form_key, function( $value, $name ) use( $self ) {
 			if ( $name === 'checkbox' ) {
-				$this->is_through = true;
+				$self->is_through = true;
 			}
 			return $value;
 		}, 10, 2 );
@@ -50,9 +51,10 @@ class MW_WP_Form_Field_Checkbox_Test extends WP_UnitTestCase {
 		$Error    = new MW_WP_Form_Error();
 
 		$this->is_through = false;
-		add_filter( 'mwform_value_' . $this->form_key, function( $value, $name ) {
+		$self = $this;
+		add_filter( 'mwform_value_' . $this->form_key, function( $value, $name ) use( $self ) {
 			if ( $name === 'checkbox' ) {
-				$this->is_through = true;
+				$self->is_through = true;
 			}
 			return $value;
 		}, 10, 2 );
