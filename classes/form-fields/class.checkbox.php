@@ -45,7 +45,7 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 			'vertically' => null,
 			'post_raw'   => 'false',
 			'show_error' => 'true',
-			'separator'  => ', ',
+			'separator'  => ',',
 		);
 	}
 
