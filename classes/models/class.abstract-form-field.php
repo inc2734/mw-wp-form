@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Abstract Form Field
  * Description: フォームフィールドの抽象クラス
- * Version    : 1.7.3
+ * Version    : 1.7.4
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : April 15, 2015
+ * Modified   : June 23, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
