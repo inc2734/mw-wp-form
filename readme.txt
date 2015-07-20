@@ -75,6 +75,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.5.0 =
 * Add html5 email field.
+* Add html5 url field.
 
 = 2.4.12
 * Bugfix  : filter hook 'mwform_value_mwf_xxx' does not work when to use radio or checkboxes.

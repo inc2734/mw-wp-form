@@ -260,6 +260,32 @@ class MW_WP_Form_Form {
 	}
 
 	/**
+	 * input[type=url]タグ生成
+	 *
+	 * @param string $name name属性
+	 * @param array
+	 * @return string html
+	 */
+	public function url( $name, $options = array() ) {
+		$defaults = array(
+			'id'          => null,
+			'size'        => 60,
+			'maxlength'   => null,
+			'value'       => '',
+			'placeholder' => null,
+			'conv-half-alphanumeric' => null,
+		);
+		$options = array_merge( $defaults, $options );
+		$attributes = $this->generate_attributes( $options );
+
+		return sprintf(
+			'<input type="url" name="%s"%s />',
+			esc_attr( $name ),
+			$attributes
+		);
+	}
+
+	/**
 	 * input[type=hidden]タグ生成
 	 *
 	 * @param string $name name属性
