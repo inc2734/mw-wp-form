@@ -3,7 +3,7 @@ Contributors: inc2734, ryu263, tomothumb, nanniku
 Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 3.7
-Tested up to: 4.2.2
+Tested up to: 4.3 beta3
 Stable tag: 2.4.12
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -73,16 +73,19 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 == Changelog ==
 
+= 2.5.0 =
+* Add html5 email field.
+
 = 2.4.12
-= Bugfix  : filter hook 'mwform_value_mwf_xxx' does not work when to use radio or checkboxes.
-= Changed : Changed checkbox default separator ', ' to ','.
+* Bugfix  : filter hook 'mwform_value_mwf_xxx' does not work when to use radio or checkboxes.
+* Changed : Changed checkbox default separator ', ' to ','.
 
 = 2.4.11
-= Bugfix  : Fixed a bug that attachment file does not displayed in contact data list page.
-= Changed : Trim email address on inputs.
+* Bugfix  : Fixed a bug that attachment file does not displayed in contact data list page.
+* Changed : Trim email address on inputs.
 
 = 2.4.10
-= Bugfix  : Fixed a bug that does not scroll when you return to the input screen.
+* Bugfix  : Fixed a bug that does not scroll when you return to the input screen.
 
 = 2.4.9 =
 * Bugfix  : Fixes a bug that the value of last checkbox is only posted when multiple same name checkboxes created and those post_raw is true.

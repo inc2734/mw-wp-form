@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Form
  * Description: フォームヘルパー
- * Version    : 1.6.3
+ * Version    : 1.7.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : September 25, 2012
- * Modified   : May 6, 2015
+ * Modified   : July 20, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -228,6 +228,32 @@ class MW_WP_Form_Form {
 
 		return sprintf(
 			'<input type="text" name="%s"%s />',
+			esc_attr( $name ),
+			$attributes
+		);
+	}
+
+	/**
+	 * input[type=email]タグ生成
+	 *
+	 * @param string $name name属性
+	 * @param array
+	 * @return string html
+	 */
+	public function email( $name, $options = array() ) {
+		$defaults = array(
+			'id'          => null,
+			'size'        => 60,
+			'maxlength'   => 255,
+			'value'       => '',
+			'placeholder' => null,
+			'conv-half-alphanumeric' => null,
+		);
+		$options = array_merge( $defaults, $options );
+		$attributes = $this->generate_attributes( $options );
+
+		return sprintf(
+			'<input type="email" name="%s"%s />',
 			esc_attr( $name ),
 			$attributes
 		);
