@@ -74,8 +74,9 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 == Changelog ==
 
 = 2.5.0 =
-* Add html5 email field.
-* Add html5 url field.
+* Added   : Add html5 email field.
+* Added   : Add html5 url field.
+* Changed : maxlength default value is null.
 
 = 2.4.12
 * Bugfix  : filter hook 'mwform_value_mwf_xxx' does not work when to use radio or checkboxes.

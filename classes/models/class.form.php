@@ -218,7 +218,7 @@ class MW_WP_Form_Form {
 		$defaults = array(
 			'id'          => null,
 			'size'        => 60,
-			'maxlength'   => 255,
+			'maxlength'   => null,
 			'value'       => '',
 			'placeholder' => null,
 			'conv-half-alphanumeric' => null,
@@ -244,7 +244,7 @@ class MW_WP_Form_Form {
 		$defaults = array(
 			'id'          => null,
 			'size'        => 60,
-			'maxlength'   => 255,
+			'maxlength'   => null,
 			'value'       => '',
 			'placeholder' => null,
 			'conv-half-alphanumeric' => null,
@@ -311,7 +311,7 @@ class MW_WP_Form_Form {
 		$defaults = array(
 			'id'          => null,
 			'size'        => 60,
-			'maxlength'   => 255,
+			'maxlength'   => null,
 			'value'       => '',
 			'placeholder' => null,
 		);

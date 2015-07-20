@@ -41,7 +41,7 @@ class MW_WP_Form_Field_Email extends MW_WP_Form_Abstract_Form_Field {
 			'name'        => '',
 			'id'          => null,
 			'size'        => 60,
-			'maxlength'   => '',
+			'maxlength'   => null,
 			'value'       => '',
 			'placeholder' => null,
 			'show_error'  => 'true',
