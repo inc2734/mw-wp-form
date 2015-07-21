@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.4.5\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/tag/mw-wp-form\n"
-"POT-Creation-Date: 2015-04-15 01:18:20+00:00\n"
-"PO-Revision-Date: 2015-04-15 19:35+0900\n"
+"Project-Id-Version: MW WP Form 2.5.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
+"POT-Creation-Date: 2015-07-21 10:44+0900\n"
+"PO-Revision-Date: 2015-07-21 10:45+0900\n"
 "Last-Translator: Takashi Kitajima <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.7.5\n"
+"X-Generator: Poedit 1.8.2\n"
 "X-Poedit-KeywordsList: __;_e;_x;esc_html_e;esc_html__\n"
 "X-Poedit-SearchPath-0: ..\n"
 
@@ -70,7 +70,7 @@ msgstr "登録日時"
 
 #: classes/controllers/class.contact-data-list.php:118
 #: classes/models/class.csv.php:122 classes/models/class.csv.php:169
-#: templates/contact-data/detail.php:32
+#: templates/contact-data/detail.php:36
 msgid "Response Status"
 msgstr "対応状況"
 
@@ -102,27 +102,27 @@ msgstr "ボタン"
 msgid "Checkbox"
 msgstr "チェックボックス"
 
-#: classes/form-fields/class.checkbox.php:115
-#: classes/form-fields/class.radio.php:111
+#: classes/form-fields/class.checkbox.php:117
+#: classes/form-fields/class.radio.php:113
 #: classes/form-fields/class.select.php:109
 msgid "Choices"
 msgstr "選択肢"
 
-#: classes/form-fields/class.checkbox.php:119
+#: classes/form-fields/class.checkbox.php:121
 #: classes/form-fields/class.error.php:78
-#: classes/form-fields/class.radio.php:115
+#: classes/form-fields/class.radio.php:117
 #: classes/form-fields/class.select.php:113
 msgid "Input one line about one item."
 msgstr "1項目につき1行で入力してください。"
 
-#: classes/form-fields/class.checkbox.php:120
-#: classes/form-fields/class.radio.php:116
+#: classes/form-fields/class.checkbox.php:122
+#: classes/form-fields/class.radio.php:118
 #: classes/form-fields/class.select.php:114
 msgid "Example: value1&crarr;value2 or key1:value1&crarr;key2:value2"
 msgstr "例：値1&crarr;値2 もしくは キー1:値1&crarr;キー2:値2"
 
-#: classes/form-fields/class.checkbox.php:121
-#: classes/form-fields/class.radio.php:117
+#: classes/form-fields/class.checkbox.php:123
+#: classes/form-fields/class.radio.php:119
 #: classes/form-fields/class.select.php:115
 msgid ""
 "You can split the post value and display value by \":\". But display value "
@@ -130,76 +130,84 @@ msgid ""
 msgstr ""
 "送信値と表示値を「:」で分割できます。ただし、メールでは表示値が送信されます。"
 
-#: classes/form-fields/class.checkbox.php:122
-#: classes/form-fields/class.radio.php:118
+#: classes/form-fields/class.checkbox.php:124
+#: classes/form-fields/class.radio.php:120
 #: classes/form-fields/class.select.php:116
 msgid "When you want to use \":\", please enter \"::\"."
 msgstr "「:」を使いたいときは「::」と入力してください。"
 
-#: classes/form-fields/class.checkbox.php:126
-#: classes/form-fields/class.radio.php:122
+#: classes/form-fields/class.checkbox.php:128
+#: classes/form-fields/class.radio.php:124
 #: classes/form-fields/class.select.php:120
 msgid "Send value by e-mail"
 msgstr "メールで送信する値"
 
-#: classes/form-fields/class.checkbox.php:129
-#: classes/form-fields/class.radio.php:125
+#: classes/form-fields/class.checkbox.php:131
+#: classes/form-fields/class.radio.php:127
 #: classes/form-fields/class.select.php:123
 msgid ""
 "Send post value when you split the post value and display value by \":\" in "
 "choices."
 msgstr "選択肢を「:」で送信値と表示値に分割したとき、送信値をメールで送信"
 
-#: classes/form-fields/class.checkbox.php:132
+#: classes/form-fields/class.checkbox.php:134
 #: classes/form-fields/class.datepicker.php:136
+#: classes/form-fields/class.email.php:120
 #: classes/form-fields/class.hidden.php:84
 #: classes/form-fields/class.password.php:112
-#: classes/form-fields/class.radio.php:128
+#: classes/form-fields/class.radio.php:130
 #: classes/form-fields/class.select.php:126
 #: classes/form-fields/class.text.php:120
 #: classes/form-fields/class.textarea.php:114
+#: classes/form-fields/class.url.php:120
 msgid "Default value"
 msgstr "初期値"
 
-#: classes/form-fields/class.checkbox.php:137
+#: classes/form-fields/class.checkbox.php:139
 msgid "Separator string"
 msgstr "区切り文字"
 
-#: classes/form-fields/class.checkbox.php:142
-#: classes/form-fields/class.radio.php:133
+#: classes/form-fields/class.checkbox.php:144
+#: classes/form-fields/class.radio.php:135
 msgid "Display method"
 msgstr "表示方法"
 
-#: classes/form-fields/class.checkbox.php:144
-#: classes/form-fields/class.radio.php:135
+#: classes/form-fields/class.checkbox.php:146
+#: classes/form-fields/class.radio.php:137
 msgid "Arranged vertically."
 msgstr "垂直に配置する"
 
-#: classes/form-fields/class.checkbox.php:147
+#: classes/form-fields/class.checkbox.php:149
 #: classes/form-fields/class.datepicker.php:141
+#: classes/form-fields/class.email.php:130
 #: classes/form-fields/class.file.php:115
 #: classes/form-fields/class.image.php:119
+#: classes/form-fields/class.number.php:126
 #: classes/form-fields/class.password.php:122
-#: classes/form-fields/class.radio.php:138
+#: classes/form-fields/class.radio.php:140
+#: classes/form-fields/class.range.php:119
 #: classes/form-fields/class.select.php:131
 #: classes/form-fields/class.tel.php:102
 #: classes/form-fields/class.text.php:130
 #: classes/form-fields/class.textarea.php:124
-#: classes/form-fields/class.zip.php:101
+#: classes/form-fields/class.url.php:130 classes/form-fields/class.zip.php:101
 msgid "Dsiplay error"
 msgstr "エラー表示"
 
-#: classes/form-fields/class.checkbox.php:149
+#: classes/form-fields/class.checkbox.php:151
 #: classes/form-fields/class.datepicker.php:143
+#: classes/form-fields/class.email.php:132
 #: classes/form-fields/class.file.php:117
 #: classes/form-fields/class.image.php:121
+#: classes/form-fields/class.number.php:128
 #: classes/form-fields/class.password.php:124
-#: classes/form-fields/class.radio.php:140
+#: classes/form-fields/class.radio.php:142
+#: classes/form-fields/class.range.php:121
 #: classes/form-fields/class.select.php:133
 #: classes/form-fields/class.tel.php:104
 #: classes/form-fields/class.text.php:132
 #: classes/form-fields/class.textarea.php:126
-#: classes/form-fields/class.zip.php:103
+#: classes/form-fields/class.url.php:132 classes/form-fields/class.zip.php:103
 msgid "Don't display error."
 msgstr "エラーを表示しない"
 
@@ -215,6 +223,23 @@ msgstr "確認画面へ"
 #: classes/form-fields/class.datepicker.php:30
 msgid "Datepicker"
 msgstr "日付"
+
+#: classes/form-fields/class.email.php:30
+msgid "Email"
+msgstr "Email フィールド"
+
+#: classes/form-fields/class.email.php:135
+#: classes/form-fields/class.tel.php:107
+#: classes/form-fields/class.text.php:135
+#: classes/form-fields/class.url.php:135 classes/form-fields/class.zip.php:106
+msgid "Convert half alphanumeric"
+msgstr "半角英数字に変換"
+
+#: classes/form-fields/class.email.php:137
+#: classes/form-fields/class.tel.php:109 classes/form-fields/class.url.php:137
+#: classes/form-fields/class.zip.php:108
+msgid "Don't Convert."
+msgstr "変換しない"
 
 #: classes/form-fields/class.error.php:30
 msgid "Error Message"
@@ -248,6 +273,10 @@ msgstr "hiddenの値を表示"
 msgid "Image"
 msgstr "画像フィールド"
 
+#: classes/form-fields/class.number.php:30
+msgid "Number"
+msgstr "Number フィールド"
+
 #: classes/form-fields/class.password.php:30
 msgid "Password"
 msgstr "パスワードフィールド"
@@ -255,6 +284,10 @@ msgstr "パスワードフィールド"
 #: classes/form-fields/class.radio.php:30
 msgid "Radio"
 msgstr "ラジオボタン"
+
+#: classes/form-fields/class.range.php:30
+msgid "Range"
+msgstr "Range フィールド"
 
 #: classes/form-fields/class.select.php:30
 msgid "Select"
@@ -286,16 +319,6 @@ msgstr "送信ボタン"
 msgid "Tel"
 msgstr "電話番号"
 
-#: classes/form-fields/class.tel.php:107
-#: classes/form-fields/class.text.php:135
-#: classes/form-fields/class.zip.php:106
-msgid "Convert half alphanumeric"
-msgstr "半角英数字に変換"
-
-#: classes/form-fields/class.tel.php:109 classes/form-fields/class.zip.php:108
-msgid "Don't Convert."
-msgstr "変換しない"
-
 #: classes/form-fields/class.text.php:30
 msgid "Text"
 msgstr "テキストフィールド"
@@ -308,16 +331,21 @@ msgstr "変換する"
 msgid "Textarea"
 msgstr "テキストエリア"
 
+#: classes/form-fields/class.url.php:30
+msgctxt "form-field"
+msgid "URL"
+msgstr "URL フィールド"
+
 #: classes/form-fields/class.zip.php:30
 #: classes/validation-rules/class.zip.php:49
 msgid "Zip Code"
 msgstr "郵便番号"
 
-#: classes/functions.php:198
+#: classes/functions.php:201
 msgid "Uploaded from "
 msgstr "Uploaded from "
 
-#: classes/functions.php:291
+#: classes/functions.php:300
 msgid "Tracking Number"
 msgstr "問い合わせ番号"
 
@@ -334,7 +362,7 @@ msgid "Supported"
 msgstr "対応済み"
 
 #: classes/models/class.csv.php:148 classes/models/class.csv.php:172
-#: templates/contact-data/detail.php:44
+#: templates/contact-data/detail.php:48
 msgid "Memo"
 msgstr "メモ"
 
@@ -476,6 +504,8 @@ msgid "This is not the format of a url."
 msgstr "URLの形式ではありません。"
 
 #: classes/validation-rules/class.url.php:49
+#, fuzzy
+msgctxt "validatioin"
 msgid "URL"
 msgstr "URL"
 
