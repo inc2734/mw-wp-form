@@ -311,6 +311,32 @@ class MW_WP_Form_Form {
 	}
 
 	/**
+	 * input[type=number]タグ生成
+	 *
+	 * @param string $name name属性
+	 * @param array
+	 * @return string html
+	 */
+	public function number( $name, $options = array() ) {
+		$defaults = array(
+			'id'          => null,
+			'value'       => '',
+			'min'         => null,
+			'max'         => null,
+			'step'        => 1,
+			'placeholder' => null,
+		);
+		$options = array_merge( $defaults, $options );
+		$attributes = $this->generate_attributes( $options );
+
+		return sprintf(
+			'<input type="number" name="%s"%s />',
+			esc_attr( $name ),
+			$attributes
+		);
+	}
+
+	/**
 	 * input[type=hidden]タグ生成
 	 *
 	 * @param string $name name属性

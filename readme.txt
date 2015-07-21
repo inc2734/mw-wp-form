@@ -77,6 +77,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Add html5 email field.
 * Added   : Add html5 url field.
 * Added   : Add html5 range field.
+* Added   : Add html5 number field.
 * Changed : maxlength default value is null.
 
 = 2.4.12
