@@ -7,7 +7,7 @@
  * Author URI : http://2inc.org
  * Created    : May 29, 2013
  * Modified   : January 2, 2015
- * License    : GPLv2
+ * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MWF_Config {

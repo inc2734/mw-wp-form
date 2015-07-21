@@ -6,7 +6,7 @@
  * Author URI : http://2inc.org
  * Created    : March 28, 2015
  * Modified   : 
- * License    : GPLv2
+ * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Controller {

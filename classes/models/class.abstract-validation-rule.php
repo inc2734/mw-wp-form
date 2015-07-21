@@ -7,7 +7,7 @@
  * Author URI : http://2inc.org
  * Created    : July 19, 2014
  * Modified   : March 26, 2015
- * License    : GPLv2
+ * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 abstract class MW_WP_Form_Abstract_Validation_Rule {

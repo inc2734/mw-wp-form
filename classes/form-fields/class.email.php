@@ -7,7 +7,7 @@
  * Author URI : http://2inc.org
  * Created    : July 20, 2015
  * Modified   : 
- * License    : GPLv2
+ * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Field_Email extends MW_WP_Form_Abstract_Form_Field {

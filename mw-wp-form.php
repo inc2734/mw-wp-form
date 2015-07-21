@@ -11,6 +11,7 @@
  * Text Domain: mw-wp-form
  * Domain Path: /languages/
  * License: GPLv2
+ * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 include_once( plugin_dir_path( __FILE__ ) . 'classes/functions.php' );

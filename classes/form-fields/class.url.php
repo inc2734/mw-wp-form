@@ -7,7 +7,7 @@
  * Author URI : http://2inc.org
  * Created    : July 20, 2015
  * Modified   : 
- * License    : GPLv2
+ * License    : GPLv2 or later or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Field_Url extends MW_WP_Form_Abstract_Form_Field {
@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Url extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_url',
-			'display_name'   => __( 'URL', MWF_Config::DOMAIN ),
+			'display_name'   => _x( 'URL', 'form-field', MWF_Config::DOMAIN ),
 		);
 	}
 

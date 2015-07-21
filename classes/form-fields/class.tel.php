@@ -7,7 +7,7 @@
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
  * Modified   : April 10, 2015
- * License    : GPLv2
+ * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Field_Tel extends MW_WP_Form_Abstract_Form_Field {

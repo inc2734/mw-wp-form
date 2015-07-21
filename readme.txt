@@ -6,6 +6,7 @@ Requires at least: 3.7
 Tested up to: 4.3 beta3
 Stable tag: 2.4.12
 License: GPLv2
+License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 MW WP Form is shortcode base contact form plugin. This plugin have many feature. For example you can use many validation rules, contact data saving, and chart aggregation using saved contact data.
