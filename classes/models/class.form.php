@@ -286,6 +286,31 @@ class MW_WP_Form_Form {
 	}
 
 	/**
+	 * input[type=range]タグ生成
+	 *
+	 * @param string $name name属性
+	 * @param array
+	 * @return string html
+	 */
+	public function range( $name, $options = array() ) {
+		$defaults = array(
+			'id'    => null,
+			'value' => '',
+			'min'   => 0,
+			'max'   => 100,
+			'step'  => 1,
+		);
+		$options = array_merge( $defaults, $options );
+		$attributes = $this->generate_attributes( $options );
+
+		return sprintf(
+			'<input type="range" name="%s"%s />',
+			esc_attr( $name ),
+			$attributes
+		);
+	}
+
+	/**
 	 * input[type=hidden]タグ生成
 	 *
 	 * @param string $name name属性
