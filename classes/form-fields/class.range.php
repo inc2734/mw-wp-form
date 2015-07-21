@@ -120,11 +120,6 @@ class MW_WP_Form_Field_Range extends MW_WP_Form_Abstract_Form_Field {
 			<?php $show_error = $this->get_value_for_generator( 'show_error', $options ); ?>
 			<label><input type="checkbox" name="show_error" value="false" <?php checked( 'false', $show_error ); ?> /> <?php esc_html_e( 'Don\'t display error.', MWF_Config::DOMAIN ); ?></label>
 		</p>
-		<p>
-			<strong><?php esc_html_e( 'Convert half alphanumeric', MWF_Config::DOMAIN ); ?></strong>
-			<?php $conv_half_alphanumeric = $this->get_value_for_generator( 'conv_half_alphanumeric', $options ); ?>
-			<label><input type="checkbox" name="conv_half_alphanumeric" value="true" <?php checked( 'true', $conv_half_alphanumeric ); ?> /> <?php esc_html_e( 'Convert.', MWF_Config::DOMAIN ); ?></label>
-		</p>
 		<?php
 	}
 }
