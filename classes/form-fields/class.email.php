@@ -45,7 +45,7 @@ class MW_WP_Form_Field_Email extends MW_WP_Form_Abstract_Form_Field {
 			'value'       => '',
 			'placeholder' => null,
 			'show_error'  => 'true',
-			'conv_half_alphanumeric' => null,
+			'conv_half_alphanumeric' => 'true',
 		);
 	}
 
@@ -134,7 +134,7 @@ class MW_WP_Form_Field_Email extends MW_WP_Form_Abstract_Form_Field {
 		<p>
 			<strong><?php esc_html_e( 'Convert half alphanumeric', MWF_Config::DOMAIN ); ?></strong>
 			<?php $conv_half_alphanumeric = $this->get_value_for_generator( 'conv_half_alphanumeric', $options ); ?>
-			<label><input type="checkbox" name="conv_half_alphanumeric" value="true" <?php checked( 'true', $conv_half_alphanumeric ); ?> /> <?php esc_html_e( 'Convert.', MWF_Config::DOMAIN ); ?></label>
+			<label><input type="checkbox" name="conv_half_alphanumeric" value="false" <?php checked( 'false', $conv_half_alphanumeric ); ?> /> <?php esc_html_e( 'Don\'t Convert.', MWF_Config::DOMAIN ); ?></label>
 		</p>
 		<?php
 	}
