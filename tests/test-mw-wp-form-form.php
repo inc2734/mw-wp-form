@@ -79,7 +79,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_text() {
 		$this->assertEquals(
-			'<input type="text" name="text" size="60" maxlength="255" value="" />',
+			'<input type="text" name="text" size="60" value="" />',
 			$this->Form->text( 'text' )
 		);
 	}
@@ -89,7 +89,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_text_id() {
 		$this->assertEquals(
-			'<input type="text" name="text" id="text" size="60" maxlength="255" value="" />',
+			'<input type="text" name="text" id="text" size="60" value="" />',
 			$this->Form->text( 'text', array( 'id' => 'text' ) )
 		);
 	}
@@ -99,7 +99,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_text_size() {
 		$this->assertEquals(
-			'<input type="text" name="text" size="" maxlength="255" value="" />',
+			'<input type="text" name="text" size="" value="" />',
 			$this->Form->text( 'text', array( 'size' => '' ) )
 		);
 	}
@@ -119,7 +119,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_text_value() {
 		$this->assertEquals(
-			'<input type="text" name="text" size="60" maxlength="255" value="text" />',
+			'<input type="text" name="text" size="60" value="text" />',
 			$this->Form->text( 'text', array( 'value' => 'text' ) )
 		);
 	}
@@ -129,7 +129,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_text_data_conv_half_alphanumeric() {
 		$this->assertEquals(
-			'<input type="text" name="text" size="60" maxlength="255" value="" data-conv-half-alphanumeric="true" />',
+			'<input type="text" name="text" size="60" value="" data-conv-half-alphanumeric="true" />',
 			$this->Form->text( 'text', array( 'conv-half-alphanumeric' => 'true' ) )
 		);
 	}
@@ -139,8 +139,278 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_text_placeholder() {
 		$this->assertEquals(
-			'<input type="text" name="text" size="60" maxlength="255" value="" placeholder="text" />',
+			'<input type="text" name="text" size="60" value="" placeholder="text" />',
 			$this->Form->text( 'text', array( 'placeholder' => 'text' ) )
+		);
+	}
+
+	/**
+	 * @group email
+	 */
+	public function test_email() {
+		$this->assertEquals(
+			'<input type="email" name="email" size="60" value="" />',
+			$this->Form->email( 'email' )
+		);
+	}
+
+	/**
+	 * @group email
+	 */
+	public function test_email_id() {
+		$this->assertEquals(
+			'<input type="email" name="email" id="email" size="60" value="" />',
+			$this->Form->email( 'email', array( 'id' => 'email' ) )
+		);
+	}
+
+	/**
+	 * @group email
+	 */
+	public function test_email_size() {
+		$this->assertEquals(
+			'<input type="email" name="email" size="" value="" />',
+			$this->Form->email( 'email', array( 'size' => '' ) )
+		);
+	}
+
+	/**
+	 * @group email
+	 */
+	public function test_email_maxlength() {
+		$this->assertEquals(
+			'<input type="email" name="email" size="60" maxlength="" value="" />',
+			$this->Form->email( 'email', array( 'maxlength' => '' ) )
+		);
+	}
+
+	/**
+	 * @group email
+	 */
+	public function test_email_value() {
+		$this->assertEquals(
+			'<input type="email" name="email" size="60" value="email" />',
+			$this->Form->email( 'email', array( 'value' => 'email' ) )
+		);
+	}
+
+	/**
+	 * @group email
+	 */
+	public function test_email_placeholder() {
+		$this->assertEquals(
+			'<input type="email" name="email" size="60" value="" placeholder="placeholder" />',
+			$this->Form->email( 'email', array( 'placeholder' => 'placeholder' ) )
+		);
+	}
+
+	/**
+	 * @group email
+	 */
+	public function test_email_data_conv_half_alphanumeric() {
+		$this->assertEquals(
+			'<input type="email" name="email" size="60" value="" data-conv-half-alphanumeric="true" />',
+			$this->Form->email( 'email', array( 'conv-half-alphanumeric' => 'true' ) )
+		);
+	}
+
+	/**
+	 * @group url
+	 */
+	public function test_url() {
+		$this->assertEquals(
+			'<input type="url" name="url" size="60" value="" />',
+			$this->Form->url( 'url' )
+		);
+	}
+
+	/**
+	 * @group url
+	 */
+	public function test_url_id() {
+		$this->assertEquals(
+			'<input type="url" name="url" id="url" size="60" value="" />',
+			$this->Form->url( 'url', array( 'id' => 'url' ) )
+		);
+	}
+
+	/**
+	 * @group url
+	 */
+	public function test_url_size() {
+		$this->assertEquals(
+			'<input type="url" name="url" size="" value="" />',
+			$this->Form->url( 'url', array( 'size' => '' ) )
+		);
+	}
+
+	/**
+	 * @group url
+	 */
+	public function test_url_maxlength() {
+		$this->assertEquals(
+			'<input type="url" name="url" size="60" maxlength="" value="" />',
+			$this->Form->url( 'url', array( 'maxlength' => '' ) )
+		);
+	}
+
+	/**
+	 * @group url
+	 */
+	public function test_url_value() {
+		$this->assertEquals(
+			'<input type="url" name="url" size="60" value="url" />',
+			$this->Form->url( 'url', array( 'value' => 'url' ) )
+		);
+	}
+
+	/**
+	 * @group url
+	 */
+	public function test_url_placeholder() {
+		$this->assertEquals(
+			'<input type="url" name="url" size="60" value="" placeholder="placeholder" />',
+			$this->Form->url( 'url', array( 'placeholder' => 'placeholder' ) )
+		);
+	}
+
+	/**
+	 * @group url
+	 */
+	public function test_url_data_conv_half_alphanumeric() {
+		$this->assertEquals(
+			'<input type="url" name="url" size="60" value="" data-conv-half-alphanumeric="true" />',
+			$this->Form->url( 'url', array( 'conv-half-alphanumeric' => 'true' ) )
+		);
+	}
+
+	/**
+	 * @group range
+	 */
+	public function test_range() {
+		$this->assertEquals(
+			'<input type="range" name="range" value="" min="0" max="100" step="1" />',
+			$this->Form->range( 'range' )
+		);
+	}
+
+	/**
+	 * @group range
+	 */
+	public function test_range_id() {
+		$this->assertEquals(
+			'<input type="range" name="range" id="range" value="" min="0" max="100" step="1" />',
+			$this->Form->range( 'range', array( 'id' => 'range' ) )
+		);
+	}
+
+	/**
+	 * @group range
+	 */
+	public function test_range_value() {
+		$this->assertEquals(
+			'<input type="range" name="range" value="range" min="0" max="100" step="1" />',
+			$this->Form->range( 'range', array( 'value' => 'range' ) )
+		);
+	}
+
+	/**
+	 * @group range
+	 */
+	public function test_range_min() {
+		$this->assertEquals(
+			'<input type="range" name="range" value="" min="10" max="100" step="1" />',
+			$this->Form->range( 'range', array( 'min' => 10 ) )
+		);
+	}
+
+	/**
+	 * @group range
+	 */
+	public function test_range_max() {
+		$this->assertEquals(
+			'<input type="range" name="range" value="" min="0" max="10" step="1" />',
+			$this->Form->range( 'range', array( 'max' => 10 ) )
+		);
+	}
+
+	/**
+	 * @group range
+	 */
+	public function test_range_step() {
+		$this->assertEquals(
+			'<input type="range" name="range" value="" min="0" max="100" step="10" />',
+			$this->Form->range( 'range', array( 'step' => 10 ) )
+		);
+	}
+
+	/**
+	 * @group number
+	 */
+	public function test_number() {
+		$this->assertEquals(
+			'<input type="number" name="number" value="" step="1" />',
+			$this->Form->number( 'number' )
+		);
+	}
+
+	/**
+	 * @group number
+	 */
+	public function test_number_id() {
+		$this->assertEquals(
+			'<input type="number" name="number" id="number" value="" step="1" />',
+			$this->Form->number( 'number', array( 'id' => 'number' ) )
+		);
+	}
+
+	/**
+	 * @group number
+	 */
+	public function test_number_value() {
+		$this->assertEquals(
+			'<input type="number" name="number" value="number" step="1" />',
+			$this->Form->number( 'number', array( 'value' => 'number' ) )
+		);
+	}
+
+	/**
+	 * @group number
+	 */
+	public function test_number_min() {
+		$this->assertEquals(
+			'<input type="number" name="number" value="" min="0" step="1" />',
+			$this->Form->number( 'number', array( 'min' => 0 ) )
+		);
+	}
+
+	/**
+	 * @group number
+	 */
+	public function test_number_max() {
+		$this->assertEquals(
+			'<input type="number" name="number" value="" max="10" step="1" />',
+			$this->Form->number( 'number', array( 'max' => 10 ) )
+		);
+	}
+
+	/**
+	 * @group number
+	 */
+	public function test_number_step() {
+		$this->assertEquals(
+			'<input type="number" name="number" value="" step="10" />',
+			$this->Form->number( 'number', array( 'step' => 10 ) )
+		);
+	}
+
+	/**
+	 * @group number
+	 */
+	public function test_number_placeholder() {
+		$this->assertEquals(
+			'<input type="number" name="number" value="" step="1" placeholder="placeholder" />',
+			$this->Form->number( 'number', array( 'placeholder' => 'placeholder' ) )
 		);
 	}
 
@@ -169,7 +439,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_password() {
 		$this->assertEquals(
-			'<input type="password" name="password" size="60" maxlength="255" value="" />',
+			'<input type="password" name="password" size="60" value="" />',
 			$this->Form->password( 'password' )
 		);
 	}
@@ -179,7 +449,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_password_id() {
 		$this->assertEquals(
-			'<input type="password" name="password" id="id" size="60" maxlength="255" value="" />',
+			'<input type="password" name="password" id="id" size="60" value="" />',
 			$this->Form->password( 'password', array( 'id' => 'id' ) )
 		);
 	}
@@ -189,7 +459,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_password_size() {
 		$this->assertEquals(
-			'<input type="password" name="password" size="" maxlength="255" value="" />',
+			'<input type="password" name="password" size="" value="" />',
 			$this->Form->password( 'password', array( 'size' => '' ) )
 		);
 	}
@@ -209,7 +479,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_password_value() {
 		$this->assertEquals(
-			'<input type="password" name="password" size="60" maxlength="255" value="value" />',
+			'<input type="password" name="password" size="60" value="value" />',
 			$this->Form->password( 'password', array( 'value' => 'value' ) )
 		);
 	}
@@ -219,7 +489,7 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_password_placeholder() {
 		$this->assertEquals(
-			'<input type="password" name="password" size="60" maxlength="255" value="" placeholder="placeholder" />',
+			'<input type="password" name="password" size="60" value="" placeholder="placeholder" />',
 			$this->Form->password( 'password', array( 'placeholder' => 'placeholder' ) )
 		);
 	}
