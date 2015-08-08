@@ -85,32 +85,29 @@ class MW_WP_Form_Mail {
 			$temp_dir = apply_filters( 'mwform_log_directory', $temp_dir );
 		}
 
-		$tos = explode( ',', $this->to );
-		foreach ( $tos as $to ) {
-			$headers = array();
-			if ( $this->cc ) {
-				$headers[] = 'Cc: ' . $this->cc;
-			}
-			if ( $this->bcc ) {
-				$headers[] = 'Bcc: ' . $this->bcc;
-			}
-			$to = trim( $to );
-			if ( !empty( $File ) ) {
-				$contents = sprintf(
-					"====================\n\nSend Date: %s\nTo: %s\nSender: %s\nFrom: %s\nSubject: %s\nheaders:%s\n-----\n%s\n-----\nattachments:\n%s\n\n",
-					date( 'M j Y, H:i:s' ),
-					$to,
-					$sender,
-					$from,
-					$subject,
-					implode( "\n", $headers ),
-					$body,
-					implode( "\n", $this->attachments )
-				);
-				file_put_contents( $temp_dir . '/mw-wp-form-debug.log', $contents, FILE_APPEND );
-			} else {
-				@wp_mail( $to, $subject, $body, $headers, $this->attachments );
-			}
+		$headers = array();
+		if ( $this->cc ) {
+			$headers[] = 'Cc: ' . $this->cc;
+		}
+		if ( $this->bcc ) {
+			$headers[] = 'Bcc: ' . $this->bcc;
+		}
+		$to = trim( $this->to );
+		if ( !empty( $File ) ) {
+			$contents = sprintf(
+				"====================\n\nSend Date: %s\nTo: %s\nSender: %s\nFrom: %s\nSubject: %s\nheaders:%s\n-----\n%s\n-----\nattachments:\n%s\n\n",
+				date( 'M j Y, H:i:s' ),
+				$to,
+				$sender,
+				$from,
+				$subject,
+				implode( "\n", $headers ),
+				$body,
+				implode( "\n", $this->attachments )
+			);
+			file_put_contents( $temp_dir . '/mw-wp-form-debug.log', $contents, FILE_APPEND );
+		} else {
+			@wp_mail( $to, $subject, $body, $headers, $this->attachments );
 		}
 
 		remove_action( 'phpmailer_init'   , array( $this, 'set_return_path' ) );
