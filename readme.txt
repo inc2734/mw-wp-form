@@ -1,5 +1,5 @@
 === MW WP Form ===
-Contributors: inc2734, ryu263, tomothumb, nanniku
+Contributors: inc2734, ryu263, tomothumb, nanniku, mt8.biz, NExt-Season
 Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 3.7
@@ -79,6 +79,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Add html5 range field.
 * Added   : Add html5 number field.
 * Changed : maxlength default value is null.
+* Bugfix  : Fixed a bug that is CC and BCC have been overlapping sent when To is multiple.
 
 = 2.4.12
 * Bugfix  : filter hook 'mwform_value_mwf_xxx' does not work when to use radio or checkboxes.
