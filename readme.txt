@@ -49,6 +49,8 @@ Source: https://developers.google.com/chart/
 * [Ryujiro Yamamoto](http://webcre-archive.com) ( [ryu263](http://profiles.wordpress.org/ryu263) )
 * [Tsujimoto Tomoyuki](http://kee-non.com) ( [tomothumb](http://profiles.wordpress.org/tomothumb) )
 * [Naoyuki Ohata] ( [nanniku](http://profiles.wordpress.org/nanniku) )
+* [Kazuto Takeshita] ( [mt8.biz](http://profiles.wordpress.org/mt8.biz) )
+* [Atsushi Ando] ( [NExt-Season](http://profiles.wordpress.org/NExt-Season) )
 
 == Installation ==
 
