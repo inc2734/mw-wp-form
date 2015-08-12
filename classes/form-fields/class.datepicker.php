@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Datepicker
  * Description: datepickerを出力
- * Version    : 1.5.2
+ * Version    : 1.5.3
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : April 1, 2015
+ * Modified   : August 12, 2015
  * License    : GPLv2
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -38,12 +38,13 @@ class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function set_defaults() {
 		return array(
-			'name'       => '',
-			'id'         => null,
-			'size'       => 30,
-			'js'         => '',
-			'value'      => '',
-			'show_error' => 'true',
+			'name'        => '',
+			'id'          => null,
+			'size'        => 30,
+			'js'          => '',
+			'value'       => '',
+			'placeholder' => null,
+			'show_error'  => 'true',
 		);
 	}
 
@@ -87,6 +88,7 @@ class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
 			'size'  => $this->atts['size'],
 			'js'    => $this->atts['js'],
 			'value' => $value,
+			'placeholder' => $this->atts['placeholder']
 		) );
 		if ( $this->atts['show_error'] !== 'false' ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
