@@ -587,14 +587,11 @@ class MW_WP_Form_Form {
 			esc_attr( $name ),
 			$attributes
 		);
-
-		add_filter( 'wp_footer', function () use ( $name, $options ) {
-			printf(
-				'<script type="text/javascript">jQuery( function( $ ) { $("input[name=\'%s\']").datepicker( { %s } ); } );</script>',
-				esc_js( $name ),
-				$options['js']
-			);
-		} );
+		$_ret .= sprintf(
+			'<script type="text/javascript">jQuery( function( $ ) { $("input[name=\'%s\']").datepicker( { %s } ); } );</script>',
+			esc_js( $name ),
+			$options['js']
+		);
 
 		return $_ret;
 	}
