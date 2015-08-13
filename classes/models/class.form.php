@@ -592,7 +592,6 @@ class MW_WP_Form_Form {
 			esc_js( $name ),
 			$options['js']
 		);
-
 		return $_ret;
 	}
 
