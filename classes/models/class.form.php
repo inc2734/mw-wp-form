@@ -6,7 +6,7 @@
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : September 25, 2012
- * Modified   : July 20, 2015
+ * Modified   : August 12, 2015
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -674,10 +674,11 @@ class MW_WP_Form_Form {
 	 */
 	public function datepicker( $name, $options = array() ) {
 		$defaults = array(
-			'id'    => null,
-			'size'  => 30,
-			'js'    => '',
-			'value' => '',
+			'id'          => null,
+			'size'        => 30,
+			'js'          => '',
+			'value'       => '',
+			'placeholder' => null,
 		);
 		$options = array_merge( $defaults, $options );
 		$_options = $options;
