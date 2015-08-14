@@ -81,6 +81,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Add html5 url field.
 * Added   : Add html5 range field.
 * Added   : Add html5 number field.
+* Added   : Support attribute placeholder in datepicker.
 * Changed : maxlength default value is null.
 * Bugfix  : Fixed a bug that is CC and BCC have been overlapping sent when To is multiple.
 
