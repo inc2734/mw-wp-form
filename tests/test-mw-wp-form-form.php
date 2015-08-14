@@ -898,6 +898,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @group datepicker
+	 */
+	public function test_datepicker_placeholder() {
+		$this->assertEquals(
+			'<input type="text" name="datepicker" size="30" value="" placeholder="text" /><script type="text/javascript">jQuery( function( $ ) { $("input[name=\'datepicker\']").datepicker( {  } ); } );</script>',
+			$this->Form->datepicker( 'datepicker', array( 'placeholder' => 'text' ) )
+		);
+	}
+
+	/**
 	 * @group file
 	 */
 	public function test_file() {
