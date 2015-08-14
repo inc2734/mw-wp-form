@@ -1,5 +1,5 @@
 === MW WP Form ===
-Contributors: inc2734, ryu263, tomothumb, nanniku, mt8.biz, NExt-Season
+Contributors: inc2734, ryu263, tomothumb, nanniku, mt8.biz, NExt-Season, kuck1u
 Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 3.7
@@ -49,8 +49,9 @@ Source: https://developers.google.com/chart/
 * [Ryujiro Yamamoto](http://webcre-archive.com) ( [ryu263](http://profiles.wordpress.org/ryu263) )
 * [Tsujimoto Tomoyuki](http://kee-non.com) ( [tomothumb](http://profiles.wordpress.org/tomothumb) )
 * [Naoyuki Ohata] ( [nanniku](http://profiles.wordpress.org/nanniku) )
-* [Kazuto Takeshita] ( [mt8.biz](http://profiles.wordpress.org/mt8.biz) )
-* [Atsushi Ando] ( [NExt-Season](http://profiles.wordpress.org/NExt-Season) )
+* [Kazuto Takeshita] ( [mt8.biz](http://mt8.biz/) )
+* [Atsushi Ando] ( [NExt-Season](http://www.next-season.net/) )
+* [Kazuki Tomiyasu] ( [KUCKLU](http://visualive.jp/) )
 
 == Installation ==
 
