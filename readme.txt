@@ -4,7 +4,7 @@ Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 3.7
 Tested up to: 4.3
-Stable tag: 2.5.0
+Stable tag: 2.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,9 +49,9 @@ Source: https://developers.google.com/chart/
 * [Ryujiro Yamamoto](http://webcre-archive.com) ( [ryu263](http://profiles.wordpress.org/ryu263) )
 * [Tsujimoto Tomoyuki](http://kee-non.com) ( [tomothumb](http://profiles.wordpress.org/tomothumb) )
 * [Naoyuki Ohata] ( [nanniku](http://profiles.wordpress.org/nanniku) )
-* [Kazuto Takeshita] ( [mt8.biz](http://mt8.biz/) )
-* [Atsushi Ando] ( [NExt-Season](http://www.next-season.net/) )
-* [Kazuki Tomiyasu] ( [KUCKLU](http://visualive.jp/) )
+* [Kazuto Takeshita](http://mt8.biz/) ( [moto hachi](https://profiles.wordpress.org/mt8biz/) )
+* [Atsushi Ando](http://www.next-season.net/) ( [NExt-Season](https://profiles.wordpress.org/next-season/) )
+* [Kazuki Tomiyasu](http://visualive.jp/) ( [KUCKLU](https://profiles.wordpress.org/kuck1u/) )
 
 == Installation ==
 
@@ -76,6 +76,9 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 == Changelog ==
 
+= 2.5.1 =
+* Update readme.txt
+
 = 2.5.0 =
 * Added   : Add html5 email field.
 * Added   : Add html5 url field.
@@ -85,15 +88,15 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Changed : maxlength default value is null.
 * Bugfix  : Fixed a bug that is CC and BCC have been overlapping sent when To is multiple.
 
-= 2.4.12
+= 2.4.12 =
 * Bugfix  : filter hook 'mwform_value_mwf_xxx' does not work when to use radio or checkboxes.
 * Changed : Changed checkbox default separator ', ' to ','.
 
-= 2.4.11
+= 2.4.11 =
 * Bugfix  : Fixed a bug that attachment file does not displayed in contact data list page.
 * Changed : Trim email address on inputs.
 
-= 2.4.10
+= 2.4.10 =
 * Bugfix  : Fixed a bug that does not scroll when you return to the input screen.
 
 = 2.4.9 =
