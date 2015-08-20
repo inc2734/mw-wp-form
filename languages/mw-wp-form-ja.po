@@ -4,9 +4,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MW WP Form 2.5.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
-"POT-Creation-Date: 2015-07-21 10:44+0900\n"
-"PO-Revision-Date: 2015-07-21 10:45+0900\n"
-"Last-Translator: Takashi Kitajima <inc@2inc.org>\n"
+"POT-Creation-Date: 2015-08-20 08:55+0900\n"
+"PO-Revision-Date: 2015-08-20 08:55+0900\n"
+"Last-Translator: inc2734 <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: .\n"
-"X-Generator: Poedit 1.8.2\n"
+"X-Generator: Poedit 1.8.4\n"
 "X-Poedit-KeywordsList: __;_e;_x;esc_html_e;esc_html__\n"
 "X-Poedit-SearchPath-0: ..\n"
 
@@ -151,7 +151,7 @@ msgid ""
 msgstr "選択肢を「:」で送信値と表示値に分割したとき、送信値をメールで送信"
 
 #: classes/form-fields/class.checkbox.php:134
-#: classes/form-fields/class.datepicker.php:136
+#: classes/form-fields/class.datepicker.php:138
 #: classes/form-fields/class.email.php:120
 #: classes/form-fields/class.hidden.php:84
 #: classes/form-fields/class.password.php:112
@@ -178,7 +178,7 @@ msgid "Arranged vertically."
 msgstr "垂直に配置する"
 
 #: classes/form-fields/class.checkbox.php:149
-#: classes/form-fields/class.datepicker.php:141
+#: classes/form-fields/class.datepicker.php:148
 #: classes/form-fields/class.email.php:130
 #: classes/form-fields/class.file.php:115
 #: classes/form-fields/class.image.php:119
@@ -187,15 +187,14 @@ msgstr "垂直に配置する"
 #: classes/form-fields/class.radio.php:140
 #: classes/form-fields/class.range.php:119
 #: classes/form-fields/class.select.php:131
-#: classes/form-fields/class.tel.php:102
-#: classes/form-fields/class.text.php:130
+#: classes/form-fields/class.tel.php:102 classes/form-fields/class.text.php:130
 #: classes/form-fields/class.textarea.php:124
 #: classes/form-fields/class.url.php:130 classes/form-fields/class.zip.php:101
 msgid "Dsiplay error"
 msgstr "エラー表示"
 
 #: classes/form-fields/class.checkbox.php:151
-#: classes/form-fields/class.datepicker.php:143
+#: classes/form-fields/class.datepicker.php:150
 #: classes/form-fields/class.email.php:132
 #: classes/form-fields/class.file.php:117
 #: classes/form-fields/class.image.php:121
@@ -204,8 +203,7 @@ msgstr "エラー表示"
 #: classes/form-fields/class.radio.php:142
 #: classes/form-fields/class.range.php:121
 #: classes/form-fields/class.select.php:133
-#: classes/form-fields/class.tel.php:104
-#: classes/form-fields/class.text.php:132
+#: classes/form-fields/class.tel.php:104 classes/form-fields/class.text.php:132
 #: classes/form-fields/class.textarea.php:126
 #: classes/form-fields/class.url.php:132 classes/form-fields/class.zip.php:103
 msgid "Don't display error."
@@ -229,8 +227,7 @@ msgid "Email"
 msgstr "Email フィールド"
 
 #: classes/form-fields/class.email.php:135
-#: classes/form-fields/class.tel.php:107
-#: classes/form-fields/class.text.php:135
+#: classes/form-fields/class.tel.php:107 classes/form-fields/class.text.php:135
 #: classes/form-fields/class.url.php:135 classes/form-fields/class.zip.php:106
 msgid "Convert half alphanumeric"
 msgstr "半角英数字に変換"
@@ -507,7 +504,7 @@ msgstr "URLの形式ではありません。"
 #, fuzzy
 msgctxt "validatioin"
 msgid "URL"
-msgstr "URL"
+msgstr "URL フィールド"
 
 #: classes/validation-rules/class.zip.php:32
 msgid "This is not the format of a zip code."
@@ -613,8 +610,7 @@ msgstr "CC（E-mailアドレス）"
 msgid "BCC ( E-mail address )"
 msgstr "BCC（E-mailアドレス）"
 
-#: templates/admin/admin-mail-options.php:25
-#: templates/admin/mail-options.php:9
+#: templates/admin/admin-mail-options.php:25 templates/admin/mail-options.php:9
 msgid "Subject"
 msgstr "件名"
 
