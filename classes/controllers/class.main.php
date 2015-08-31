@@ -176,6 +176,9 @@ class MW_WP_Form_Main_Controller {
 		$Form = new MW_WP_Form_Form();
 		$this->ExecShortcode->add_shortcode( $view_flg, $this->Setting, $Form );
 
+		do_action( "mwform_enqueue_scripts" );
+		do_action( "mwform_enqueue_styles" );
+
 		add_action( 'wp_footer'         , array( $this->Data, 'clear_values' ) );
 		add_action( 'wp_enqueue_scripts', array( $this      , 'wp_enqueue_scripts' ) );
 
