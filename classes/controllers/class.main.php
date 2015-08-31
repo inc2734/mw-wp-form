@@ -373,7 +373,6 @@ class MW_WP_Form_Main_Controller {
 		return false;
 	}
 
-
 	/**
 	 * フォームの送信データを返す。
 	 * アクションフック時などに利用する。
