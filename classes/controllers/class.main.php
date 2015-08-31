@@ -233,7 +233,7 @@ class MW_WP_Form_Main_Controller {
 		) );
 		wp_enqueue_script( MWF_Config::NAME . '-scroll' );
 	}
-	
+
 	/**
 	 * Nginx Cache Controller 用に header をカスタマイズ
 	 *
@@ -249,6 +249,8 @@ class MW_WP_Form_Main_Controller {
 	 * メール送信
 	 */
 	protected function send() {
+		do_action( "mwform_send", $this );
+
 		$Mail         = new MW_WP_Form_Mail();
 		$form_key     = $this->ExecShortcode->get( 'key' );
 		$attachments  = $this->get_attachments();
@@ -366,5 +368,15 @@ class MW_WP_Form_Main_Controller {
 			return true;
 		}
 		return false;
+	}
+
+
+	/**
+	 * フォームの送信データを返す。
+	 * アクションフック時などに利用する。
+	 * @return array
+	 */
+	public function get_postdata(){
+		return $this->Data->gets();
 	}
 }
