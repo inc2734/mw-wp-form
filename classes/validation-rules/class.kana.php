@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Validation Rule Kana
  * Description: 値がひらがな or カタカナ
- * Version    : 1.1.1
- * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
- * Created    : July 21, 2014
- * Modified   : April 1, 2015
+ * Version    : 1.0.1
+ * Author     : Key Nomura, Takashi Kitajima
+ * Author URI : http://mypacecreator.net/
+ * Created    : September 1, 2015
+ * Modified   : September 1, 2015
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -28,7 +28,7 @@ class MW_WP_Form_Validation_Rule_Kana extends MW_WP_Form_Abstract_Validation_Rul
 	public function rule( $key, array $options = array() ) {
 		$value = $this->Data->get( $key );
 		if ( !MWF_Functions::is_empty( $value ) ) {
-			if ( !preg_match( '/^[ぁ-んァ-ヶー]+$/u', $value ) ) {
+			if ( !preg_match( '/^[ぁ-ゞァ-ヾ 　]*?[ぁ-ゞァ-ヾ]+?[ぁ-ゞァ-ヾ 　]*?$/u', $value ) ) {
 				$defaults = array(
 					'message' => __( 'Please enter with a Japanese Hiragana or Katakana.', MWF_Config::DOMAIN )
 				);

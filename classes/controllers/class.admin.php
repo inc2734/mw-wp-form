@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Admin Controller
- * Version    : 1.1.1
+ * Version    : 1.1.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : April 15, 2015
+ * Modified   : September 1, 2015
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -40,11 +40,11 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 */
 	public function initialize() {
 		$Admin = new MW_WP_Form_Admin();
-		add_action( 'add_meta_boxes'            , array( $this , 'add_meta_boxes' ) );
-		add_filter( 'default_content'           , array( $this , 'default_content' ) );
-		add_action( 'media_buttons'             , array( $this , 'tag_generator' ) );
-		add_action( 'admin_enqueue_scripts'     , array( $this , 'admin_enqueue_scripts' ) );
-		add_action( 'save_post'                 , array( $Admin, 'save_post' ) );
+		add_action( 'add_meta_boxes'       , array( $this , 'add_meta_boxes' ) );
+		add_filter( 'default_content'      , array( $this , 'default_content' ) );
+		add_action( 'media_buttons'        , array( $this , 'tag_generator' ) );
+		add_action( 'admin_enqueue_scripts', array( $this , 'admin_enqueue_scripts' ) );
+		add_action( 'save_post'            , array( $Admin, 'save_post' ) );
 	}
 
 	/**
