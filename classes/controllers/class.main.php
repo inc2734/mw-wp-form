@@ -6,7 +6,7 @@
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 23, 2014
- * Modified   : May 11, 2015
+ * Modified   : August 31, 2015
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -176,6 +176,9 @@ class MW_WP_Form_Main_Controller {
 		$Form = new MW_WP_Form_Form();
 		$this->ExecShortcode->add_shortcode( $view_flg, $this->Setting, $Form );
 
+		do_action( "mwform_enqueue_scripts" );
+		do_action( "mwform_enqueue_styles" );
+
 		add_action( 'wp_footer'         , array( $this->Data, 'clear_values' ) );
 		add_action( 'wp_enqueue_scripts', array( $this      , 'wp_enqueue_scripts' ) );
 
@@ -233,7 +236,7 @@ class MW_WP_Form_Main_Controller {
 		) );
 		wp_enqueue_script( MWF_Config::NAME . '-scroll' );
 	}
-	
+
 	/**
 	 * Nginx Cache Controller 用に header をカスタマイズ
 	 *
@@ -249,6 +252,8 @@ class MW_WP_Form_Main_Controller {
 	 * メール送信
 	 */
 	protected function send() {
+		do_action( "mwform_send", $this );
+
 		$Mail         = new MW_WP_Form_Mail();
 		$form_key     = $this->ExecShortcode->get( 'key' );
 		$attachments  = $this->get_attachments();
@@ -366,5 +371,14 @@ class MW_WP_Form_Main_Controller {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * フォームの送信データを返す。
+	 * アクションフック時などに利用する。
+	 * @return array
+	 */
+	public function get_postdata(){
+		return $this->Data->gets();
 	}
 }
