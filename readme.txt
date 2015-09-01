@@ -4,7 +4,7 @@ Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 3.7
 Tested up to: 4.3
-Stable tag: 2.5.1
+Stable tag: 2.5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -79,6 +79,10 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.5.2 =
 * Added   : Add new validation rule japanese kana.
+* Added   : Add action hook mwform_before_send_admin_mail_mw-wp-form-xxx.
+* Added   : Add action hook mwform_before_send_reply_mail_mw-wp-form-xxx.
+* Added   : Add action hook mwform_after_send_mw-wp-form-xxx.
+* Added   : Add action hook mwform_enqueue_scripts_mw-wp-form-xxx.
 
 = 2.5.1 =
 * Update readme.txt
