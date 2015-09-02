@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Mail Service
- * Version    : 1.1.3
+ * Version    : 1.2.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : April 14, 2015
+ * Modified   : September 1, 2015
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -95,6 +95,11 @@ class MW_WP_Form_Mail_Service {
 		$Mail_admin->set_admin_mail_reaquire_params();
 		$Mail_admin = $this->apply_filters_mwform_mail( $Mail_admin );
 		$Mail_admin = $this->apply_filters_mwform_admin_mail( $Mail_admin );
+		do_action(
+			'mwform_before_send_admin_mail_' . $this->form_key,
+			clone $Mail_admin,
+			clone $this->Data
+		);
 		$Mail_admin->send();
 
 		// DB非保存時は管理者メール送信後、ファイルを削除
@@ -124,6 +129,11 @@ class MW_WP_Form_Mail_Service {
 		$Mail_auto = $this->get_parsed_mail_object( $this->Mail_auto_raw );
 		$Mail_auto->set_reply_mail_reaquire_params();
 		$Mail_auto = $this->apply_filters_mwform_auto_mail( $Mail_auto );
+		do_action(
+			'mwform_before_send_reply_mail_' . $this->form_key,
+			clone $Mail_auto,
+			clone $this->Data
+		);
 		$Mail_auto->send();
 	}
 
