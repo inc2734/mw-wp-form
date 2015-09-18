@@ -32,7 +32,7 @@ class MW_WP_Form_Validation_Rule_Zip extends MW_WP_Form_Abstract_Validation_Rule
 				'message' => __( 'This is not the format of a zip code.', MWF_Config::DOMAIN )
 			);
 			$options = array_merge( $defaults, $options );
-			if ( !preg_match( '/^\d{3}-\d{4}$/', $value ) ) {
+			if ( !preg_match( '/^\d{3}[-]\d{4}$|^\d{7}$/', $value ) ) {
 				return $options['message'];
 			}
 		}
