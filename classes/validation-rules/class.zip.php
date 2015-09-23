@@ -6,7 +6,7 @@
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 21, 2014
- * Modified   : April 1, 2015
+ * Modified   : September 23, 2015
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -32,7 +32,10 @@ class MW_WP_Form_Validation_Rule_Zip extends MW_WP_Form_Abstract_Validation_Rule
 				'message' => __( 'This is not the format of a zip code.', MWF_Config::DOMAIN )
 			);
 			$options = array_merge( $defaults, $options );
-			if ( !preg_match( '/^\d{3}[-]\d{4}$|^\d{7}$/', $value ) ) {
+			if ( ! (
+				preg_match( '/^\d{3}-\d{4}$/', $value ) ||
+				preg_match( '/^\d{7}$/', $value )
+			) ) {
 				return $options['message'];
 			}
 		}
