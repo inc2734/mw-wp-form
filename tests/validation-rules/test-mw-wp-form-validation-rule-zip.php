@@ -25,21 +25,21 @@ class MW_WP_Form_Validation_Rule_Zip_Test extends WP_UnitTestCase {
 		$this->assertNull( $this->Rule->rule( 'text' ) );
 	}
 
-		/**
-		 * @backupStaticAttributes enabled
-		 */
-		public function test_郵便番号の形式ならnull() {
-				$this->Data->set( 'text', '000-0000' );
-				$this->assertNull( $this->Rule->rule( 'text' ) );
-				$this->Data->set( 'text', '0000000' );
-				$this->assertNull( $this->Rule->rule( 'text' ) );
-		}
+	/**
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_郵便番号の形式ならnull() {
+		$this->Data->set( 'text', '000-0000' );
+		$this->assertNull( $this->Rule->rule( 'text' ) );
+		$this->Data->set( 'text', '0000000' );
+		$this->assertNull( $this->Rule->rule( 'text' ) );
+	}
 
-		/**
-		 * @backupStaticAttributes enabled
-		 */
-		public function test_郵便番号の形式以外ならnotnull() {
-				$this->Data->set( 'text', 'aaa' );
-				$this->assertNotNull( $this->Rule->rule( 'text' ) );
-		}
+	/**
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_郵便番号の形式以外ならnotnull() {
+		$this->Data->set( 'text', 'aaa' );
+		$this->assertNotNull( $this->Rule->rule( 'text' ) );
+	}
 }

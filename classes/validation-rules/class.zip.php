@@ -2,7 +2,7 @@
 /**
  * Name       : MW WP Form Validation Rule Zip
  * Description: 値が郵便番号
- * Version    : 1.1.2
+ * Version    : 1.1.3
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 21, 2014
