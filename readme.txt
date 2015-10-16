@@ -2,7 +2,7 @@
 Contributors: inc2734, ryu263, tomothumb, nanniku, mt8.biz, NExt-Season, kuck1u, mypacecreator
 Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
-Requires at least: 3.7
+Requires at least: 4.0
 Tested up to: 4.3.1
 Stable tag: 2.5.3
 License: GPLv2 or later
