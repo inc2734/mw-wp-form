@@ -79,6 +79,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.5.3 =
 * Added   : Japanese zip code validation allows the format of the form 0000000.
+* Bugfix  : Fixed a date validation bug.
 
 = 2.5.2 =
 * Added   : Add new validation rule japanese kana.

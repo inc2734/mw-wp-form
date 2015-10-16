@@ -48,6 +48,20 @@ class MW_WP_Form_Validation_Rule_Date_Test extends WP_UnitTestCase {
 	/**
 	 * @backupStaticAttributes enabled
 	 */
+	public function test_日本語日付ならタイムスタンプ() {
+		$this->assertEquals(
+			$this->Rule->convert_jpdate_to_timestamp( '2015年01月01日' ),
+			strtotime( '2015-01-01' )
+		);
+		$this->assertEquals(
+			$this->Rule->convert_jpdate_to_timestamp( '2015年1月1日' ),
+			strtotime( '2015-01-01' )
+		);
+	}
+
+	/**
+	 * @backupStaticAttributes enabled
+	 */
 	public function test_日付以外ならnotnull() {
 		$this->Data->set( 'text', 'aaa' );
 		$this->assertNotNull( $this->Rule->rule( 'text' ) );

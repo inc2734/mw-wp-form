@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Validation Rule Date
  * Description: 日付が正しいかどうか
- * Version    : 1.1.1
+ * Version    : 1.1.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 21, 2014
- * Modified   : April 1, 2015
+ * Modified   : October 16, 2015
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -34,10 +34,10 @@ class MW_WP_Form_Validation_Rule_Date extends MW_WP_Form_Abstract_Validation_Rul
 			$options = array_merge( $defaults, $options );
 			$timestamp = strtotime( $value );
 			if ( !$timestamp ) {
-				if ( preg_match( '/^(\d+)年(\d{1,2})月(\d{1,2})日$/', $value ) ) {
-					$value     = sprintf( '%d-%d-%d', $value[1], $value[2], $value[3] );
-					$timestamp = strtotime( $value );
-				}
+				$timestamp = $this->convert_jpdate_to_timestamp( $value );
+			}
+			if ( !$timestamp ) {
+				return $options['message'];
 			}
 			$year  = date( 'Y', $timestamp );
 			$month = date( 'm', $timestamp );
@@ -47,6 +47,20 @@ class MW_WP_Form_Validation_Rule_Date extends MW_WP_Form_Abstract_Validation_Rul
 				return $options['message'];
 			}
 		}
+	}
+	
+	/**
+	 * 日本語表記の日付をタイムスタンプに変換する
+	 *
+	 * @param string $jpdate yyyy年mm月dd日
+	 * @return string|false
+	 */
+	public function convert_jpdate_to_timestamp( $jpdate ) {
+		if ( preg_match( '/^(\d+)年(\d{1,2})月(\d{1,2})日$/', $jpdate, $reg ) ) {
+			$date = sprintf( '%d-%d-%d', $reg[1], $reg[2], $reg[3] );
+			return strtotime( $date );
+		}
+		return false;
 	}
 
 	/**
