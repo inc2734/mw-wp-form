@@ -32,9 +32,9 @@ jQuery( function( $ ) {
 	} );
 
 	var mw_wp_form_button_no_click = true;
-	var formElement = $( '.mw_wp_form form' )[0];
 	$( '.mw_wp_form input[type="submit"]' ).click( function() {
-		if (formElement && formElement.checkValidity && !form.checkValidity()) {
+		var formElement = $( this ).closest( 'form' )[0];
+		if ( formElement && formElement.checkValidity && !formElement.checkValidity() ) {
 			return;
 		}
 		if ( mw_wp_form_button_no_click ) {
@@ -44,4 +44,3 @@ jQuery( function( $ ) {
 		}
 	} );
 } );
-
