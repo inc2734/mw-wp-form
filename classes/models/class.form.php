@@ -582,7 +582,7 @@ class MW_WP_Form_Form {
 		$_ret = '';
 		foreach ( $children as $key => $_value ) {
 			$i ++;
-			$vertically = ( $options['vertically'] === 'true' ) ? 'vertical-item' : '';
+			$vertically = ( $options['vertically'] === 'true' ) ? 'vertical-item' : 'horizontal-item';
 			$attributes_for_label = $this->generate_attributes( array(
 				'for' => $this->get_attr_id( $options['id'], $i ),
 			) );
@@ -590,7 +590,7 @@ class MW_WP_Form_Form {
 				'id' => $this->get_attr_id( $options['id'], $i ),
 			) );
 			$_ret .= sprintf(
-				'<span class="%s"><label%s><input type="radio" name="%s" value="%s"%s %s />%s</label></span>',
+				'<span class="mwform-radio-field %s"><label%s><input type="radio" name="%s" value="%s"%s %s />%s</label></span>',
 				$vertically,
 				$attributes_for_label,
 				esc_attr( $name ),
@@ -630,7 +630,7 @@ class MW_WP_Form_Form {
 		$_ret = '';
 		foreach ( $children as $key => $_value ) {
 			$i ++;
-			$vertically = ( $options['vertically'] === 'true' ) ? 'vertical-item' : '';
+			$vertically = ( $options['vertically'] === 'true' ) ? 'vertical-item' : 'horizontal-item';
 			$attributes_for_label = $this->generate_attributes( array(
 				'for' => $this->get_attr_id( $options['id'], $i ),
 			) );
@@ -639,7 +639,7 @@ class MW_WP_Form_Form {
 				'class' => $options['class'],
 			) );
 			$_ret .= sprintf(
-				'<span class="%s"><label%s><input type="checkbox" name="%s" value="%s"%s %s />%s</label></span>',
+				'<span class="mwform-checkbox-field %s"><label%s><input type="checkbox" name="%s" value="%s"%s %s />%s</label></span>',
 				$vertically,
 				$attributes_for_label,
 				esc_attr( $name . '[data][]' ),

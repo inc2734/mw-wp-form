@@ -81,6 +81,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 = 2.5.4 =
 * Bugfix  : JavaScript bug fix on validation.
 * Changed : Multilingual support. Changed domain.
+* Changed : Changed radio and checkbox style.
 * Added   : Added the class attribute setting.
 
 = 2.5.3 =

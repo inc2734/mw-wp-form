@@ -10,8 +10,26 @@
 	display: block;
 }
 
-.mw_wp_form .vertical-item {
+.vertical-item {
 	display: block;
+}
+.vertical-item+.vertical-item {
+	margin-top: 5px;
+}
+.horizontal-item+.horizontal-item {
+	margin-left: 10px;
+}
+.mwform-checkbox-field,
+.mwform-radio-field {
+}
+.mwform-checkbox-field label,
+.mwform-radio-field label {
+	font-weight: normal;
+	margin-bottom: 0;
+}
+.mwform-checkbox-field input,
+.mwform-radio-field input {
+	margin-right: 5px;
 }
 
 .ui-datepicker .ui-datepicker-title select.ui-datepicker-month,
@@ -33,4 +51,10 @@
 .mwform-file-delete {
 	cursor: pointer;
 	visibility: hidden;
+}
+
+.mwform-tel-field input[type="text"],
+.mwform-zip-field input[type="text"] {
+	display: inline-block;
+	width: auto;
 }
