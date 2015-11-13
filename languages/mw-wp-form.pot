@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.5.2\n"
+"Project-Id-Version: MW WP Form 2.5.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
-"POT-Creation-Date: 2015-09-01 06:49:06+00:00\n"
+"POT-Creation-Date: 2015-11-13 17:09:55+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -76,14 +76,14 @@ msgid "Akismet Error"
 msgstr ""
 
 #: classes/form-fields/class.back-button.php:30
-#: classes/form-fields/class.back-button.php:41
+#: classes/form-fields/class.back-button.php:42
 msgid "Back"
 msgstr ""
 
-#: classes/form-fields/class.back-button.php:69
-#: classes/form-fields/class.button.php:76
-#: classes/form-fields/class.confirm-button.php:69
-#: classes/form-fields/class.submit.php:76
+#: classes/form-fields/class.back-button.php:77
+#: classes/form-fields/class.button.php:84
+#: classes/form-fields/class.confirm-button.php:77
+#: classes/form-fields/class.submit.php:84
 msgid "String on the button"
 msgstr ""
 
@@ -95,111 +95,111 @@ msgstr ""
 msgid "Checkbox"
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:117
-#: classes/form-fields/class.radio.php:113
-#: classes/form-fields/class.select.php:109
+#: classes/form-fields/class.checkbox.php:124
+#: classes/form-fields/class.radio.php:120
+#: classes/form-fields/class.select.php:116
 msgid "Choices"
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:121
+#: classes/form-fields/class.checkbox.php:128
 #: classes/form-fields/class.error.php:78
-#: classes/form-fields/class.radio.php:117
-#: classes/form-fields/class.select.php:113
+#: classes/form-fields/class.radio.php:124
+#: classes/form-fields/class.select.php:120
 msgid "Input one line about one item."
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:122
-#: classes/form-fields/class.radio.php:118
-#: classes/form-fields/class.select.php:114
+#: classes/form-fields/class.checkbox.php:129
+#: classes/form-fields/class.radio.php:125
+#: classes/form-fields/class.select.php:121
 msgid "Example: value1&crarr;value2 or key1:value1&crarr;key2:value2"
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:123
-#: classes/form-fields/class.radio.php:119
-#: classes/form-fields/class.select.php:115
+#: classes/form-fields/class.checkbox.php:130
+#: classes/form-fields/class.radio.php:126
+#: classes/form-fields/class.select.php:122
 msgid ""
 "You can split the post value and display value by \":\". But display value "
 "is sent in e-mail."
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:124
-#: classes/form-fields/class.radio.php:120
-#: classes/form-fields/class.select.php:116
-msgid "When you want to use \":\", please enter \"::\"."
-msgstr ""
-
-#: classes/form-fields/class.checkbox.php:128
-#: classes/form-fields/class.radio.php:124
-#: classes/form-fields/class.select.php:120
-msgid "Send value by e-mail"
-msgstr ""
-
 #: classes/form-fields/class.checkbox.php:131
 #: classes/form-fields/class.radio.php:127
 #: classes/form-fields/class.select.php:123
+msgid "When you want to use \":\", please enter \"::\"."
+msgstr ""
+
+#: classes/form-fields/class.checkbox.php:135
+#: classes/form-fields/class.radio.php:131
+#: classes/form-fields/class.select.php:127
+msgid "Send value by e-mail"
+msgstr ""
+
+#: classes/form-fields/class.checkbox.php:138
+#: classes/form-fields/class.radio.php:134
+#: classes/form-fields/class.select.php:130
 msgid ""
 "Send post value when you split the post value and display value by \":\" in "
 "choices."
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:134
-#: classes/form-fields/class.datepicker.php:138
-#: classes/form-fields/class.email.php:120
+#: classes/form-fields/class.checkbox.php:141
+#: classes/form-fields/class.datepicker.php:145
+#: classes/form-fields/class.email.php:127
 #: classes/form-fields/class.hidden.php:84
-#: classes/form-fields/class.password.php:112
-#: classes/form-fields/class.radio.php:130
-#: classes/form-fields/class.select.php:126
-#: classes/form-fields/class.text.php:120
-#: classes/form-fields/class.textarea.php:114
-#: classes/form-fields/class.url.php:120
+#: classes/form-fields/class.password.php:119
+#: classes/form-fields/class.radio.php:137
+#: classes/form-fields/class.select.php:133
+#: classes/form-fields/class.text.php:127
+#: classes/form-fields/class.textarea.php:121
+#: classes/form-fields/class.url.php:127
 msgid "Default value"
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:139
+#: classes/form-fields/class.checkbox.php:146
 msgid "Separator string"
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:144
-#: classes/form-fields/class.radio.php:135
+#: classes/form-fields/class.checkbox.php:151
+#: classes/form-fields/class.radio.php:142
 msgid "Display method"
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:146
-#: classes/form-fields/class.radio.php:137
+#: classes/form-fields/class.checkbox.php:153
+#: classes/form-fields/class.radio.php:144
 msgid "Arranged vertically."
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:149
-#: classes/form-fields/class.datepicker.php:148
-#: classes/form-fields/class.email.php:130
-#: classes/form-fields/class.file.php:115
-#: classes/form-fields/class.image.php:119
-#: classes/form-fields/class.number.php:126
-#: classes/form-fields/class.password.php:122
-#: classes/form-fields/class.radio.php:140
-#: classes/form-fields/class.range.php:119
-#: classes/form-fields/class.select.php:131
-#: classes/form-fields/class.tel.php:102
-#: classes/form-fields/class.text.php:130
-#: classes/form-fields/class.textarea.php:124
-#: classes/form-fields/class.url.php:130 classes/form-fields/class.zip.php:101
+#: classes/form-fields/class.checkbox.php:156
+#: classes/form-fields/class.datepicker.php:155
+#: classes/form-fields/class.email.php:137
+#: classes/form-fields/class.file.php:122
+#: classes/form-fields/class.image.php:126
+#: classes/form-fields/class.number.php:133
+#: classes/form-fields/class.password.php:129
+#: classes/form-fields/class.radio.php:147
+#: classes/form-fields/class.range.php:126
+#: classes/form-fields/class.select.php:138
+#: classes/form-fields/class.tel.php:109
+#: classes/form-fields/class.text.php:137
+#: classes/form-fields/class.textarea.php:131
+#: classes/form-fields/class.url.php:137 classes/form-fields/class.zip.php:108
 msgid "Dsiplay error"
 msgstr ""
 
-#: classes/form-fields/class.checkbox.php:151
-#: classes/form-fields/class.datepicker.php:150
-#: classes/form-fields/class.email.php:132
-#: classes/form-fields/class.file.php:117
-#: classes/form-fields/class.image.php:121
-#: classes/form-fields/class.number.php:128
-#: classes/form-fields/class.password.php:124
-#: classes/form-fields/class.radio.php:142
-#: classes/form-fields/class.range.php:121
-#: classes/form-fields/class.select.php:133
-#: classes/form-fields/class.tel.php:104
-#: classes/form-fields/class.text.php:132
-#: classes/form-fields/class.textarea.php:126
-#: classes/form-fields/class.url.php:132 classes/form-fields/class.zip.php:103
+#: classes/form-fields/class.checkbox.php:158
+#: classes/form-fields/class.datepicker.php:157
+#: classes/form-fields/class.email.php:139
+#: classes/form-fields/class.file.php:124
+#: classes/form-fields/class.image.php:128
+#: classes/form-fields/class.number.php:135
+#: classes/form-fields/class.password.php:131
+#: classes/form-fields/class.radio.php:149
+#: classes/form-fields/class.range.php:128
+#: classes/form-fields/class.select.php:140
+#: classes/form-fields/class.tel.php:111
+#: classes/form-fields/class.text.php:139
+#: classes/form-fields/class.textarea.php:133
+#: classes/form-fields/class.url.php:139 classes/form-fields/class.zip.php:110
 msgid "Don't display error."
 msgstr ""
 
@@ -207,8 +207,8 @@ msgstr ""
 msgid "Confirm Button"
 msgstr ""
 
-#: classes/form-fields/class.confirm-button.php:41
-#: classes/form-fields/class.submit-button.php:42
+#: classes/form-fields/class.confirm-button.php:42
+#: classes/form-fields/class.submit-button.php:43
 msgid "Confirm"
 msgstr ""
 
@@ -220,16 +220,16 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: classes/form-fields/class.email.php:135
-#: classes/form-fields/class.tel.php:107
-#: classes/form-fields/class.text.php:135
-#: classes/form-fields/class.url.php:135 classes/form-fields/class.zip.php:106
+#: classes/form-fields/class.email.php:142
+#: classes/form-fields/class.tel.php:114
+#: classes/form-fields/class.text.php:142
+#: classes/form-fields/class.url.php:142 classes/form-fields/class.zip.php:113
 msgid "Convert half alphanumeric"
 msgstr ""
 
-#: classes/form-fields/class.email.php:137
-#: classes/form-fields/class.tel.php:109 classes/form-fields/class.url.php:137
-#: classes/form-fields/class.zip.php:108
+#: classes/form-fields/class.email.php:144
+#: classes/form-fields/class.tel.php:116 classes/form-fields/class.url.php:144
+#: classes/form-fields/class.zip.php:115
 msgid "Don't Convert."
 msgstr ""
 
@@ -245,7 +245,7 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-#: classes/form-fields/class.file.php:68 classes/form-fields/class.file.php:90
+#: classes/form-fields/class.file.php:70 classes/form-fields/class.file.php:92
 msgid "Uploaded."
 msgstr ""
 
@@ -289,16 +289,16 @@ msgstr ""
 msgid "Confirm &amp; Submit"
 msgstr ""
 
-#: classes/form-fields/class.submit-button.php:43
-#: classes/form-fields/class.submit.php:42
+#: classes/form-fields/class.submit-button.php:44
+#: classes/form-fields/class.submit.php:43
 msgid "Send"
 msgstr ""
 
-#: classes/form-fields/class.submit-button.php:80
+#: classes/form-fields/class.submit-button.php:92
 msgid "String on the confirm button"
 msgstr ""
 
-#: classes/form-fields/class.submit-button.php:85
+#: classes/form-fields/class.submit-button.php:97
 msgid "String on the submit button"
 msgstr ""
 
@@ -315,7 +315,7 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: classes/form-fields/class.text.php:137
+#: classes/form-fields/class.text.php:144
 msgid "Convert."
 msgstr ""
 
@@ -329,7 +329,7 @@ msgid "URL"
 msgstr ""
 
 #: classes/form-fields/class.zip.php:30
-#: classes/validation-rules/class.zip.php:49
+#: classes/validation-rules/class.zip.php:52
 msgid "Zip Code"
 msgstr ""
 
@@ -390,7 +390,7 @@ msgstr ""
 msgid "This is not the format of a date."
 msgstr ""
 
-#: classes/validation-rules/class.date.php:60
+#: classes/validation-rules/class.date.php:74
 msgid "Date"
 msgstr ""
 
