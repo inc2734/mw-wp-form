@@ -32,7 +32,7 @@ class MW_WP_Form_Validation_Rule_FileSize extends MW_WP_Form_Abstract_Validation
 			if ( !empty( $file['size'] ) ) {
 				$defaults = array(
 					'bytes'   => '0',
-					'message' => __( 'This file size is too big.', MWF_Config::DOMAIN )
+					'message' => __( 'This file size is too big.', 'mw-wp-form' )
 				);
 				$options = array_merge( $defaults, $options );
 				if ( !( preg_match( '/^[\d]+$/', $options['bytes'] ) && $options['bytes'] >= $file['size'] ) ) {
@@ -56,8 +56,8 @@ class MW_WP_Form_Validation_Rule_FileSize extends MW_WP_Form_Abstract_Validation
 		?>
 		<table>
 			<tr>
-				<td><?php esc_html_e( 'Permitted file size', MWF_Config::DOMAIN ); ?></td>
-				<td><input type="text" value="<?php echo esc_attr( $bytes ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][bytes]" /> <span class="mwf_note"><?php esc_html_e( 'bytes', MWF_Config::DOMAIN ); ?></span></td>
+				<td><?php esc_html_e( 'Permitted file size', 'mw-wp-form' ); ?></td>
+				<td><input type="text" value="<?php echo esc_attr( $bytes ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][bytes]" /> <span class="mwf_note"><?php esc_html_e( 'bytes', 'mw-wp-form' ); ?></span></td>
 			</tr>
 		</table>
 		<?php

@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Confirm_Button extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_confirmButton',
-			'display_name'   => __( 'Confirm Button', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Confirm Button', 'mw-wp-form' ),
 		);
 	}
 
@@ -38,7 +38,7 @@ class MW_WP_Form_Field_Confirm_Button extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function set_defaults() {
 		return array(
-			'value' => __( 'Confirm', MWF_Config::DOMAIN ),
+			'value' => __( 'Confirm', 'mw-wp-form' ),
 		);
 	}
 
@@ -66,7 +66,7 @@ class MW_WP_Form_Field_Confirm_Button extends MW_WP_Form_Abstract_Form_Field {
 	public function mwform_tag_generator_dialog( array $options = array() ) {
 		?>
 		<p>
-			<strong><?php esc_html_e( 'String on the button', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'String on the button', 'mw-wp-form' ); ?></strong>
 			<?php $name = $this->get_value_for_generator( 'name', $options ); ?>
 			<input type="text" name="value" value="<?php echo esc_attr( $name ); ?>" />
 		</p>

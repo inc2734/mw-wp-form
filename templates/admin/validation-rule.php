@@ -1,4 +1,4 @@
-<b class="add-btn"><?php esc_html_e( 'Add Validation rule', MWF_Config::DOMAIN ); ?></b>
+<b class="add-btn"><?php esc_html_e( 'Add Validation rule', 'mw-wp-form' ); ?></b>
 <div class="repeatable-boxes">
 	<?php foreach ( $validation as $key => $value ) : $value = array_merge( $validation_keys, $value ); ?>
 	<div class="repeatable-box" <?php if ( $key === 0 ) : ?>style="display:none"<?php endif; ?>>
@@ -6,7 +6,7 @@
 		<div class="remove-btn"><b>×</b></div>
 		<div class="open-btn"><span><?php echo esc_attr( $value['target'] ); ?></span><b>▼</b></div>
 		<div class="repeatable-box-content">
-			<?php esc_html_e( 'The key which applies validation', MWF_Config::DOMAIN ); ?>：<input type="text" class="targetKey" value="<?php echo esc_attr( $value['target'] ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo esc_attr( $key ); ?>][target]" />
+			<?php esc_html_e( 'The key which applies validation', 'mw-wp-form' ); ?>：<input type="text" class="targetKey" value="<?php echo esc_attr( $value['target'] ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo esc_attr( $key ); ?>][target]" />
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td colspan="2">

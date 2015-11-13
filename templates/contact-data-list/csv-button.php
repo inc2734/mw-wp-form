@@ -1,5 +1,5 @@
 <form id="mw-wp-form_csv" method="post" action="<?php echo esc_url( $action ); ?>">
-	<input type="submit" value="<?php esc_attr_e( 'CSV Download', MWF_Config::DOMAIN ); ?>" class="button-primary" />
+	<input type="submit" value="<?php esc_attr_e( 'CSV Download', 'mw-wp-form' ); ?>" class="button-primary" />
 	&nbsp;
 	&nbsp;
 	<label><input type="checkbox" name="download-all" value="true" checked="checked" /> Download All</label>

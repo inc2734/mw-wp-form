@@ -32,7 +32,7 @@ class MW_WP_Form_Validation_Rule_Between extends MW_WP_Form_Abstract_Validation_
 			$defaults = array(
 				'min'     => 0,
 				'max'     => 0,
-				'message' => __( 'The number of characters is invalid.', MWF_Config::DOMAIN )
+				'message' => __( 'The number of characters is invalid.', 'mw-wp-form' )
 			);
 			$options = array_merge( $defaults, $options );
 			$length = mb_strlen( $value, get_bloginfo( 'charset' ) );
@@ -74,7 +74,7 @@ class MW_WP_Form_Validation_Rule_Between extends MW_WP_Form_Abstract_Validation_
 		?>
 		<table>
 			<tr>
-				<td><?php esc_html_e( 'The range of the number of characters', MWF_Config::DOMAIN ); ?></td>
+				<td><?php esc_html_e( 'The range of the number of characters', 'mw-wp-form' ); ?></td>
 				<td>
 					<input type="text" value="<?php echo esc_attr( $min ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][min]" />
 					〜

@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Back_Button extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_backButton',
-			'display_name'   => __( 'Back', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Back', 'mw-wp-form' ),
 		);
 	}
 
@@ -38,7 +38,7 @@ class MW_WP_Form_Field_Back_Button extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function set_defaults() {
 		return array(
-			'value' => __( 'Back', MWF_Config::DOMAIN ),
+			'value' => __( 'Back', 'mw-wp-form' ),
 		);
 	}
 
@@ -66,7 +66,7 @@ class MW_WP_Form_Field_Back_Button extends MW_WP_Form_Abstract_Form_Field {
 	public function mwform_tag_generator_dialog( array $options = array() ) {
 		?>
 		<p>
-			<strong><?php esc_html_e( 'String on the button', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'String on the button', 'mw-wp-form' ); ?></strong>
 			<input type="text" name="value" />
 		</p>
 		<?php

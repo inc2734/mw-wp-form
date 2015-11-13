@@ -27,7 +27,7 @@ class MW_WP_Form_Field_File extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_file',
-			'display_name'   => __( 'File', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'File', 'mw-wp-form' ),
 		);
 	}
 
@@ -65,7 +65,7 @@ class MW_WP_Form_Field_File extends MW_WP_Form_Abstract_Form_Field {
 					</div>',
 					esc_attr( MWF_Config::NAME ),
 					esc_attr( $value ),
-					esc_html__( 'Uploaded.', MWF_Config::DOMAIN ),
+					esc_html__( 'Uploaded.', 'mw-wp-form' ),
 					$this->Form->hidden( $this->atts['name'], $value )
 				);
 			}
@@ -87,7 +87,7 @@ class MW_WP_Form_Field_File extends MW_WP_Form_Abstract_Form_Field {
 			$filepath = MWF_Functions::fileurl_to_path( $value );
 			if ( file_exists( $filepath ) ) {
 				$_ret  = '<div class="' . MWF_Config::NAME . '_file">';
-				$_ret .= '<a href="' . esc_attr( $value ) . '" target="_blank">' . __( 'Uploaded.', MWF_Config::DOMAIN ) . '</a>';
+				$_ret .= '<a href="' . esc_attr( $value ) . '" target="_blank">' . __( 'Uploaded.', 'mw-wp-form' ) . '</a>';
 				$_ret .= '</div>';
 				$_ret .= $this->Form->hidden( $this->atts['name'], $value );
 				return $_ret;
@@ -112,9 +112,9 @@ class MW_WP_Form_Field_File extends MW_WP_Form_Abstract_Form_Field {
 			<input type="text" name="id" value="<?php echo esc_attr( $id ); ?>" />
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'Dsiplay error', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'Dsiplay error', 'mw-wp-form' ); ?></strong>
 			<?php $show_error = $this->get_value_for_generator( 'show_error', $options ); ?>
-			<label><input type="checkbox" name="show_error" value="false" <?php checked( 'false', $show_error ); ?> /> <?php esc_html_e( 'Don\'t display error.', MWF_Config::DOMAIN ); ?></label>
+			<label><input type="checkbox" name="show_error" value="false" <?php checked( 'false', $show_error ); ?> /> <?php esc_html_e( 'Don\'t display error.', 'mw-wp-form' ); ?></label>
 		</p>
 		<?php
 	}

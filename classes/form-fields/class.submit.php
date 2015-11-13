@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Submit extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_submit',
-			'display_name'   => __( 'Submit Button', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Submit Button', 'mw-wp-form' ),
 		);
 	}
 
@@ -39,7 +39,7 @@ class MW_WP_Form_Field_Submit extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_defaults() {
 		return array(
 			'name'  => '',
-			'value' => __( 'Send', MWF_Config::DOMAIN ),
+			'value' => __( 'Send', 'mw-wp-form' ),
 		);
 	}
 
@@ -73,7 +73,7 @@ class MW_WP_Form_Field_Submit extends MW_WP_Form_Abstract_Form_Field {
 			<input type="text" name="name" value="<?php echo esc_attr( $name ); ?>" />
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'String on the button', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'String on the button', 'mw-wp-form' ); ?></strong>
 			<?php $value = $this->get_value_for_generator( 'value', $options ); ?>
 			<input type="text" name="value" value="<?php echo esc_attr( $value ); ?>" />
 		</p>

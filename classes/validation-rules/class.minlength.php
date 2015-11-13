@@ -31,7 +31,7 @@ class MW_WP_Form_Validation_Rule_MinLength extends MW_WP_Form_Abstract_Validatio
 		if ( !MWF_Functions::is_empty( $value ) ) {
 			$defaults = array(
 				'min' => 0,
-				'message' => __( 'The number of characters is a few.', MWF_Config::DOMAIN )
+				'message' => __( 'The number of characters is a few.', 'mw-wp-form' )
 			);
 			$options = array_merge( $defaults, $options );
 			$length = mb_strlen( $value, get_bloginfo( 'charset' ) );
@@ -55,7 +55,7 @@ class MW_WP_Form_Validation_Rule_MinLength extends MW_WP_Form_Abstract_Validatio
 		?>
 		<table>
 			<tr>
-				<td><?php esc_html_e( 'The number of the minimum characters', MWF_Config::DOMAIN ); ?></td>
+				<td><?php esc_html_e( 'The number of the minimum characters', 'mw-wp-form' ); ?></td>
 				<td><input type="text" value="<?php echo esc_attr( $min ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][min]" /></td>
 			</tr>
 		</table>

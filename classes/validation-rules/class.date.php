@@ -29,7 +29,7 @@ class MW_WP_Form_Validation_Rule_Date extends MW_WP_Form_Abstract_Validation_Rul
 		$value = $this->Data->get( $key );
 		if ( !MWF_Functions::is_empty( $value ) ) {
 			$defaults = array(
-				'message' => __( 'This is not the format of a date.', MWF_Config::DOMAIN )
+				'message' => __( 'This is not the format of a date.', 'mw-wp-form' )
 			);
 			$options = array_merge( $defaults, $options );
 			$timestamp = strtotime( $value );
@@ -71,7 +71,7 @@ class MW_WP_Form_Validation_Rule_Date extends MW_WP_Form_Abstract_Validation_Rul
 	 */
 	public function admin( $key, $value ) {
 		?>
-		<label><input type="checkbox" <?php checked( $value[$this->getName()], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( 'Date', MWF_Config::DOMAIN ); ?></label>
+		<label><input type="checkbox" <?php checked( $value[$this->getName()], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( 'Date', 'mw-wp-form' ); ?></label>
 		<?php
 	}
 }

@@ -1,7 +1,7 @@
 <div class="wrap">
 	<?php $post_id = preg_replace( '/^(.+_)(\d+)$/', '$2', $post_type ); ?>
 	<h2>
-		<?php esc_html_e( 'Chart', MWF_Config::DOMAIN ); ?>
+		<?php esc_html_e( 'Chart', 'mw-wp-form' ); ?>
 		:
 		<?php echo esc_html( get_the_title( $post_id ) ); ?>
 	</h2>
@@ -12,7 +12,7 @@
 		?>
 		<div id="<?php echo esc_attr( MWF_Config::NAME . '_chart' ); ?>" class="postbox">
 			<div class="inside">
-				<b class="add-btn"><?php esc_html_e( 'Add Chart', MWF_Config::DOMAIN ); ?></b>
+				<b class="add-btn"><?php esc_html_e( 'Add Chart', 'mw-wp-form' ); ?></b>
 				<div class="repeatable-boxes">
 					<?php foreach ( $postdata as $key => $value ) :  ?>
 					<div class="repeatable-box" <?php if ( $key === 0 ) : ?>style="display:none"<?php endif; ?>>
@@ -20,20 +20,20 @@
 						<div class="remove-btn"><b>×</b></div>
 						<div class="open-btn"><span><?php echo esc_html( $value['target'] ); ?></span><b>▼</b></div>
 						<div class="repeatable-box-content">
-							<?php esc_html_e( 'Item that create chart', MWF_Config::DOMAIN ); ?>
+							<?php esc_html_e( 'Item that create chart', 'mw-wp-form' ); ?>
 							<select class="targetKey" name="<?php echo esc_attr( sprintf( '%s-chart-%s[chart][%s][target]', MWF_Config::NAME, $post_type, $key ) ); ?>">
-								<option value=""><?php esc_html_e( 'Select this.', MWF_Config::DOMAIN ); ?></option>
+								<option value=""><?php esc_html_e( 'Select this.', 'mw-wp-form' ); ?></option>
 								<?php foreach ( $custom_keys as $custom_key_name => $custom_key_value ) : ?>
 								<option value="<?php echo esc_attr( $custom_key_name ); ?>" <?php selected( $value['target'], $custom_key_name ); ?>><?php echo esc_html( $custom_key_name ); ?></option>
 								<?php endforeach; ?>
 							</select>
 							<br />
-							<?php esc_html_e( 'Chart type', MWF_Config::DOMAIN ); ?>
+							<?php esc_html_e( 'Chart type', 'mw-wp-form' ); ?>
 							<select name="<?php echo esc_attr( sprintf( '%s-chart-%s[chart][%s][chart]', MWF_Config::NAME, $post_type, $key ) ); ?>">
 								<?php
 								$chart_options = array(
-									'pie' => esc_html__( 'Pie chart', MWF_Config::DOMAIN ),
-									'bar' => esc_html__( 'Bar chart', MWF_Config::DOMAIN ),
+									'pie' => esc_html__( 'Pie chart', 'mw-wp-form' ),
+									'bar' => esc_html__( 'Bar chart', 'mw-wp-form' ),
 								);
 								foreach ( $chart_options as $chart_option_key => $chart_option ) {
 									printf(
@@ -46,7 +46,7 @@
 								?>
 							</select>
 							<br />
-							<?php esc_html_e( 'Separator string (If the check box. If the separator attribute is not set to ",")', MWF_Config::DOMAIN ); ?>
+							<?php esc_html_e( 'Separator string (If the check box. If the separator attribute is not set to ",")', 'mw-wp-form' ); ?>
 							<input type="text" name="<?php echo esc_attr( sprintf( '%s-chart-%s[chart][%s][separator]', MWF_Config::NAME, $post_type, $key ) ); ?>" value="<?php echo esc_attr( $value['separator'] ); ?>" size="5" />
 						<!-- end .repeatable-box-content --></div>
 					<!-- end .repeatable-box --></div>
@@ -68,7 +68,7 @@
 			'<h3>%s <span style="font-weight:normal;font-size:14px">( %s: %d )</span></h3>
 			<div class="%s" style="width: 100%%; max-width: 800px"></div>',
 			esc_html( $chart['target'] ),
-			esc_html__( 'The number of inquiries', MWF_Config::DOMAIN ),
+			esc_html__( 'The number of inquiries', 'mw-wp-form' ),
 			count( $form_posts ),
 			esc_attr( MWF_Config::NAME . '-chart-div-' . $postdata_key )
 		);

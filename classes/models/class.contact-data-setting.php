@@ -57,9 +57,9 @@ class MW_WP_Form_Contact_Data_Setting {
 		if ( MWF_Functions::is_contact_data_post_type( get_post_type( $post_id ) ) ) {
 			$this->post_id = $post_id;
 			$this->response_statuses = array(
-				'not-supported' => esc_html__( 'Not supported', MWF_Config::DOMAIN ),
-				'reservation'   => esc_html__( 'Reservation', MWF_Config::DOMAIN ),
-				'supported'     => esc_html__( 'Supported', MWF_Config::DOMAIN ),
+				'not-supported' => esc_html__( 'Not supported', 'mw-wp-form' ),
+				'reservation'   => esc_html__( 'Reservation', 'mw-wp-form' ),
+				'supported'     => esc_html__( 'Supported', 'mw-wp-form' ),
 			);
 
 			$post_custom = get_post_custom( $post_id );

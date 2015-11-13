@@ -114,8 +114,8 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	public function add_form_columns_name( $columns ) {
 		global $posts;
 		unset( $columns['date'] );
-		$columns['post_date']       = __( 'Registed Date', MWF_Config::DOMAIN );
-		$columns['response_status'] = __( 'Response Status', MWF_Config::DOMAIN );
+		$columns['post_date']       = __( 'Registed Date', 'mw-wp-form' );
+		$columns['response_status'] = __( 'Response Status', 'mw-wp-form' );
 		$_columns = array();
 		foreach ( $posts as $post ) {
 			$post_custom_keys = get_post_custom_keys( $post->ID );

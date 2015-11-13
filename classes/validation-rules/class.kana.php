@@ -30,7 +30,7 @@ class MW_WP_Form_Validation_Rule_Kana extends MW_WP_Form_Abstract_Validation_Rul
 		if ( !MWF_Functions::is_empty( $value ) ) {
 			if ( !preg_match( '/^[ぁ-ゞァ-ヾ 　]*?[ぁ-ゞァ-ヾ]+?[ぁ-ゞァ-ヾ 　]*?$/u', $value ) ) {
 				$defaults = array(
-					'message' => __( 'Please enter with a Japanese Hiragana or Katakana.', MWF_Config::DOMAIN )
+					'message' => __( 'Please enter with a Japanese Hiragana or Katakana.', 'mw-wp-form' )
 				);
 				$options = array_merge( $defaults, $options );
 				return $options['message'];
@@ -46,7 +46,7 @@ class MW_WP_Form_Validation_Rule_Kana extends MW_WP_Form_Abstract_Validation_Rul
 	 */
 	public function admin( $key, $value ) {
 		?>
-		<label><input type="checkbox" <?php checked( $value[$this->getName()], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( 'Japanese Hiragana or Katakana', MWF_Config::DOMAIN ); ?></label>
+		<label><input type="checkbox" <?php checked( $value[$this->getName()], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( 'Japanese Hiragana or Katakana', 'mw-wp-form' ); ?></label>
 		<?php
 	}
 }

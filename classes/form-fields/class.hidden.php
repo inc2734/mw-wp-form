@@ -20,7 +20,7 @@ class MW_WP_Form_Field_Hidden extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_hidden',
-			'display_name'   => __( 'Hidden', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Hidden', 'mw-wp-form' ),
 		);
 	}
 
@@ -81,14 +81,14 @@ class MW_WP_Form_Field_Hidden extends MW_WP_Form_Abstract_Form_Field {
 			<input type="text" name="name" value="<?php echo esc_attr( $name ); ?>" />
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'Default value', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'Default value', 'mw-wp-form' ); ?></strong>
 			<?php $value = $this->get_value_for_generator( 'value', $options ); ?>
 			<input type="text" name="value" value="<?php echo esc_attr( $value ); ?>" />
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'Display', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'Display', 'mw-wp-form' ); ?></strong>
 			<?php $echo = $this->get_value_for_generator( 'echo', $options ); ?>
-			<input type="checkbox" name="echo" value="true" <?php checked( 'true', $echo ); ?> /> <?php esc_html_e( 'Display hidden value.', MWF_Config::DOMAIN ); ?>
+			<input type="checkbox" name="echo" value="true" <?php checked( 'true', $echo ); ?> /> <?php esc_html_e( 'Display hidden value.', 'mw-wp-form' ); ?>
 		</p>
 		<?php
 	}

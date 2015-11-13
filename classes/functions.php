@@ -198,7 +198,7 @@ class MWF_Functions {
 				'post_mime_type' => $wp_check_filetype['type'],
 				'post_title'     => $key,
 				'post_status'    => 'inherit',
-				'post_content'   => __( 'Uploaded from ', MWF_Config::DOMAIN ) . $post_type->label,
+				'post_content'   => __( 'Uploaded from ', 'mw-wp-form' ) . $post_type->label,
 			);
 			$attach_id   = wp_insert_attachment( $attachment, $filepath, $post_id );
 			$attach_data = wp_generate_attachment_metadata( $attach_id, $filepath );
@@ -297,7 +297,7 @@ class MWF_Functions {
 	 * @return string
 	 */
 	public static function get_tracking_number_title( $post_type ) {
-		$tracking_number_title = esc_html__( 'Tracking Number', MWF_Config::DOMAIN );
+		$tracking_number_title = esc_html__( 'Tracking Number', 'mw-wp-form' );
 		$form_key = self::contact_data_post_type_to_form_key( $post_type );
 		if ( $form_key ) {
 			$tracking_number_title = apply_filters(

@@ -30,7 +30,7 @@ class MW_WP_Form_Validation_Rule_Numeric extends MW_WP_Form_Abstract_Validation_
 		if ( !MWF_Functions::is_empty( $value ) ) {
 			if ( !preg_match( '/^[0-9]+$/', $value ) ) {
 				$defaults = array(
-					'message' => __( 'Please enter with a half-width number.', MWF_Config::DOMAIN )
+					'message' => __( 'Please enter with a half-width number.', 'mw-wp-form' )
 				);
 				$options = array_merge( $defaults, $options );
 				return $options['message'];
@@ -46,7 +46,7 @@ class MW_WP_Form_Validation_Rule_Numeric extends MW_WP_Form_Abstract_Validation_
 	 */
 	public function admin( $key, $value ) {
 		?>
-		<label><input type="checkbox" <?php checked( $value[$this->getName()], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( 'Numeric', MWF_Config::DOMAIN ); ?></label>
+		<label><input type="checkbox" <?php checked( $value[$this->getName()], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( 'Numeric', 'mw-wp-form' ); ?></label>
 		<?php
 	}
 }

@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Error extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_error',
-			'display_name'   => __( 'Error Message', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Error Message', 'mw-wp-form' ),
 		);
 	}
 
@@ -71,11 +71,11 @@ class MW_WP_Form_Field_Error extends MW_WP_Form_Abstract_Form_Field {
 	public function mwform_tag_generator_dialog( array $options = array() ) {
 		?>
 		<p>
-			<strong><?php esc_html_e( 'name of the element which wants to display error', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'name of the element which wants to display error', 'mw-wp-form' ); ?></strong>
 			<?php $keys = "\n" . $this->get_value_for_generator( 'keys', $options ); ?>
 			<textarea name="keys"><?php echo esc_attr( $keys ); ?></textarea>
 			<span class="mwf_note">
-				<?php esc_html_e( 'Input one line about one item.', MWF_Config::DOMAIN ); ?>
+				<?php esc_html_e( 'Input one line about one item.', 'mw-wp-form' ); ?>
 			</span>
 		</p>
 		<?php

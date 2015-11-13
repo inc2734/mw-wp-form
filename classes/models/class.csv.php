@@ -119,7 +119,7 @@ class MW_WP_Form_CSV {
 	protected function get_csv_headings( array $posts ) {
 		$default_headings = array(
 			'ID',
-			__( 'Response Status', MWF_Config::DOMAIN ),
+			__( 'Response Status', 'mw-wp-form' ),
 			'post_date',
 			'post_modified',
 			'post_title'
@@ -145,7 +145,7 @@ class MW_WP_Form_CSV {
 		}
 		ksort( $columns );
 		$rows[0] = array_merge( $rows[0], $columns );
-		$rows[0] = array_merge( $rows[0], array( __( 'Memo', MWF_Config::DOMAIN ) ) );
+		$rows[0] = array_merge( $rows[0], array( __( 'Memo', 'mw-wp-form' ) ) );
 		return $rows[0];
 	}
 
@@ -166,10 +166,10 @@ class MW_WP_Form_CSV {
 				$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $post->ID );
 				$response_statuses    = $Contact_Data_Setting->get_response_statuses();
 				$column = '';
-				if ( $value === __( 'Response Status', MWF_Config::DOMAIN ) ) {
+				if ( $value === __( 'Response Status', 'mw-wp-form' ) ) {
 					$response_status = $Contact_Data_Setting->get( 'response_status' );
 					$column = $response_statuses[$response_status];
-				} elseif ( $value === __( 'Memo', MWF_Config::DOMAIN ) ) {
+				} elseif ( $value === __( 'Memo', 'mw-wp-form' ) ) {
 					$column = $Contact_Data_Setting->get( 'memo' );
 				} elseif ( $value === MWF_Functions::get_tracking_number_title( $this->post_type ) ) {
 					$column = get_post_meta( get_the_ID(), MWF_Config::TRACKINGNUMBER, true );

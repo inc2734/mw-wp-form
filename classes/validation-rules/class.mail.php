@@ -30,7 +30,7 @@ class MW_WP_Form_Validation_Rule_Mail extends MW_WP_Form_Abstract_Validation_Rul
 		if ( !MWF_Functions::is_empty( $value ) ) {
 			if ( !preg_match( '/^[^@]+@([^@^\.]+\.)+[^@^\.]+$/', $value ) ) {
 				$defaults = array(
-					'message' => __( 'This is not the format of a mail address.', MWF_Config::DOMAIN )
+					'message' => __( 'This is not the format of a mail address.', 'mw-wp-form' )
 				);
 				$options = array_merge( $defaults, $options );
 				return $options['message'];
@@ -46,7 +46,7 @@ class MW_WP_Form_Validation_Rule_Mail extends MW_WP_Form_Abstract_Validation_Rul
 	 */
 	public function admin( $key, $value ) {
 		?>
-		<label><input type="checkbox" <?php checked( $value[$this->getName()], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( 'E-mail', MWF_Config::DOMAIN ); ?></label>
+		<label><input type="checkbox" <?php checked( $value[$this->getName()], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( 'E-mail', 'mw-wp-form' ); ?></label>
 		<?php
 	}
 }

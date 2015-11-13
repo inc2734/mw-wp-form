@@ -31,7 +31,7 @@ class MW_WP_Form_Validation_Rule_In extends MW_WP_Form_Abstract_Validation_Rule 
 		if ( !MWF_Functions::is_empty( $value ) ) {
 			$defaults = array(
 				'options' => array(),
-				'message' => __( 'This value is invalid.', MWF_Config::DOMAIN )
+				'message' => __( 'This value is invalid.', 'mw-wp-form' )
 			);
 			$options = array_merge( $defaults, $options );
 			if ( is_array( $options['options'] ) ) {

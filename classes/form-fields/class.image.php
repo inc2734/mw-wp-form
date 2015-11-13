@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Image extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_image',
-			'display_name'   => __( 'Image', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Image', 'mw-wp-form' ),
 		);
 	}
 
@@ -116,9 +116,9 @@ class MW_WP_Form_Field_Image extends MW_WP_Form_Abstract_Form_Field {
 			<input type="text" name="id" value="<?php echo esc_attr( $id ); ?>" />
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'Dsiplay error', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'Dsiplay error', 'mw-wp-form' ); ?></strong>
 			<?php $show_error = $this->get_value_for_generator( 'show_error', $options ); ?>
-			<label><input type="checkbox" name="show_error" value="false" <?php checked( 'false', $show_error ); ?> /> <?php esc_html_e( 'Don\'t display error.', MWF_Config::DOMAIN ); ?></label>
+			<label><input type="checkbox" name="show_error" value="false" <?php checked( 'false', $show_error ); ?> /> <?php esc_html_e( 'Don\'t display error.', 'mw-wp-form' ); ?></label>
 		</p>
 		<?php
 	}

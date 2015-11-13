@@ -30,7 +30,7 @@ class MW_WP_Form_Validation_Rule_FileType extends MW_WP_Form_Abstract_Validation
 		if ( !MWF_Functions::is_empty( $value ) ) {
 			$defaults = array(
 				'types'   => '',
-				'message' => __( 'This file is invalid.', MWF_Config::DOMAIN )
+				'message' => __( 'This file is invalid.', 'mw-wp-form' )
 			);
 			$options = array_merge( $defaults, $options );
 			$_types = explode( ',', $options['types'] );
@@ -59,8 +59,8 @@ class MW_WP_Form_Validation_Rule_FileType extends MW_WP_Form_Abstract_Validation
 		?>
 		<table>
 			<tr>
-				<td><?php esc_html_e( 'Permitted Extension', MWF_Config::DOMAIN ); ?></td>
-				<td><input type="text" value="<?php echo esc_attr( $types ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][types]" /> <span class="mwf_note"><?php esc_html_e( 'Example:jpg or jpg,txt,…', MWF_Config::DOMAIN ); ?></span></td>
+				<td><?php esc_html_e( 'Permitted Extension', 'mw-wp-form' ); ?></td>
+				<td><input type="text" value="<?php echo esc_attr( $types ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][types]" /> <span class="mwf_note"><?php esc_html_e( 'Example:jpg or jpg,txt,…', 'mw-wp-form' ); ?></span></td>
 			</tr>
 		</table>
 		<?php

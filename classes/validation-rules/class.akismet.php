@@ -27,7 +27,7 @@ class MW_WP_Form_Validation_Rule_Akismet extends MW_WP_Form_Abstract_Validation_
 	 */
 	public function rule( $key, array $options = array() ) {
 		$defaults = array(
-			'message' => __( 'The contents which you input were judged with spam.', MWF_Config::DOMAIN )
+			'message' => __( 'The contents which you input were judged with spam.', 'mw-wp-form' )
 		);
 		$options = array_merge( $defaults, $options );
 		return $options['message'];

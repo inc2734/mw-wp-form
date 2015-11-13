@@ -30,7 +30,7 @@ class MW_WP_Form_Validation_Rule_Eq extends MW_WP_Form_Abstract_Validation_Rule 
 		if ( !MWF_Functions::is_empty( $value ) ) {
 			$defaults = array(
 				'target'  => null,
-				'message' => __( 'This is not in agreement.', MWF_Config::DOMAIN )
+				'message' => __( 'This is not in agreement.', 'mw-wp-form' )
 			);
 			$options = array_merge( $defaults, $options );
 			$target_value = $this->Data->get( $options['target'] );
@@ -54,7 +54,7 @@ class MW_WP_Form_Validation_Rule_Eq extends MW_WP_Form_Abstract_Validation_Rule 
 		?>
 		<table>
 			<tr>
-				<td><?php esc_html_e( 'The key at same value', MWF_Config::DOMAIN ); ?></td>
+				<td><?php esc_html_e( 'The key at same value', 'mw-wp-form' ); ?></td>
 				<td><input type="text" value="<?php echo esc_attr( $target ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][target]" /></td>
 			</tr>
 		</table>

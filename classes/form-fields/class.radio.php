@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_radio',
-			'display_name'   => __( 'Radio', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Radio', 'mw-wp-form' ),
 		);
 	}
 
@@ -110,36 +110,36 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 			<input type="text" name="id" value="<?php echo esc_attr( $id ); ?>" />
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'Choices', MWF_Config::DOMAIN ); ?><span class="mwf_require">*</span></strong>
+			<strong><?php esc_html_e( 'Choices', 'mw-wp-form' ); ?><span class="mwf_require">*</span></strong>
 			<?php $children = "\n" . $this->get_value_for_generator( 'children', $options ); ?>
 			<textarea name="children"><?php echo esc_attr( $children ); ?></textarea>
 			<span class="mwf_note">
-				<?php esc_html_e( 'Input one line about one item.', MWF_Config::DOMAIN ); ?><br />
-				<?php esc_html_e( 'Example: value1&crarr;value2 or key1:value1&crarr;key2:value2', MWF_Config::DOMAIN ); ?><br />
-				<?php esc_html_e( 'You can split the post value and display value by ":". But display value is sent in e-mail.', MWF_Config::DOMAIN ); ?><br />
-				<?php esc_html_e( 'When you want to use ":", please enter "::".', MWF_Config::DOMAIN ); ?>
+				<?php esc_html_e( 'Input one line about one item.', 'mw-wp-form' ); ?><br />
+				<?php esc_html_e( 'Example: value1&crarr;value2 or key1:value1&crarr;key2:value2', 'mw-wp-form' ); ?><br />
+				<?php esc_html_e( 'You can split the post value and display value by ":". But display value is sent in e-mail.', 'mw-wp-form' ); ?><br />
+				<?php esc_html_e( 'When you want to use ":", please enter "::".', 'mw-wp-form' ); ?>
 			</span>
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'Send value by e-mail', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'Send value by e-mail', 'mw-wp-form' ); ?></strong>
 			<?php $value = $this->get_value_for_generator( 'value', $options ); ?>
 			<?php $post_raw = $this->get_value_for_generator( 'post_raw', $options ); ?>
-			<label><input type="checkbox" name="post_raw" value="true" <?php checked( 'true', $post_raw ); ?> /> <?php esc_html_e( 'Send post value when you split the post value and display value by ":" in choices.', MWF_Config::DOMAIN ); ?></label>
+			<label><input type="checkbox" name="post_raw" value="true" <?php checked( 'true', $post_raw ); ?> /> <?php esc_html_e( 'Send post value when you split the post value and display value by ":" in choices.', 'mw-wp-form' ); ?></label>
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'Default value', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'Default value', 'mw-wp-form' ); ?></strong>
 			<?php $value = $this->get_value_for_generator( 'value', $options ); ?>
 			<input type="text" name="value" value="<?php echo esc_attr( $value ); ?>" />
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'Display method', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'Display method', 'mw-wp-form' ); ?></strong>
 			<?php $vertically = $this->get_value_for_generator( 'vertically', $options ); ?>
-			<label><input type="checkbox" name="vertically" value="true" <?php checked( 'true', $vertically ); ?> /> <?php esc_html_e( 'Arranged vertically.', MWF_Config::DOMAIN ); ?></label>
+			<label><input type="checkbox" name="vertically" value="true" <?php checked( 'true', $vertically ); ?> /> <?php esc_html_e( 'Arranged vertically.', 'mw-wp-form' ); ?></label>
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'Dsiplay error', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'Dsiplay error', 'mw-wp-form' ); ?></strong>
 			<?php $show_error = $this->get_value_for_generator( 'show_error', $options ); ?>
-			<label><input type="checkbox" name="show_error" value="false" <?php checked( 'false', $show_error ); ?> /> <?php esc_html_e( 'Don\'t display error.', MWF_Config::DOMAIN ); ?></label>
+			<label><input type="checkbox" name="show_error" value="false" <?php checked( 'false', $show_error ); ?> /> <?php esc_html_e( 'Don\'t display error.', 'mw-wp-form' ); ?></label>
 		</p>
 		<?php
 	}

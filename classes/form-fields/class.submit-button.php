@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Submit_Button extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_submitButton',
-			'display_name'   => __( 'Confirm &amp; Submit', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Confirm &amp; Submit', 'mw-wp-form' ),
 		);
 	}
 
@@ -39,8 +39,8 @@ class MW_WP_Form_Field_Submit_Button extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_defaults() {
 		return array(
 			'name' => '',
-			'confirm_value' => __( 'Confirm', MWF_Config::DOMAIN ),
-			'submit_value'  => __( 'Send', MWF_Config::DOMAIN ),
+			'confirm_value' => __( 'Confirm', 'mw-wp-form' ),
+			'submit_value'  => __( 'Send', 'mw-wp-form' ),
 		);
 	}
 
@@ -77,12 +77,12 @@ class MW_WP_Form_Field_Submit_Button extends MW_WP_Form_Abstract_Form_Field {
 			<input type="text" name="name" value="<?php echo esc_attr( $name ); ?>" />
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'String on the confirm button', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'String on the confirm button', 'mw-wp-form' ); ?></strong>
 			<?php $confirm_value = $this->get_value_for_generator( 'confirm_value', $options ); ?>
 			<input type="text" name="confirm_value" value="<?php echo esc_attr( $confirm_value ); ?>" />
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'String on the submit button', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'String on the submit button', 'mw-wp-form' ); ?></strong>
 			<?php $submit_value = $this->get_value_for_generator( 'submit_value', $options ); ?>
 			<input type="text" name="submit_value" value="<?php echo esc_attr( $submit_value ); ?>" />
 		</p>

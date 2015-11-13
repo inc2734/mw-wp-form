@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Button extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_button',
-			'display_name'   => __( 'Button', MWF_Config::DOMAIN ),
+			'display_name'   => __( 'Button', 'mw-wp-form' ),
 		);
 	}
 
@@ -73,7 +73,7 @@ class MW_WP_Form_Field_Button extends MW_WP_Form_Abstract_Form_Field {
 			<input type="text" name="name" value="<?php echo esc_attr( $name ); ?>" />
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'String on the button', MWF_Config::DOMAIN ); ?></strong>
+			<strong><?php esc_html_e( 'String on the button', 'mw-wp-form' ); ?></strong>
 			<?php $value = $this->get_value_for_generator( 'value', $options ); ?>
 			<input type="text" name="value" value="<?php echo esc_attr( $value ); ?>" />
 		</p>
