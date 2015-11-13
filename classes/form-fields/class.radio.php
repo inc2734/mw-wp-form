@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Radio
  * Description: ラジオボタンを出力
- * Version    : 1.5.7
+ * Version    : 1.6.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : April 24, 2015
+ * Modified   : November 14, 2015
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -40,6 +40,7 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 		return array(
 			'name'       => '',
 			'id'         => null,
+			'class'      => null,
 			'children'   => '',
 			'value'      => null,
 			'vertically' => null,
@@ -62,6 +63,7 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 
 		$_ret = $this->Form->radio( $this->atts['name'], $children, array(
 			'id'         => $this->atts['id'],
+			'class'      => $this->atts['class'],
 			'value'      => $value,
 			'vertically' => $this->atts['vertically'],
 		) );
@@ -108,6 +110,11 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 			<strong>id</strong>
 			<?php $id = $this->get_value_for_generator( 'id', $options ); ?>
 			<input type="text" name="id" value="<?php echo esc_attr( $id ); ?>" />
+		</p>
+		<p>
+			<strong>class</strong>
+			<?php $class = $this->get_value_for_generator( 'class', $options ); ?>
+			<input type="text" name="class" value="<?php echo esc_attr( $class ); ?>" />
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'Choices', 'mw-wp-form' ); ?><span class="mwf_require">*</span></strong>

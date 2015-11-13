@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Image
  * Description: 画像アップロードフィールドを出力
- * Version    : 1.5.2
+ * Version    : 1.6.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : May 17, 2013
- * Modified   : April 1, 2015
+ * Modified   : November 14, 2015
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -38,8 +38,9 @@ class MW_WP_Form_Field_Image extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function set_defaults() {
 		return array(
-			'name' => '',
-			'id'   => null,
+			'name'  => '',
+			'id'    => null,
+			'class' => null,
 			'show_error' => 'true',
 		);
 	}
@@ -51,7 +52,8 @@ class MW_WP_Form_Field_Image extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function input_page() {
 		$_ret = $this->Form->file( $this->atts['name'], array(
-			'id' => $this->atts['id'],
+			'id'    => $this->atts['id'],
+			'class' => $this->atts['class'],
 		) );
 		$value = $this->Data->get_raw( $this->atts['name'] );
 
@@ -114,6 +116,11 @@ class MW_WP_Form_Field_Image extends MW_WP_Form_Abstract_Form_Field {
 			<strong>id</strong>
 			<?php $id = $this->get_value_for_generator( 'id', $options ); ?>
 			<input type="text" name="id" value="<?php echo esc_attr( $id ); ?>" />
+		</p>
+		<p>
+			<strong>class</strong>
+			<?php $class = $this->get_value_for_generator( 'class', $options ); ?>
+			<input type="text" name="class" value="<?php echo esc_attr( $class ); ?>" />
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'Dsiplay error', 'mw-wp-form' ); ?></strong>

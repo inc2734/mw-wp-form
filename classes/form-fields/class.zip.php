@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Zip
  * Description: 郵便番号フィールドを出力
- * Version    : 1.5.1
+ * Version    : 1.6.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : April 10, 2015
+ * Modified   : November 14, 2015
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -39,6 +39,7 @@ class MW_WP_Form_Field_Zip extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_defaults() {
 		return array(
 			'name'       => '',
+			'class'      => null,
 			'value'      => '',
 			'show_error' => 'true',
 			'conv_half_alphanumeric' => 'true',
@@ -63,6 +64,7 @@ class MW_WP_Form_Field_Zip extends MW_WP_Form_Abstract_Form_Field {
 			$conv_half_alphanumeric = null;
 		}
 		$_ret = $this->Form->zip( $this->atts['name'], array(
+			'class' => $this->atts['class'],
 			'conv-half-alphanumeric' => $conv_half_alphanumeric,
 			'value' => $value,
 		) );
@@ -96,6 +98,11 @@ class MW_WP_Form_Field_Zip extends MW_WP_Form_Abstract_Form_Field {
 			<strong>name</strong>
 			<?php $name = $this->get_value_for_generator( 'name', $options ); ?>
 			<input type="text" name="name" value="<?php echo esc_attr( $name ); ?>" /></td>
+		</p>
+		<p>
+			<strong>class</strong>
+			<?php $class = $this->get_value_for_generator( 'class', $options ); ?>
+			<input type="text" name="class" value="<?php echo esc_attr( $class ); ?>" />
 		</p>
 		<p>
 			<strong><?php esc_html_e( 'Dsiplay error', 'mw-wp-form' ); ?></strong>
