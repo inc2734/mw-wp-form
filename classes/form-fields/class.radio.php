@@ -119,9 +119,9 @@ class MW_WP_Form_Field_Radio extends MW_WP_Form_Abstract_Form_Field {
 		<p>
 			<strong><?php esc_html_e( 'Choices', 'mw-wp-form' ); ?><span class="mwf_require">*</span></strong>
 			<?php $children = "\n" . $this->get_value_for_generator( 'children', $options ); ?>
-			<textarea name="children"><?php echo esc_attr( $children ); ?></textarea>
+			<textarea name="children" col="3"><?php echo esc_attr( $children ); ?></textarea>
 			<span class="mwf_note">
-				<?php esc_html_e( 'Input one line about one item.', 'mw-wp-form' ); ?><br />
+				<?php esc_html_e( 'Input one line about one item.', 'mw-wp-form' ); ?>
 				<?php esc_html_e( 'Example: value1&crarr;value2 or key1:value1&crarr;key2:value2', 'mw-wp-form' ); ?><br />
 				<?php esc_html_e( 'You can split the post value and display value by ":". But display value is sent in e-mail.', 'mw-wp-form' ); ?><br />
 				<?php esc_html_e( 'When you want to use ":", please enter "::".', 'mw-wp-form' ); ?>
