@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Data
  * Description: MW WP Form のデータ操作用
- * Version    : 1.3.9
+ * Version    : 1.3.10
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : October 10, 2013
- * Modified   : May 6, 2015
+ * Modified   : November 14, 2015
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -263,10 +263,12 @@ class MW_WP_Form_Data {
 		$children = array();
 		if ( isset( $this->data['__children'][$key] ) && is_array( $this->data['__children'][$key] ) ) {
 			$_children = $this->data['__children'][$key];
-			foreach ( $_children as $_child ) {
-				$_child = json_decode( $_child, true );
-				foreach ( $_child as $_child_key => $_child_value ) {
-					$children[$_child_key] = $_child_value;
+			if ( is_array( $_children ) ) {
+				foreach ( $_children as $_child ) {
+					$_child = json_decode( $_child, true );
+					foreach ( $_child as $_child_key => $_child_value ) {
+						$children[$_child_key] = $_child_value;
+					}
 				}
 			}
 		}
