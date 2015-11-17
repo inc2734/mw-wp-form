@@ -277,8 +277,8 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		} else {
 			$value = $Setting->get( $key );
 		}
-
-		if ( !is_null( $value ) ) {
+		
+		if ( !empty( $value ) ) {
 			return $value;
 		} else {
 			$date     = $post->post_date;
