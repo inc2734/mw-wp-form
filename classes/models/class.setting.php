@@ -18,6 +18,18 @@ class MW_WP_Form_Setting {
 	protected $post_id;
 
 	/**
+	 * URL引数を有効にするかどうか
+	 * @var false|1
+	 */
+	protected $querystring = false;
+
+	/**
+	 * 問い合わせデータを保存するかどうか
+	 * @var false|1
+	 */
+	protected $usedb = false;
+
+	/**
 	 * 自動返信メールの題名
 	 * @var string
 	 */
@@ -88,18 +100,6 @@ class MW_WP_Form_Setting {
 	 * @var string
 	 */
 	protected $admin_mail_content = '';
-
-	/**
-	 * URL引数を有効にするかどうか
-	 * @var false|1
-	 */
-	protected $querystring = false;
-
-	/**
-	 * 問い合わせデータを保存するかどうか
-	 * @var false|1
-	 */
-	protected $usedb = false;
 
 	/**
 	 * akismet送信者の対象とするフォームフィールドのname属性
