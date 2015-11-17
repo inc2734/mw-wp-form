@@ -45,6 +45,9 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		add_action( 'media_buttons'        , array( $this , 'tag_generator' ) );
 		add_action( 'admin_enqueue_scripts', array( $this , 'admin_enqueue_scripts' ) );
 		add_action( 'save_post'            , array( $Admin, 'save_post' ) );
+		
+		add_filter( 'mwform_default_content' , array( $this, 'mwform_default_content' ), 9 );
+		add_filter( 'mwform_default_settings', array( $this, 'mwform_default_settings' ), 9, 2 );
 	}
 
 	/**
@@ -310,5 +313,71 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			array(),
 			$ui->ver
 		);
+	}
+
+	/**
+	 * mwform_default_content
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	public function mwform_default_content( $content ) {
+		return $this->get_mail_template( 'content.php' );
+	}
+
+	/**
+	 * mwform_default_postdata
+	 *
+	 * @param array $post_data
+	 * @param string $key
+	 * @return array
+	 */
+	public function mwform_default_settings( $post_data, $key ) {
+		switch( $key ) {
+			case 'complete_message' :
+				return $this->get_mail_template( 'complete-message.php' );
+				break;
+			case 'validation' :
+				return $this->get_mail_template( 'validation.php', false );
+				break;
+			case 'mail_subject' :
+				return $this->get_mail_template( 'mail-subject.php' );
+				break;
+			case 'mail_content' :
+				return $this->get_mail_template( 'mail-content.php' );
+				break;
+			case 'automatic_reply_email' :
+				return $this->get_mail_template( 'automatic-reply-email.php' );
+				break;
+			case 'admin_mail_subject' :
+				return $this->get_mail_template( 'admin-mail-subject.php' );
+				break;
+			case 'admin_mail_content' :
+				return $this->get_mail_template( 'admin-mail-content.php' );
+			default :
+				break;
+		}
+		return $post_data;
+	}
+	
+	/**
+	 * メール内容の初期設定を読み込み
+	 *
+	 * @param string $template_name テンプレートファイル名
+	 * @param bool $buffering バッファリングして読み込むか
+	 * @return string|array|null
+	 */
+	protected function get_mail_template( $template_name, $buffering = true ) {
+		$template_path = plugin_dir_path( __FILE__ ) . '../../templates/admin/mail/' . $template_name;
+		if ( !file_exists( $template_path ) ) {
+			return;
+		}
+		
+		if ( $buffering ) {
+			ob_start();
+			include( $template_path );
+			return ob_get_clean();
+		}
+		return include( $template_path );
 	}
 }
