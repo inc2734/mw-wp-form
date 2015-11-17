@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Abstract Form Field
  * Description: フォームフィールドの抽象クラス
- * Version    : 1.7.4
+ * Version    : 1.7.5
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : June 23, 2015
+ * Modified   : November 17, 2015
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -329,11 +329,6 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 */
 	public function get_value_for_generator( $key, $options ) {
 		$attributes = array_keys( $this->defaults );
-		$add_allow_attributes = array(
-			'mw-wp-form-generator-notes',
-			'mw-wp-form-generator-display-name'
-		);
-		$attributes = array_merge( $attributes, $add_allow_attributes );
 		$attributes = array_flip( $attributes );
 		if ( isset( $attributes[$key] ) ) {
 			if ( isset( $options[$key] ) ) {
