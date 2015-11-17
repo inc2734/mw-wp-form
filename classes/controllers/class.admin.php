@@ -41,13 +41,11 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	public function initialize() {
 		$Admin = new MW_WP_Form_Admin();
 		add_action( 'add_meta_boxes'       , array( $this , 'add_meta_boxes' ) );
+		add_filter( 'default_title'        , array( $this , 'default_title' ) );
 		add_filter( 'default_content'      , array( $this , 'default_content' ) );
 		add_action( 'media_buttons'        , array( $this , 'tag_generator' ) );
 		add_action( 'admin_enqueue_scripts', array( $this , 'admin_enqueue_scripts' ) );
 		add_action( 'save_post'            , array( $Admin, 'save_post' ) );
-		
-		add_filter( 'mwform_default_content' , array( $this, 'mwform_default_content' ), 9 );
-		add_filter( 'mwform_default_settings', array( $this, 'mwform_default_settings' ), 9, 2 );
 	}
 
 	/**
@@ -238,6 +236,19 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		$this->assign( 'style' , $this->get_option( 'style' ) );
 		$this->render( 'admin/style' );
 	}
+	
+	/**
+	 * タイトルの初期値を設定
+	 *
+	 * @param string $title
+	 * @return string
+	 */
+	public function default_title( $title ) {
+		return apply_filters(
+			'mwform_default_title',
+			$this->get_mail_template( 'title.php' )
+		);
+	}
 
 	/**
 	 * 本文の初期値を設定
@@ -246,7 +257,10 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * @return string
 	 */
 	public function default_content( $content ) {
-		return apply_filters( 'mwform_default_content', '' );
+		return apply_filters(
+			'mwform_default_content',
+			$this->get_mail_template( 'content.php' )
+		);
 	}
 
 	/**
@@ -287,7 +301,8 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			$date     = $post->post_date;
 			$modified = $post->post_modified;
 			if ( $date === $modified ){
-				return apply_filters( 'mwform_default_settings', '', $key );
+				$option = $this->get_default_option( $key );
+				return apply_filters( 'mwform_default_settings', $option, $key );
 			}
 		}
 	}
@@ -316,23 +331,12 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * mwform_default_content
+	 * 初期値を返す
 	 *
-	 * @param string $content
+	 * @param string $key
 	 * @return string
 	 */
-	public function mwform_default_content( $content ) {
-		return $this->get_mail_template( 'content.php' );
-	}
-
-	/**
-	 * mwform_default_postdata
-	 *
-	 * @param array $post_data
-	 * @param string $key
-	 * @return array
-	 */
-	public function mwform_default_settings( $post_data, $key ) {
+	public function get_default_option( $key ) {
 		switch( $key ) {
 			case 'complete_message' :
 				return $this->get_mail_template( 'complete-message.php' );
@@ -354,10 +358,12 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 				break;
 			case 'admin_mail_content' :
 				return $this->get_mail_template( 'admin-mail-content.php' );
+				break;
 			default :
+				return '';
 				break;
 		}
-		return $post_data;
+		return '';
 	}
 	
 	/**
