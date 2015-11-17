@@ -80,6 +80,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.6.1 =
 * Changed : Removed for the Generator code.
+* Bugfix  : Fixed a bug that mwform_default_settings doesn't fired.
 
 = 2.6.0 =
 * Bugfix  : JavaScript bug fix on validation.
