@@ -748,7 +748,7 @@ class MW_WP_Form_Form {
 		$attributes = $this->generate_attributes( $options );
 
 		return sprintf(
-			'<input type="file" name="%s" /><span data-mwform-file-delete="%1$s" class="mwform-file-delete">&times;</span>',
+			'<input type="file" name="%1$s"%2$s /><span data-mwform-file-delete="%1$s" class="mwform-file-delete">&times;</span>',
 			esc_attr( $name ),
 			$attributes
 		);

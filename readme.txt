@@ -80,6 +80,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.6.2 =
 * Bugfix  : Fixed a bug that class attribute can't set at radio.
+* Bugfix  : Fixed a bug that id and class attribute can't set at file.
 
 = 2.6.1 =
 * Changed : Removed for the Generator code.
