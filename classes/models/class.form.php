@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Form
  * Description: フォームヘルパー
- * Version    : 1.8.0
+ * Version    : 1.8.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : September 25, 2012
- * Modified   : November 13, 2015
+ * Modified   : December 2, 2015
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -587,7 +587,8 @@ class MW_WP_Form_Form {
 				'for' => $this->get_attr_id( $options['id'], $i ),
 			) );
 			$attributes = $this->generate_attributes( array(
-				'id' => $this->get_attr_id( $options['id'], $i ),
+				'id'    => $this->get_attr_id( $options['id'], $i ),
+				'class' => $options['class'],
 			) );
 			$_ret .= sprintf(
 				'<span class="mwform-radio-field %s"><label%s><input type="radio" name="%s" value="%s"%s %s />%s</label></span>',
