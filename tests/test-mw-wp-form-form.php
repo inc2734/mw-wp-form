@@ -97,6 +97,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	/**
 	 * @group text
 	 */
+	public function test_text_class() {
+		$this->assertEquals(
+			'<input type="text" name="text" class="text" size="60" value="" />',
+			$this->Form->text( 'text', array( 'class' => 'text' ) )
+		);
+	}
+
+	/**
+	 * @group text
+	 */
 	public function test_text_size() {
 		$this->assertEquals(
 			'<input type="text" name="text" size="" value="" />',
@@ -161,6 +171,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		$this->assertEquals(
 			'<input type="email" name="email" id="email" size="60" value="" />',
 			$this->Form->email( 'email', array( 'id' => 'email' ) )
+		);
+	}
+
+	/**
+	 * @group email
+	 */
+	public function test_email_class() {
+		$this->assertEquals(
+			'<input type="email" name="email" class="email" size="60" value="" />',
+			$this->Form->email( 'email', array( 'class' => 'email' ) )
 		);
 	}
 
@@ -237,6 +257,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	/**
 	 * @group url
 	 */
+	public function test_url_class() {
+		$this->assertEquals(
+			'<input type="url" name="url" class="url" size="60" value="" />',
+			$this->Form->url( 'url', array( 'class' => 'url' ) )
+		);
+	}
+
+	/**
+	 * @group url
+	 */
 	public function test_url_size() {
 		$this->assertEquals(
 			'<input type="url" name="url" size="" value="" />',
@@ -307,6 +337,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	/**
 	 * @group range
 	 */
+	public function test_range_class() {
+		$this->assertEquals(
+			'<input type="range" name="range" class="range" value="" min="0" max="100" step="1" />',
+			$this->Form->range( 'range', array( 'class' => 'range' ) )
+		);
+	}
+
+	/**
+	 * @group range
+	 */
 	public function test_range_value() {
 		$this->assertEquals(
 			'<input type="range" name="range" value="range" min="0" max="100" step="1" />',
@@ -361,6 +401,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		$this->assertEquals(
 			'<input type="number" name="number" id="number" value="" step="1" />',
 			$this->Form->number( 'number', array( 'id' => 'number' ) )
+		);
+	}
+
+	/**
+	 * @group number
+	 */
+	public function test_number_class() {
+		$this->assertEquals(
+			'<input type="number" name="number" class="number" value="" step="1" />',
+			$this->Form->number( 'number', array( 'class' => 'number' ) )
 		);
 	}
 
@@ -457,6 +507,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	/**
 	 * @group password
 	 */
+	public function test_password_class() {
+		$this->assertEquals(
+			'<input type="password" name="password" class="password" size="60" value="" />',
+			$this->Form->password( 'password', array( 'class' => 'password' ) )
+		);
+	}
+
+	/**
+	 * @group password
+	 */
 	public function test_password_size() {
 		$this->assertEquals(
 			'<input type="password" name="password" size="" value="" />',
@@ -507,6 +567,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	/**
 	 * @group zip
 	 */
+	public function test_zip_class() {
+		$this->assertEquals(
+			'<span class="mwform-zip-field">〒<input type="text" name="zip[data][0]" class="zip" size="4" maxlength="3" value="" /> - <input type="text" name="zip[data][1]" class="zip" size="5" maxlength="4" value="" /><input type="hidden" name="zip[separator]" value="-" /></span>',
+			$this->Form->zip( 'zip', array( 'class' => 'zip' ) )
+		);
+	}
+
+	/**
+	 * @group zip
+	 */
 	public function test_zip_conv_half_alphanumeric() {
 		$this->assertEquals(
 			'<span class="mwform-zip-field">〒<input type="text" name="zip[data][0]" size="4" maxlength="3" value="" data-conv-half-alphanumeric="true" /> - <input type="text" name="zip[data][1]" size="5" maxlength="4" value="" data-conv-half-alphanumeric="true" /><input type="hidden" name="zip[separator]" value="-" /></span>',
@@ -531,6 +601,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		$this->assertEquals(
 			'<span class="mwform-tel-field"><input type="text" name="tel[data][0]" size="6" maxlength="5" value="" /> - <input type="text" name="tel[data][1]" size="5" maxlength="4" value="" /> - <input type="text" name="tel[data][2]" size="5" maxlength="4" value="" /><input type="hidden" name="tel[separator]" value="-" /></span>',
 			$this->Form->tel( 'tel' )
+		);
+	}
+
+	/**
+	 * @group tel
+	 */
+	public function test_tel_class() {
+		$this->assertEquals(
+			'<span class="mwform-tel-field"><input type="text" name="tel[data][0]" class="tel" size="6" maxlength="5" value="" /> - <input type="text" name="tel[data][1]" class="tel" size="5" maxlength="4" value="" /> - <input type="text" name="tel[data][2]" class="tel" size="5" maxlength="4" value="" /><input type="hidden" name="tel[separator]" value="-" /></span>',
+			$this->Form->tel( 'tel', array( 'class' => 'tel' ) )
 		);
 	}
 
@@ -571,6 +651,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		$this->assertEquals(
 			'<textarea name="textarea" id="id" cols="50" rows="5"></textarea>',
 			$this->Form->textarea( 'textarea', array( 'id' => 'id' ) )
+		);
+	}
+
+	/**
+	 * @group textarea
+	 */
+	public function test_textarea_class() {
+		$this->assertEquals(
+			'<textarea name="textarea" class="textarea" cols="50" rows="5"></textarea>',
+			$this->Form->textarea( 'textarea', array( 'class' => 'textarea' ) )
 		);
 	}
 
@@ -647,6 +737,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	/**
 	 * @group select
 	 */
+	public function test_select_class() {
+		$this->assertEquals(
+			'<select name="select" class="select"><option value="a" >a</option><option value="b" >b</option><option value="c" >c</option></select>',
+			$this->Form->select( 'select', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'class' => 'select' ) )
+		);
+	}
+
+	/**
+	 * @group select
+	 */
 	public function test_select_valueが一致する() {
 		$this->assertEquals(
 			'<select name="select"><option value="a"  selected=\'selected\'>a</option><option value="b" >b</option><option value="c" >c</option></select>',
@@ -691,6 +791,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		$this->assertEquals(
 			'<span class="mwform-radio-field horizontal-item"><label for="id-1"><input type="radio" name="radio" value="a"  id="id-1" />a</label></span><span class="mwform-radio-field horizontal-item"><label for="id-2"><input type="radio" name="radio" value="b"  id="id-2" />b</label></span><span class="mwform-radio-field horizontal-item"><label for="id-3"><input type="radio" name="radio" value="c"  id="id-3" />c</label></span>',
 			$this->Form->radio( 'radio', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'id' => 'id' ) )
+		);
+	}
+
+	/**
+	 * @group radio
+	 */
+	public function test_radio_class() {
+		$this->assertEquals(
+			'<span class="mwform-radio-field horizontal-item"><label><input type="radio" name="radio" value="a"  class="radio" />a</label></span><span class="mwform-radio-field horizontal-item"><label><input type="radio" name="radio" value="b"  class="radio" />b</label></span><span class="mwform-radio-field horizontal-item"><label><input type="radio" name="radio" value="c"  class="radio" />c</label></span>',
+			$this->Form->radio( 'radio', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'class' => 'radio' ) )
 		);
 	}
 
@@ -767,6 +877,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	/**
 	 * @group checkbox
 	 */
+	public function test_checkbox_class() {
+		$this->assertEquals(
+			'<span class="mwform-checkbox-field horizontal-item"><label><input type="checkbox" name="checkbox[data][]" value="a" class="checkbox"  />a</label></span><span class="mwform-checkbox-field horizontal-item"><label><input type="checkbox" name="checkbox[data][]" value="b" class="checkbox"  />b</label></span><span class="mwform-checkbox-field horizontal-item"><label><input type="checkbox" name="checkbox[data][]" value="c" class="checkbox"  />c</label></span><input type="hidden" name="checkbox[separator]" value="," />',
+			$this->Form->checkbox( 'checkbox', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'class' => 'checkbox' ) )
+		);
+	}
+
+	/**
+	 * @group checkbox
+	 */
 	public function test_checkbox_valueが一致する_文字列() {
 		$this->assertEquals(
 			'<span class="mwform-checkbox-field horizontal-item"><label><input type="checkbox" name="checkbox[data][]" value="a"  checked=\'checked\' />a</label></span><span class="mwform-checkbox-field horizontal-item"><label><input type="checkbox" name="checkbox[data][]" value="b"  checked=\'checked\' />b</label></span><span class="mwform-checkbox-field horizontal-item"><label><input type="checkbox" name="checkbox[data][]" value="c"  />c</label></span><input type="hidden" name="checkbox[separator]" value="," />',
@@ -820,6 +940,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	/**
 	 * @group submit
 	 */
+	public function test_submit_class() {
+		$this->assertEquals(
+			'<input type="submit" name="submit" value="" class="submit" />',
+			$this->Form->submit( 'submit', '', array( 'class' => 'submit' ) )
+		);
+	}
+
+	/**
+	 * @group submit
+	 */
 	public function test_submit_value() {
 		$this->assertEquals(
 			'<input type="submit" name="submit" value="value" />',
@@ -834,6 +964,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		$this->assertEquals(
 			'<input type="button" name="button" value="" />',
 			$this->Form->button( 'button', '' )
+		);
+	}
+
+	/**
+	 * @group button
+	 */
+	public function test_button_class() {
+		$this->assertEquals(
+			'<input type="button" name="button" value="" class="button" />',
+			$this->Form->button( 'button', '', array( 'class' => 'button' ) )
 		);
 	}
 
@@ -864,6 +1004,16 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 		$this->assertEquals(
 			'<input type="text" name="datepicker" id="id" size="30" value="" /><script type="text/javascript">jQuery( function( $ ) { $("input[name=\'datepicker\']").datepicker( {  } ); } );</script>',
 			$this->Form->datepicker( 'datepicker', array( 'id' => 'id' ) )
+		);
+	}
+
+	/**
+	 * @group datepicker
+	 */
+	public function test_datepicker_class() {
+		$this->assertEquals(
+			'<input type="text" name="datepicker" class="datepicker" size="30" value="" /><script type="text/javascript">jQuery( function( $ ) { $("input[name=\'datepicker\']").datepicker( {  } ); } );</script>',
+			$this->Form->datepicker( 'datepicker', array( 'class' => 'datepicker' ) )
 		);
 	}
 
@@ -922,8 +1072,18 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_file_id() {
 		$this->assertEquals(
-			'<input type="file" name="file" /><span data-mwform-file-delete="file" class="mwform-file-delete">&times;</span>',
+			'<input type="file" name="file" id="id" /><span data-mwform-file-delete="file" class="mwform-file-delete">&times;</span>',
 			$this->Form->file( 'file', array( 'id' => 'id' ) )
+		);
+	}
+
+	/**
+	 * @group file
+	 */
+	public function test_file_class() {
+		$this->assertEquals(
+			'<input type="file" name="file" class="file" /><span data-mwform-file-delete="file" class="mwform-file-delete">&times;</span>',
+			$this->Form->file( 'file', array( 'class' => 'file' ) )
 		);
 	}
 
