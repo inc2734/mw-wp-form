@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Validation Rule Eq
  * Description: 値が一致している
- * Version    : 1.1.1
+ * Version    : 1.1.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 21, 2014
- * Modified   : April 1, 2015
+ * Modified   : December 3, 2015
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -27,7 +27,7 @@ class MW_WP_Form_Validation_Rule_Eq extends MW_WP_Form_Abstract_Validation_Rule 
 	 */
 	public function rule( $key, array $options = array() ) {
 		$value = $this->Data->get( $key );
-		if ( !MWF_Functions::is_empty( $value ) ) {
+		if ( !is_null( $value ) ) {
 			$defaults = array(
 				'target'  => null,
 				'message' => __( 'This is not in agreement.', 'mw-wp-form' )

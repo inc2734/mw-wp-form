@@ -20,7 +20,7 @@ class MW_WP_Form_Validation_Rule_Eq_Test extends WP_UnitTestCase {
 	/**
 	 * @backupStaticAttributes enabled
 	 */
-	public function test_空文字列ならnull() {
+	public function test_存在しなければnull() {
 		$this->Data->set( 'target-1', '' );
 		$this->Data->set( 'target-2', 'aaa' );
 		$this->assertNull( $this->Rule->rule( 'text', array( 'target' => 'target-2' ) ) );
@@ -47,9 +47,22 @@ class MW_WP_Form_Validation_Rule_Eq_Test extends WP_UnitTestCase {
 	/**
 	 * @backupStaticAttributes enabled
 	 */
+	public function test_nullならnull() {
+		$this->Data->set( 'target-1', null );
+		$this->Data->set( 'target-2', 'aaa' );
+		$this->assertNull( $this->Rule->rule( 'target-1', array( 'target' => 'target-2' ) ) );
+	}
+
+	/**
+	 * @backupStaticAttributes enabled
+	 */
 	public function test_異なっていればnotnull() {
 		$this->Data->set( 'target-1', 'aaa' );
 		$this->Data->set( 'target-2', 'bbb' );
+		$this->assertNotNull( $this->Rule->rule( 'target-1', array( 'target' => 'target-2' ) ) );
+		
+		$this->Data->set( 'target-1', '' );
+		$this->Data->set( 'target-2', 'aaa' );
 		$this->assertNotNull( $this->Rule->rule( 'target-1', array( 'target' => 'target-2' ) ) );
 	}
 }
