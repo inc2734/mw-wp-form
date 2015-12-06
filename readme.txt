@@ -52,7 +52,7 @@ Source: https://developers.google.com/chart/
 * [Kazuto Takeshita](http://mt8.biz/) ( [moto hachi](https://profiles.wordpress.org/mt8biz/) )
 * [Atsushi Ando](http://www.next-season.net/) ( [NExt-Season](https://profiles.wordpress.org/next-season/) )
 * [Kazuki Tomiyasu](http://visualive.jp/) ( [KUCKLU](https://profiles.wordpress.org/kuck1u/) )
-* [Key Nomura](http://mypacecreator.net/) ( [mypacecreator](https://profiles.wordpress.org/mypacecreator/) )
+* [Kei Nomura](http://mypacecreator.net/) ( [mypacecreator](https://profiles.wordpress.org/mypacecreator/) )
 * [mh35](https://profiles.wordpress.org/mh35)
 
 == Installation ==
