@@ -12,7 +12,8 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		$post_id = $this->factory->post->create( array(
-			'post_type' => MWF_Config::NAME,
+			'post_type'    => MWF_Config::NAME,
+			'post_content' => 'Content',
 		) );
 		$this->Setting = new MW_WP_Form_Setting( $post_id );
 		$this->Setting->set( 'input_url', '/contact/' );
@@ -214,7 +215,7 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 
 		$this->assertEquals(
 			'<div id="mw_wp_form_mw-wp-form-' . $this->Setting->get( 'post_id' ) . '" class="mw_wp_form mw_wp_form_input  ">
-					<form method="post" action="" enctype="multipart/form-data"><p>Post content 1</p>
+					<form method="post" action="" enctype="multipart/form-data"><p>Content</p>
 </form>
 				<!-- end .mw_wp_form --></div>',
 			$content
@@ -229,7 +230,7 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 
 		$this->assertEquals(
 			'<div id="mw_wp_form_mw-wp-form-' . $this->Setting->get( 'post_id' ) . '" class="mw_wp_form mw_wp_form_confirm mw_wp_form_preview ">
-					<form method="post" action="" enctype="multipart/form-data"><p>Post content 1</p>
+					<form method="post" action="" enctype="multipart/form-data"><p>Content</p>
 </form>
 				<!-- end .mw_wp_form --></div>',
 			$content
