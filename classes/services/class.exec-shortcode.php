@@ -357,8 +357,9 @@ class MW_WP_Form_Exec_Shortcode {
 	 * @return string $content
 	 */
 	protected function get_complete_page_content() {
-		$Setting = $this->Setting;
-		$content = $Setting->get( 'complete_message' );
+		$form_key = $this->get( 'key' );
+		$Setting  = $this->Setting;
+		$content  = $Setting->get( 'complete_message' );
 		
 		$has_wpautop = false;
 		if ( has_filter( 'the_content', 'wpautop' ) ) {
