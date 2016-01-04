@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Data
  * Description: MW WP Form のデータ操作用
- * Version    : 1.3.10
+ * Version    : 1.4.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : October 10, 2013
- * Modified   : November 14, 2015
+ * Modified   : January 4, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -83,6 +83,15 @@ class MW_WP_Form_Data {
 			return self::$Instance;
 		}
 		exit( 'MW_WP_Form_Data instantiation error.' );
+	}
+	
+	/**
+	 * Return form key
+	 *
+	 * @return string
+	 */
+	public function get_form_key() {
+		return $this->form_key;
 	}
 
 	/**
