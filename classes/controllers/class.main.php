@@ -148,7 +148,10 @@ class MW_WP_Form_Main_Controller {
 			if ( !$this->is_complete_twice() ) {
 				$this->send();
 
-				do_action( 'mwform_after_send_' . $form_key );
+				do_action(
+					'mwform_after_send_' . $form_key,
+					$this->Data
+				);
 			}
 			// 手動フォームの場合は完了画面に ExecShortcode が無く footer の clear_values が
 			// 効かないためここで消す
