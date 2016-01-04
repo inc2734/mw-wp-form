@@ -318,7 +318,16 @@ class MW_WP_Form_Exec_Shortcode {
 		$post     = get_post( $post_id );
 		setup_postdata( $post );
 		$content = apply_filters( 'mwform_post_content_raw_' . $form_key, get_the_content() );
+		//wpautopが有効かどうかの判定を変数に格納
 		if ( has_filter( 'the_content', 'wpautop' ) ) {
+			$has_wpautop = (bool)'true';
+		} else {
+			$has_wpautop = (bool)'';
+		}
+		//wpautopを無効にできるようにフックを追加
+		$has_wpautop = apply_filters( 'mwform_content_wpautop', $has_wpautop );
+		//$has_wpautopがtrueの時のみwpautopを適用
+		if ( $has_wpautop ) {
 			$content = wpautop( $content );
 		}
 		$content = sprintf(
@@ -347,7 +356,16 @@ class MW_WP_Form_Exec_Shortcode {
 	protected function get_complete_page_content() {
 		$Setting = $this->Setting;
 		$content = $Setting->get( 'complete_message' );
+		//wpautopが有効かどうかの判定を変数に格納
 		if ( has_filter( 'the_content', 'wpautop' ) ) {
+			$has_wpautop = (bool)'true';
+		} else {
+			$has_wpautop = (bool)'';
+		}
+		//wpautopを無効にできるようにフックを追加
+		$has_wpautop = apply_filters( 'mwform_complete_wpautop', $has_wpautop );
+		//$has_wpautopがtrueの時のみwpautopを適用
+		if ( $has_wpautop ) {
 			$content = wpautop( $content );
 		}
 		$content = sprintf(
