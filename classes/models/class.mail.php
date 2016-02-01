@@ -61,6 +61,11 @@ class MW_WP_Form_Mail {
 	public $attachments = array();
 
 	/**
+	 * @var MW_WP_Form_Mail_Parser
+	 */
+	protected $Mail_Parser;
+
+	/**
 	 * メール送信
 	 */
 	public function send() {
@@ -340,5 +345,14 @@ class MW_WP_Form_Mail {
 		foreach ( get_object_vars( $Mail ) as $key => $value ) {
 			$this->$key = $value;
 		}
+	}
+
+	/**
+	 * 保存した問い合わせデータの Post IDを取得する
+	 *
+	 * @return int
+	 */
+	public function get_saved_id(){
+		return $this->Mail_Parser->get_insert_contact_data_id();
 	}
 }

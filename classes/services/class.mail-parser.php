@@ -74,6 +74,15 @@ class MW_WP_Form_Mail_Parser {
 	}
 
 	/**
+	 * Getter : $this->insert_contact_data_id
+	 *
+	 * @return int
+	 */
+	public function get_insert_contact_data_id(){
+		return $this->insert_contact_data_id;
+	}
+
+	/**
 	 * メールオブジェクトの各プロパティを変換
 	 *
 	 * @param bool $do_update
