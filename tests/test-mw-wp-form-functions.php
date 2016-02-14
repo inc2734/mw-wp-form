@@ -2,7 +2,6 @@
 class MW_WP_Form_Functions_Test extends WP_UnitTestCase {
 
 	/**
-	 * @group temp
 	 * @group move_temp_file_to_upload_dir
 	 */
 	public function test_move_temp_file_to_upload_dir() {
