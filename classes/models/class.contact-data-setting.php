@@ -182,7 +182,7 @@ class MW_WP_Form_Contact_Data_Setting {
 			update_post_meta( $this->post_id, $key, $value );
 		}
 	}
-	
+
 	/**
 	 * データベースに保存に設定されているフォーム（投稿）を取得
 	 *

@@ -29,15 +29,6 @@ class MW_WP_Form_Contact_Data {
 		if ( !current_user_can( MWF_Config::CAPABILITY ) )
 			return $post_id;
 
-		$this->save( $post_id );
-	}
-
-	/**
-	 * 保存の実処理
-	 *
-	 * @param int $post_id
-	 */
-	public function save( $post_id ) {
 		$Contact_Data_Setting = new MW_WP_Form_Contact_Data_setting( $post_id );
 		$permit_keys = $Contact_Data_Setting->get_permit_keys();
 		$data = array();
