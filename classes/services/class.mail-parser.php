@@ -173,13 +173,13 @@ class MW_WP_Form_Mail_Parser {
 	protected function parse( $matches, $do_update = false ) {
 		$match = $matches[1];
 		$form_id = $this->Setting->get( 'post_id' );
+		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
 		// MWF_Config::TRACKINGNUMBER のときはお問い合せ番号を参照する
 		if ( $match === MWF_Config::TRACKINGNUMBER ) {
 			if ( $form_id ) {
 				$value = $this->Setting->get_tracking_number( $form_id );
 			}
 		} else {
-			$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
 			$value = $this->Data->get( $match );
 			$value = $this->apply_filters_mwform_custom_mail_tag( $form_key, $value, $match );
 		}
@@ -187,8 +187,11 @@ class MW_WP_Form_Mail_Parser {
 		// 値が null でも保存（チェッボックス未チェックで直送信でも保存させるため）
 		// ただし、画像の場合はURLが保存されないように調整がはいるため除外が必要
 		if ( $do_update ) {
-			if ( !array_key_exists( $match, $this->Mail->attachments ) ) {
-				update_post_meta( $this->saved_mail_id, $match, $value );
+			$ignore_keys = apply_filters( 'mwform_no_save_keys_' . $form_key, array() );
+			if ( !in_array( $match, $ignore_keys ) ) {
+				if ( !array_key_exists( $match, $this->Mail->attachments ) ) {
+					update_post_meta( $this->saved_mail_id, $match, $value );
+				}
 			}
 		}
 		return $value;
