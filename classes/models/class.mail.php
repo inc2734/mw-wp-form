@@ -340,8 +340,8 @@ class MW_WP_Form_Mail {
 	public function parse( $Setting, $do_update = false ) {
 		$Data = MW_WP_Form_Data::getInstance();
 
-		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this, $Setting );
-		$Mail = $Mail_Parser->get_parsed_mail_object( $do_update );
+		$this->Mail_Parser = new MW_WP_Form_Mail_Parser( $this, $Setting );
+		$Mail = $this->Mail_Parser->get_parsed_mail_object( $do_update );
 		foreach ( get_object_vars( $Mail ) as $key => $value ) {
 			$this->$key = $value;
 		}
@@ -353,6 +353,8 @@ class MW_WP_Form_Mail {
 	 * @return int
 	 */
 	public function get_saved_mail_id(){
-		return $this->Mail_Parser->get_saved_mail_id();
+		if ( $this->Mail_Parser ) {
+			return $this->Mail_Parser->get_saved_mail_id();
+		}
 	}
 }

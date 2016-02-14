@@ -88,6 +88,11 @@ class MW_WP_Form_Mail_Service {
 
 		if ( $this->Setting->get( 'usedb' ) ) {
 			$Mail_admin = $this->get_parsed_mail_object( $this->Mail_admin_raw, true );
+
+			// 問い合わせデータのメタデータの初期値を保存
+			$saved_mail_id = $Mail_admin->get_saved_mail_id();
+			$Contact_Data = new MW_WP_Form_Contact_Data();
+			$Contact_Data->save( $saved_mail_id );
 		} else {
 			$Mail_admin = $this->get_parsed_mail_object( $this->Mail_admin_raw );
 		}

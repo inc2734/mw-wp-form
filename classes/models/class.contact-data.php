@@ -5,7 +5,7 @@
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : 
+ * Modified   :
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -29,6 +29,15 @@ class MW_WP_Form_Contact_Data {
 		if ( !current_user_can( MWF_Config::CAPABILITY ) )
 			return $post_id;
 
+		$this->save( $post_id );
+	}
+
+	/**
+	 * 保存の実処理
+	 *
+	 * @param int $post_id
+	 */
+	public function save( $post_id ) {
 		$Contact_Data_Setting = new MW_WP_Form_Contact_Data_setting( $post_id );
 		$permit_keys = $Contact_Data_Setting->get_permit_keys();
 		$data = array();
