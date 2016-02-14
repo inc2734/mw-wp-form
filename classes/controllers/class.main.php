@@ -257,7 +257,7 @@ class MW_WP_Form_Main_Controller {
 	 */
 	protected function send() {
 		$Mail         = new MW_WP_Form_Mail();
-		$form_key     = $this->ExecShortcode->get( 'key' );
+		$form_key     = $this->Data->get_form_key();
 		$attachments  = $this->get_attachments();
 		$Mail_Service = new MW_WP_Form_Mail_Service( $Mail, $form_key, $this->Setting, $attachments );
 
@@ -299,6 +299,7 @@ class MW_WP_Form_Main_Controller {
 				}
 				$filepath = MWF_Functions::fileurl_to_path( $upload_file_url );
 				if ( file_exists( $filepath ) ) {
+					$form_key = $this->Data->get_form_key();
 					$new_upload_dir = apply_filters(
 						'mwform_upload_dir_' . $form_key,
 						'',
@@ -353,7 +354,7 @@ class MW_WP_Form_Main_Controller {
 			$request_token = $_POST[$this->token_name];
 		}
 		$values   = $this->Data->gets();
-		$form_key = $this->ExecShortcode->get( 'key' );
+		$form_key = $this->Data->get_form_key();
 		if ( isset( $request_token ) && wp_verify_nonce( $request_token, $form_key ) ) {
 			return true;
 		} elseif ( empty( $_POST ) && $values ) {
@@ -371,7 +372,7 @@ class MW_WP_Form_Main_Controller {
 	 */
 	public function mwform_form_end_html( $html ) {
 		if ( is_a( $this->ExecShortcode, 'MW_WP_Form_Exec_Shortcode' ) ) {
-			$form_key = $this->ExecShortcode->get( 'key' );
+			$form_key = $this->Data->get_form_key();
 			$html .= wp_nonce_field( $form_key, $this->token_name, true, false );
 			return $html;
 		}
