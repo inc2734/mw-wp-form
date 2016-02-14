@@ -2,11 +2,11 @@
 /**
  * Name       : MWF Functions
  * Description: 関数
- * Version    : 1.4.4
+ * Version    : 1.5.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : May 29, 2013
- * Modified   : May 26, 2015
+ * Modified   : February 14, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -153,23 +153,39 @@ class MWF_Functions {
 	/**
 	 * Tempディレクトリからuploadディレクトリにファイルを移動
 	 *
-	 * @param string ファイルパス
-	 * @return bool
+	 * @param string Temp ファイルのパス
+	 * @param string 新しい保存先ディレクトリ
+	 * @param string 新しいファイル名
+	 * @return string 新しいファイルパス
 	 */
-	public static function move_temp_file_to_upload_dir( $filepath ) {
-		$tempdir = dirname( $filepath );
-		$filename = basename( $filepath );
-		$wp_upload_dir = wp_upload_dir();
-		$uploaddir = realpath( $wp_upload_dir['path'] );
-		$new_filename = wp_unique_filename( $uploaddir, $filename );
+	public static function move_temp_file_to_upload_dir( $filepath, $upload_dir = '', $filename = '' ) {
+		if ( !$upload_dir ) {
+			$wp_upload_dir = wp_upload_dir();
+			$upload_dir = realpath( $wp_upload_dir['path'] );
+		}
 
-		if ( $tempdir == $uploaddir ) {
+		$temp_dir = dirname( $filepath );
+		if ( $temp_dir == $upload_dir ) {
 			return $filepath;
 		}
-		if ( rename( $filepath, trailingslashit( $uploaddir ) . $new_filename ) ) {
-			return trailingslashit( $uploaddir ) . $new_filename;
+
+		if ( !$filename ) {
+			$filename = basename( $filepath );
 		}
-		return $filepath;
+		$filename = wp_unique_filename( $upload_dir, $filename );
+
+		$new_filepath = trailingslashit( $upload_dir ) . $filename;
+
+		// もし temp ファイルが存在しない場合、一応リネーム後のパスだけ返す
+		if ( !file_exists( $filepath ) ) {
+			return $new_filepath;
+		}
+
+		// 移動できれば移動、移動できなくてもリネーム後のパスだけ返す
+		if ( rename( $filepath, $new_filepath ) ) {
+			return $new_filepath;
+		}
+		return $new_filepath;
 	}
 
 	/**

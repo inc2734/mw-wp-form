@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Main Controller
  * Description: フロントエンドにおいて、適切な画面にリダイレクトさせる
- * Version    : 1.1.0
+ * Version    : 1.2.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 23, 2014
- * Modified   : September 1, 2015
+ * Modified   : February 14, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -299,7 +299,21 @@ class MW_WP_Form_Main_Controller {
 				}
 				$filepath = MWF_Functions::fileurl_to_path( $upload_file_url );
 				if ( file_exists( $filepath ) ) {
-					$filepath            = MWF_Functions::move_temp_file_to_upload_dir( $filepath );
+					$new_upload_dir = apply_filters(
+						'mwform_upload_dir_' . $form_key,
+						'',
+						$this->Data
+					);
+					$new_filename = apply_filters(
+						'mwform_upload_filename_' . $form_key,
+						'',
+						$this->Data
+					);
+					$filepath = MWF_Functions::move_temp_file_to_upload_dir(
+						$filepath,
+						$new_upload_dir,
+						$new_filename
+					);
 					$new_upload_file_url = MWF_Functions::filepath_to_url( $filepath );
 					$this->Data->set( $key, $new_upload_file_url );
 					$attachments[$key]   = $filepath;

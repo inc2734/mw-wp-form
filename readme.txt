@@ -81,6 +81,8 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 = 2.7.0 =
 * Added   : Added Method MW_WP_Form_Mail_Parser::get_saved_mail_id()
 * Added   : Added Method MW_WP_Form_Mail::get_saved_mail_id()
+* Added   : Added filter hook mwform_upload_dir_mw-wp-form-xxx
+* Added   : Added filter hook mwform_upload_filename_mw-wp-form-xxx
 * Changed : Changed to save the default values of contact data meta data at the time of email saved.
 
 = 2.6.4 =
