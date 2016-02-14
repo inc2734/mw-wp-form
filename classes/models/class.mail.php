@@ -127,7 +127,10 @@ class MW_WP_Form_Mail {
 	 * @return string
 	 */
 	public function set_mail_from( $email ) {
-		return $this->from;
+		if ( filter_var( $this->from, FILTER_VALIDATE_EMAIL ) ) {
+			return $this->from;
+		}
+		return $email;
 	}
 
 	/**
@@ -309,10 +312,10 @@ class MW_WP_Form_Mail {
 			$this->to = $admin_mail_to;
 		}
 		if ( !$this->from ) {
-			$this->from = $admin_mail_from;;
+			$this->from = $admin_mail_from;
 		}
 		if ( !$this->sender ) {
-			$this->sender = $admin_mail_sender;;
+			$this->sender = $admin_mail_sender;
 		}
 	}
 

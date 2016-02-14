@@ -18,9 +18,15 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 	 * @group set_mail_from
 	 */
 	public function test_set_mail_from() {
-		$this->Mail->from = 'from';
+		$this->Mail->from = 'new@example.com';
 		$this->assertEquals(
-			'from',
+			'new@example.com',
+			$this->Mail->set_mail_from( 'example@example.com' )
+		);
+
+		$this->Mail->from = 'invalid.@example.com';
+		$this->assertEquals(
+			'example@example.com',
 			$this->Mail->set_mail_from( 'example@example.com' )
 		);
 	}

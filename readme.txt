@@ -85,6 +85,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Added filter hook mwform_upload_filename_mw-wp-form-xxx
 * Added   : Added filter hook mwform_no_save_keys_mw-wp-form-xxx
 * Changed : Changed to save the default values of contact data meta data at the time of email saved.
+* Bugfix  : Fixed a bug that e-mail is not sent when the "from" is in violation of the RFC.
 
 = 2.6.4 =
 * Added   : Add filter hook mwform_content_wpautop_mw-wp-form-xxx
