@@ -207,4 +207,28 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 		$this->assertEquals( 'cc@example.com', $Mail->cc );
 		$this->assertEquals( 'bcc@example.com', $Mail->bcc );
 	}
+
+	/**
+	 * @group get_saved_mail_id
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_get_saved_mail_id_保存されたとき() {
+		$this->Data->set( 'example', 'example' );
+		$this->Mail->body = '{example}';
+		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Setting );
+		$Mail_Parser->get_parsed_mail_object( true );
+		$this->assertNotEmpty( $Mail_Parser->get_saved_mail_id() );
+	}
+
+	/**
+	 * @group get_saved_mail_id
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_get_saved_mail_id_保存されなかったとき() {
+		$this->Data->set( 'example', 'example' );
+		$this->Mail->body = '{example}';
+		$Mail_Parser = new MW_WP_Form_Mail_Parser( $this->Mail, $this->Setting );
+		$Mail_Parser->get_parsed_mail_object( false );
+		$this->assertNull( $Mail_Parser->get_saved_mail_id() );
+	}
 }

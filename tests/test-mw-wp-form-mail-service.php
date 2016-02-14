@@ -269,9 +269,13 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		$Mail_Service->send_admin_mail();
 		$Mail_Service->send_reply_mail();
 
-		$this->assertEquals( 1, count( get_posts( array(
+		$posts = get_posts( array(
 			'post_type'      => MWF_Functions::get_contact_data_post_type_from_form_id( $this->Setting->get( 'post_id' ) ),
 			'posts_per_page' => -1,
-		) ) ) );
+		) );
+		$this->assertEquals( 1, count( $posts ) );
+
+		$meta_data = get_post_meta( $posts[0]->ID, MWF_config::CONTACT_DATA_NAME, true );
+		$this->assertNotEmpty( $meta_data );
 	}
 }

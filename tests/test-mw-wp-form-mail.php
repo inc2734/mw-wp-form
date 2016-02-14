@@ -337,4 +337,36 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 			break;
 		}
 	}
+
+	/**
+	 * @group get_saved_mail_id
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_get_saved_mail_id__保存されたとき() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$Setting = new MW_WP_Form_Setting( $post_id );
+		$Data = MW_WP_Form_Data::getInstance( MWF_Functions::get_form_key_from_form_id( $post_id ) );
+		$Data->set( 'example', 'example' );
+		$this->Mail->body = '{example}';
+		$this->Mail->parse( $Setting, true );
+		$this->assertNotEmpty( $this->Mail->get_saved_mail_id() );
+	}
+
+	/**
+	 * @group get_saved_mail_id
+	 * @backupStaticAttributes enabled
+	 */
+	public function test_get_saved_mail_id__保存されなかったとき() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$Setting = new MW_WP_Form_Setting( $post_id );
+		$Data = MW_WP_Form_Data::getInstance( MWF_Functions::get_form_key_from_form_id( $post_id ) );
+		$Data->set( 'example', 'example' );
+		$this->Mail->body = '{example}';
+		$this->Mail->parse( $Setting, false );
+		$this->assertNull( $this->Mail->get_saved_mail_id() );
+	}
 }
