@@ -205,7 +205,8 @@ class MW_WP_Form_Exec_Shortcode {
 	 */
 	protected function get_form_id_by_mwform_formkey( $attributes ) {
 		$attributes = shortcode_atts( array(
-			'key' => '',
+			'key'  => '',
+			'slug' => '',
 		), $attributes );
 		$post = null;
 
