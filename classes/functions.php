@@ -2,11 +2,11 @@
 /**
  * Name       : MWF Functions
  * Description: 関数
- * Version    : 1.5.0
+ * Version    : 1.5.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : May 29, 2013
- * Modified   : February 14, 2016
+ * Modified   : February 26, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -275,11 +275,28 @@ class MWF_Functions {
 				);
 				break;
 			case 'docx' :
+				$wp_check_filetype['type'] = array(
+					$wp_check_filetype['type'],
+					'application/zip',
+					'application/msword',
+				);
+				break;
 			case 'xlsx' :
+				$wp_check_filetype['type'] = array(
+					$wp_check_filetype['type'],
+					'application/zip',
+					'application/excel',
+					'application/msexcel',
+					'application/vnd.ms-excel',
+				);
+				break;
 			case 'pptx' :
 				$wp_check_filetype['type'] = array(
 					$wp_check_filetype['type'],
 					'application/zip',
+					'application/mspowerpoint',
+					'application/powerpoint',
+					'application/ppt',
 				);
 				break;
 		}
