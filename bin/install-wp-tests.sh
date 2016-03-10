@@ -11,14 +11,14 @@ DB_PASS=$3
 DB_HOST=${4-localhost}
 WP_VERSION=${5-latest}
 
-WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wordpress-tests-lib}
-WP_CORE_DIR=${WP_CORE_DIR-/tmp/wordpress/}
+WP_TESTS_DIR=${WP_TESTS_DIR-/private/tmp/wordpress-tests-lib}
+WP_CORE_DIR=${WP_CORE_DIR-/private/tmp/wordpress/}
 
 download() {
     if [ `which curl` ]; then
         curl -s "$1" > "$2";
     elif [ `which wget` ]; then
-        wget -nv -O "$2" "$1"
+        wget -nv --no-check-certificate -O "$2" "$1"
     fi
 }
 
