@@ -22,7 +22,6 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group has_shortcode
-	 * @group temp
 	 */
 	public function test_has_shortcode_slug呼び出しの場合() {
 		global $wp_query;
