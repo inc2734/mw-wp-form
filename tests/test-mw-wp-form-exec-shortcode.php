@@ -22,6 +22,19 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group has_shortcode
+	 * @group temp
+	 */
+	public function test_has_shortcode_slug呼び出しの場合() {
+		global $wp_query;
+		$wp_query->is_singular = true;
+
+		$post = $this->generate_page_has_mwform_formkey_by_slug( $this->Setting );
+		$ExecShortcode = new MW_WP_Form_Exec_Shortcode( $post, '' );
+		$this->assertTrue( $ExecShortcode->has_shortcode() );
+	}
+
+	/**
+	 * @group has_shortcode
 	 */
 	public function test_has_shortcode_投稿内の場合() {
 		global $wp_query;
@@ -245,7 +258,7 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 
 		$this->assertEquals(
 			'<div id="mw_wp_form_mw-wp-form-' . $this->Setting->get( 'post_id' ) . '" class="mw_wp_form mw_wp_form_complete">
-				
+
 			<!-- end .mw_wp_form --></div>',
 			$content
 		);
@@ -384,7 +397,7 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 		$content = $ExecShortcode->mwform_complete_message( '', '' );
 		$this->assertEquals(
 			'<div id="mw_wp_form_mw-wp-form-' . $this->Setting->get( 'post_id' ) . '" class="mw_wp_form mw_wp_form_complete">
-				
+
 			<!-- end .mw_wp_form --></div>',
 			$content
 		);
@@ -400,6 +413,21 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 		$post_id = $this->factory->post->create( array(
 			'post_type'    => 'page',
 			'post_content' => sprintf( '[mwform_formkey key="%d"]', $Setting->get( 'post_id' ) ),
+		) );
+		return get_post( $post_id );
+	}
+
+	/**
+	 * ショートコード mwform_formkey を持つページを作成して返す
+	 *
+	 * @param MW_WP_Form_Setting $Setting
+	 * @return WP_Post
+	 */
+	protected function generate_page_has_mwform_formkey_by_slug( $Setting ) {
+		$post = get_post( $Setting->get( 'post_id' ) );
+		$post_id = $this->factory->post->create( array(
+			'post_type'    => 'page',
+			'post_content' => sprintf( '[mwform_formkey slug="%s"]', $post->post_name ),
 		) );
 		return get_post( $post_id );
 	}
