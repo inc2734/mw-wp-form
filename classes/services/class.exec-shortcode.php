@@ -1,12 +1,12 @@
 <?php
 /**
  * Name       : MW WP Form Exec Shortcode
- * Version    : 1.1.1
+ * Version    : 1.2.0
  * Description: ExecShortcode（mwform、mwform_formkey）の存在有無のチェックとそれらの抽象化レイヤー
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : April 14, 2015
+ * Modified   : March 10, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -208,26 +208,14 @@ class MW_WP_Form_Exec_Shortcode {
 			'key'  => '',
 			'slug' => '',
 		), $attributes );
-		$post = null;
 
 		if ( !empty( $attributes['slug'] ) ) {
-			// スラッグより取得
-			$args = array(
-				'name'        => $attributes['slug'],
-				'post_type'   => MWF_Config::NAME,
-				'numberposts' => 1,
-			);
-			$posts = get_posts( $args );
-			if ( !empty( $posts ) ) {
-				$post = $posts[0];
-			}
-		}
-
-		if ( empty( $post ) ) {
+			$post = get_page_by_path( $attributes['slug'], OBJECT, MWF_Config::NAME );
+		} elseif ( !empty( $attributes['key'] ) ) {
 			$post = get_post( $attributes['key'] );
 		}
 
-		if ( isset( $post->ID ) ) {
+		if ( !empty( $post ) && isset( $post->ID ) ) {
 			return $post->ID;
 		}
 	}
@@ -337,7 +325,7 @@ class MW_WP_Form_Exec_Shortcode {
 		$post     = get_post( $post_id );
 		setup_postdata( $post );
 		$content = apply_filters( 'mwform_post_content_raw_' . $form_key, get_the_content() );
-		
+
 		$has_wpautop = false;
 		if ( has_filter( 'the_content', 'wpautop' ) ) {
 			$has_wpautop = true;
@@ -347,11 +335,11 @@ class MW_WP_Form_Exec_Shortcode {
 			$has_wpautop,
 			$this->view_flg
 		);
-		
+
 		if ( $has_wpautop ) {
 			$content = wpautop( $content );
 		}
-		
+
 		$content = sprintf(
 			'[mwform]%s[/mwform]',
 			apply_filters( 'mwform_post_content_' . $form_key, $content )
@@ -379,7 +367,7 @@ class MW_WP_Form_Exec_Shortcode {
 		$form_key = $this->get( 'key' );
 		$Setting  = $this->Setting;
 		$content  = $Setting->get( 'complete_message' );
-		
+
 		$has_wpautop = false;
 		if ( has_filter( 'the_content', 'wpautop' ) ) {
 			$has_wpautop = true;
@@ -389,11 +377,11 @@ class MW_WP_Form_Exec_Shortcode {
 			$has_wpautop,
 			$this->view_flg
 		);
-		
+
 		if ( $has_wpautop ) {
 			$content = wpautop( $content );
 		}
-		
+
 		$content = sprintf(
 			'[mwform_complete_message]%s[/mwform_complete_message]',
 			$content
