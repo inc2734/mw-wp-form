@@ -226,10 +226,7 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 		$content = $this->get_page_content_has_mwform_formkey( 'input' );
 
 		$this->assertEquals(
-			'<div id="mw_wp_form_mw-wp-form-' . $this->Setting->get( 'post_id' ) . '" class="mw_wp_form mw_wp_form_input  ">
-					<form method="post" action="" enctype="multipart/form-data"><p>Content</p>
-</form>
-				<!-- end .mw_wp_form --></div>',
+			'<div id="mw_wp_form_mw-wp-form-' . $this->Setting->get( 'post_id' ) . '" class="mw_wp_form mw_wp_form_input  "><form method="post" action="" enctype="multipart/form-data"><p>Content</p></form><!-- end .mw_wp_form --></div>',
 			$content
 		);
 	}
@@ -241,10 +238,7 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 		$content = $this->get_page_content_has_mwform_formkey( 'confirm' );
 
 		$this->assertEquals(
-			'<div id="mw_wp_form_mw-wp-form-' . $this->Setting->get( 'post_id' ) . '" class="mw_wp_form mw_wp_form_confirm mw_wp_form_preview ">
-					<form method="post" action="" enctype="multipart/form-data"><p>Content</p>
-</form>
-				<!-- end .mw_wp_form --></div>',
+			'<div id="mw_wp_form_mw-wp-form-' . $this->Setting->get( 'post_id' ) . '" class="mw_wp_form mw_wp_form_confirm mw_wp_form_preview "><form method="post" action="" enctype="multipart/form-data"><p>Content</p></form><!-- end .mw_wp_form --></div>',
 			$content
 		);
 	}
@@ -256,9 +250,7 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 		$content = $this->get_page_content_has_mwform_formkey( 'complete' );
 
 		$this->assertEquals(
-			'<div id="mw_wp_form_mw-wp-form-' . $this->Setting->get( 'post_id' ) . '" class="mw_wp_form mw_wp_form_complete">
-
-			<!-- end .mw_wp_form --></div>',
+			'<div id="mw_wp_form_mw-wp-form-' . $this->Setting->get( 'post_id' ) . '" class="mw_wp_form mw_wp_form_complete"><!-- end .mw_wp_form --></div>',
 			$content
 		);
 	}
@@ -394,10 +386,9 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 	public function test_mwform_complete_message() {
 		$ExecShortcode = $this->get_ExecShortcode_after_add_shortcode( 'complete' );
 		$content = $ExecShortcode->mwform_complete_message( '', '' );
+		$content = preg_replace( '/>\s*</', '><', $content );
 		$this->assertEquals(
-			'<div id="mw_wp_form_mw-wp-form-' . $this->Setting->get( 'post_id' ) . '" class="mw_wp_form mw_wp_form_complete">
-
-			<!-- end .mw_wp_form --></div>',
+			'<div id="mw_wp_form_mw-wp-form-' . $this->Setting->get( 'post_id' ) . '" class="mw_wp_form mw_wp_form_complete"><!-- end .mw_wp_form --></div>',
 			$content
 		);
 	}
@@ -442,7 +433,8 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 		$attributes = array(
 			'key' => $this->Setting->get( 'post_id' ),
 		);
-		return $ExecShortcode->mwform_formkey( $attributes );
+		$content = $ExecShortcode->mwform_formkey( $attributes );
+		return preg_replace( '/>\s*</m', '><', $content );
 	}
 
 	/**
