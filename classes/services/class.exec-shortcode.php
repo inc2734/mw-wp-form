@@ -205,9 +205,28 @@ class MW_WP_Form_Exec_Shortcode {
 	 */
 	protected function get_form_id_by_mwform_formkey( $attributes ) {
 		$attributes = shortcode_atts( array(
-			'key' => '',
+			'key'  => '',
+			'slug' => '',
 		), $attributes );
-		$post = get_post( $attributes['key'] );
+		$post = null;
+
+		if ( !empty( $attributes['slug'] ) ) {
+			// スラッグより取得
+			$args = array(
+				'name'        => $attributes['slug'],
+				'post_type'   => MWF_Config::NAME,
+				'numberposts' => 1,
+			);
+			$posts = get_posts( $args );
+			if ( !empty( $posts ) ) {
+				$post = $posts[0];
+			}
+		}
+
+		if ( empty( $post ) ) {
+			$post = get_post( $attributes['key'] );
+		}
+
 		if ( isset( $post->ID ) ) {
 			return $post->ID;
 		}
