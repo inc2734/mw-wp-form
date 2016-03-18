@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Main Controller
  * Description: フロントエンドにおいて、適切な画面にリダイレクトさせる
- * Version    : 1.2.0
+ * Version    : 1.2.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 23, 2014
- * Modified   : February 14, 2016
+ * Modified   : March 16, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -263,6 +263,13 @@ class MW_WP_Form_Main_Controller {
 
 		// 管理画面で作成した場合だけ自動で送信
 		if ( $this->ExecShortcode->is_generated_by_formkey() ) {
+			// データベース非保存の場合はファイルも保存されないので、メールで URL が飛ばないように消す
+			if ( !$this->Setting->get( 'usedb' ) ) {
+				foreach ( $attachments as $key => $attachment ) {
+					$this->Data->clear_value( $key );
+				}
+			}
+
 			$Mail_Service->send_admin_mail();
 
 			// 自動返信メールの送信
