@@ -2,11 +2,11 @@
 /**
  * Name       : MWF Functions
  * Description: 関数
- * Version    : 1.5.1
+ * Version    : 1.5.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : May 29, 2013
- * Modified   : February 26, 2016
+ * Modified   : March 18, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -62,7 +62,7 @@ class MWF_Functions {
 			$fileurl = preg_replace( '/^https?:\/\/(.+)$/', '$1', $fileurl );
 			$filepath = str_replace(
 				$baseurl,
-				realpath( $wp_upload_dir['basedir'] ),
+				$wp_upload_dir['basedir'],
 				$fileurl
 			);
 			return $filepath;
@@ -78,7 +78,7 @@ class MWF_Functions {
 	public static function filepath_to_url( $filepath ) {
 		$wp_upload_dir = wp_upload_dir();
 		$fileurl = str_replace(
-			realpath( $wp_upload_dir['basedir'] ),
+			$wp_upload_dir['basedir'],
 			$wp_upload_dir['baseurl'],
 			$filepath
 		);
@@ -161,7 +161,7 @@ class MWF_Functions {
 	public static function move_temp_file_to_upload_dir( $filepath, $upload_dir = '', $filename = '' ) {
 		if ( !$upload_dir ) {
 			$wp_upload_dir = wp_upload_dir();
-			$upload_dir = realpath( $wp_upload_dir['path'] );
+			$upload_dir = $wp_upload_dir['path'];
 		}
 
 		$temp_dir = dirname( $filepath );
