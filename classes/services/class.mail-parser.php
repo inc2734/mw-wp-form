@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Mail Parser
  * Description: メールパーサー
- * Version    : 1.1.0
+ * Version    : 1.1.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : April 14, 2015
- * Modified   : February 14, 2016
+ * Modified   : March 18, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -61,6 +61,7 @@ class MW_WP_Form_Mail_Parser {
 			// 添付ファイルをメディアに保存
 			// save_mail_body 内のフックで添付ファイルの情報を使えるように、
 			// save_mail_body より前にこのブロックを実行する
+			// ここでポストメタとしてURLではなくファイルのIDを保存
 			if ( !empty( $saved_mail_id ) ) {
 				MWF_Functions::save_attachments_in_media(
 					$saved_mail_id,
@@ -185,10 +186,11 @@ class MW_WP_Form_Mail_Parser {
 		}
 
 		// 値が null でも保存（チェッボックス未チェックで直送信でも保存させるため）
-		// ただし、画像の場合はURLが保存されないように調整がはいるため除外が必要
 		if ( $do_update ) {
 			$ignore_keys = apply_filters( 'mwform_no_save_keys_' . $form_key, array() );
 			if ( !in_array( $match, $ignore_keys ) ) {
+				// ファイルは MWF_Functions::save_attachments_in_media() で ID が保存されるため
+				// ここで送信された値（URL）は保存しない
 				if ( !array_key_exists( $match, $this->Mail->attachments ) ) {
 					update_post_meta( $this->saved_mail_id, $match, $value );
 				}

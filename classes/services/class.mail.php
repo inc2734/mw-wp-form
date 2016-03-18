@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Mail Service
- * Version    : 1.3.0
+ * Version    : 1.3.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : February 14, 2016
+ * Modified   : March 18, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -81,11 +81,6 @@ class MW_WP_Form_Mail_Service {
 	 * 管理者メールの送信とデータベースへの保存
 	 */
 	public function send_admin_mail() {
-		// save_mail_body でファイルURLではなくファイルのIDが保存されるように
-		foreach ( $this->attachments as $key => $attachment ) {
-			$this->Data->clear_value( $key );
-		}
-
 		if ( $this->Setting->get( 'usedb' ) ) {
 			$Mail_admin = $this->get_parsed_mail_object( $this->Mail_admin_raw, true );
 

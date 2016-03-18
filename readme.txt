@@ -81,9 +81,8 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.8.0 =
 * Added   : Support slug attribute. e.g. [mwform_formkey slug="form_slug"]
-
-= 2.7.1 =
 * Bugfix  : docx, xlsx, pptx upload bug fixed.
+* Changed : Sending the file url when saving in database and input {file key} and {image key} in the mail.
 
 = 2.7.0 =
 * Added   : Added Method MW_WP_Form_Mail_Parser::get_saved_mail_id()
