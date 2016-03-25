@@ -81,6 +81,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.8.0 =
 * Added   : Support slug attribute. e.g. [mwform_formkey slug="form_slug"]
+* Added   : Added filter hook mwform_inquiry_data_columns-mwf_xxx
 * Bugfix  : docx, xlsx, pptx upload bug fixed.
 * Changed : Sending the file url when saving in database and input {file key} and {image key} in the mail.
 
