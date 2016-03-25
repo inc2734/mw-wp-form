@@ -1,7 +1,20 @@
 <input type="hidden" name="<?php echo esc_attr( MWF_Config::NAME ); ?>_nonce" value="<?php echo wp_create_nonce( MWF_Config::NAME ); ?>" />
 <table border="0" cellpadding="0" cellspacing="0">
 	<?php
-	$values = $Contact_Data_Setting->gets();
+	$columns = array();
+	$_values = $Contact_Data_Setting->gets();
+	foreach ( $_values as $key => $value ) {
+		$columns[$key] = $key;
+	}
+	$columns = apply_filters( 'mwform_inquiry_data_columns-' . $post_type, $columns );
+	$values  = array();
+	if ( $columns ) {
+		foreach ( $columns as $key => $label ) {
+			$values[$key] = $_values[$key];
+		}
+	} else {
+		$values = $_values;
+	}
 	foreach ( $values as $key => $value ) :
 		if ( in_array( $key, $Contact_Data_Setting->get_permit_keys() ) ) {
 			continue;
@@ -13,7 +26,11 @@
 			if ( $key === MWF_Config::TRACKINGNUMBER ) {
 				echo MWF_Functions::get_tracking_number_title( $post_type );
 			} else {
-				echo esc_html( $key );
+				if ( isset( $columns[$key] ) ) {
+					echo esc_html( $columns[$key] );
+				} else {
+					echo esc_html( $key );
+				}
 			}
 			?>
 		</th>
