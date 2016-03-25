@@ -5,7 +5,7 @@
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : March 25, 2016
+ * Modified   : March 26, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -133,8 +133,8 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 			}
 		}
 		ksort( $_columns );
-		$columns = array_merge( $columns, $_columns );
-		$columns = apply_filters( 'mwform_inquiry_data_columns-' . $this->post_type, $columns );
+		$_columns = apply_filters( 'mwform_inquiry_data_columns-' . $this->post_type, $_columns );
+		$columns  = array_merge( $columns, $_columns );
 		return $columns;
 	}
 
