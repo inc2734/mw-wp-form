@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Form
  * Description: フォームヘルパー
- * Version    : 1.8.1
+ * Version    : 1.8.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : September 25, 2012
- * Modified   : December 2, 2015
+ * Modified   : March 26, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -539,7 +539,7 @@ class MW_WP_Form_Form {
 			'value' => '',
 		);
 		$options = array_merge( $defaults, $options );
-		
+
 		$_options = $options;
 		unset( $_options['value'] );
 		$attributes = $this->generate_attributes( $_options );
@@ -727,7 +727,7 @@ class MW_WP_Form_Form {
 		$_ret .= sprintf(
 			'<script type="text/javascript">jQuery( function( $ ) { $("input[name=\'%s\']").datepicker( { %s } ); } );</script>',
 			esc_js( $name ),
-			$options['js']
+			trim( $options['js'], '{}' )
 		);
 		return $_ret;
 	}

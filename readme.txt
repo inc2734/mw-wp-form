@@ -84,6 +84,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Added filter hook mwform_inquiry_data_columns-mwf_xxx
 * Bugfix  : docx, xlsx, pptx upload bug fixed.
 * Changed : Sending the file url when saving in database and input {file key} and {image key} in the mail.
+* Changed : Check of the js attribute of datepicker is now strictly. Property MUST be enclosed in double quotes.
 
 = 2.7.0 =
 * Added   : Added Method MW_WP_Form_Mail_Parser::get_saved_mail_id()

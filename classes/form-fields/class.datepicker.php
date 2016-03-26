@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Datepicker
  * Description: datepickerを出力
- * Version    : 1.6.0
+ * Version    : 1.7.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : November 11, 2015
+ * Modified   : March 26, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -59,25 +59,35 @@ class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
 		$ui = $wp_scripts->query( 'jquery-ui-core' );
 		wp_enqueue_style( 'jquery.ui', '//ajax.googleapis.com/ajax/libs/jqueryui/' . $ui->ver . '/themes/smoothness/jquery-ui.min.css', array(), $ui->ver );
 		wp_enqueue_script( 'jquery-ui-datepicker' );
+
+		$this->atts['js'] = trim( $this->atts['js'], '{}' );
+		$this->atts['js'] = '{' . $this->atts['js'] . '}';
+		$js = json_decode( $this->atts['js'], true );
+
 		// jsの指定がないときはデフォルトで年付き変更機能追加
-		if ( empty( $this->atts['js'] ) ) {
-			$this->atts['js'] = 'showMonthAfterYear: true, changeYear: true, changeMonth: true';
+		if ( empty( $js ) ) {
+			$js = array(
+				'showMonthAfterYear' => 'true',
+				'changeYear'         => 'true',
+				'changeMonth'        => 'true',
+			);
 		}
+
 		// 日本語の場合は日本語表記に変更
 		if ( get_locale() == 'ja' ) {
-			if ( !empty( $this->atts['js'] ) ) {
-				$this->atts['js'] = $this->atts['js'] . ',';
-			}
-			$this->atts['js'] .= '
-				yearSuffix: "年",
-				dateFormat: "yy年mm月dd日",
-				dayNames: ["日曜日","月曜日","火曜日","水曜日","木曜日","金曜日","土曜日"],
-				dayNamesMin: ["日","月","火","水","木","金","土"],
-				dayNamesShort: ["日曜","月曜","火曜","水曜","木曜","金曜","土曜"],
-				monthNames: ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],
-				monthNamesShort: ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"]
-			';
+			$js = array_merge( array(
+				'yearSuffix'      => '年',
+				'dateFormat'      => 'yy年mm月dd日',
+				'dayNames'        => array( '日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日' ),
+				'dayNamesMin'     => array( '日', '月', '火', '水', '木', '金', '土' ),
+				'dayNamesShort'   => array( '日曜', '月曜', '火曜', '水曜', '木曜', '金曜', '土曜' ),
+				'monthNames'      => array( '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月' ),
+				'monthNamesShort' => array( '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月' ),
+			), $js );
 		}
+
+		$this->atts['js'] = json_encode( $js );
+
 		$value = $this->Data->get_raw( $this->atts['name'] );
 		if ( is_null( $value ) ) {
 			$value = $this->atts['value'];
