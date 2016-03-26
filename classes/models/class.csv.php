@@ -117,15 +117,14 @@ class MW_WP_Form_CSV {
 	 * @return array
 	 */
 	protected function get_csv_headings( array $posts ) {
-		$default_headings = array(
+		$columns = array(
 			'ID'              => 'ID',
 			'response_status' => __( 'Response Status', 'mw-wp-form' ),
 			'post_date'       => 'post_date',
 			'post_modified'   => 'post_modified',
 			'post_title'      => 'post_title',
 		);
-		$row = $default_headings;
-		$columns = array();
+		$_columns = array();
 		foreach ( $posts as $post ) {
 			$post_custom_keys = get_post_custom_keys( $post->ID );
 			if ( !is_array( $post_custom_keys ) ) {
@@ -136,18 +135,17 @@ class MW_WP_Form_CSV {
 					continue;
 				}
 				if ( $key === MWF_Config::TRACKINGNUMBER ) {
-					$column = MWF_Functions::get_tracking_number_title( $this->post_type );
-				} else {
-					$column = $key;
+					$columns[$key] = MWF_Functions::get_tracking_number_title( $this->post_type );
+					continue;
 				}
-				$columns[$key] = $column;
+				$_columns[$key] = $key;
 			}
 		}
-		ksort( $columns );
-		$columns = apply_filters( 'mwform_inquiry_data_columns-' . $this->post_type, $columns );
-		$row = array_merge( $row, $columns );
-		$row = array_merge( $row, array( 'memo' => __( 'Memo', 'mw-wp-form' ) ) );
-		return $row;
+		ksort( $_columns );
+		$_columns = apply_filters( 'mwform_inquiry_data_columns-' . $this->post_type, $_columns );
+		$columns = array_merge( $columns, $_columns );
+		$columns = array_merge( $columns, array( 'memo' => __( 'Memo', 'mw-wp-form' ) ) );
+		return $columns;
 	}
 
 	/**

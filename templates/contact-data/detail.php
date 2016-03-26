@@ -1,36 +1,32 @@
 <input type="hidden" name="<?php echo esc_attr( MWF_Config::NAME ); ?>_nonce" value="<?php echo wp_create_nonce( MWF_Config::NAME ); ?>" />
 <table border="0" cellpadding="0" cellspacing="0">
 	<?php
-	$columns = array();
-	$_values = $Contact_Data_Setting->gets();
-	foreach ( $_values as $key => $value ) {
-		$columns[$key] = $key;
-	}
-	$columns = apply_filters( 'mwform_inquiry_data_columns-' . $post_type, $columns );
-	$values  = array();
-	if ( $columns ) {
-		foreach ( $columns as $key => $label ) {
-			$values[$key] = $_values[$key];
+	$columns  = array();
+	$values   = $Contact_Data_Setting->gets();
+	$_columns = array();
+	foreach ( $values as $key => $value ) {
+		if ( $key === MWF_Config::TRACKINGNUMBER ) {
+			$columns[$key] = MWF_Functions::get_tracking_number_title( $post_type );
+			continue;
 		}
-	} else {
-		$values = $_values;
-	}
-	foreach ( $values as $key => $value ) :
 		if ( in_array( $key, $Contact_Data_Setting->get_permit_keys() ) ) {
 			continue;
 		}
-		?>
+		$_columns[$key] = $key;
+	}
+	$_columns = apply_filters( 'mwform_inquiry_data_columns-' . $post_type, $_columns );
+	$columns = array_merge( $columns, $_columns );
+	?>
+
+	<?php foreach ( $columns as $key => $label ) : ?>
+	<?php if ( isset( $values[$key] ) ) : ?>
 	<tr>
 		<th>
 			<?php
 			if ( $key === MWF_Config::TRACKINGNUMBER ) {
 				echo MWF_Functions::get_tracking_number_title( $post_type );
 			} else {
-				if ( isset( $columns[$key] ) ) {
-					echo esc_html( $columns[$key] );
-				} else {
-					echo esc_html( $key );
-				}
+				echo esc_html( $label );
 			}
 			?>
 		</th>
@@ -38,16 +34,17 @@
 			<?php
 			if ( $Contact_Data_Setting->is_upload_file_key( $post, $key ) ) {
 				// 過去バージョンでの不具合でメタデータが空になっていることがあるのでその場合は代替処理
-				if ( $value === '' ) {
-					$value = MWF_Functions::get_multimedia_id__fallback( $post, $key );
+				if ( $values[$key] === '' ) {
+					$values[$key] = MWF_Functions::get_multimedia_id__fallback( $post, $key );
 				}
-				echo MWF_Functions::get_multimedia_data( $value );
+				echo MWF_Functions::get_multimedia_data( $values[$key] );
 			} else {
-				echo nl2br( esc_html( $value ) );
+				echo nl2br( esc_html( $values[$key] ) );
 			}
 			?>
 		</td>
 	</tr>
+	<?php endif; ?>
 	<?php endforeach; ?>
 	<tr>
 		<th><?php esc_html_e( 'Response Status', 'mw-wp-form' ); ?></th>

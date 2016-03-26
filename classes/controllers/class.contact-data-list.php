@@ -125,7 +125,7 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 						continue;
 					}
 					if ( $key === MWF_Config::TRACKINGNUMBER ) {
-						$_columns[$key] = MWF_Functions::get_tracking_number_title( $this->post_type );
+						$columns[$key] = MWF_Functions::get_tracking_number_title( $this->post_type );
 						continue;
 					}
 					$_columns[$key] = $key;
