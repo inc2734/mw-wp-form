@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Data
  * Description: MW WP Form のデータ操作用
- * Version    : 1.4.0
+ * Version    : 1.5.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : October 10, 2013
- * Modified   : January 4, 2016
+ * Modified   : April 1, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -60,7 +60,7 @@ class MW_WP_Form_Data {
 		$this->set_request_valiables( $this->POST );
 		$this->set_files_valiables( $this->POST, $this->FILES );
 	}
-	
+
 	/**
 	 * getInstance
 	 *
@@ -84,7 +84,7 @@ class MW_WP_Form_Data {
 		}
 		exit( 'MW_WP_Form_Data instantiation error.' );
 	}
-	
+
 	/**
 	 * Return form key
 	 *
@@ -281,7 +281,7 @@ class MW_WP_Form_Data {
 				}
 			}
 		}
-		
+
 		if ( is_array( $this->data[$key] ) ) {
 			if ( $children ) {
 				return $this->get_separated_raw_value( $key, $children );
@@ -467,6 +467,12 @@ class MW_WP_Form_Data {
 	 */
 	public function set_upload_file_keys() {
 		$upload_file_keys = $this->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
+		$upload_file_keys = apply_filters(
+			'mwform_upload_file_keys_' . $this->form_key,
+			$upload_file_keys,
+			clone $this
+		);
+		$upload_file_keys = array_values( array_unique( $upload_file_keys ) );
 		if ( !$upload_file_keys ) {
 			$upload_file_keys = array();
 		}
