@@ -2,11 +2,11 @@
 /**
  * Name       : MWF Functions
  * Description: 関数
- * Version    : 1.5.2
+ * Version    : 1.5.3
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : May 29, 2013
- * Modified   : March 18, 2016
+ * Modified   : April 2, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -172,6 +172,12 @@ class MWF_Functions {
 		if ( !$filename ) {
 			$filename = basename( $filepath );
 		}
+
+		if ( !preg_match( '/(\..+?)$/', $filename ) ) {
+			$extension = pathinfo( $filepath, PATHINFO_EXTENSION );
+			$filename = $filename . '.' . $extension;
+		}
+
 		$filename = wp_unique_filename( $upload_dir, $filename );
 
 		$new_filepath = trailingslashit( $upload_dir ) . $filename;
