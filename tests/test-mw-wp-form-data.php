@@ -508,9 +508,9 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group mwform_added_data
-	 * @runInSeparateProcess
 	 */
 	public function test_mwform_added_data_get() {
+		$this->Data->set( 'added_key', 'No used.' );
 		$form_key = $this->Data->get_form_key();
 		add_filter( 'mwform_added_data_' . $form_key, function( $added_data ) {
 			return array(
@@ -519,6 +519,59 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		} );
 		$this->assertEquals(
 			$this->Data->get( 'added_key' ),
+			'added_value'
+		);
+	}
+
+	/**
+	 * @group mwform_added_data
+	 */
+	public function test_mwform_added_data_gets() {
+		$this->Data->set( 'added_key', 'No used.' );
+		$form_key = $this->Data->get_form_key();
+		add_filter( 'mwform_added_data_' . $form_key, function( $added_data ) {
+			return array(
+				'added_key' => 'added_value',
+			);
+		} );
+		$this->assertEquals(
+			$this->Data->gets(),
+			array(
+				'added_key' => 'added_value',
+			)
+		);
+	}
+
+	/**
+	 * @group mwform_added_data
+	 */
+	public function test_mwform_added_data_get_raw() {
+		$this->Data->set( 'added_key', 'No used.' );
+		$form_key = $this->Data->get_form_key();
+		add_filter( 'mwform_added_data_' . $form_key, function( $added_data ) {
+			return array(
+				'added_key' => 'added_value',
+			);
+		} );
+		$this->assertEquals(
+			$this->Data->get_raw( 'added_key' ),
+			'added_value'
+		);
+	}
+
+	/**
+	 * @group mwform_added_data
+	 */
+	public function test_mwform_added_data_get_post_value_by_key() {
+		$this->Data->set( 'added_key', 'No used.' );
+		$form_key = $this->Data->get_form_key();
+		add_filter( 'mwform_added_data_' . $form_key, function( $added_data ) {
+			return array(
+				'added_key' => 'added_value',
+			);
+		} );
+		$this->assertEquals(
+			$this->Data->get_post_value_by_key( 'added_key' ),
 			'added_value'
 		);
 	}
