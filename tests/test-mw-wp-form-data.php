@@ -522,15 +522,4 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 			'added_value'
 		);
 	}
-
-	/**
-	 * @group mwform_added_data
-	 * @runInSeparateProcess
-	 */
-	public function test_mwform_added_data_get2() {
-		$this->assertEquals(
-			$this->Data->get( 'added_key' ),
-			'added_value'
-		);
-	}
 }
