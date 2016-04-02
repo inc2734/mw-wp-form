@@ -310,12 +310,14 @@ class MW_WP_Form_Main_Controller {
 					$new_upload_dir = apply_filters(
 						'mwform_upload_dir_' . $form_key,
 						'',
-						$this->Data
+						$this->Data,
+						$key
 					);
 					$new_filename = apply_filters(
 						'mwform_upload_filename_' . $form_key,
 						'',
-						$this->Data
+						$this->Data,
+						$key
 					);
 					$filepath = MWF_Functions::move_temp_file_to_upload_dir(
 						$filepath,
