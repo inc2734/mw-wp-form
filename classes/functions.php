@@ -159,14 +159,13 @@ class MWF_Functions {
 	 * @return string 新しいファイルパス
 	 */
 	public static function move_temp_file_to_upload_dir( $filepath, $upload_dir = '', $filename = '' ) {
-		if ( !$upload_dir ) {
-			$wp_upload_dir = wp_upload_dir();
-			$upload_dir = $wp_upload_dir['path'];
-		}
+		$wp_upload_dir = wp_upload_dir();
 
-		$temp_dir = dirname( $filepath );
-		if ( $temp_dir == $upload_dir ) {
-			return $filepath;
+		if ( !$upload_dir ) {
+			$upload_dir = realpath( $wp_upload_dir['path'] );
+		} else {
+			$upload_dir = trailingslashit( realpath( $wp_upload_dir['basedir'] ) ) . ltrim( $upload_dir, '/\\' );
+			$bool = wp_mkdir_p( $upload_dir );
 		}
 
 		if ( !$filename ) {
@@ -177,10 +176,14 @@ class MWF_Functions {
 			$extension = pathinfo( $filepath, PATHINFO_EXTENSION );
 			$filename = $filename . '.' . $extension;
 		}
-
+		$filename = sanitize_file_name( $filename );
 		$filename = wp_unique_filename( $upload_dir, $filename );
 
 		$new_filepath = trailingslashit( $upload_dir ) . $filename;
+
+		if ( $filepath == $new_filepath ) {
+			return $filepath;
+		}
 
 		// もし temp ファイルが存在しない場合、一応リネーム後のパスだけ返す
 		if ( !file_exists( $filepath ) ) {
