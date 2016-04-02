@@ -158,9 +158,13 @@ class MW_WP_Form_Data {
 	 */
 	public function gets() {
 		if ( $this->data === null ) {
-			return array();
+			$this->data = array();
 		}
-		return $this->data;
+
+		$added_data = apply_filters( 'mwform_added_data_' . $this->get_form_key(), array() );
+		$data = array_merge( $this->data, $added_data );
+
+		return $data;
 	}
 
 	/**
