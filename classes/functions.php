@@ -162,9 +162,9 @@ class MWF_Functions {
 		$wp_upload_dir = wp_upload_dir();
 
 		if ( !$upload_dir ) {
-			$upload_dir = realpath( $wp_upload_dir['path'] );
+			$upload_dir = $wp_upload_dir['path'];
 		} else {
-			$upload_dir = trailingslashit( realpath( $wp_upload_dir['basedir'] ) ) . ltrim( $upload_dir, '/\\' );
+			$upload_dir = trailingslashit( $wp_upload_dir['basedir'] ) . ltrim( $upload_dir, '/\\' );
 			$bool = wp_mkdir_p( $upload_dir );
 		}
 

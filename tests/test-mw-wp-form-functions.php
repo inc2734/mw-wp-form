@@ -16,7 +16,7 @@ class MW_WP_Form_Functions_Test extends WP_UnitTestCase {
 
 		$new_filepath  = MWF_Functions::move_temp_file_to_upload_dir( $old_filepath, '/dir' );
 		$this->assertEquals(
-			'/dir/test.jpg',
+			$wp_upload_dir['basedir'] . '/dir/test.jpg',
 			$new_filepath
 		);
 
@@ -28,7 +28,7 @@ class MW_WP_Form_Functions_Test extends WP_UnitTestCase {
 
 		$new_filepath  = MWF_Functions::move_temp_file_to_upload_dir( $old_filepath, '/dir', 'file.jpg' );
 		$this->assertEquals(
-			'/dir/file.jpg',
+			$wp_upload_dir['basedir'] . '/dir/file.jpg',
 			$new_filepath
 		);
 	}
