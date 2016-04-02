@@ -50,8 +50,8 @@ class MW_WP_Form_Contact_Data_Setting_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @backupStaticAttributes enabled
 	 * @group get_posts
+	 * @backupStaticAttributes enabled
 	 */
 	public function test_mwform_get_posts_データベースに保存が有効でない投稿タイプは追加されない() {
 		add_filter(
@@ -64,11 +64,13 @@ class MW_WP_Form_Contact_Data_Setting_Test extends WP_UnitTestCase {
 		);
 		$post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
 		$this->assertEquals( 5, count( $post_types ) );
+
+		remove_all_filters( 'mwform_contact_data_post_types' );
 	}
 
 	/**
-	 * @backupStaticAttributes enabled
 	 * @group get_posts
+	 * @backupStaticAttributes enabled
 	 */
 	public function test_mwform_get_posts_投稿タイプを一つ消す() {
 		add_filter(
@@ -80,6 +82,8 @@ class MW_WP_Form_Contact_Data_Setting_Test extends WP_UnitTestCase {
 		);
 		$post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
 		$this->assertEquals( 4, count( $post_types ) );
+
+		remove_all_filters( 'mwform_contact_data_post_types' );
 	}
 
 	/**

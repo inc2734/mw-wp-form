@@ -39,7 +39,14 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @backupStaticAttributes enabled
+	 * tearDown
+	 */
+	public function tearDown() {
+		parent::tearDown();
+		$this->Data->clear_values();
+	}
+
+	/**
 	 */
 	public function test_自動返信メール関連フックのテスト_raw_でDataを変更しても影響されない() {
 		$self = $this;
@@ -67,10 +74,12 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		);
 		$Mail_Service->send_admin_mail();
 		$Mail_Service->send_reply_mail();
+
+		remove_all_filters( 'mwform_auto_mail_raw_' . $this->form_key );
+		remove_all_filters( 'mwform_auto_mail_' . $this->form_key );
 	}
 
 	/**
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_管理者宛メール関連フックのテスト_raw_でDataを変更しても影響されない() {
 		$self = $this;
@@ -98,10 +107,12 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		);
 		$Mail_Service->send_admin_mail();
 		$Mail_Service->send_reply_mail();
+
+		remove_all_filters( 'mwform_admin_mail_raw_' . $this->form_key );
+		remove_all_filters( 'mwform_admin_mail_' . $this->form_key );
 	}
 
 	/**
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_全メール関連フックのテスト_自動返信設定あり() {
 		$self = $this;
@@ -156,10 +167,15 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		);
 		$Mail_Service->send_admin_mail();
 		$Mail_Service->send_reply_mail();
+
+		remove_all_filters( 'mwform_admin_mail_raw_' . $this->form_key );
+		remove_all_filters( 'mwform_auto_mail_raw_' . $this->form_key );
+		remove_all_filters( 'mwform_mail_' . $this->form_key );
+		remove_all_filters( 'mwform_admin_mail_' . $this->form_key );
+		remove_all_filters( 'mwform_auto_mail_' . $this->form_key );
 	}
 
 	/**
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_全メール関連フックのテスト_自動返信設定なし() {
 		$self = $this;
@@ -211,10 +227,15 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		);
 		$Mail_Service->send_admin_mail();
 		$Mail_Service->send_reply_mail();
+
+		remove_all_filters( 'mwform_admin_mail_raw_' . $this->form_key );
+		remove_all_filters( 'mwform_auto_mail_raw_' . $this->form_key );
+		remove_all_filters( 'mwform_mail_' . $this->form_key );
+		remove_all_filters( 'mwform_admin_mail_' . $this->form_key );
+		remove_all_filters( 'mwform_auto_mail_' . $this->form_key );
 	}
 
 	/**
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_管理者宛メール関連フックのテスト_送信内容に応じてメール設定を書き換える() {
 		$self = $this;
@@ -241,11 +262,13 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		);
 		$Mail_Service->send_admin_mail();
 		$Mail_Service->send_reply_mail();
+
+		remove_all_filters( 'mwform_admin_mail_raw_' . $this->form_key );
+		remove_all_filters( 'mwform_admin_mail_' . $this->form_key );
 	}
 
 	/**
 	 * @group tracking_number
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_tracking_number() {
 		$this->Setting->set( 'admin_mail_content', '{' . MWF_Config::TRACKINGNUMBER . '}' );
@@ -259,7 +282,6 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_データベースに保存() {
 		$this->Setting->set( 'usedb', 1 );

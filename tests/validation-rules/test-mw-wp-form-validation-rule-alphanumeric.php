@@ -5,7 +5,7 @@ class MW_WP_Form_Validation_Rule_AlphaNumeric_Test extends WP_UnitTestCase {
 	 * @var MW_WP_Form_Validation_Rule_AlphaNumeric
 	 */
 	protected $Rule;
-	
+
 	/**
 	 * setUp
 	 */
@@ -18,24 +18,23 @@ class MW_WP_Form_Validation_Rule_AlphaNumeric_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @backupStaticAttributes enabled
+	 * tearDown
 	 */
+	public function tearDown() {
+		parent::tearDown();
+		$this->Data->clear_values();
+	}
+
 	public function test_空文字列ならnull() {
 		$this->Data->set( 'text', '' );
 		$this->assertNull( $this->Rule->rule( 'text' ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_数字アルファベットのみならnull() {
 		$this->Data->set( 'text', 'abc123' );
 		$this->assertNull( $this->Rule->rule( 'text' ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_数字アルファベット以外が含まれていたらnotnull() {
 		$this->Data->set( 'text', 'abc123-' );
 		$this->assertNotNull( $this->Rule->rule( 'text' ) );

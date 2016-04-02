@@ -5,7 +5,7 @@ class MW_WP_Form_Validation_Rule_Url_Test extends WP_UnitTestCase {
 	 * @var MW_WP_Form_Validation_Rule_Url
 	 */
 	protected $Rule;
-	
+
 	/**
 	 * setUp
 	 */
@@ -18,16 +18,18 @@ class MW_WP_Form_Validation_Rule_Url_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @backupStaticAttributes enabled
+	 * tearDown
 	 */
+	public function tearDown() {
+		parent::tearDown();
+		$this->Data->clear_values();
+	}
+
 	public function test_空文字列ならnull() {
 		$this->Data->set( 'text', '' );
 		$this->assertNull( $this->Rule->rule( 'text' ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_URLの形式ならnull() {
 		$this->Data->set( 'text', 'http://example.com' );
 		$this->assertNull( $this->Rule->rule( 'text' ) );
@@ -37,9 +39,6 @@ class MW_WP_Form_Validation_Rule_Url_Test extends WP_UnitTestCase {
 		$this->assertNull( $this->Rule->rule( 'text' ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_URLの形式以外ならnotnull() {
 		$this->Data->set( 'text', 'htt://example.com' );
 		$this->assertNotNull( $this->Rule->rule( 'text' ) );

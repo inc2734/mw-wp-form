@@ -521,6 +521,8 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 			$this->Data->get( 'added_key' ),
 			'added_value'
 		);
+
+		remove_all_filters( 'mwform_added_data_' . $form_key );
 	}
 
 	/**
@@ -540,6 +542,8 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 				'added_key' => 'added_value',
 			)
 		);
+
+		remove_all_filters( 'mwform_added_data_' . $form_key );
 	}
 
 	/**
@@ -557,6 +561,8 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 			$this->Data->get_raw( 'added_key' ),
 			'added_value'
 		);
+
+		remove_all_filters( 'mwform_added_data_' . $form_key );
 	}
 
 	/**
@@ -574,5 +580,7 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 			$this->Data->get_post_value_by_key( 'added_key' ),
 			'added_value'
 		);
+
+		remove_all_filters( 'mwform_added_data_' . $form_key );
 	}
 }

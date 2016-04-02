@@ -72,6 +72,8 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 			'test</form>',
 			$this->Form->end()
 		);
+
+		remove_all_filters( 'mwform_form_end_html' );
 	}
 
 	/**

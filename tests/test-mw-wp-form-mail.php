@@ -15,6 +15,14 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * tearDown
+	 */
+	public function tearDown() {
+		parent::tearDown();
+		$this->Mail = new MW_WP_Form_Mail();
+	}
+
+	/**
 	 * @group set_mail_from
 	 */
 	public function test_set_mail_from() {
@@ -57,7 +65,6 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group set_admin_mail_raw_params
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_set_admin_mail_raw_params_未設定() {
 		$post_id = $this->factory->post->create( array(
@@ -77,7 +84,6 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group set_admin_mail_raw_params
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_set_admin_mail_raw_params_設定あり() {
 		$post_id = $this->factory->post->create( array(
@@ -104,7 +110,6 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group set_admin_mail_raw_params
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_set_admin_mail_raw_params_未設定_自動返信設定あり() {
 		$post_id = $this->factory->post->create( array(
@@ -131,7 +136,6 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group set_reply_mail_raw_params
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_set_reply_mail_raw_params_未設定() {
 		$post_id = $this->factory->post->create( array(
@@ -150,7 +154,6 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group set_reply_mail_raw_params
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_set_reply_mail_raw_params_設定あり() {
 		$post_id = $this->factory->post->create( array(
@@ -175,7 +178,6 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group set_reply_mail_raw_params
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_set_reply_mail_raw_params_ToとCCとBCCとattachmentsは直接設定されてもに空値() {
 		$post_id = $this->factory->post->create( array(
@@ -288,7 +290,6 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group parse
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_parse_ToとCCとBCCは上書きされない() {
 		$post_id = $this->factory->post->create( array(
@@ -320,7 +321,6 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group parse
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_parse_データベースに保存() {
 		$post_id = $this->factory->post->create( array(
@@ -346,7 +346,6 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group get_saved_mail_id
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_get_saved_mail_id__保存されたとき() {
 		$post_id = $this->factory->post->create( array(
@@ -362,7 +361,6 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group get_saved_mail_id
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_get_saved_mail_id__保存されなかったとき() {
 		$post_id = $this->factory->post->create( array(

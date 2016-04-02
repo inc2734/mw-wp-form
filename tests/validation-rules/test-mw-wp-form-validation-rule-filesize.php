@@ -5,7 +5,7 @@ class MW_WP_Form_Validation_Rule_FileSize_Test extends WP_UnitTestCase {
 	 * @var MW_WP_Form_Validation_Rule_FileSize
 	 */
 	protected $Rule;
-	
+
 	/**
 	 * setUp
 	 */
@@ -18,8 +18,13 @@ class MW_WP_Form_Validation_Rule_FileSize_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @backupStaticAttributes enabled
+	 * tearDown
 	 */
+	public function tearDown() {
+		parent::tearDown();
+		$this->Data->clear_values();
+	}
+
 	public function test_バイト数が同じならnull() {
 		$this->Data->set( MWF_Config::UPLOAD_FILES, array(
 			'filesize' => array( 'size' => 10 ),
@@ -27,9 +32,6 @@ class MW_WP_Form_Validation_Rule_FileSize_Test extends WP_UnitTestCase {
 		$this->assertNull( $this->Rule->rule( 'filesize', array( 'bytes' => 10 ) ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_バイト数が小さければnull() {
 		$this->Data->set( MWF_Config::UPLOAD_FILES, array(
 			'filesize' => array( 'size' => 10 ),
@@ -37,9 +39,6 @@ class MW_WP_Form_Validation_Rule_FileSize_Test extends WP_UnitTestCase {
 		$this->assertNull( $this->Rule->rule( 'filesize', array( 'bytes' => 11 ) ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_バイト数が大きければnotnull() {
 		$this->Data->set( MWF_Config::UPLOAD_FILES, array(
 			'filesize' => array( 'size' => 11 ),

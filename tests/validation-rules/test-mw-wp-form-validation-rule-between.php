@@ -5,7 +5,7 @@ class MW_WP_Form_Validation_Rule_Between_Test extends WP_UnitTestCase {
 	 * @var MW_WP_Form_Validation_Rule_Between
 	 */
 	protected $Rule;
-	
+
 	/**
 	 * setUp
 	 */
@@ -18,32 +18,28 @@ class MW_WP_Form_Validation_Rule_Between_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @backupStaticAttributes enabled
+	 * tearDown
 	 */
+	public function tearDown() {
+		parent::tearDown();
+		$this->Data->clear_values();
+	}
+
 	public function test_空文字列ならnull() {
 		$this->Data->set( 'text', '' );
 		$this->assertNull( $this->Rule->rule( 'text', array( 'min' => 2, 'max' => 5 ) ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_2文字未満ならnotnull() {
 		$this->Data->set( 'text', '1' );
 		$this->assertNotNull( $this->Rule->rule( 'text', array( 'min' => 2, 'max' => 5 ) ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_5文字より大きければnotnull() {
 		$this->Data->set( 'text', '123456' );
 		$this->assertNotNull( $this->Rule->rule( 'text', array( 'min' => 2, 'max' => 5 ) ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_2文字以上5文字以下ならnull() {
 		$this->Data->set( 'text-1', '12' );
 		$this->Data->set( 'text-2', '12345' );

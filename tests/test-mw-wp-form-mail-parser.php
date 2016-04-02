@@ -33,8 +33,16 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * tearDown
+	 */
+	public function tearDown() {
+		parent::tearDown();
+		$this->Mail = new MW_WP_Form_Mail();
+		$this->Data->clear_values();
+	}
+
+	/**
 	 * @group get_parsed_mail_object
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_get_parsed_mail_object_ToとCCとBCCは上書きされない() {
 		$this->Data->set( 'to'    , 'to@example.com' );
@@ -62,7 +70,6 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group get_parsed_mail_object
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_get_parsed_mail_object_データベースに保存() {
 		$this->Data->set( 'example', 'example' );
@@ -84,7 +91,6 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group get_parsed_mail_object
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_get_parsed_mail_object_Nullでもデータベースに保存() {
 		$this->Data->set( 'example', null );
@@ -104,7 +110,6 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group get_parsed_mail_object
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_get_parsed_mail_object_Nullでもデータベースに保存_ただし添付の場合は保存しない() {
 		$MW_WP_Form_File = new MW_WP_Form_File;
@@ -138,7 +143,6 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 	/**
 	 * @group get_parsed_mail_oabject
 	 * @group tracking_number
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_get_parsed_mail_object_tracking_number() {
 		$this->Mail->body = '{' . MWF_Config::TRACKINGNUMBER . '}';
@@ -151,7 +155,7 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 	/**
 	 * @group get_parsed_mail_object
 	 * @group custom_mail_tag
-	 * @backupStaticAttributes enabled
+	 *
 	 */
 	public function test_get_parsed_mail_object_mwform_custom_mail_tag() {
 		$self = $this;
@@ -172,12 +176,13 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 		$Mail = $Mail_Parser->get_parsed_mail_object( false );
 
 		$this->assertEquals( 'hoge', $Mail->body );
+
+		remove_all_filters( 'mwform_custom_mail_tag_' . $this->form_key );
 	}
 
 	/**
 	 * @group get_parsed_mail_object
 	 * @group custom_mail_tag
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_get_parsed_mail_object_mwform_custom_mail_tag_TO_CC_BCCも対応() {
 		$self = $this;
@@ -206,11 +211,12 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 		$this->assertEquals( 'to@example.com', $Mail->to );
 		$this->assertEquals( 'cc@example.com', $Mail->cc );
 		$this->assertEquals( 'bcc@example.com', $Mail->bcc );
+
+		remove_all_filters( 'mwform_custom_mail_tag_' . $this->form_key );
 	}
 
 	/**
 	 * @group get_saved_mail_id
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_get_saved_mail_id_保存されたとき() {
 		$this->Data->set( 'example', 'example' );
@@ -222,7 +228,6 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group get_saved_mail_id
-	 * @backupStaticAttributes enabled
 	 */
 	public function test_get_saved_mail_id_保存されなかったとき() {
 		$this->Data->set( 'example', 'example' );

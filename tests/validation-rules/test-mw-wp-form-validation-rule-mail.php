@@ -5,7 +5,7 @@ class MW_WP_Form_Validation_Rule_Mail_Test extends WP_UnitTestCase {
 	 * @var MW_WP_Form_Validation_Rule_Mail
 	 */
 	protected $Rule;
-	
+
 	/**
 	 * setUp
 	 */
@@ -18,40 +18,33 @@ class MW_WP_Form_Validation_Rule_Mail_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @backupStaticAttributes enabled
+	 * tearDown
 	 */
+	public function tearDown() {
+		parent::tearDown();
+		$this->Data->clear_values();
+	}
+
 	public function test_空文字列ならnull() {
 		$this->Data->set( 'text', '' );
 		$this->assertNull( $this->Rule->rule( 'text' ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_メールアドレスの形式ならnull() {
 		$this->Data->set( 'text', 'info@example.com' );
 		$this->assertNull( $this->Rule->rule( 'text' ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_atより前がなければnotnull() {
 		$this->Data->set( 'text', '@example.com' );
 		$this->assertNotNull( $this->Rule->rule( 'text' ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_atより後ろがなければnotnull() {
 		$this->Data->set( 'text', 'into@' );
 		$this->assertNotNull( $this->Rule->rule( 'text' ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_メールアドレスの形式でなければnotnull() {
 		$this->Data->set( 'text', 'aaa' );
 		$this->assertNotNull( $this->Rule->rule( 'text' ) );

@@ -5,7 +5,7 @@ class MW_WP_Form_Validation_Rule_Tel_Test extends WP_UnitTestCase {
 	 * @var MW_WP_Form_Validation_Rule_Tel
 	 */
 	protected $Rule;
-	
+
 	/**
 	 * setUp
 	 */
@@ -18,16 +18,18 @@ class MW_WP_Form_Validation_Rule_Tel_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @backupStaticAttributes enabled
+	 * tearDown
 	 */
+	public function tearDown() {
+		parent::tearDown();
+		$this->Data->clear_values();
+	}
+
 	public function test_空文字列ならnull() {
 		$this->Data->set( 'text', '' );
 		$this->assertNull( $this->Rule->rule( 'text' ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_電話番号の形式ならnull() {
 		$this->Data->set( 'text', '00-0000-0000' );
 		$this->assertNull( $this->Rule->rule( 'text' ) );
@@ -43,9 +45,6 @@ class MW_WP_Form_Validation_Rule_Tel_Test extends WP_UnitTestCase {
 		$this->assertNull( $this->Rule->rule( 'text' ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_電話番号の形式_ハイフンなしでもnull() {
 		$this->Data->set( 'text', '0000000000' );
 		$this->assertNull( $this->Rule->rule( 'text' ) );
@@ -53,9 +52,6 @@ class MW_WP_Form_Validation_Rule_Tel_Test extends WP_UnitTestCase {
 		$this->assertNull( $this->Rule->rule( 'text' ) );
 	}
 
-	/**
-	 * @backupStaticAttributes enabled
-	 */
 	public function test_電話番号の形式以外ならnotnull() {
 		$this->Data->set( 'text', 'aaa' );
 		$this->assertNotNull( $this->Rule->rule( 'text' ) );
