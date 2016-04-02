@@ -225,7 +225,9 @@ class MW_WP_Form_Data {
 	 * @return string|null
 	 */
 	public function get( $key, array $children = array() ) {
-		if ( !isset( $this->data[$key] ) ) {
+		$post_value = $this->get_post_value_by_key( $key );
+
+		if ( is_null( $post_value ) ) {
 			return;
 		}
 
@@ -239,8 +241,8 @@ class MW_WP_Form_Data {
 			}
 		}
 
-		if ( is_array( $this->data[$key] ) ) {
-			if ( !array_key_exists( 'data', $this->data[$key] ) ) {
+		if ( is_array( $post_value ) ) {
+			if ( !array_key_exists( 'data', $post_value ) ) {
 				return;
 			}
 			if ( $children ) {
@@ -262,10 +264,12 @@ class MW_WP_Form_Data {
 	 * @return string|null
 	 */
 	public function get_raw( $key ) {
-		if ( !isset( $this->data[$key] ) ) {
+		$post_value = $this->get_post_value_by_key( $key );
+
+		if ( is_null( $post_value ) ) {
 			return;
 		}
-		if ( is_array( $this->data[$key] ) && !array_key_exists( 'data', $this->data[$key] ) ) {
+		if ( is_array( $post_value ) && !array_key_exists( 'data', $post_value ) ) {
 			return;
 		}
 
@@ -282,7 +286,7 @@ class MW_WP_Form_Data {
 			}
 		}
 
-		if ( is_array( $this->data[$key] ) ) {
+		if ( is_array( $post_value ) ) {
 			if ( $children ) {
 				return $this->get_separated_raw_value( $key, $children );
 			}
@@ -297,8 +301,16 @@ class MW_WP_Form_Data {
 
 	/**
 	 * そのキーに紐づく送信データを取得（通常の value 以外に separator や data などが紐づく）
+	 *
+	 * @param string $key name 属性値
+	 * @return mixed
 	 */
 	public function get_post_value_by_key( $key ) {
+		$added_data = apply_filters( 'mwform_added_data_' . $this->get_form_key(), array() );
+		if ( isset( $added_data[$key] ) ) {
+			return $added_data[$key];
+		}
+
 		if ( isset( $this->data[$key] ) ) {
 			return $this->data[$key];
 		}

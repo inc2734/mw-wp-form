@@ -505,4 +505,32 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		$this->Data->push_uploaded_file_keys( array( 'file2' => 'http://exemple.com/dummy.txt' ) );
 		$this->assertSame( array( 'file1', 'file2' ), $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
 	}
+
+	/**
+	 * @group mwform_added_data
+	 * @runInSeparateProcess
+	 */
+	public function test_mwform_added_data_get() {
+		$form_key = $this->Data->get_form_key();
+		add_filter( 'mwform_added_data_' . $form_key, function( $added_data ) {
+			return array(
+				'added_key' => 'added_value',
+			);
+		} );
+		$this->assertEquals(
+			$this->Data->get( 'added_key' ),
+			'added_value'
+		);
+	}
+
+	/**
+	 * @group mwform_added_data
+	 * @runInSeparateProcess
+	 */
+	public function test_mwform_added_data_get2() {
+		$this->assertEquals(
+			$this->Data->get( 'added_key' ),
+			'added_value'
+		);
+	}
 }
