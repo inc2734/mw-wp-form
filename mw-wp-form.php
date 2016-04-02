@@ -108,6 +108,7 @@ class MW_WP_Form {
 		include_once( $plugin_dir_path . 'classes/models/class.session.php' );
 		include_once( $plugin_dir_path . 'classes/models/class.setting.php' );
 		include_once( $plugin_dir_path . 'classes/models/class.validation.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.json-parser.php' );
 		include_once( $plugin_dir_path . 'classes/services/class.mail-parser.php' );
 		include_once( $plugin_dir_path . 'classes/services/class.exec-shortcode.php' );
 		include_once( $plugin_dir_path . 'classes/services/class.mail.php' );

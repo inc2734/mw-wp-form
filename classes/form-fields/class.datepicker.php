@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Datepicker
  * Description: datepickerを出力
- * Version    : 1.7.0
+ * Version    : 1.7.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : March 26, 2016
+ * Modified   : April 3, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -60,12 +60,13 @@ class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
 		wp_enqueue_style( 'jquery.ui', '//ajax.googleapis.com/ajax/libs/jqueryui/' . $ui->ver . '/themes/smoothness/jquery-ui.min.css', array(), $ui->ver );
 		wp_enqueue_script( 'jquery-ui-datepicker' );
 
-		$this->atts['js'] = trim( $this->atts['js'], '{}' );
-		$this->atts['js'] = '{' . $this->atts['js'] . '}';
+		$Json_Parser = new MW_WP_Form_Json_Parser( $this->atts['js'] );
+		$this->atts['js'] = $Json_Parser->create_json();
 		$js = json_decode( $this->atts['js'], true );
 
 		// jsの指定がないときはデフォルトで年付き変更機能追加
 		if ( empty( $js ) ) {
+			$js = '"showMonthAfterYear": true, "changeYear": true, "changeMonth": true';
 			$js = array(
 				'showMonthAfterYear' => 'true',
 				'changeYear'         => 'true',
