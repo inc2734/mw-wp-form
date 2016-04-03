@@ -83,7 +83,6 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Support slug attribute. e.g. [mwform_formkey slug="form_slug"]
 * Added   : Added filter hook mwform_inquiry_data_columns-mwf_xxx
 * Added   : Added filter hook mwform_upload_file_keys_mw-wp-form-xxx
-* Added   : Added filter hook mwform_added_data_mw-wp-form-xxx
 * Added   : Added args of filter hook mwform_upload_dir_mw-wp-form-xxx and mwform_upload_filename_mw-wp-form-xxx
 * Bugfix  : docx, xlsx, pptx upload bug fixed.
 * Bugfix  : Fixed a bug that the extension isn't added when using filter hook mwform_upload_filename_mw-wp-form-xxx.

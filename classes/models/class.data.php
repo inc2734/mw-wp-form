@@ -160,11 +160,7 @@ class MW_WP_Form_Data {
 		if ( $this->data === null ) {
 			$this->data = array();
 		}
-
-		$added_data = apply_filters( 'mwform_added_data_' . $this->get_form_key(), array() );
-		$data = array_merge( $this->data, $added_data );
-
-		return $data;
+		return $this->data;
 	}
 
 	/**
@@ -310,11 +306,6 @@ class MW_WP_Form_Data {
 	 * @return mixed
 	 */
 	public function get_post_value_by_key( $key ) {
-		$added_data = apply_filters( 'mwform_added_data_' . $this->get_form_key(), array() );
-		if ( isset( $added_data[$key] ) ) {
-			return $added_data[$key];
-		}
-
 		if ( isset( $this->data[$key] ) ) {
 			return $this->data[$key];
 		}
