@@ -84,7 +84,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Added filter hook mwform_inquiry_data_columns-mwf_xxx
 * Added   : Added filter hook mwform_upload_file_keys_mw-wp-form-xxx
 * Added   : Added args of filter hook mwform_upload_dir_mw-wp-form-xxx and mwform_upload_filename_mw-wp-form-xxx
-* Added   : Added the Data field. This field display value of mwform_custom_mail_tag_mw-wp-form-xxx.
+* Added   : Added the Custom Mail Tag field. This field display value of mwform_custom_mail_tag_mw-wp-form-xxx.
 * Bugfix  : docx, xlsx, pptx upload bug fixed.
 * Bugfix  : Fixed a bug that the extension isn't added when using filter hook mwform_upload_filename_mw-wp-form-xxx.
 * Changed : Sending the file url when saving in database and input {file key} and {image key} in the mail.

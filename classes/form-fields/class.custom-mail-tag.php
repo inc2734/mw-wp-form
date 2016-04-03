@@ -1,6 +1,6 @@
 <?php
 /**
- * Name       : MW WP Form Field Data
+ * Name       : MW WP Form Field Custom Mail Tag
  * Description: mwform_custom_mail_tag_mw-wp-form-xxx で指定されたデータを出力
  * Version    : 1.0.0
  * Author     : Takashi Kitajima
@@ -10,7 +10,7 @@
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-class MW_WP_Form_Field_Data extends MW_WP_Form_Abstract_Form_Field {
+class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 
 	/**
 	 * $type
@@ -26,8 +26,8 @@ class MW_WP_Form_Field_Data extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function set_names() {
 		return array(
-			'shortcode_name' => 'mwform_data',
-			'display_name'   => __( 'Data', 'mw-wp-form' ),
+			'shortcode_name' => 'mwform_custom_mail_tag',
+			'display_name'   => __( 'Custom Mail Tag', 'mw-wp-form' ),
 		);
 	}
 
@@ -50,7 +50,7 @@ class MW_WP_Form_Field_Data extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string html
 	 */
 	protected function input_page() {
-		$_ret = $this->data_field( $this->atts['name'], array(
+		$_ret = $this->custom_mail_tag_field( $this->atts['name'], array(
 			'id'    => $this->atts['id'],
 			'class' => $this->atts['class'],
 		) );
@@ -63,7 +63,7 @@ class MW_WP_Form_Field_Data extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function confirm_page() {
-		$_ret = $this->data_field( $this->atts['name'], array(
+		$_ret = $this->custom_mail_tag_field( $this->atts['name'], array(
 			'id'    => $this->atts['id'],
 			'class' => $this->atts['class'],
 		) );
@@ -101,7 +101,7 @@ class MW_WP_Form_Field_Data extends MW_WP_Form_Abstract_Form_Field {
 	 * @param array
 	 * @return string html
 	 */
-	public function data_field( $name, $options = array() ) {
+	public function custom_mail_tag_field( $name, $options = array() ) {
 		$defaults = array(
 			'id'    => null,
 			'class' => null,
@@ -113,7 +113,7 @@ class MW_WP_Form_Field_Data extends MW_WP_Form_Abstract_Form_Field {
 		$attributes = $Form->generate_attributes( $options );
 
 		return sprintf(
-			'<span class="mwform-data-field %s" %s>%s</span>',
+			'<span class="mwform-custom-mail-tag-field %s" %s>%s</span>',
 			esc_attr( $class ),
 			$attributes,
 			esc_html( $this->apply_filters_mwform_custom_mail_tag( $this->form_key, '', $name ) )
