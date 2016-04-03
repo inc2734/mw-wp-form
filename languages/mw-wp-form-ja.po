@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.6.0\n"
+"Project-Id-Version: MW WP Form 2.8.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
-"POT-Creation-Date: 2015-11-14 02:10+0900\n"
-"PO-Revision-Date: 2015-11-14 02:11+0900\n"
+"POT-Creation-Date: 2016-04-03 17:21+0900\n"
+"PO-Revision-Date: 2016-04-03 17:21+0900\n"
 "Last-Translator: inc2734 <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -69,8 +69,7 @@ msgid "Registed Date"
 msgstr "登録日時"
 
 #: classes/controllers/class.contact-data-list.php:118
-#: classes/models/class.csv.php:122 classes/models/class.csv.php:169
-#: templates/contact-data/detail.php:36
+#: classes/models/class.csv.php:122 templates/contact-data/detail.php:50
 msgid "Response Status"
 msgstr "対応状況"
 
@@ -151,7 +150,7 @@ msgid ""
 msgstr "選択肢を「:」で送信値と表示値に分割したとき、送信値をメールで送信"
 
 #: classes/form-fields/class.checkbox.php:141
-#: classes/form-fields/class.datepicker.php:145
+#: classes/form-fields/class.datepicker.php:156
 #: classes/form-fields/class.email.php:127
 #: classes/form-fields/class.hidden.php:84
 #: classes/form-fields/class.password.php:119
@@ -178,7 +177,7 @@ msgid "Arranged vertically."
 msgstr "垂直に配置する"
 
 #: classes/form-fields/class.checkbox.php:156
-#: classes/form-fields/class.datepicker.php:155
+#: classes/form-fields/class.datepicker.php:166
 #: classes/form-fields/class.email.php:137
 #: classes/form-fields/class.file.php:122
 #: classes/form-fields/class.image.php:126
@@ -194,7 +193,7 @@ msgid "Dsiplay error"
 msgstr "エラー表示"
 
 #: classes/form-fields/class.checkbox.php:158
-#: classes/form-fields/class.datepicker.php:157
+#: classes/form-fields/class.datepicker.php:168
 #: classes/form-fields/class.email.php:139
 #: classes/form-fields/class.file.php:124
 #: classes/form-fields/class.image.php:128
@@ -217,6 +216,10 @@ msgstr "確認ボタン"
 #: classes/form-fields/class.submit-button.php:43
 msgid "Confirm"
 msgstr "確認画面へ"
+
+#: classes/form-fields/class.custom-mail-tag.php:30
+msgid "Custom Mail Tag"
+msgstr "カスタムメールタグ"
 
 #: classes/form-fields/class.datepicker.php:30
 msgid "Datepicker"
@@ -338,11 +341,11 @@ msgstr "URL フィールド"
 msgid "Zip Code"
 msgstr "郵便番号"
 
-#: classes/functions.php:201
+#: classes/functions.php:226
 msgid "Uploaded from "
 msgstr "Uploaded from "
 
-#: classes/functions.php:300
+#: classes/functions.php:342
 msgid "Tracking Number"
 msgstr "問い合わせ番号"
 
@@ -358,8 +361,7 @@ msgstr "保留"
 msgid "Supported"
 msgstr "対応済み"
 
-#: classes/models/class.csv.php:148 classes/models/class.csv.php:172
-#: templates/contact-data/detail.php:48
+#: classes/models/class.csv.php:147 templates/contact-data/detail.php:62
 msgid "Memo"
 msgstr "メモ"
 
@@ -517,60 +519,60 @@ msgstr "URL"
 msgid "This is not the format of a zip code."
 msgstr "郵便番号の形式ではありません。"
 
-#: mw-wp-form.php:167 mw-wp-form.php:168 templates/chart/index.php:4
+#: mw-wp-form.php:168 mw-wp-form.php:169 templates/chart/index.php:4
 msgid "Chart"
 msgstr "グラフ"
 
-#: mw-wp-form.php:196 mw-wp-form.php:197
+#: mw-wp-form.php:197 mw-wp-form.php:198
 #: templates/stores-inquiry-data-form-list/index.php:2
 msgid "Inquiry data"
 msgstr "問い合わせデータ"
 
-#: mw-wp-form.php:292
+#: mw-wp-form.php:293
 msgid "Add New Form"
 msgstr "フォームを追加"
 
-#: mw-wp-form.php:293
+#: mw-wp-form.php:294
 msgid "Edit Form"
 msgstr "フォームを編集"
 
-#: mw-wp-form.php:294
+#: mw-wp-form.php:295
 msgid "New Form"
 msgstr "新しいフォーム"
 
-#: mw-wp-form.php:295
+#: mw-wp-form.php:296
 msgid "View Form"
 msgstr "フォームを表示"
 
-#: mw-wp-form.php:296
+#: mw-wp-form.php:297
 msgid "Search Forms"
 msgstr "フォームを検索"
 
-#: mw-wp-form.php:297
+#: mw-wp-form.php:298
 msgid "No Forms found"
 msgstr "フォームがありません"
 
-#: mw-wp-form.php:298
+#: mw-wp-form.php:299
 msgid "No Forms found in Trash"
 msgstr "ゴミ箱にフォームはありません"
 
-#: mw-wp-form.php:315
+#: mw-wp-form.php:316
 msgid "Edit "
 msgstr "編集"
 
-#: mw-wp-form.php:316
+#: mw-wp-form.php:317
 msgid "View"
 msgstr "表示"
 
-#: mw-wp-form.php:317
+#: mw-wp-form.php:318
 msgid "Search"
 msgstr "検索"
 
-#: mw-wp-form.php:318
+#: mw-wp-form.php:319
 msgid "No data found"
 msgstr "データがありません"
 
-#: mw-wp-form.php:319
+#: mw-wp-form.php:320
 msgid "No data found in Trash"
 msgstr "ゴミ箱にデータはありません"
 
