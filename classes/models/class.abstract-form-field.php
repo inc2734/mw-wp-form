@@ -14,7 +14,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 
 	/**
 	 * $shortcode_name
-	 * @var string 
+	 * @var string
 	 */
 	protected $shortcode_name;
 
