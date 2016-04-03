@@ -89,6 +89,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Bugfix  : Fixed a bug that the extension isn't added when using filter hook mwform_upload_filename_mw-wp-form-xxx.
 * Changed : Sending the file url when saving in database and input {file key} and {image key} in the mail.
 * Changed : Check of the js attribute of datepicker is now strictly. Property MUST be enclosed in double quotes.
+* Changed : Changed the form token name.
 
 = 2.7.0 =
 * Added   : Added Method MW_WP_Form_Mail_Parser::get_saved_mail_id()
