@@ -1,27 +1,41 @@
 @charset "utf-8";
 
+/**
+ * error message
+ */
 .mw_wp_form .error {
 	font-size : 93%;
 	color : #B70000;
 	display : block;
 }
 
+/**
+ * error message of akismet
+ */
 .mw_wp_form .akismet_error {
 	display: block;
 }
 
-.vertical-item {
+/**
+ * vertical style of radio and checkbox
+ */
+.mw_wp_form .vertical-item {
 	display: block;
 }
-.vertical-item+.vertical-item {
+.mw_wp_form .vertical-item + .vertical-item {
 	margin-top: 5px;
 }
-.horizontal-item+.horizontal-item {
+
+/**
+ * horizontal style of radio and checkbox
+ */
+.mw_wp_form .horizontal-item + .horizontal-item {
 	margin-left: 10px;
 }
-.mwform-checkbox-field,
-.mwform-radio-field {
-}
+
+/**
+ * radio and checkbox
+ */
 .mwform-checkbox-field label,
 .mwform-radio-field label {
 	font-weight: normal;
@@ -32,12 +46,18 @@
 	margin-right: 5px;
 }
 
-.ui-datepicker .ui-datepicker-title select.ui-datepicker-month,
-.ui-datepicker .ui-datepicker-title select.ui-datepicker-year {
+/**
+ * datepicker
+ */
+.mw_wp_form .ui-datepicker .ui-datepicker-title select.ui-datepicker-month,
+.mw_wp_form .ui-datepicker .ui-datepicker-title select.ui-datepicker-year {
 	width: 40%;
 	margin: 0 5px;
 }
 
+/**
+ * deprecated message
+ */
 .mw-wp-form-deprecated-message {
 	background: #F5A9A9;
 	border: #B40404 solid 2px;
@@ -48,11 +68,24 @@
 	padding: 5px;
 }
 
+/**
+ * file
+ */
+.mw_wp_form input[type="file"] {
+	display: inline-block;
+}
+
+/**
+ * file delete button
+ */
 .mwform-file-delete {
 	cursor: pointer;
 	visibility: hidden;
 }
 
+/**
+ * tel and zip
+ */
 .mwform-tel-field input[type="text"],
 .mwform-zip-field input[type="text"] {
 	display: inline-block;
