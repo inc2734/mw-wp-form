@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.8.0\n"
+"Project-Id-Version: MW WP Form 2.8.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
-"POT-Creation-Date: 2016-04-03 17:21+0900\n"
-"PO-Revision-Date: 2016-04-03 17:21+0900\n"
+"POT-Creation-Date: 2016-04-05 00:10+0900\n"
+"PO-Revision-Date: 2016-04-05 00:11+0900\n"
 "Last-Translator: inc2734 <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -179,7 +179,7 @@ msgstr "垂直に配置する"
 #: classes/form-fields/class.checkbox.php:156
 #: classes/form-fields/class.datepicker.php:166
 #: classes/form-fields/class.email.php:137
-#: classes/form-fields/class.file.php:122
+#: classes/form-fields/class.file.php:123
 #: classes/form-fields/class.image.php:126
 #: classes/form-fields/class.number.php:133
 #: classes/form-fields/class.password.php:129
@@ -195,7 +195,7 @@ msgstr "エラー表示"
 #: classes/form-fields/class.checkbox.php:158
 #: classes/form-fields/class.datepicker.php:168
 #: classes/form-fields/class.email.php:139
-#: classes/form-fields/class.file.php:124
+#: classes/form-fields/class.file.php:125
 #: classes/form-fields/class.image.php:128
 #: classes/form-fields/class.number.php:135
 #: classes/form-fields/class.password.php:131
@@ -253,7 +253,7 @@ msgstr "エラーを表示したい要素のname属性"
 msgid "File"
 msgstr "ファイルフィールド"
 
-#: classes/form-fields/class.file.php:70 classes/form-fields/class.file.php:92
+#: classes/form-fields/class.file.php:71 classes/form-fields/class.file.php:93
 msgid "Uploaded."
 msgstr "アップロードしました。"
 
@@ -468,6 +468,22 @@ msgstr "メールアドレスの形式ではありません。"
 #: classes/validation-rules/class.mail.php:49
 msgid "E-mail"
 msgstr "メールアドレス"
+
+#: classes/validation-rules/class.maximagesize.php:77
+msgid "This image size is too big."
+msgstr "画像サイズが大きすぎます。"
+
+#: classes/validation-rules/class.maximagesize.php:105
+msgid "Maximum image size"
+msgstr "最大画像サイズ"
+
+#: classes/validation-rules/class.minimagesize.php:77
+msgid "This image size is too small."
+msgstr "画像サイズが小さすぎます。"
+
+#: classes/validation-rules/class.minimagesize.php:105
+msgid "Minimum image size"
+msgstr "最小画像サイズ"
 
 #: classes/validation-rules/class.minlength.php:34
 msgid "The number of characters is a few."

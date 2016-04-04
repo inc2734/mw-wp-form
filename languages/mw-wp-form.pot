@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MW WP Form 2.8.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
-"POT-Creation-Date: 2016-04-03 08:20:33+00:00\n"
+"POT-Creation-Date: 2016-04-04 15:10:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -167,7 +167,7 @@ msgstr ""
 #: classes/form-fields/class.checkbox.php:156
 #: classes/form-fields/class.datepicker.php:166
 #: classes/form-fields/class.email.php:137
-#: classes/form-fields/class.file.php:122
+#: classes/form-fields/class.file.php:123
 #: classes/form-fields/class.image.php:126
 #: classes/form-fields/class.number.php:133
 #: classes/form-fields/class.password.php:129
@@ -183,7 +183,7 @@ msgstr ""
 #: classes/form-fields/class.checkbox.php:158
 #: classes/form-fields/class.datepicker.php:168
 #: classes/form-fields/class.email.php:139
-#: classes/form-fields/class.file.php:124
+#: classes/form-fields/class.file.php:125
 #: classes/form-fields/class.image.php:128
 #: classes/form-fields/class.number.php:135
 #: classes/form-fields/class.password.php:131
@@ -241,7 +241,7 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-#: classes/form-fields/class.file.php:70 classes/form-fields/class.file.php:92
+#: classes/form-fields/class.file.php:71 classes/form-fields/class.file.php:93
 msgid "Uploaded."
 msgstr ""
 
@@ -455,6 +455,22 @@ msgstr ""
 
 #: classes/validation-rules/class.mail.php:49
 msgid "E-mail"
+msgstr ""
+
+#: classes/validation-rules/class.maximagesize.php:77
+msgid "This image size is too big."
+msgstr ""
+
+#: classes/validation-rules/class.maximagesize.php:105
+msgid "Maximum image size"
+msgstr ""
+
+#: classes/validation-rules/class.minimagesize.php:77
+msgid "This image size is too small."
+msgstr ""
+
+#: classes/validation-rules/class.minimagesize.php:105
+msgid "Minimum image size"
 msgstr ""
 
 #: classes/validation-rules/class.minlength.php:34
