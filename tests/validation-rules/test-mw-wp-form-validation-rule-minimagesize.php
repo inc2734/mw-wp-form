@@ -57,6 +57,13 @@ class MW_WP_Form_Validation_Rule_MinImageSize_Test extends WP_UnitTestCase {
 		$this->assertNull( $this->Rule->rule( 'image', array( 'width' => 400, 'height' => 400 ) ) );
 	}
 
+	/**
+	 * @group MW_WP_Form_Validation_Rule_MinImageSize
+	 */
+	public function test__幅も高さも同じ() {
+		$this->assertNull( $this->Rule->rule( 'image', array( 'width' => 500, 'height' => 500 ) ) );
+	}
+
 	protected function save_image() {
 		$wp_upload_dir = wp_upload_dir();
 		system( "sudo chmod 777 " . $wp_upload_dir['basedir'] );
