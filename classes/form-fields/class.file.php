@@ -56,6 +56,7 @@ class MW_WP_Form_Field_File extends MW_WP_Form_Abstract_Form_Field {
 			'class' => $this->atts['class'],
 		) );
 		$value = $this->Data->get_raw( $this->atts['name'] );
+
 		$upload_file_keys = $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
 		if ( !empty( $value ) && is_array( $upload_file_keys ) && in_array( $this->atts['name'], $upload_file_keys ) ) {
 			$filepath = MWF_Functions::fileurl_to_path( $value );

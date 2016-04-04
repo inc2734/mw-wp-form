@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Main Controller
  * Description: フロントエンドにおいて、適切な画面にリダイレクトさせる
- * Version    : 1.3.0
+ * Version    : 1.3.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 23, 2014
- * Modified   : April 3, 2016
+ * Modified   : April 4, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -349,6 +349,8 @@ class MW_WP_Form_Main_Controller {
 		foreach ( $upload_files as $key => $file ) {
 			if ( $this->Validation->single_check( $key ) ) {
 				$files[$key] = $file;
+			} elseif ( isset( $files[$key] ) ) {
+				unset( $files[$key] );
 			}
 		}
 		$uploaded_files = $File->upload( $files );

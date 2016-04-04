@@ -80,6 +80,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 == Changelog ==
 
 = 2.8.1 =
+* Added   : Added MinImageSize validation.
 * Bugfix  : Fixed a set_upload_file_keys bug.
 
 = 2.8.0 =

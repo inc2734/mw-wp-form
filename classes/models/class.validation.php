@@ -81,7 +81,7 @@ class MW_WP_Form_Validation {
 	 */
 	public function set_rules( MW_WP_Form_Setting $Setting ) {
 		$Data = MW_WP_Form_Data::getInstance();
-		
+
 		$rules = array();
 		$validations = $Setting->get('validation' );
 		if ( $validations ) {
