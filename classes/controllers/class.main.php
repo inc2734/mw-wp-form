@@ -354,8 +354,8 @@ class MW_WP_Form_Main_Controller {
 			}
 		}
 		$uploaded_files = $File->upload( $files );
-		$this->Data->set_upload_file_keys();
 		$this->Data->push_uploaded_file_keys( $uploaded_files );
+		$this->Data->regenerate_upload_file_keys();
 	}
 
 	/**

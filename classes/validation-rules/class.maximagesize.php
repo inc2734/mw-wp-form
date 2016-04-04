@@ -26,6 +26,11 @@ class MW_WP_Form_Validation_Rule_MaxImageSize extends MW_WP_Form_Abstract_Valida
 	 * @return string エラーメッセージ
 	 */
 	public function rule( $key, array $options = array() ) {
+		$value = $this->Data->get( $key );
+		if ( !$value ) {
+			return;
+		}
+
 		if ( !MWF_Functions::is_numeric( $options['width'] ) || !MWF_Functions::is_numeric( $options['width'] ) ) {
 			return;
 		}
@@ -39,18 +44,19 @@ class MW_WP_Form_Validation_Rule_MaxImageSize extends MW_WP_Form_Abstract_Valida
 		 */
 		$upload_file_keys = $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
 		$upload_files     = $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILES );
-		$value = $this->Data->get( $key );
 		$is_error = false;
 
-		if ( !$value ) {
-			return;
+		if ( !is_array( $upload_file_keys ) ) {
+			$upload_file_keys = array();
+		}
+
+		if ( !is_array( $upload_files ) ) {
+			$upload_files = array();
 		}
 
 		// アップロード直後のチェック
-		if ( !$upload_file_keys ) {
-			if ( is_array( $upload_files ) && array_key_exists( $key, $upload_files ) ) {
-				$file_path = $upload_files[$key]['tmp_name'];
-			}
+		if ( !in_array( $key, $upload_file_keys ) && array_key_exists( $key, $upload_files ) ) {
+			$file_path = $upload_files[$key]['tmp_name'];
 		}
 		// アップロード済みの場合のチェック
 		else {
@@ -60,7 +66,9 @@ class MW_WP_Form_Validation_Rule_MaxImageSize extends MW_WP_Form_Abstract_Valida
 		if ( file_exists( $file_path ) && exif_imagetype( $file_path ) ) {
 			$imagesize = getimagesize( $file_path );
 		} else {
-			$is_error = true;
+			if ( !in_array( $key, $upload_file_keys ) ) {
+				$is_error = true;
+			}
 		}
 
 		$defaults = array(
@@ -97,7 +105,7 @@ class MW_WP_Form_Validation_Rule_MaxImageSize extends MW_WP_Form_Abstract_Valida
 				<td><?php esc_html_e( 'Maximum image size', 'mw-wp-form' ); ?></td>
 				<td>
 					<input type="text" value="<?php echo esc_attr( $width ); ?>" size="4" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][width]" />
-					*
+					&times;
 					<input type="text" value="<?php echo esc_attr( $height ); ?>" size="4" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][height]" />
 				</td>
 			</tr>

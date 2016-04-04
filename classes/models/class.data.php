@@ -472,11 +472,12 @@ class MW_WP_Form_Data {
 	/**
 	 * アップロードに失敗、もしくはファイルが削除されている key を UPLOAD_FILE_KEYS から削除
 	 */
-	public function set_upload_file_keys() {
+	public function regenerate_upload_file_keys() {
 		$upload_file_keys = $this->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
 		if ( !is_array( $upload_file_keys ) ) {
 			$upload_file_keys = array();
 		}
+
 		$upload_file_keys = apply_filters(
 			'mwform_upload_file_keys_' . $this->form_key,
 			$upload_file_keys,
@@ -507,6 +508,9 @@ class MW_WP_Form_Data {
 	 */
 	public function push_uploaded_file_keys( array $uploaded_files = array() ) {
 		$upload_file_keys = $this->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
+		if ( !is_array( $upload_file_keys ) ) {
+			$upload_file_keys = array();
+		}
 		foreach ( $uploaded_files as $key => $upload_file ) {
 			$this->set( $key, $upload_file );
 			if ( is_array( $upload_file_keys ) && !in_array( $key, $upload_file_keys ) ) {

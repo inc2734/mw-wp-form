@@ -82,7 +82,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 = 2.8.1 =
 * Added   : Added MinImageSize validation.
 * Added   : Added MaxImageSize validation.
-* Bugfix  : Fixed a set_upload_file_keys bug.
+* Bugfix  : Fixed a set_upload_file_keys bug and rename to regenerate_upload_file_keys.
 
 = 2.8.0 =
 * Added   : Support slug attribute. e.g. [mwform_formkey slug="form_slug"]

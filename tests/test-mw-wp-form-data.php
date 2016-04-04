@@ -467,29 +467,29 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @group set_upload_file_keys
+	 * @group regenerate_upload_file_keys
 	 */
-	public function test_set_upload_file_keys_ファイルがあればNotNull() {
+	public function test_regenerate_upload_file_keys_ファイルがあればNotNull() {
 		$wp_upload_dir = wp_upload_dir();
 		system( "sudo chmod 777 " . $wp_upload_dir['basedir'] );
 		system( "sudo mkdir -p " . $wp_upload_dir['path'] );
 		file_put_contents( $wp_upload_dir['path'] . '/1.txt', 1 );
 		$this->Data->set( 'file', $wp_upload_dir['url'] . '/1.txt' );
 		$this->Data->push( MWF_Config::UPLOAD_FILE_KEYS, 'file' );
-		$this->Data->set_upload_file_keys();
+		$this->Data->regenerate_upload_file_keys();
 		$this->assertSame( array( 'file' ), $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
 		$this->assertNotNull( $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
 		unlink( $wp_upload_dir['path'] . '/1.txt' );
 	}
 
 	/**
-	 * @group set_upload_file_keys
+	 * @group regenerate_upload_file_keys
 	 */
-	public function test_set_upload_file_keys_ファイルがなければ空配列() {
+	public function test_regenerate_upload_file_keys_ファイルがなければ空配列() {
 		$wp_upload_dir = wp_upload_dir();
 		$this->Data->set( 'file', $wp_upload_dir['url'] . '/1.txt' );
 		$this->Data->push( MWF_Config::UPLOAD_FILE_KEYS, 'file' );
-		$this->Data->set_upload_file_keys();
+		$this->Data->regenerate_upload_file_keys();
 		$this->assertSame( array(), $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
 	}
 
