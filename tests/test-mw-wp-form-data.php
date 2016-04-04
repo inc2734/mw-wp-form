@@ -485,7 +485,7 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 	/**
 	 * @group set_upload_file_keys
 	 */
-	public function test_set_upload_file_keys_ファイルがなければNull() {
+	public function test_set_upload_file_keys_ファイルがなければ空配列() {
 		$wp_upload_dir = wp_upload_dir();
 		$this->Data->set( 'file', $wp_upload_dir['url'] . '/1.txt' );
 		$this->Data->push( MWF_Config::UPLOAD_FILE_KEYS, 'file' );
