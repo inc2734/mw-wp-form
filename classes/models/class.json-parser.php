@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Json Parser
  * Description: ショートコードから渡される json を正しい形式に変換
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : April 3, 2016
- * Modified   :
+ * Modified   : April 5, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -159,7 +159,17 @@ class MW_WP_Form_Json_Parser {
 			if ( isset( $param['value'] ) ) {
 				$value = $param['value'];
 			}
-			$js[ trim( $key ) ] = trim( $value );
+			$value = trim( $value );
+			if ( preg_match( '/^[\-\+]?[\d]+$/', $value ) ) {
+				$value = (int) $value;
+			} elseif ( $value === mb_strtolower( 'true' ) ) {
+				$value = true;
+			} elseif ( $value === mb_strtolower( 'false' ) ) {
+				$value = false;
+			} elseif ( $value === mb_strtolower( 'null' ) ) {
+				$value = null;
+			}
+			$js[ trim( $key ) ] = $value;
 		}
 		return json_encode( $js );
 	}
