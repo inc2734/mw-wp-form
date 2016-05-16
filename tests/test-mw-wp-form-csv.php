@@ -55,7 +55,7 @@ class MW_WP_Form_CSV_Test extends WP_UnitTestCase {
 	 */
 	public function test_get_posts_per_page_Allあり_表示件数設定なし() {
 		$_POST['download-all'] = 'true';
-		$this->assertEquals( -1, $this->CSV->get_posts_per_page() );
+		$this->assertEquals( 20, $this->CSV->get_posts_per_page() );
 	}
 
 	/**
@@ -65,7 +65,7 @@ class MW_WP_Form_CSV_Test extends WP_UnitTestCase {
 		$_POST['download-all'] = 'true';
 		$user_id = $this->set_current_user();
 		update_user_meta( $user_id, 'edit_' . $this->post_type . '_per_page', 10 );
-		$this->assertEquals( -1, $this->CSV->get_posts_per_page() );
+		$this->assertEquals( 10, $this->CSV->get_posts_per_page() );
 	}
 
 	/**
@@ -84,12 +84,26 @@ class MW_WP_Form_CSV_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @group get_paged
+	 * @group get_query_args
 	 */
-	public function test_get_paged_全件表示のときは1() {
-		$_GET['paged'] = 2;
-		$_POST['download-all'] = 'true';
-		$this->assertEquals( 1, $this->CSV->get_paged() );
+	public function test_get_query_args() {
+		$expected = array(
+			'post_type'   => $this->post_type,
+			'post_status' => 'any',
+		);
+
+		$actual = $this->CSV->get_query_args();
+
+		$this->assertEquals( $expected, $actual );
+	}
+
+	/**
+	 * @group get_count
+	 * @depends test_get_query_args
+	 */
+	public function test_get_count() {
+		$args = $this->CSV->get_query_args();
+		$this->assertEquals( 50, $this->CSV->get_count( $args ) );
 	}
 
 	/**

@@ -33,44 +33,63 @@ class MW_WP_Form_CSV {
 			return;
 		}
 
+		// max_execution_time の制約を回避
+		set_time_limit( 0 );
+
+		// ダウンロード条件を取得
+		$args           = $this->get_query_args();
 		$posts_per_page = $this->get_posts_per_page();
-		$paged          = $this->get_paged();
+		$download_all   = isset( $_POST['download-all'] ) && $_POST['download-all'] === 'true';
 
-		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $this->post_type, array() );
-		$args  = array(
-			'post_type'      => $this->post_type,
-			'posts_per_page' => $posts_per_page,
-			'paged'          => $paged,
-			'post_status'    => 'any',
-		);
-		if ( !empty( $_args ) && is_array( $_args ) ) {
-			$args = array_merge( $_args, $args );
+		// 全件ダウンロードする場合は全ページを列挙、しない場合は指定されたページのみ列挙
+		if ( $download_all ) {
+			$first_page = 1;
+			$last_page  = ceil( $this->get_count( $args ) / $posts_per_page );
+		} else {
+			$first_page = $this->get_paged();
+			$last_page  = $first_page;
 		}
-		$posts_mwf = get_posts( $args );
 
-		// CSVの内容を貯める
-		$csv = '';
-
-		// 見出しを追加
-		$rows[0] = $this->get_csv_headings( $posts_mwf );
-
-		// 各データを追加
-		$rows = array_merge( $rows, $this->get_rows( $posts_mwf, $rows[0] ) );
-
-		// エンコード
-		foreach ( $rows as $key => $row ) {
-			foreach ( $row as $column_name => $column ) {
-				$row[$column_name] = $this->escape_double_quote( $column );
-			}
-			$csv .= implode( ',', $row ) . "\r\n";
-		}
-		$to_encoding = apply_filters( 'mwform_csv_encoding-' . $this->post_type, 'sjis-win' );
-		$csv = mb_convert_encoding( $csv, $to_encoding, get_option( 'blog_charset' ) );
-
+		// レスポンスヘッダーを出力
 		$file_name = 'mw_wp_form_' . date( 'YmdHis' ) . '.csv';
 		header( 'Content-Type: application/octet-stream' );
 		header( 'Content-Disposition: attachment; filename=' . $file_name );
-		echo $csv;
+
+		// 出力範囲の問い合わせデータを基に見出しを作成
+		$header = $this->get_csv_headings( $args, $first_page, $last_page );
+
+		// 分割エンコード＆出力
+		for ( $paged = $first_page; $paged <= $last_page; $paged ++ ) {
+			$args['paged'] = $paged;
+			$posts_mwf     = get_posts( $args );
+
+			// CSVの内容を貯める
+			$rows = array();
+			$csv  = '';
+
+			// 見出しを追加
+			if ( $paged == $first_page ) {
+				$rows[] = $header;
+			}
+
+			// 各データを追加
+			$rows = array_merge( $rows, $this->get_rows( $posts_mwf, $header ) );
+
+			// エンコード
+			foreach ( $rows as $key => $row ) {
+				foreach ( $row as $column_name => $column ) {
+					$row[ $column_name ] = $this->escape_double_quote( $column );
+				}
+				$csv .= implode( ',', $row ) . "\r\n";
+			}
+			$to_encoding = apply_filters( 'mwform_csv_encoding-' . $this->post_type, 'sjis-win' );
+			$csv         = mb_convert_encoding( $csv, $to_encoding, get_option( 'blog_charset' ) );
+			echo $csv;
+
+			// キャッシュされた投稿データと投稿メタデータを開放
+			wp_cache_flush();
+		}
+
 		exit;
 	}
 
@@ -80,15 +99,12 @@ class MW_WP_Form_CSV {
 	 * @return int
 	 */
 	public function get_posts_per_page() {
-		$posts_per_page = -1;
-		if ( ( isset( $_POST['download-all'] ) && $_POST['download-all'] === 'true' ) === false ) {
-			$current_user = wp_get_current_user();
-			$_posts_per_page = get_user_meta( $current_user->ID, 'edit_' . $this->post_type . '_per_page', true );
-			if ( !empty( $_posts_per_page ) ) {
-				$posts_per_page = $_posts_per_page;
-			} else {
-				$posts_per_page = 20;
-			}
+		$current_user    = wp_get_current_user();
+		$_posts_per_page = get_user_meta( $current_user->ID, 'edit_' . $this->post_type . '_per_page', true );
+		if ( !empty( $_posts_per_page ) ) {
+			$posts_per_page = $_posts_per_page;
+		} else {
+			$posts_per_page = 20;
 		}
 		return $posts_per_page;
 	}
@@ -99,11 +115,10 @@ class MW_WP_Form_CSV {
 	 * @return int
 	 */
 	public function get_paged() {
-		$posts_per_page = $this->get_posts_per_page();
 		$paged = 1;
 		if ( isset( $_GET['paged'] ) ) {
 			$_paged = $_GET['paged'];
-			if ( MWF_Functions::is_numeric( $_paged ) && $posts_per_page > 0 ) {
+			if ( MWF_Functions::is_numeric( $_paged ) ) {
 				$paged = $_paged;
 			}
 		}
@@ -111,12 +126,45 @@ class MW_WP_Form_CSV {
 	}
 
 	/**
-	 * CSVの見出しを生成
+	 * データ件数を取得
 	 *
-	 * @param array $posts
+	 * @param array $args
+	 * @return int 投稿数
+	 */
+	public function get_count( array $args ) {
+		$args['posts_per_page'] = 1;
+		$query                  = new WP_Query( $args );
+
+		return $query->found_posts;
+	}
+
+	/**
+	 * 問い合わせデータ取得クエリ用の引数を生成
+	 *
 	 * @return array
 	 */
-	protected function get_csv_headings( array $posts ) {
+	public function get_query_args() {
+		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $this->post_type, array() );
+		$args  = array(
+			'post_type'   => $this->post_type,
+			'post_status' => 'any',
+		);
+		if ( !empty( $_args ) && is_array( $_args ) ) {
+			$args = array_merge( $_args, $args );
+		}
+
+		return $args;
+	}
+
+	/**
+	 * CSVの見出しを生成
+	 *
+	 * @param array $args
+	 * @param int   $first_page
+	 * @param int   $last_page
+	 * @return array
+	 */
+	protected function get_csv_headings( array $args, $first_page, $last_page ) {
 		$columns = array(
 			'ID'              => 'ID',
 			'response_status' => __( 'Response Status', 'mw-wp-form' ),
@@ -125,22 +173,32 @@ class MW_WP_Form_CSV {
 			'post_title'      => 'post_title',
 		);
 		$_columns = array();
-		foreach ( $posts as $post ) {
-			$post_custom_keys = get_post_custom_keys( $post->ID );
-			if ( !is_array( $post_custom_keys ) ) {
-				continue;
-			}
-			foreach ( $post_custom_keys as $key ) {
-				if ( preg_match( '/^_/', $key ) ) {
+
+		for ( $paged = $first_page; $paged <= $last_page; $paged ++ ) {
+			$args['paged'] = $paged;
+			$posts         = get_posts( $args );
+
+			foreach ( $posts as $post ) {
+				$post_custom_keys = get_post_custom_keys( $post->ID );
+				if ( !is_array( $post_custom_keys ) ) {
 					continue;
 				}
-				if ( $key === MWF_Config::TRACKINGNUMBER ) {
-					$columns[$key] = MWF_Functions::get_tracking_number_title( $this->post_type );
-					continue;
+				foreach ( $post_custom_keys as $key ) {
+					if ( preg_match( '/^_/', $key ) ) {
+						continue;
+					}
+					if ( $key === MWF_Config::TRACKINGNUMBER ) {
+						$columns[$key] = MWF_Functions::get_tracking_number_title( $this->post_type );
+						continue;
+					}
+					$_columns[$key] = $key;
 				}
-				$_columns[$key] = $key;
 			}
+
+			// キャッシュされた投稿データと投稿メタデータを開放
+			wp_cache_flush();
 		}
+
 		ksort( $_columns );
 		$_columns = apply_filters( 'mwform_inquiry_data_columns-' . $this->post_type, $_columns );
 		$columns = array_merge( $columns, $_columns );
