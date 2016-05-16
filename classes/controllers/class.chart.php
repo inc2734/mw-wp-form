@@ -94,36 +94,49 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 	 * グラフページを表示
 	 */
 	public function index() {
-		$post_type = $this->formkey;
+		$post_type      = $this->formkey;
+		$posts_per_page = $this->get_posts_per_page();
 
 		// form_posts
 		$default_args = array(
-			'posts_per_page' => -1,
+			'posts_per_page' => $posts_per_page,
 		);
 		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $post_type, $default_args );
 		$args = array(
-			'post_type' => $post_type,
+			'post_type'      => $post_type,
+			'posts_per_page' => $posts_per_page,
 		);
 		if ( !empty( $_args ) && is_array( $_args ) ) {
 			$args = array_merge( $_args, $args );
 		} else {
 			$args = array_merge( $_args, $default_args );
 		}
-		$form_posts = get_posts( $args );
 
 		// custom_keys
 		$custom_keys = array();
-		foreach ( $form_posts as $post ) {
-			$post_custom_keys = get_post_custom_keys( $post->ID );
-			if ( is_array( $post_custom_keys ) ) {
-				foreach ( $post_custom_keys as $post_custom_key ) {
-					if ( preg_match( '/^_/', $post_custom_key ) ) {
-						continue;
+		$post_count = 0;
+		$last_page = ceil( $this->get_count() / $posts_per_page );
+
+		for ($paged = 1; $paged <= $last_page; $paged++) {
+			$form_posts = get_posts( array( 'paged' => $paged ) + $args );
+
+			foreach ( $form_posts as $post ) {
+				$post_custom_keys = get_post_custom_keys( $post->ID );
+				if ( is_array( $post_custom_keys ) ) {
+					foreach ( $post_custom_keys as $post_custom_key ) {
+						if ( preg_match( '/^_/', $post_custom_key ) ) {
+							continue;
+						}
+						$post_meta = get_post_meta( $post->ID, $post_custom_key, true );
+						$custom_keys[$post_custom_key][$post_meta] = (isset($custom_keys[ $post_custom_key ][ $post_meta ]) ? $custom_keys[ $post_custom_key ][ $post_meta ] : 0) + 1;
 					}
-					$post_meta = get_post_meta( $post->ID, $post_custom_key, true );
-					$custom_keys[$post_custom_key][$post_meta][] = $post->ID;
 				}
 			}
+
+			$post_count += count( $form_posts );
+
+			// キャッシュされた投稿データと投稿メタデータを開放
+			wp_cache_flush();
 		}
 
 		// postdata
@@ -142,9 +155,45 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 
 		$this->assign( 'post_type'   , $post_type );
 		$this->assign( 'option_group', $this->option_group );
-		$this->assign( 'form_posts'  , $form_posts );
+		$this->assign( 'post_count', $post_count );
 		$this->assign( 'custom_keys' , $custom_keys );
 		$this->assign( 'postdata'    , $postdata );
 		$this->render( 'chart/index' );
+	}
+
+	/**
+	 * データ件数を取得
+	 *
+	 * @return int 投稿数
+	 */
+	protected function get_count() {
+		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $this->formkey, array() );
+		$args  = array(
+			'post_type'      => $this->formkey,
+			'posts_per_page' => 1,
+		);
+		if ( !empty( $_args ) && is_array( $_args ) ) {
+			$args = array_merge( $_args, $args );
+		}
+		$query = new WP_Query( $args );
+
+		return $query->found_posts;
+	}
+
+	/**
+	 * 一度のクエリーで取り出す件数を取得
+	 *
+	 * @return int
+	 */
+	public function get_posts_per_page() {
+		$current_user    = wp_get_current_user();
+		$_posts_per_page = get_user_meta( $current_user->ID, 'edit_' . $this->formkey . '_per_page', true );
+		if ( !empty( $_posts_per_page ) ) {
+			$posts_per_page = $_posts_per_page;
+		} else {
+			$posts_per_page = 20;
+		}
+
+		return $posts_per_page;
 	}
 }
