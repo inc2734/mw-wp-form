@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form CSV
- * Version    : 1.1.0
+ * Version    : 1.1.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : April 3, 2015
- * Modified   : March 26, 2016
+ * Modified   : May 22, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
