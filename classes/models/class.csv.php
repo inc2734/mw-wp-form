@@ -37,12 +37,18 @@ class MW_WP_Form_CSV {
 		set_time_limit( 0 );
 
 		// ダウンロード条件を取得
-		$args         = $this->get_query_args();
-		$download_all = isset( $_POST['download-all'] ) && $_POST['download-all'] === 'true';
+		$args           = $this->get_query_args();
+		$posts_per_page = $this->get_posts_per_page();
+		$download_all   = isset( $_POST['download-all'] ) && $_POST['download-all'] === 'true';
 
 		// 全件ダウンロードする場合は全ページを列挙、しない場合は指定されたページのみ列挙
-		$first_page = $this->get_first_page( $download_all );
-		$last_page  = $this->get_last_page( $download_all, $args );
+		if ( $download_all ) {
+			$first_page = 1;
+			$last_page  = ceil( $this->get_count( $args ) / $posts_per_page );
+		} else {
+			$first_page = $this->get_paged();
+			$last_page  = $first_page;
+		}
 
 		// レスポンスヘッダーを出力
 		$file_name = 'mw_wp_form_' . date( 'YmdHis' ) . '.csv';
@@ -85,34 +91,6 @@ class MW_WP_Form_CSV {
 		}
 
 		exit;
-	}
-
-	/**
-	 * 分割エンコードする際の最初のページ番号を返す
-	 *
-	 * @param bool $download_all
-	 * @return int
-	 */
-	public function get_first_page( $download_all ) {
-		if ( $download_all ) {
-			return 1;
-		}
-		return $this->get_paged();
-	}
-
-	/**
-	 * 分割エンコードする際の最後のページ番号を返す
-	 *
-	 * @param bool $download_all
-	 * @param array $args 問い合わせデータ一覧の表示条件
-	 * @return int
-	 */
-	public function get_last_page( $download_all, $args ) {
-		$posts_per_page = $this->get_posts_per_page();
-		if ( $download_all ) {
-			return ceil( $this->get_count( $args ) / $posts_per_page );
-		}
-		return 1;
 	}
 
 	/**
@@ -162,7 +140,6 @@ class MW_WP_Form_CSV {
 
 	/**
 	 * 問い合わせデータ取得クエリ用の引数を生成
-	 * $args には paged, posts_per_page は含んではいけない。
 	 *
 	 * @return array
 	 */
@@ -174,12 +151,6 @@ class MW_WP_Form_CSV {
 		);
 		if ( !empty( $_args ) && is_array( $_args ) ) {
 			$args = array_merge( $_args, $args );
-		}
-		if ( isset( $args['paged'] ) ) {
-			unset( $args['paged'] );
-		}
-		if ( isset( $args['posts_per_page'] ) ) {
-			unset( $args['posts_per_page'] );
 		}
 
 		return $args;
