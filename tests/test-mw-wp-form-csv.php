@@ -51,21 +51,25 @@ class MW_WP_Form_CSV_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @group get_posts_per_page
+	 * @group get_first_page
 	 */
-	public function test_get_posts_per_page_Allあり_表示件数設定なし() {
-		$_POST['download-all'] = 'true';
-		$this->assertEquals( 20, $this->CSV->get_posts_per_page() );
+	public function test_get_first_page() {
+		$this->assertEquals( 1, $this->CSV->get_first_page( true ) );
+		$this->assertEquals( 1, $this->CSV->get_first_page( false ) );
+		$_GET['paged'] = 2;
+		$this->assertEquals( 2, $this->CSV->get_first_page( false ) );
 	}
 
 	/**
-	 * @group get_posts_per_page
+	 * @group get_last_page
 	 */
-	public function test_get_posts_per_page_Allあり_表示件数設定あり() {
-		$_POST['download-all'] = 'true';
-		$user_id = $this->set_current_user();
-		update_user_meta( $user_id, 'edit_' . $this->post_type . '_per_page', 10 );
-		$this->assertEquals( 10, $this->CSV->get_posts_per_page() );
+	public function test_get_last_page() {
+		$args = $this->CSV->get_query_args();
+		$posts_per_page = $this->CSV->get_posts_per_page();
+		$rows_count = $this->CSV->get_count( $args );
+		$this->assertEquals( ceil( $rows_count / $posts_per_page ), $this->CSV->get_last_page( true, $args ) );
+
+		$this->assertEquals( 1, $this->CSV->get_last_page( false, $args ) );
 	}
 
 	/**
@@ -92,9 +96,43 @@ class MW_WP_Form_CSV_Test extends WP_UnitTestCase {
 			'post_status' => 'any',
 		);
 
-		$actual = $this->CSV->get_query_args();
+		$this->assertEquals( $expected, $this->CSV->get_query_args() );
 
-		$this->assertEquals( $expected, $actual );
+		add_filter( 'mwform_get_inquiry_data_args-' . $this->post_type, function( $args ) {
+			return array_merge( $args, array(
+				'posts_per_page' => -1,
+				'paged'          => 1,
+			) );
+		} );
+
+		$this->assertEquals( $expected, $this->CSV->get_query_args() );
+	}
+
+	/**
+	 * @group get_query_args
+	 */
+	public function test_get_query_args_add_filter() {
+		add_filter( 'mwform_get_inquiry_data_args-' . $this->post_type, function( $args ) {
+			return array_merge( $args, array(
+				'meta_query' => array(
+					array(
+						'key'   => '予約日',
+						'value' => '2015-01-01',
+					),
+				),
+			) );
+		} );
+
+		$this->assertEquals( array(
+			'post_type'   => $this->post_type,
+			'post_status' => 'any',
+			'meta_query' => array(
+				array(
+					'key'   => '予約日',
+					'value' => '2015-01-01',
+				),
+			),
+		), $this->CSV->get_query_args() );
 	}
 
 	/**
