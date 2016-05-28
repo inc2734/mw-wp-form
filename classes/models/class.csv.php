@@ -24,14 +24,7 @@ class MW_WP_Form_CSV {
 	}
 
 	/**
-	 * CSVを生成
-	 */
-	public function generate_csv() {
-
-	}
-
-	/**
-	 * CSVを出力
+	 * CSVを生成・出力
 	 */
 	public function download() {
 		$key_of_csv_download = MWF_Config::NAME . '-csv-download';
@@ -89,7 +82,6 @@ class MW_WP_Form_CSV {
 			// キャッシュされた投稿データと投稿メタデータを開放
 			wp_cache_flush();
 		}
-
 		exit;
 	}
 
