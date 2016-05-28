@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form CSV
- * Version    : 1.1.1
+ * Version    : 1.1.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : April 3, 2015
- * Modified   : May 22, 2016
+ * Modified   : May 28, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -24,7 +24,14 @@ class MW_WP_Form_CSV {
 	}
 
 	/**
-	 * CSVを生成、出力
+	 * CSVを生成
+	 */
+	public function generate_csv() {
+
+	}
+
+	/**
+	 * CSVを出力
 	 */
 	public function download() {
 		$key_of_csv_download = MWF_Config::NAME . '-csv-download';
@@ -54,8 +61,7 @@ class MW_WP_Form_CSV {
 
 		// 分割エンコード＆出力
 		for ( $paged = $first_page; $paged <= $last_page; $paged ++ ) {
-			$args['paged'] = $paged;
-			$posts_mwf     = get_posts( $args );
+			$posts_mwf = $this->get_split_posts( $args, $paged );
 
 			// CSVの内容を貯める
 			$rows = array();
@@ -204,8 +210,7 @@ class MW_WP_Form_CSV {
 		$_columns = array();
 
 		for ( $paged = $first_page; $paged <= $last_page; $paged ++ ) {
-			$args['paged'] = $paged;
-			$posts         = get_posts( $args );
+			$posts = $this->get_split_posts( $args, $paged );
 
 			foreach ( $posts as $post ) {
 				$post_custom_keys = get_post_custom_keys( $post->ID );
@@ -233,6 +238,19 @@ class MW_WP_Form_CSV {
 		$columns = array_merge( $columns, $_columns );
 		$columns = array_merge( $columns, array( 'memo' => __( 'Memo', 'mw-wp-form' ) ) );
 		return $columns;
+	}
+
+	/**
+	 * 問い合わせデータの分割取得
+	 *
+	 * @param array $args データ取得条件
+	 * @param int 取得するページ番号
+	 * @return array 問い合わせデータの配列
+	 */
+	public function get_split_posts( array $args, $paged ) {
+			$args['paged']          = $paged;
+			$args['posts_per_page'] = $this->get_posts_per_page();
+			return get_posts( $args );
 	}
 
 	/**
