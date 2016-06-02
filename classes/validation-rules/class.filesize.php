@@ -40,7 +40,7 @@ class MW_WP_Form_Validation_Rule_FileSize extends MW_WP_Form_Abstract_Validation
 				}
 			}
 			elseif ( $file['error'] == 1 ) {
-				return "画像のアップロードに失敗しました。";
+				return "Unfortunately, failed to upload the file.";
 			}
 		}
 	}
