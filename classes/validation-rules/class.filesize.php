@@ -39,6 +39,9 @@ class MW_WP_Form_Validation_Rule_FileSize extends MW_WP_Form_Abstract_Validation
 					return $options['message'];
 				}
 			}
+			elseif ( $file['error'] == 1 ) {
+				return "Unfortunately, failed to upload the file.";
+			}
 		}
 	}
 
