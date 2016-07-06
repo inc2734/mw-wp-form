@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Validation Rule FileSize
  * Description: ファイルサイズが指定したサイズ以内
- * Version    : 1.1.0
+ * Version    : 1.1.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 21, 2014
- * Modified   : December 31, 2014
+ * Modified   : July 6, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -38,9 +38,8 @@ class MW_WP_Form_Validation_Rule_FileSize extends MW_WP_Form_Abstract_Validation
 				if ( !( preg_match( '/^[\d]+$/', $options['bytes'] ) && $options['bytes'] >= $file['size'] ) ) {
 					return $options['message'];
 				}
-			}
-			elseif ( $file['error'] == 1 ) {
-				return "Unfortunately, failed to upload the file.";
+			} elseif ( !empty( $file['error'] ) && $file['error'] == 1 ) {
+				return __( 'Failed to upload the file.', 'mw-wp-form' );
 			}
 		}
 	}

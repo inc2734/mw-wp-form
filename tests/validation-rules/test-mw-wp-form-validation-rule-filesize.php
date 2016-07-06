@@ -45,4 +45,11 @@ class MW_WP_Form_Validation_Rule_FileSize_Test extends WP_UnitTestCase {
 		) );
 		$this->assertNotNull( $this->Rule->rule( 'filesize', array( 'bytes' => 10 ) ) );
 	}
+
+	public function test_ファイルのアップロードに失敗したらnotnull() {
+		$this->Data->set( MWF_Config::UPLOAD_FILES, array(
+			'filesize' => array( 'error' => 1 ),
+		) );
+		$this->assertNotNull( $this->Rule->rule( 'filesize', array( 'bytes' => 0 ) ) );
+	}
 }
