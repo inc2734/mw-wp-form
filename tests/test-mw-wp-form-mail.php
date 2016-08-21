@@ -55,10 +55,12 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 	 */
 	public function test_set_return_path() {
 		$phpmailer = new phpmailer();
-		$this->Mail->from = 'from';
+		$this->Mail->from        = 'from';
+		$this->Mail->to          = 'to';
+		$this->Mail->return_path = 'return_path';
 		$this->Mail->set_return_path( $phpmailer );
 		$this->assertEquals(
-			'from',
+			'return_path',
 			$phpmailer->Sender
 		);
 	}
@@ -78,6 +80,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$this->assertEquals( get_bloginfo( 'admin_email' ), $this->Mail->to );
 		$this->assertEquals( '', $this->Mail->cc );
 		$this->assertEquals( '', $this->Mail->bcc );
+		$this->assertEquals( get_bloginfo( 'admin_email' ), $this->Mail->return_path );
 		$this->assertEquals( get_bloginfo( 'admin_email' ), $this->Mail->from );
 		$this->assertEquals( get_bloginfo( 'name' ), $this->Mail->sender );
 	}
@@ -95,6 +98,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Setting->set( 'mail_to'           , 'to@example.com' );
 		$Setting->set( 'mail_cc'           , 'cc@example.com' );
 		$Setting->set( 'mail_bcc'          , 'bcc@example.com' );
+		$Setting->set( 'mail_return_path'  , 'return_path@example.com' );
 		$Setting->set( 'admin_mail_from'   , 'from@example.com' );
 		$Setting->set( 'admin_mail_sender' , 'sender' );
 		$this->Mail->set_admin_mail_raw_params( $Setting );
@@ -104,6 +108,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$this->assertEquals( 'to@example.com', $this->Mail->to );
 		$this->assertEquals( 'cc@example.com', $this->Mail->cc );
 		$this->assertEquals( 'bcc@example.com', $this->Mail->bcc );
+		$this->assertEquals( 'return_path@example.com', $this->Mail->return_path );
 		$this->assertEquals( 'from@example.com', $this->Mail->from );
 		$this->assertEquals( 'sender', $this->Mail->sender );
 	}
@@ -130,6 +135,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$this->assertEquals( get_bloginfo( 'admin_email' ), $this->Mail->to );
 		$this->assertEquals( '', $this->Mail->cc );
 		$this->assertEquals( '', $this->Mail->bcc );
+		$this->assertEquals( get_bloginfo( 'admin_email' ), $this->Mail->return_path );
 		$this->assertEquals( 'from@example.com', $this->Mail->from );
 		$this->assertEquals( 'sender', $this->Mail->sender );
 	}
@@ -146,6 +152,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$this->Mail->set_reply_mail_raw_params( $Setting );
 
 		$this->assertEquals( '', $this->Mail->to );
+		$this->assertEquals( get_bloginfo( 'admin_email' ), $this->Mail->return_path );
 		$this->assertEquals( get_bloginfo( 'admin_email' ), $this->Mail->from );
 		$this->assertEquals( get_bloginfo( 'name' ), $this->Mail->sender );
 		$this->assertEquals( '', $this->Mail->subject );
@@ -170,6 +177,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$this->Mail->set_reply_mail_raw_params( $Setting );
 
 		$this->assertEquals( 'to@example.com', $this->Mail->to );
+		$this->assertEquals( get_bloginfo( 'admin_email' ), $this->Mail->return_path );
 		$this->assertEquals( 'from@example.com', $this->Mail->from );
 		$this->assertEquals( 'sender', $this->Mail->sender );
 		$this->assertEquals( 'subject', $this->Mail->subject );

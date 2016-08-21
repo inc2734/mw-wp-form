@@ -127,7 +127,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter( 'mwform_auto_mail_raw_' . $this->form_key,
 			function( $Mail, $values ) use( $self ) {
 				// admin、mail での Mail の変更はひきつがない
-				$self->assertEquals( $Mail->to , 'info@example.com' );
+				$self->assertEquals( $Mail->to, 'info@example.com' );
 				$Mail->to = 'mwform_auto_mail_raw_to@example.com';
 				return $Mail;
 			},

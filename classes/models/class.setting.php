@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Setting
- * Version    : 1.0.1
+ * Version    : 1.2.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : April 15, 2015
+ * Modified   : August 22, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -82,6 +82,12 @@ class MW_WP_Form_Setting {
 	 * @var string
 	 */
 	protected $admin_mail_subject = '';
+
+	/**
+	 * Return-Path
+	 * @var string
+	 */
+	protected $mail_return_path = '';
 
 	/**
 	 * 管理者メールの送信元

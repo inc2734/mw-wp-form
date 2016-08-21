@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Mail
  * Description: メールクラス
- * Version    : 1.6.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 20, 2012
- * Modified   : February 14, 2016
+ * Modified   : August 19, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -35,6 +35,12 @@ class MW_WP_Form_Mail {
 	 * @var string
 	 */
 	public $from;
+
+	/**
+	 * Return-Path
+	 * @var string
+	 */
+	public $return_path;
 
 	/**
 	 * 送信者
@@ -144,12 +150,12 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * 返信先を設定
+	 * Return-Path を設定
 	 *
 	 * @param phpmailer $phpmailer
 	 */
 	public function set_return_path( $phpmailer ) {
-		$phpmailer->Sender = $this->from;
+		$phpmailer->Sender = $this->return_path;
 	}
 
 	/**
@@ -240,6 +246,13 @@ class MW_WP_Form_Mail {
 		}
 		$this->from = $admin_mail_from;
 
+		// Return-Path を指定
+		$mail_return_path = get_bloginfo( 'admin_email' );
+		if ( $Setting->get( 'mail_return_path' ) ) {
+			$mail_return_path = $Setting->get( 'mail_return_path' );
+		}
+		$this->return_path = $mail_return_path;
+
 		// 送信者を指定
 		$admin_mail_sender = get_bloginfo( 'name' );
 		if ( $Setting->get( 'mail_sender' ) ) {
@@ -277,6 +290,13 @@ class MW_WP_Form_Mail {
 			if ( $automatic_reply_email && !$is_invalid_mail_address ) {
 				$this->to = $Data->get_post_value_by_key( $automatic_reply_email );
 			}
+
+			// Return-Path を指定
+			$mail_return_path = get_bloginfo( 'admin_email' );
+			if ( $Setting->get( 'mail_return_path' ) ) {
+				$mail_return_path = $Setting->get( 'mail_return_path' );
+			}
+			$this->return_path = $mail_return_path;
 
 			// 送信元を指定
 			$reply_mail_from = get_bloginfo( 'admin_email' );

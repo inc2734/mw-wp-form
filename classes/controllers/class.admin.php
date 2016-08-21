@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Admin Controller
- * Version    : 1.1.2
+ * Version    : 1.2.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : September 1, 2015
+ * Modified   : August 22, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -203,13 +203,14 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * 管理者メール設定
 	 */
 	public function admin_mail_options() {
-		$this->assign( 'mail_to'           , $this->get_option( 'mail_to' ) );
-		$this->assign( 'mail_cc'           , $this->get_option( 'mail_cc' ) );
-		$this->assign( 'mail_bcc'          , $this->get_option( 'mail_bcc' ) );
-		$this->assign( 'admin_mail_subject', $this->get_option( 'admin_mail_subject' ) );
-		$this->assign( 'admin_mail_sender' , $this->get_option( 'admin_mail_sender' ) );
-		$this->assign( 'admin_mail_from'   , $this->get_option( 'admin_mail_from' ) );
-		$this->assign( 'admin_mail_content', $this->get_option( 'admin_mail_content' ) );
+		$this->assign( 'mail_to'               , $this->get_option( 'mail_to' ) );
+		$this->assign( 'mail_cc'               , $this->get_option( 'mail_cc' ) );
+		$this->assign( 'mail_bcc'              , $this->get_option( 'mail_bcc' ) );
+		$this->assign( 'admin_mail_subject'    , $this->get_option( 'admin_mail_subject' ) );
+		$this->assign( 'admin_mail_sender'     , $this->get_option( 'admin_mail_sender' ) );
+		$this->assign( 'mail_return_path'      , $this->get_option( 'mail_return_path' ) );
+		$this->assign( 'admin_mail_from'       , $this->get_option( 'admin_mail_from' ) );
+		$this->assign( 'admin_mail_content'    , $this->get_option( 'admin_mail_content' ) );
 		$this->render( 'admin/admin-mail-options' );
 	}
 
@@ -277,7 +278,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		} else {
 			$value = $Setting->get( $key );
 		}
-		
+
 		if ( !empty( $value ) ) {
 			return $value;
 		} else {

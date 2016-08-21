@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Admin
  * Description: 管理画面クラス
- * Version    : 2.0.3
+ * Version    : 2.1.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : February 21, 2013
- * Modified   : May 25, 2015
+ * Modified   : August 22, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -30,7 +30,14 @@ class MW_WP_Form_Admin {
 
 		$data = $_POST[MWF_Config::NAME];
 
-		$triminglists = array( 'mail_from', 'mail_to', 'mail_cc', 'mail_bcc', 'admin_mail_from' );
+		$triminglists = array(
+			'mail_from',
+			'mail_return_path',
+			'mail_to',
+			'mail_cc',
+			'mail_bcc',
+			'admin_mail_from',
+		);
 		foreach ( $triminglists as $name ) {
 			$data[$name] = trim( mb_convert_kana( $data[$name], 's', get_option( 'blog_charset' ) ) );
 		}

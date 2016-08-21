@@ -31,6 +31,11 @@
 	<span class="mwf_note"><?php esc_html_e( 'If empty:', 'mw-wp-form' ); ?> <?php bloginfo( 'name' ); ?></span>
 </p>
 <p>
+	<b><?php esc_html_e( 'Return-Path ( E-mail address )', 'mw-wp-form' ); ?></b><br />
+	<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_return_path]" value="<?php echo esc_attr( $mail_return_path ); ?>" /><br />
+	<span class="mwf_note"><?php esc_html_e( 'If empty:', 'mw-wp-form' ); ?> <?php bloginfo( 'admin_email' ); ?></span>
+</p>
+<p>
 	<b><?php esc_html_e( 'From ( E-mail address )', 'mw-wp-form' ); ?></b><br />
 	<input type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[admin_mail_from]" value="<?php echo esc_attr( $admin_mail_from ); ?>" /><br />
 	<span class="mwf_note"><?php esc_html_e( 'If empty:', 'mw-wp-form' ); ?> <?php bloginfo( 'admin_email' ); ?></span>
