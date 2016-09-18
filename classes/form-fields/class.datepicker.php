@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Datepicker
  * Description: datepickerを出力
- * Version    : 1.7.1
+ * Version    : 1.8.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : April 3, 2016
+ * Modified   : September 18, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -74,8 +74,8 @@ class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
 			);
 		}
 
-		// 日本語の場合は日本語表記に変更
-		if ( get_locale() == 'ja' ) {
+		$translate_datepicker = apply_filters( 'mwform_translate_datepicker_' . $this->form_key, true );
+		if ( $translate_datepicker && get_locale() == 'ja' ) {
 			$js = array_merge( array(
 				'yearSuffix'      => '年',
 				'dateFormat'      => 'yy年mm月dd日',
