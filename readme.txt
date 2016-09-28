@@ -82,6 +82,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.11.0 =
 * Bugfix  : Fixed a bug that to remove the uploaded file when filesize validation error.
+* Bugfix  : Fixed a bug that removing temp files only when uploading is success.
 
 = 2.10.0 =
 * Added   : Added filter hook mwform_translate_datepicker_mw-wp-form-xxx

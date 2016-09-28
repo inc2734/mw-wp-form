@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form File
  * Description: Tempディレクトリ、ファイルアップロードの処理を行うクラス
- * Version    : 1.0.8
+ * Version    : 1.0.9
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : October 10, 2013
- * Modified   : March 18, 2016
+ * Modified   : September 28, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -38,6 +38,8 @@ class MW_WP_Form_File {
 	 * @return array ( name属性値 => アップロードできたファイルのURL, … )
 	 */
 	public function upload( array $files = array() ) {
+		$this->clean_temp_dir();
+
 		$uploaded_files = array();
 		foreach ( $files as $key => $file ) {
 			$uploaded_file = $this->single_file_upload( $key );
@@ -56,7 +58,6 @@ class MW_WP_Form_File {
 	 */
 	protected function single_file_upload( $key ) {
 		$this->create_temp_dir();
-		$this->clean_temp_dir();
 
 		$file = '';
 		if ( is_array( $_FILES ) && isset( $_FILES[$key] ) ) {
