@@ -384,7 +384,7 @@ class MW_WP_Form_Exec_Shortcode {
 
 		$content = sprintf(
 			'[mwform_complete_message]%s[/mwform_complete_message]',
-			$content
+			apply_filters( 'mwform_complete_content_' . $form_key, $content, $this->Data )
 		);
 		return $content;
 	}
