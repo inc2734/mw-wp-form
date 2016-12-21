@@ -82,6 +82,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.12.0 =
 * Added   : Added filter hook mwform_complete_content_mw-wp-form-xxx
+* Changed : Changed to pass MW_WP_Form_Data object as the 2nd argument of mwform_post_content_mw-wp-form-xxx hook.
 
 = 2.11.0 =
 * Bugfix  : Fixed a bug that to remove the uploaded file when filesize validation error.

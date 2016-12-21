@@ -324,7 +324,7 @@ class MW_WP_Form_Exec_Shortcode {
 		$form_key = $this->get( 'key' );
 		$post     = get_post( $post_id );
 		setup_postdata( $post );
-		$content = apply_filters( 'mwform_post_content_raw_' . $form_key, get_the_content() );
+		$content = apply_filters( 'mwform_post_content_raw_' . $form_key, get_the_content(), $this->Data );
 
 		$has_wpautop = false;
 		if ( has_filter( 'the_content', 'wpautop' ) ) {
@@ -342,7 +342,7 @@ class MW_WP_Form_Exec_Shortcode {
 
 		$content = sprintf(
 			'[mwform]%s[/mwform]',
-			apply_filters( 'mwform_post_content_' . $form_key, $content )
+			apply_filters( 'mwform_post_content_' . $form_key, $content, $this->Data )
 		);
 		wp_reset_postdata();
 		return $content;
