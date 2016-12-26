@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Main Controller
  * Description: フロントエンドにおいて、適切な画面にリダイレクトさせる
- * Version    : 1.3.1
+ * Version    : 1.4.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 23, 2014
- * Modified   : April 4, 2016
+ * Modified   : December 27, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -141,6 +141,7 @@ class MW_WP_Form_Main_Controller {
 		);
 		$url      = $this->Redirected->get_url();
 		$view_flg = $this->Redirected->get_view_flg();
+		$this->Data->set_view_flg( $view_flg );
 
 		// confirm もしくは complete のとき
 		if ( in_array( $post_condition, array( 'confirm', 'complete' ) ) ) {
