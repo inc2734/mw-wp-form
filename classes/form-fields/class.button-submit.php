@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Button_Submit extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_bsubmit',
-			'display_name'   => __( 'Submit Button (button)', 'mw-wp-form' ),
+			'display_name'   => __( 'Submit Button', 'mw-wp-form' ),
 		);
 	}
 
@@ -109,9 +109,10 @@ class MW_WP_Form_Field_Button_Submit extends MW_WP_Form_Abstract_Form_Field {
 			<input type="text" name="element_content" value="<?php echo esc_attr( $element_content ); ?>" />
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'Also display on input page', 'mw-wp-form' ); ?></strong>
+			<strong><?php esc_html_e( 'Display on input page', 'mw-wp-form' ); ?></strong>
 			<?php $display_input = $this->get_value_for_generator( 'display_input', $options ); ?>
 			<input type="checkbox" name="display_input" value="true" <?php checked( 'true', $display_input ); ?> />
+			<?php esc_html_e( 'Display', 'mw-wp-form' ); ?>
 		</p>
 		<?php
 	}

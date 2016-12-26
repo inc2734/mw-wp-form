@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Button_Back extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_bback',
-			'display_name'   => __( 'Back (button)', 'mw-wp-form' ),
+			'display_name'   => __( 'Back Button', 'mw-wp-form' ),
 		);
 	}
 

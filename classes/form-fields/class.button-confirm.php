@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Button_Confirm extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_bconfirm',
-			'display_name'   => __( 'Confirm Button (button)', 'mw-wp-form' ),
+			'display_name'   => __( 'Confirm Button', 'mw-wp-form' ),
 		);
 	}
 

@@ -27,7 +27,7 @@ class MW_WP_Form_Field_Button_Button extends MW_WP_Form_Abstract_Form_Field {
 	protected function set_names() {
 		return array(
 			'shortcode_name' => 'mwform_bbutton',
-			'display_name'   => __( 'Button (button)', 'mw-wp-form' ),
+			'display_name'   => __( 'Button', 'mw-wp-form' ),
 		);
 	}
 
