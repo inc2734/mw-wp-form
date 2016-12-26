@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.8.3\n"
+"Project-Id-Version: MW WP Form 2.13.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
-"POT-Creation-Date: 2016-07-06 05:17:47+00:00\n"
+"POT-Creation-Date: 2016-12-26 16:19:22+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -75,19 +75,71 @@ msgid "Akismet Error"
 msgstr ""
 
 #: classes/form-fields/class.back-button.php:30
+#: classes/form-fields/class.button-back.php:30
+msgid "Back Button"
+msgstr ""
+
 #: classes/form-fields/class.back-button.php:42
+#: classes/form-fields/class.button-back.php:43
 msgid "Back"
 msgstr ""
 
 #: classes/form-fields/class.back-button.php:77
+#: classes/form-fields/class.button-back.php:88
+#: classes/form-fields/class.button-button.php:95
+#: classes/form-fields/class.button-confirm.php:88
+#: classes/form-fields/class.button-submit.php:107
 #: classes/form-fields/class.button.php:84
 #: classes/form-fields/class.confirm-button.php:77
 #: classes/form-fields/class.submit.php:84
 msgid "String on the button"
 msgstr ""
 
+#: classes/form-fields/class.button-back.php:83
+#: classes/form-fields/class.button-button.php:90
+#: classes/form-fields/class.button-confirm.php:83
+#: classes/form-fields/class.button-submit.php:102
+msgid "Value"
+msgstr ""
+
+#: classes/form-fields/class.button-button.php:30
 #: classes/form-fields/class.button.php:30
 msgid "Button"
+msgstr ""
+
+#: classes/form-fields/class.button-button.php:44
+msgid "button"
+msgstr ""
+
+#: classes/form-fields/class.button-confirm.php:30
+#: classes/form-fields/class.confirm-button.php:30
+msgid "Confirm Button"
+msgstr ""
+
+#: classes/form-fields/class.button-confirm.php:43
+#: classes/form-fields/class.confirm-button.php:42
+#: classes/form-fields/class.submit-button.php:43
+msgid "Confirm"
+msgstr ""
+
+#: classes/form-fields/class.button-submit.php:30
+#: classes/form-fields/class.submit.php:30
+msgid "Submit Button"
+msgstr ""
+
+#: classes/form-fields/class.button-submit.php:44
+#: classes/form-fields/class.submit-button.php:44
+#: classes/form-fields/class.submit.php:43
+msgid "Send"
+msgstr ""
+
+#: classes/form-fields/class.button-submit.php:112
+msgid "Display on input page"
+msgstr ""
+
+#: classes/form-fields/class.button-submit.php:115
+#: classes/form-fields/class.hidden.php:89
+msgid "Display"
 msgstr ""
 
 #: classes/form-fields/class.checkbox.php:30
@@ -196,15 +248,6 @@ msgstr ""
 msgid "Don't display error."
 msgstr ""
 
-#: classes/form-fields/class.confirm-button.php:30
-msgid "Confirm Button"
-msgstr ""
-
-#: classes/form-fields/class.confirm-button.php:42
-#: classes/form-fields/class.submit-button.php:43
-msgid "Confirm"
-msgstr ""
-
 #: classes/form-fields/class.custom-mail-tag.php:30
 msgid "Custom Mail Tag"
 msgstr ""
@@ -249,10 +292,6 @@ msgstr ""
 msgid "Hidden"
 msgstr ""
 
-#: classes/form-fields/class.hidden.php:89
-msgid "Display"
-msgstr ""
-
 #: classes/form-fields/class.hidden.php:91
 msgid "Display hidden value."
 msgstr ""
@@ -285,21 +324,12 @@ msgstr ""
 msgid "Confirm &amp; Submit"
 msgstr ""
 
-#: classes/form-fields/class.submit-button.php:44
-#: classes/form-fields/class.submit.php:43
-msgid "Send"
-msgstr ""
-
 #: classes/form-fields/class.submit-button.php:92
 msgid "String on the confirm button"
 msgstr ""
 
 #: classes/form-fields/class.submit-button.php:97
 msgid "String on the submit button"
-msgstr ""
-
-#: classes/form-fields/class.submit.php:30
-msgid "Submit Button"
 msgstr ""
 
 #: classes/form-fields/class.tel.php:30
@@ -397,19 +427,19 @@ msgstr ""
 msgid "The key at same value"
 msgstr ""
 
-#: classes/validation-rules/class.filesize.php:35
-msgid "This file size is too big."
-msgstr ""
-
-#: classes/validation-rules/class.filesize.php:42
+#: classes/validation-rules/class.filesize.php:38
 msgid "Failed to upload the file."
 msgstr ""
 
-#: classes/validation-rules/class.filesize.php:61
+#: classes/validation-rules/class.filesize.php:72
+msgid "This file size is too big."
+msgstr ""
+
+#: classes/validation-rules/class.filesize.php:94
 msgid "Permitted file size"
 msgstr ""
 
-#: classes/validation-rules/class.filesize.php:62
+#: classes/validation-rules/class.filesize.php:95
 msgid "bytes"
 msgstr ""
 
@@ -611,6 +641,7 @@ msgstr ""
 #: templates/admin/admin-mail-options.php:14
 #: templates/admin/admin-mail-options.php:31
 #: templates/admin/admin-mail-options.php:36
+#: templates/admin/admin-mail-options.php:41
 #: templates/admin/mail-options.php:15 templates/admin/mail-options.php:20
 msgid "If empty:"
 msgstr ""
@@ -633,11 +664,15 @@ msgid "Sender"
 msgstr ""
 
 #: templates/admin/admin-mail-options.php:34
+msgid "Return-Path ( E-mail address )"
+msgstr ""
+
+#: templates/admin/admin-mail-options.php:39
 #: templates/admin/mail-options.php:18
 msgid "From ( E-mail address )"
 msgstr ""
 
-#: templates/admin/admin-mail-options.php:39
+#: templates/admin/admin-mail-options.php:44
 #: templates/admin/mail-options.php:23
 msgid "Content"
 msgstr ""
@@ -711,18 +746,22 @@ msgid "Select fields"
 msgstr ""
 
 #: templates/admin/tag-generator.php:13
-msgid "Button fields"
+msgid "Button fields (button)"
 msgstr ""
 
 #: templates/admin/tag-generator.php:16
-msgid "Error fields"
+msgid "Button fields (input)"
 msgstr ""
 
 #: templates/admin/tag-generator.php:19
+msgid "Error fields"
+msgstr ""
+
+#: templates/admin/tag-generator.php:22
 msgid "Other fields"
 msgstr ""
 
-#: templates/admin/tag-generator.php:23
+#: templates/admin/tag-generator.php:26
 msgid "Add form tag"
 msgstr ""
 

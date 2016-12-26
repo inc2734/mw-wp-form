@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.8.3\n"
+"Project-Id-Version: MW WP Form 2.13.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
-"POT-Creation-Date: 2016-07-06 14:18+0900\n"
-"PO-Revision-Date: 2016-07-06 14:18+0900\n"
+"POT-Creation-Date: 2016-12-27 01:19+0900\n"
+"PO-Revision-Date: 2016-12-27 01:19+0900\n"
 "Last-Translator: inc2734 <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -82,20 +82,72 @@ msgid "Akismet Error"
 msgstr "Akismetエラー"
 
 #: classes/form-fields/class.back-button.php:30
+#: classes/form-fields/class.button-back.php:30
+msgid "Back Button"
+msgstr "戻るボタン"
+
 #: classes/form-fields/class.back-button.php:42
+#: classes/form-fields/class.button-back.php:43
 msgid "Back"
 msgstr "戻る"
 
 #: classes/form-fields/class.back-button.php:77
+#: classes/form-fields/class.button-back.php:88
+#: classes/form-fields/class.button-button.php:95
+#: classes/form-fields/class.button-confirm.php:88
+#: classes/form-fields/class.button-submit.php:107
 #: classes/form-fields/class.button.php:84
 #: classes/form-fields/class.confirm-button.php:77
 #: classes/form-fields/class.submit.php:84
 msgid "String on the button"
 msgstr "ボタンに表示する文字列"
 
+#: classes/form-fields/class.button-back.php:83
+#: classes/form-fields/class.button-button.php:90
+#: classes/form-fields/class.button-confirm.php:83
+#: classes/form-fields/class.button-submit.php:102
+msgid "Value"
+msgstr "value"
+
+#: classes/form-fields/class.button-button.php:30
 #: classes/form-fields/class.button.php:30
 msgid "Button"
 msgstr "ボタン"
+
+#: classes/form-fields/class.button-button.php:44
+msgid "button"
+msgstr "ボタン"
+
+#: classes/form-fields/class.button-confirm.php:30
+#: classes/form-fields/class.confirm-button.php:30
+msgid "Confirm Button"
+msgstr "確認ボタン"
+
+#: classes/form-fields/class.button-confirm.php:43
+#: classes/form-fields/class.confirm-button.php:42
+#: classes/form-fields/class.submit-button.php:43
+msgid "Confirm"
+msgstr "確認画面へ"
+
+#: classes/form-fields/class.button-submit.php:30
+#: classes/form-fields/class.submit.php:30
+msgid "Submit Button"
+msgstr "送信ボタン"
+
+#: classes/form-fields/class.button-submit.php:44
+#: classes/form-fields/class.submit-button.php:44
+#: classes/form-fields/class.submit.php:43
+msgid "Send"
+msgstr "送信する"
+
+#: classes/form-fields/class.button-submit.php:112
+msgid "Display on input page"
+msgstr "入力画面での表示"
+
+#: classes/form-fields/class.button-submit.php:115
+#: classes/form-fields/class.hidden.php:89
+msgid "Display"
+msgstr "表示する"
 
 #: classes/form-fields/class.checkbox.php:30
 msgid "Checkbox"
@@ -208,15 +260,6 @@ msgstr "エラー表示"
 msgid "Don't display error."
 msgstr "エラーを表示しない"
 
-#: classes/form-fields/class.confirm-button.php:30
-msgid "Confirm Button"
-msgstr "確認ボタン"
-
-#: classes/form-fields/class.confirm-button.php:42
-#: classes/form-fields/class.submit-button.php:43
-msgid "Confirm"
-msgstr "確認画面へ"
-
 #: classes/form-fields/class.custom-mail-tag.php:30
 msgid "Custom Mail Tag"
 msgstr "カスタムメールタグ"
@@ -261,10 +304,6 @@ msgstr "アップロードしました。"
 msgid "Hidden"
 msgstr "hiddenフィールド"
 
-#: classes/form-fields/class.hidden.php:89
-msgid "Display"
-msgstr "表示する"
-
 #: classes/form-fields/class.hidden.php:91
 msgid "Display hidden value."
 msgstr "hiddenの値を表示"
@@ -297,11 +336,6 @@ msgstr "セレクトボックス"
 msgid "Confirm &amp; Submit"
 msgstr "確認・送信"
 
-#: classes/form-fields/class.submit-button.php:44
-#: classes/form-fields/class.submit.php:43
-msgid "Send"
-msgstr "送信する"
-
 #: classes/form-fields/class.submit-button.php:92
 msgid "String on the confirm button"
 msgstr "確認ボタンに表示する文字列"
@@ -309,10 +343,6 @@ msgstr "確認ボタンに表示する文字列"
 #: classes/form-fields/class.submit-button.php:97
 msgid "String on the submit button"
 msgstr "送信ボタンに表示する文字列"
-
-#: classes/form-fields/class.submit.php:30
-msgid "Submit Button"
-msgstr "送信ボタン"
 
 #: classes/form-fields/class.tel.php:30
 #: classes/validation-rules/class.tel.php:56
@@ -409,19 +439,19 @@ msgstr "一致しません。"
 msgid "The key at same value"
 msgstr "一致する項目"
 
-#: classes/validation-rules/class.filesize.php:35
-msgid "This file size is too big."
-msgstr "ファイルサイズが大きすぎます。"
-
-#: classes/validation-rules/class.filesize.php:42
+#: classes/validation-rules/class.filesize.php:38
 msgid "Failed to upload the file."
 msgstr "ファイルのアップロードに失敗しました。"
 
-#: classes/validation-rules/class.filesize.php:61
+#: classes/validation-rules/class.filesize.php:72
+msgid "This file size is too big."
+msgstr "ファイルサイズが大きすぎます。"
+
+#: classes/validation-rules/class.filesize.php:94
 msgid "Permitted file size"
 msgstr "サイズ制限"
 
-#: classes/validation-rules/class.filesize.php:62
+#: classes/validation-rules/class.filesize.php:95
 msgid "bytes"
 msgstr "バイト"
 
@@ -627,6 +657,7 @@ msgstr "送信先（E-mailアドレス）"
 #: templates/admin/admin-mail-options.php:14
 #: templates/admin/admin-mail-options.php:31
 #: templates/admin/admin-mail-options.php:36
+#: templates/admin/admin-mail-options.php:41
 #: templates/admin/mail-options.php:15 templates/admin/mail-options.php:20
 msgid "If empty:"
 msgstr "未入力の場合:"
@@ -649,11 +680,15 @@ msgid "Sender"
 msgstr "送信者"
 
 #: templates/admin/admin-mail-options.php:34
+msgid "Return-Path ( E-mail address )"
+msgstr "送信元（E-mailアドレス）"
+
+#: templates/admin/admin-mail-options.php:39
 #: templates/admin/mail-options.php:18
 msgid "From ( E-mail address )"
 msgstr "送信元（E-mailアドレス）"
 
-#: templates/admin/admin-mail-options.php:39
+#: templates/admin/admin-mail-options.php:44
 #: templates/admin/mail-options.php:23
 msgid "Content"
 msgstr "本文"
@@ -734,18 +769,22 @@ msgid "Select fields"
 msgstr "選択項目"
 
 #: templates/admin/tag-generator.php:13
-msgid "Button fields"
-msgstr "ボタン項目"
+msgid "Button fields (button)"
+msgstr "ボタン項目（button）"
 
 #: templates/admin/tag-generator.php:16
+msgid "Button fields (input)"
+msgstr "ボタン項目（input）"
+
+#: templates/admin/tag-generator.php:19
 msgid "Error fields"
 msgstr "エラー項目"
 
-#: templates/admin/tag-generator.php:19
+#: templates/admin/tag-generator.php:22
 msgid "Other fields"
 msgstr "その他の項目"
 
-#: templates/admin/tag-generator.php:23
+#: templates/admin/tag-generator.php:26
 msgid "Add form tag"
 msgstr "フォームタグを追加"
 
@@ -879,6 +918,20 @@ msgstr "Takashi Kitajima"
 #. Author URI of the plugin/theme
 msgid "http://2inc.org"
 msgstr "http://2inc.org"
+
+#, fuzzy
+#~ msgctxt "value"
+#~ msgid "Back"
+#~ msgstr "戻る"
+
+#~ msgid "Button (button)"
+#~ msgstr "ボタン（button）"
+
+#~ msgid "Confirm Button (button)"
+#~ msgstr "確認ボタン（button）"
+
+#~ msgid "Submit Button (button)"
+#~ msgstr "送信ボタン（button）"
 
 #~ msgid "MW WP Form can create mail form with a confirmation screen."
 #~ msgstr ""
