@@ -82,6 +82,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 = 2.13.0 =
 * Added   : Added the button elements.
+* Added   : Added filter hook mwform_custom_mail_tag
 
 = 2.12.0 =
 * Added   : Added filter hook mwform_complete_content_mw-wp-form-xxx

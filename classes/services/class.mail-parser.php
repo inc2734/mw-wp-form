@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Mail Parser
  * Description: メールパーサー
- * Version    : 1.1.1
+ * Version    : 1.2.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : April 14, 2015
- * Modified   : March 18, 2016
+ * Modified   : December 27, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -208,11 +208,20 @@ class MW_WP_Form_Mail_Parser {
 	 * @return string
 	 */
 	protected function apply_filters_mwform_custom_mail_tag( $form_key, $value, $match ) {
-		return apply_filters(
+		$value = apply_filters(
+			'mwform_custom_mail_tag',
+			$value,
+			$match,
+			$this->saved_mail_id
+		);
+
+		$value = apply_filters(
 			'mwform_custom_mail_tag_' . $form_key,
 			$value,
 			$match,
 			$this->saved_mail_id
 		);
+
+		return $value;
 	}
 }
