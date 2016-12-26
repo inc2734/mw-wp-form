@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Form
  * Description: フォームヘルパー
- * Version    : 1.8.2
+ * Version    : 1.9.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : September 25, 2012
- * Modified   : March 26, 2016
+ * Modified   : December 26, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -677,6 +677,30 @@ class MW_WP_Form_Form {
 	}
 
 	/**
+	 * submitボタン(button)生成
+	 *
+	 * @param string $name name属性
+	 * @param string $value value属性
+	 * @param array $options
+	 * @param string $element_content
+	 * @return string submitボタン(button)
+	 */
+	public function button_submit( $name, $value, $options = array(), $element_content = '' ) {
+		$defaults = array(
+			'class' => null,
+		);
+		$options = array_merge( $defaults, $options );
+		$attributes = $this->generate_attributes( $options );
+		return sprintf(
+			'<button type="submit" name="%1$s" value="%2$s"%3$s>%4$s</button>',
+			esc_attr( $name ),
+			esc_attr( $value ),
+			$attributes,
+			wp_kses_post( $element_content )
+		);
+	}
+
+	/**
 	 * ボタン生成
 	 *
 	 * @param string $name name属性
@@ -695,6 +719,30 @@ class MW_WP_Form_Form {
 			esc_attr( $name ),
 			esc_attr( $value ),
 			$attributes
+		);
+	}
+
+	/**
+	 * ボタン(button)生成
+	 *
+	 * @param string $name name属性
+	 * @param string $value value属性
+	 * @param array $options
+	 * @param string $element_content
+	 * @return string ボタン(button)
+	 */
+	public function button_button( $name, $value, $options = array(), $element_content = '' ) {
+		$defaults = array(
+			'class' => null,
+		);
+		$options = array_merge( $defaults, $options );
+		$attributes = $this->generate_attributes( $options );
+		return sprintf(
+			'<button type="button" name="%1$s" value="%2$s"%3$s>%4$s</button>',
+			esc_attr( $name ),
+			esc_attr( $value ),
+			$attributes,
+			wp_kses_post( $element_content )
 		);
 	}
 

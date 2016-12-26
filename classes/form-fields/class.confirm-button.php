@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Field Confirm Button
  * Description: 確認ボタンを出力
- * Version    : 1.6.0
+ * Version    : 1.6.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : November 14, 2015
+ * Modified   : December 26, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -14,10 +14,10 @@ class MW_WP_Form_Field_Confirm_Button extends MW_WP_Form_Abstract_Form_Field {
 
 	/**
 	 * $type
-	 * フォームタグの種類 input|select|button|error|other
+	 * フォームタグの種類 input|select|button|input_button|error|other
 	 * @var string
 	 */
-	public $type = 'button';
+	public $type = 'input_button';
 
 	/**
 	 * set_names

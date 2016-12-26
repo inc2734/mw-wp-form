@@ -1,23 +1,23 @@
 <?php
 /**
- * Name       : MW WP Form Field Button
- * Description: ボタンを出力
- * Version    : 1.6.1
+ * Name       : MW WP Form Field Button Submit
+ * Description: 送信ボタン（button）を出力
+ * Version    : 1.0.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
- * Created    : December 14, 2012
- * Modified   : December 26, 2016
+ * Created    : December 26, 2016
+ * Modified   :
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-class MW_WP_Form_Field_Button extends MW_WP_Form_Abstract_Form_Field {
+class MW_WP_Form_Field_Button_Submit extends MW_WP_Form_Abstract_Form_Field {
 
 	/**
 	 * $type
 	 * フォームタグの種類 input|select|button|input_button|error|other
 	 * @var string
 	 */
-	public $type = 'input_button';
+	public $type = 'button';
 
 	/**
 	 * set_names
@@ -26,8 +26,8 @@ class MW_WP_Form_Field_Button extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function set_names() {
 		return array(
-			'shortcode_name' => 'mwform_button',
-			'display_name'   => __( 'Button', 'mw-wp-form' ),
+			'shortcode_name' => 'mwform_bsubmit',
+			'display_name'   => __( 'Submit Button (button)', 'mw-wp-form' ),
 		);
 	}
 
@@ -38,9 +38,11 @@ class MW_WP_Form_Field_Button extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function set_defaults() {
 		return array(
-			'name'  => '',
-			'class' => null,
-			'value' => '',
+			'name'            => '',
+			'class'           => null,
+			'value'           => 'send',
+			'element_content' => __( 'Send', 'mw-wp-form' ),
+			'display_input'   => 'false',
 		);
 	}
 
@@ -50,9 +52,18 @@ class MW_WP_Form_Field_Button extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function input_page() {
-		return $this->Form->button( $this->atts['name'], $this->atts['value'], array(
-			'class' => $this->atts['class'],
-		) );
+		if ( $this->atts['display_input'] === 'false' ) {
+			return;
+		}
+
+		return $this->Form->button_submit(
+			$this->atts['name'],
+			$this->atts['value'],
+			array(
+				'class' => $this->atts['class'],
+			),
+			$this->element_content
+		);
 	}
 
 	/**
@@ -61,7 +72,14 @@ class MW_WP_Form_Field_Button extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function confirm_page() {
-		return $this->input_page();
+		return $this->Form->button_submit(
+			$this->atts['name'],
+			$this->atts['value'],
+			array(
+				'class' => $this->atts['class'],
+			),
+			$this->element_content
+		);
 	}
 
 	/**
@@ -81,9 +99,19 @@ class MW_WP_Form_Field_Button extends MW_WP_Form_Abstract_Form_Field {
 			<input type="text" name="class" value="<?php echo esc_attr( $class ); ?>" />
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'String on the button', 'mw-wp-form' ); ?></strong>
+			<strong><?php esc_html_e( 'Value', 'mw-wp-form' ); ?></strong>
 			<?php $value = $this->get_value_for_generator( 'value', $options ); ?>
 			<input type="text" name="value" value="<?php echo esc_attr( $value ); ?>" />
+		</p>
+		<p>
+			<strong><?php esc_html_e( 'String on the button', 'mw-wp-form' ); ?></strong>
+			<?php $element_content = $this->get_value_for_generator( 'element_content', $options ); ?>
+			<input type="text" name="element_content" value="<?php echo esc_attr( $element_content ); ?>" />
+		</p>
+		<p>
+			<strong><?php esc_html_e( 'Also display on input page', 'mw-wp-form' ); ?></strong>
+			<?php $display_input = $this->get_value_for_generator( 'display_input', $options ); ?>
+			<input type="checkbox" name="display_input" value="true" <?php checked( 'true', $display_input ); ?> />
 		</p>
 		<?php
 	}

@@ -14,7 +14,7 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 
 	/**
 	 * $type
-	 * フォームタグの種類 input|select|button|error|other
+	 * フォームタグの種類 input|select|button|input_button|error|other
 	 * @var string
 	 */
 	public $type = 'select';

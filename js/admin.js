@@ -13,12 +13,18 @@ jQuery( function( $ ) {
 	 * フォームタグジェネレータ
 	 */
 	function mwform_create_shortcode( dialog_id ) {
-		var shortcode = [];
-		var shortcode_name = dialog_id.replace( 'dialog-', '' );
+		var attributes      = [];
+		var shortcode_name  = dialog_id.replace( 'dialog-', '' );
+		var element_content = null;
 
 		$( '#' + dialog_id + ':first' ).find( 'input, textarea' ).each( function( i, e ) {
 			var val;
 			var name = $( e ).attr( 'name' );
+
+			if ( name == 'element_content' ) {
+				element_content = $( e ).val();
+				return true; // continue
+			}
 
 			if ( $( e )[0].tagName.toLowerCase() == 'textarea' ) {
 				val = $( e ).val().split( /\r\n|\r|\n/ );
@@ -32,21 +38,32 @@ jQuery( function( $ ) {
 			}
 
 			if ( name == 'name' && !val ) {
-				val = shortcode_name + '-' + Math.floor( Math.random() * 1000 )
+				val = generate_random_shortcode_name( shortcode_name );
 			}
 			if ( val ) {
 				var attribute = name + '=\"' + val + '\"';
-				shortcode.push( attribute );
+				attributes.push( attribute );
 			}
 		} );
-		shortcode = shortcode.join( ' ' );
-		if ( shortcode ) {
-			var shortcode2 = '[' + shortcode_name + ' ' + shortcode + ']';
+
+		attributes = attributes.join( ' ' );
+		if ( attributes ) {
+			var shortcode = '[' + shortcode_name + ' ' + attributes + ']';
 		} else {
-			var shortcode2 = '[' + shortcode_name + ']';
+			var shortcode = '[' + shortcode_name + ']';
 		}
-		return shortcode2;
+
+		if ( element_content !== null ) {
+			shortcode += element_content + '[/' + shortcode_name + ']'
+		}
+
+		return shortcode;
 	}
+
+	function generate_random_shortcode_name( shortcode_name ) {
+		return shortcode_name + '-' + Math.floor( Math.random() * 1000 );
+	}
+
 	$( '.mwform-dialog' ).dialog( {
 		bgiframe: true,
 		autoOpen: false,
@@ -64,6 +81,7 @@ jQuery( function( $ ) {
 		open: function() {
 		}
 	} );
+
 	$( '.add-mwform-btn .button' ).click( function() {
 		var select = $( '.add-mwform-btn select' ).val();
 		$( '#dialog-' + select ).dialog( 'open' );

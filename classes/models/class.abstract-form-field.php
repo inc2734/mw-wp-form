@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Abstract Form Field
  * Description: フォームフィールドの抽象クラス
- * Version    : 1.7.5
+ * Version    : 1.7.6
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
- * Modified   : November 17, 2015
+ * Modified   : December 26, 2016
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -65,7 +65,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 
 	/**
 	 * $type
-	 * フォームタグの種類 input|select|button|error|other
+	 * フォームタグの種類 input|select|button|input_button|error|other
 	 * @var string
 	 */
 	protected $type = 'other';
@@ -81,6 +81,12 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 		'arg1'    => '',
 		'arg2'    => '',
 	);
+
+	/**
+	 * 囲み型ショートコードのコンテンツ
+	 * @var string
+	 */
+	protected $element_content = null;
 
 	/**
 	 * __construct
@@ -156,10 +162,12 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 * input_page
 	 * 入力ページでのフォーム項目を返す
 	 * @param array $atts
+	 * @param string $element_content
 	 * @return string HTML
 	 */
 	abstract protected function input_page();
-	public function _input_page( $atts ) {
+	public function _input_page( $atts, $element_content = null ) {
+		$this->element_content = $element_content;
 		if ( array_key_exists( 'value', $this->defaults ) && isset( $atts['name'] ) && !isset( $atts['value'] ) ) {
 			$atts['value'] = apply_filters(
 				'mwform_value_' . $this->form_key,
@@ -175,10 +183,12 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 * confirm_page
 	 * 確認ページでのフォーム項目を返す
 	 * @param array $atts
+	 * @param string $element_content
 	 * @return string HTML
 	 */
 	abstract protected function confirm_page();
-	public function _confirm_page( $atts ) {
+	public function _confirm_page( $atts, $element_content = null ) {
+		$this->element_content = $element_content;
 		$this->atts = shortcode_atts( $this->defaults, $atts );
 		return $this->confirm_page();
 	}
@@ -271,7 +281,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 		?>
 		<div id="dialog-<?php echo esc_attr( $this->shortcode_name ); ?>" class="mwform-dialog" title="<?php echo esc_attr( $this->shortcode_name ); ?>">
 			<div class="form">
-				<?php $this->mwform_tag_generator_dialog(); ?>
+				<?php $this->mwform_tag_generator_dialog( $this->defaults ); ?>
 			</div>
 		</div>
 		<?php
