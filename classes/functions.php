@@ -2,11 +2,11 @@
 /**
  * Name       : MWF Functions
  * Description: 関数
- * Version    : 1.5.3
+ * Version    : 1.5.4
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : May 29, 2013
- * Modified   : April 2, 2016
+ * Modified   : January 7, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -310,7 +310,7 @@ class MWF_Functions {
 				break;
 		}
 
-		if ( version_compare( phpversion(), '5.3.0' ) >= 0 ) {
+		if ( version_compare( phpversion(), '5.3.0' ) >= 0 && defined( 'FILEINFO_MIME_TYPE ' ) ) {
 			if ( !file_exists( $filepath ) ) {
 				return false;
 			}
