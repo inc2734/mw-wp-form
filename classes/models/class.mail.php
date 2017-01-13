@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Mail
  * Description: メールクラス
- * Version    : 2.0.0
+ * Version    : 2.1.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 20, 2012
- * Modified   : August 19, 2016
+ * Modified   : January 13, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -79,10 +79,11 @@ class MW_WP_Form_Mail {
 			return;
 		}
 
-		$sender  = $this->sender;
-		$from    = $this->from;
-		$subject = $this->subject;
-		$body    = $this->body;
+		$sender      = $this->sender;
+		$from        = $this->from;
+		$return_path = $this->return_path;
+		$subject     = $this->subject;
+		$body        = $this->body;
 
 		add_action( 'phpmailer_init'   , array( $this, 'set_return_path' ) );
 		add_filter( 'wp_mail_from'     , array( $this, 'set_mail_from' ) );
@@ -106,11 +107,12 @@ class MW_WP_Form_Mail {
 		$to = trim( $this->to );
 		if ( !empty( $File ) ) {
 			$contents = sprintf(
-				"====================\n\nSend Date: %s\nTo: %s\nSender: %s\nFrom: %s\nSubject: %s\nheaders:%s\n-----\n%s\n-----\nattachments:\n%s\n\n",
+				"====================\n\nSend Date: %s\nTo: %s\nSender: %s\nFrom: %s\nReturn-Path: %s\nSubject: %s\nheaders:%s\n-----\n%s\n-----\nattachments:\n%s\n\n",
 				date( 'M j Y, H:i:s' ),
 				$to,
 				$sender,
 				$from,
+				$return_path,
 				$subject,
 				implode( "\n", $headers ),
 				$body,
