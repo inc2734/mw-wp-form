@@ -648,9 +648,7 @@ class MW_WP_Form_Form {
 				'<span class="mwform-checkbox-field %s">
 					<label%s>
 						<input type="checkbox" name="%s" value="%s"%s %s />
-						<span class="mwform-checkbox-field-text">
-							%s
-						</span>
+						<span class="mwform-checkbox-field-text">%s</span>
 					</label>
 				</span>',
 				$vertically,
