@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Form
  * Description: フォームヘルパー
- * Version    : 1.10.0
+ * Version    : 1.10.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : September 25, 2012
- * Modified   : January 13, 2017
+ * Modified   : January 14, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -227,11 +227,11 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return sprintf(
+		return self::remove_linefeed_space( sprintf(
 			'<input type="text" name="%s"%s />',
 			esc_attr( $name ),
 			$attributes
-		);
+		) );
 	}
 
 	/**
@@ -254,11 +254,11 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return sprintf(
+		return self::remove_linefeed_space( sprintf(
 			'<input type="email" name="%s"%s />',
 			esc_attr( $name ),
 			$attributes
-		);
+		) );
 	}
 
 	/**
@@ -281,11 +281,11 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return sprintf(
+		return self::remove_linefeed_space( sprintf(
 			'<input type="url" name="%s"%s />',
 			esc_attr( $name ),
 			$attributes
-		);
+		) );
 	}
 
 	/**
@@ -307,11 +307,11 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return sprintf(
+		return self::remove_linefeed_space( sprintf(
 			'<input type="range" name="%s"%s />',
 			esc_attr( $name ),
 			$attributes
-		);
+		) );
 	}
 
 	/**
@@ -334,11 +334,11 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return sprintf(
+		return self::remove_linefeed_space( sprintf(
 			'<input type="number" name="%s"%s />',
 			esc_attr( $name ),
 			$attributes
-		);
+		) );
 	}
 
 	/**
@@ -349,11 +349,11 @@ class MW_WP_Form_Form {
 	 * @return string HTML
 	 */
 	public function hidden( $name, $value ) {
-		return sprintf(
+		return self::remove_linefeed_space( sprintf(
 			'<input type="hidden" name="%s" value="%s" />',
 			esc_attr( $name ),
 			esc_attr( $value )
-		);
+		) );
 	}
 
 	/**
@@ -375,11 +375,11 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return sprintf(
+		return self::remove_linefeed_space( sprintf(
 			'<input type="password" name="%s"%s />',
 			esc_attr( $name ),
 			$attributes
-		);
+		) );
 	}
 
 	/**
@@ -432,7 +432,7 @@ class MW_WP_Form_Form {
 		) );
 		$_ret .= $this->separator( $name, $separator );
 		$_ret .= '</span>';
-		return $_ret;
+		return self::remove_linefeed_space( $_ret );
 	}
 
 	/**
@@ -492,7 +492,7 @@ class MW_WP_Form_Form {
 		) );
 		$_ret .= $this->separator( $name, $separator );
 		$_ret .= '</span>';
-		return $_ret;
+		return self::remove_linefeed_space( $_ret );
 	}
 
 	/**
@@ -516,12 +516,12 @@ class MW_WP_Form_Form {
 		unset( $_options['value'] );
 		$attributes = $this->generate_attributes( $_options );
 
-		return sprintf(
+		return self::remove_linefeed_space( sprintf(
 			'<textarea name="%s"%s>%s</textarea>',
 			esc_attr( $name ),
 			$attributes,
 			esc_html( $options['value'] )
-		);
+		) );
 	}
 
 	/**
@@ -558,7 +558,7 @@ class MW_WP_Form_Form {
 			);
 		}
 		$_ret .= '</select>';
-		return $_ret;
+		return self::remove_linefeed_space( $_ret );
 	}
 
 	/**
@@ -606,7 +606,7 @@ class MW_WP_Form_Form {
 				esc_html( $_value )
 			);
 		}
-		return $_ret;
+		return self::remove_linefeed_space( $_ret );
 	}
 
 	/**
@@ -661,7 +661,7 @@ class MW_WP_Form_Form {
 			);
 		}
 		$_ret .= $this->separator( $name, $separator );
-		return $_ret;
+		return self::remove_linefeed_space( $_ret );
 	}
 
 	/**
@@ -678,12 +678,12 @@ class MW_WP_Form_Form {
 		);
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
-		return sprintf(
+		return self::remove_linefeed_space( sprintf(
 			'<input type="submit" name="%s" value="%s"%s />',
 			esc_attr( $name ),
 			esc_attr( $value ),
 			$attributes
-		);
+		) );
 	}
 
 	/**
@@ -701,13 +701,13 @@ class MW_WP_Form_Form {
 		);
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
-		return sprintf(
+		return self::remove_linefeed_space( sprintf(
 			'<button type="submit" name="%1$s" value="%2$s"%3$s>%4$s</button>',
 			esc_attr( $name ),
 			esc_attr( $value ),
 			$attributes,
 			wp_kses_post( $element_content )
-		);
+		) );
 	}
 
 	/**
@@ -724,12 +724,12 @@ class MW_WP_Form_Form {
 		);
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
-		return sprintf(
+		return self::remove_linefeed_space( sprintf(
 			'<input type="button" name="%s" value="%s"%s />',
 			esc_attr( $name ),
 			esc_attr( $value ),
 			$attributes
-		);
+		) );
 	}
 
 	/**
@@ -747,13 +747,13 @@ class MW_WP_Form_Form {
 		);
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
-		return sprintf(
+		return self::remove_linefeed_space( sprintf(
 			'<button type="button" name="%1$s" value="%2$s"%3$s>%4$s</button>',
 			esc_attr( $name ),
 			esc_attr( $value ),
 			$attributes,
 			wp_kses_post( $element_content )
-		);
+		) );
 	}
 
 	/**
@@ -787,7 +787,7 @@ class MW_WP_Form_Form {
 			esc_js( $name ),
 			trim( $options['js'], '{}' )
 		);
-		return $_ret;
+		return self::remove_linefeed_space( $_ret );
 	}
 
 	/**
@@ -805,11 +805,11 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return sprintf(
+		return self::remove_linefeed_space( sprintf(
 			'<input type="file" name="%1$s"%2$s /><span data-mwform-file-delete="%1$s" class="mwform-file-delete">&times;</span>',
 			esc_attr( $name ),
 			$attributes
-		);
+		) );
 	}
 
 	/**
@@ -849,5 +849,17 @@ class MW_WP_Form_Form {
 			}
 			return $id;
 		}
+	}
+
+	/**
+	 * Removed linefeed codes, tabs and spaces
+	 *
+	 * @param string $string
+	 * @return string
+	 */
+	public static function remove_linefeed_space( $string ) {
+		$string = preg_replace( '/\s+\/>/', ' />', $string );
+		$string = preg_replace( '/>\s*</ms', '><', $string );
+		return $string;
 	}
 }

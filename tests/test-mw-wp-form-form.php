@@ -781,22 +781,26 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_radio_children() {
 		$this->assertEquals(
-			'<span class="mwform-radio-field horizontal-item">
+			MW_WP_Form_Form::remove_linefeed_space(
+				'<span class="mwform-radio-field horizontal-item">
 					<label>
-						<input type="radio" name="radio" value="a"  />
+						<input type="radio" name="radio" value="a" />
 						<span class="mwform-radio-field-text">a</span>
 					</label>
-				</span><span class="mwform-radio-field horizontal-item">
+				</span>
+				<span class="mwform-radio-field horizontal-item">
 					<label>
-						<input type="radio" name="radio" value="b"  />
+						<input type="radio" name="radio" value="b" />
 						<span class="mwform-radio-field-text">b</span>
 					</label>
-				</span><span class="mwform-radio-field horizontal-item">
+				</span>
+				<span class="mwform-radio-field horizontal-item">
 					<label>
-						<input type="radio" name="radio" value="c"  />
+						<input type="radio" name="radio" value="c" />
 						<span class="mwform-radio-field-text">c</span>
 					</label>
-				</span>',
+				</span>'
+			),
 			$this->Form->radio( 'radio', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ) )
 		);
 	}
@@ -806,22 +810,26 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_radio_id() {
 		$this->assertEquals(
-			'<span class="mwform-radio-field horizontal-item">
+			MW_WP_Form_Form::remove_linefeed_space(
+				'<span class="mwform-radio-field horizontal-item">
 					<label for="id-1">
 						<input type="radio" name="radio" value="a"  id="id-1" />
 						<span class="mwform-radio-field-text">a</span>
 					</label>
-				</span><span class="mwform-radio-field horizontal-item">
+				</span>
+				<span class="mwform-radio-field horizontal-item">
 					<label for="id-2">
 						<input type="radio" name="radio" value="b"  id="id-2" />
 						<span class="mwform-radio-field-text">b</span>
 					</label>
-				</span><span class="mwform-radio-field horizontal-item">
+				</span>
+				<span class="mwform-radio-field horizontal-item">
 					<label for="id-3">
 						<input type="radio" name="radio" value="c"  id="id-3" />
 						<span class="mwform-radio-field-text">c</span>
 					</label>
-				</span>',
+				</span>'
+			),
 			$this->Form->radio( 'radio', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'id' => 'id' ) )
 		);
 	}
@@ -831,22 +839,26 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_radio_class() {
 		$this->assertEquals(
-			'<span class="mwform-radio-field horizontal-item">
+			MW_WP_Form_Form::remove_linefeed_space(
+				'<span class="mwform-radio-field horizontal-item">
 					<label>
 						<input type="radio" name="radio" value="a"  class="radio" />
 						<span class="mwform-radio-field-text">a</span>
 					</label>
-				</span><span class="mwform-radio-field horizontal-item">
+				</span>
+				<span class="mwform-radio-field horizontal-item">
 					<label>
 						<input type="radio" name="radio" value="b"  class="radio" />
 						<span class="mwform-radio-field-text">b</span>
 					</label>
-				</span><span class="mwform-radio-field horizontal-item">
+				</span>
+				<span class="mwform-radio-field horizontal-item">
 					<label>
 						<input type="radio" name="radio" value="c"  class="radio" />
 						<span class="mwform-radio-field-text">c</span>
 					</label>
-				</span>',
+				</span>'
+			),
 			$this->Form->radio( 'radio', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'class' => 'radio' ) )
 		);
 	}
@@ -856,22 +868,26 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_radio_valueが一致する() {
 		$this->assertEquals(
-			'<span class="mwform-radio-field horizontal-item">
+			MW_WP_Form_Form::remove_linefeed_space(
+				'<span class="mwform-radio-field horizontal-item">
 					<label>
-						<input type="radio" name="radio" value="a" checked=\'checked\'  />
+						<input type="radio" name="radio" value="a" checked=\'checked\' />
 						<span class="mwform-radio-field-text">a</span>
 					</label>
-				</span><span class="mwform-radio-field horizontal-item">
+				</span>
+				<span class="mwform-radio-field horizontal-item">
 					<label>
-						<input type="radio" name="radio" value="b"  />
+						<input type="radio" name="radio" value="b" />
 						<span class="mwform-radio-field-text">b</span>
 					</label>
-				</span><span class="mwform-radio-field horizontal-item">
+				</span>
+				<span class="mwform-radio-field horizontal-item">
 					<label>
-						<input type="radio" name="radio" value="c"  />
+						<input type="radio" name="radio" value="c" />
 						<span class="mwform-radio-field-text">c</span>
 					</label>
-				</span>',
+				</span>'
+			),
 			$this->Form->radio( 'radio', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'value' => 'a' ) )
 		);
 	}
@@ -881,22 +897,26 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_radio_valueが一致しない() {
 		$this->assertEquals(
-			'<span class="mwform-radio-field horizontal-item">
+			MW_WP_Form_Form::remove_linefeed_space(
+				'<span class="mwform-radio-field horizontal-item">
 					<label>
-						<input type="radio" name="radio" value="a"  />
+						<input type="radio" name="radio" value="a" />
 						<span class="mwform-radio-field-text">a</span>
 					</label>
-				</span><span class="mwform-radio-field horizontal-item">
+				</span>
+				<span class="mwform-radio-field horizontal-item">
 					<label>
-						<input type="radio" name="radio" value="b"  />
+						<input type="radio" name="radio" value="b" />
 						<span class="mwform-radio-field-text">b</span>
 					</label>
-				</span><span class="mwform-radio-field horizontal-item">
+				</span>
+				<span class="mwform-radio-field horizontal-item">
 					<label>
-						<input type="radio" name="radio" value="c"  />
+						<input type="radio" name="radio" value="c" />
 						<span class="mwform-radio-field-text">c</span>
 					</label>
-				</span>',
+				</span>'
+			),
 			$this->Form->radio( 'radio', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'value' => 'value' ) )
 		);
 	}
@@ -906,22 +926,26 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_radio_vertically() {
 		$this->assertEquals(
-			'<span class="mwform-radio-field vertical-item">
+			MW_WP_Form_Form::remove_linefeed_space(
+				'<span class="mwform-radio-field vertical-item">
 					<label>
-						<input type="radio" name="radio" value="a"  />
+						<input type="radio" name="radio" value="a" />
 						<span class="mwform-radio-field-text">a</span>
 					</label>
-				</span><span class="mwform-radio-field vertical-item">
+				</span>
+				<span class="mwform-radio-field vertical-item">
 					<label>
-						<input type="radio" name="radio" value="b"  />
+						<input type="radio" name="radio" value="b" />
 						<span class="mwform-radio-field-text">b</span>
 					</label>
-				</span><span class="mwform-radio-field vertical-item">
+				</span>
+				<span class="mwform-radio-field vertical-item">
 					<label>
-						<input type="radio" name="radio" value="c"  />
+						<input type="radio" name="radio" value="c" />
 						<span class="mwform-radio-field-text">c</span>
 					</label>
-				</span>',
+				</span>'
+			),
 			$this->Form->radio( 'radio', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'vertically' => 'true' ) )
 		);
 	}
@@ -941,22 +965,27 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_checkbox_children() {
 		$this->assertEquals(
-			'<span class="mwform-checkbox-field horizontal-item">
+			MW_WP_Form_Form::remove_linefeed_space(
+				'<span class="mwform-checkbox-field horizontal-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="a"  />
+						<input type="checkbox" name="checkbox[data][]" value="a" />
 						<span class="mwform-checkbox-field-text">a</span>
 					</label>
-				</span><span class="mwform-checkbox-field horizontal-item">
+				</span>
+				<span class="mwform-checkbox-field horizontal-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="b"  />
+						<input type="checkbox" name="checkbox[data][]" value="b" />
 						<span class="mwform-checkbox-field-text">b</span>
 					</label>
-				</span><span class="mwform-checkbox-field horizontal-item">
+				</span>
+				<span class="mwform-checkbox-field horizontal-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="c"  />
+						<input type="checkbox" name="checkbox[data][]" value="c" />
 						<span class="mwform-checkbox-field-text">c</span>
 					</label>
-				</span><input type="hidden" name="checkbox[separator]" value="," />',
+				</span>
+				<input type="hidden" name="checkbox[separator]" value="," />'
+			),
 			$this->Form->checkbox( 'checkbox', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ) )
 		);
 	}
@@ -966,22 +995,27 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_checkbox_separator() {
 		$this->assertEquals(
-			'<span class="mwform-checkbox-field horizontal-item">
+			MW_WP_Form_Form::remove_linefeed_space(
+				'<span class="mwform-checkbox-field horizontal-item">
 					<label>
 						<input type="checkbox" name="checkbox[data][]" value="a"  checked=\'checked\' />
 						<span class="mwform-checkbox-field-text">a</span>
 					</label>
-				</span><span class="mwform-checkbox-field horizontal-item">
+				</span>
+				<span class="mwform-checkbox-field horizontal-item">
 					<label>
 						<input type="checkbox" name="checkbox[data][]" value="b"  checked=\'checked\' />
 						<span class="mwform-checkbox-field-text">b</span>
 					</label>
-				</span><span class="mwform-checkbox-field horizontal-item">
+				</span>
+				<span class="mwform-checkbox-field horizontal-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="c"  />
+						<input type="checkbox" name="checkbox[data][]" value="c" />
 						<span class="mwform-checkbox-field-text">c</span>
 					</label>
-				</span><input type="hidden" name="checkbox[separator]" value="、" />',
+				</span>
+				<input type="hidden" name="checkbox[separator]" value="、" />'
+			),
 			$this->Form->checkbox( 'checkbox', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'value' => 'a、b' ), '、' )
 		);
 	}
@@ -991,22 +1025,27 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_checkbox_id() {
 		$this->assertEquals(
-			'<span class="mwform-checkbox-field horizontal-item">
+			MW_WP_Form_Form::remove_linefeed_space(
+				'<span class="mwform-checkbox-field horizontal-item">
 					<label for="id-1">
 						<input type="checkbox" name="checkbox[data][]" value="a" id="id-1"  />
 						<span class="mwform-checkbox-field-text">a</span>
 					</label>
-				</span><span class="mwform-checkbox-field horizontal-item">
+				</span>
+				<span class="mwform-checkbox-field horizontal-item">
 					<label for="id-2">
-						<input type="checkbox" name="checkbox[data][]" value="b" id="id-2"  />
+						<input type="checkbox" name="checkbox[data][]" value="b" id="id-2" />
 						<span class="mwform-checkbox-field-text">b</span>
 					</label>
-				</span><span class="mwform-checkbox-field horizontal-item">
+				</span>
+				<span class="mwform-checkbox-field horizontal-item">
 					<label for="id-3">
-						<input type="checkbox" name="checkbox[data][]" value="c" id="id-3"  />
+						<input type="checkbox" name="checkbox[data][]" value="c" id="id-3" />
 						<span class="mwform-checkbox-field-text">c</span>
 					</label>
-				</span><input type="hidden" name="checkbox[separator]" value="," />',
+				</span>
+				<input type="hidden" name="checkbox[separator]" value="," />'
+			),
 			$this->Form->checkbox( 'checkbox', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'id' => 'id' ) )
 		);
 	}
@@ -1016,22 +1055,27 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_checkbox_class() {
 		$this->assertEquals(
-			'<span class="mwform-checkbox-field horizontal-item">
+			MW_WP_Form_Form::remove_linefeed_space(
+				'<span class="mwform-checkbox-field horizontal-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="a" class="checkbox"  />
+						<input type="checkbox" name="checkbox[data][]" value="a" class="checkbox" />
 						<span class="mwform-checkbox-field-text">a</span>
 					</label>
-				</span><span class="mwform-checkbox-field horizontal-item">
+				</span>
+				<span class="mwform-checkbox-field horizontal-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="b" class="checkbox"  />
+						<input type="checkbox" name="checkbox[data][]" value="b" class="checkbox" />
 						<span class="mwform-checkbox-field-text">b</span>
 					</label>
-				</span><span class="mwform-checkbox-field horizontal-item">
+				</span>
+				<span class="mwform-checkbox-field horizontal-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="c" class="checkbox"  />
+						<input type="checkbox" name="checkbox[data][]" value="c" class="checkbox" />
 						<span class="mwform-checkbox-field-text">c</span>
 					</label>
-				</span><input type="hidden" name="checkbox[separator]" value="," />',
+				</span>
+				<input type="hidden" name="checkbox[separator]" value="," />'
+			),
 			$this->Form->checkbox( 'checkbox', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'class' => 'checkbox' ) )
 		);
 	}
@@ -1041,22 +1085,27 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_checkbox_valueが一致する_文字列() {
 		$this->assertEquals(
-			'<span class="mwform-checkbox-field horizontal-item">
+			MW_WP_Form_Form::remove_linefeed_space(
+				'<span class="mwform-checkbox-field horizontal-item">
 					<label>
 						<input type="checkbox" name="checkbox[data][]" value="a"  checked=\'checked\' />
 						<span class="mwform-checkbox-field-text">a</span>
 					</label>
-				</span><span class="mwform-checkbox-field horizontal-item">
+				</span>
+				<span class="mwform-checkbox-field horizontal-item">
 					<label>
 						<input type="checkbox" name="checkbox[data][]" value="b"  checked=\'checked\' />
 						<span class="mwform-checkbox-field-text">b</span>
 					</label>
-				</span><span class="mwform-checkbox-field horizontal-item">
+				</span>
+				<span class="mwform-checkbox-field horizontal-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="c"  />
+						<input type="checkbox" name="checkbox[data][]" value="c" />
 						<span class="mwform-checkbox-field-text">c</span>
 					</label>
-				</span><input type="hidden" name="checkbox[separator]" value="," />',
+				</span>
+				<input type="hidden" name="checkbox[separator]" value="," />'
+			),
 			$this->Form->checkbox( 'checkbox', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'value' => 'a,b' ) )
 		);
 	}
@@ -1066,22 +1115,27 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_checkbox_valueが一致する_配列() {
 		$this->assertEquals(
-			'<span class="mwform-checkbox-field horizontal-item">
+			MW_WP_Form_Form::remove_linefeed_space(
+				'<span class="mwform-checkbox-field horizontal-item">
 					<label>
 						<input type="checkbox" name="checkbox[data][]" value="a"  checked=\'checked\' />
 						<span class="mwform-checkbox-field-text">a</span>
 					</label>
-				</span><span class="mwform-checkbox-field horizontal-item">
+				</span>
+				<span class="mwform-checkbox-field horizontal-item">
 					<label>
 						<input type="checkbox" name="checkbox[data][]" value="b"  checked=\'checked\' />
 						<span class="mwform-checkbox-field-text">b</span>
 					</label>
-				</span><span class="mwform-checkbox-field horizontal-item">
+				</span>
+				<span class="mwform-checkbox-field horizontal-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="c"  />
+						<input type="checkbox" name="checkbox[data][]" value="c" />
 						<span class="mwform-checkbox-field-text">c</span>
 					</label>
-				</span><input type="hidden" name="checkbox[separator]" value="," />',
+				</span>
+				<input type="hidden" name="checkbox[separator]" value="," />'
+			),
 			$this->Form->checkbox( 'checkbox',
 				array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ),
 				array( 'value' => array( 'a' => 'a', 'b' => 'b' )
@@ -1094,22 +1148,27 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_checkbox_valueが一致しない() {
 		$this->assertEquals(
-			'<span class="mwform-checkbox-field horizontal-item">
+			MW_WP_Form_Form::remove_linefeed_space(
+				'<span class="mwform-checkbox-field horizontal-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="a"  />
+						<input type="checkbox" name="checkbox[data][]" value="a" />
 						<span class="mwform-checkbox-field-text">a</span>
 					</label>
-				</span><span class="mwform-checkbox-field horizontal-item">
+				</span>
+				<span class="mwform-checkbox-field horizontal-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="b"  />
+						<input type="checkbox" name="checkbox[data][]" value="b" />
 						<span class="mwform-checkbox-field-text">b</span>
 					</label>
-				</span><span class="mwform-checkbox-field horizontal-item">
+				</span>
+				<span class="mwform-checkbox-field horizontal-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="c"  />
+						<input type="checkbox" name="checkbox[data][]" value="c" />
 						<span class="mwform-checkbox-field-text">c</span>
 					</label>
-				</span><input type="hidden" name="checkbox[separator]" value="," />',
+				</span>
+				<input type="hidden" name="checkbox[separator]" value="," />'
+			),
 			$this->Form->checkbox( 'checkbox', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'value' => 'value' ) )
 		);
 	}
@@ -1119,22 +1178,27 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	 */
 	public function test_checkbox_vertically() {
 		$this->assertEquals(
-			'<span class="mwform-checkbox-field vertical-item">
+			MW_WP_Form_Form::remove_linefeed_space(
+				'<span class="mwform-checkbox-field vertical-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="a"  />
+						<input type="checkbox" name="checkbox[data][]" value="a" />
 						<span class="mwform-checkbox-field-text">a</span>
 					</label>
-				</span><span class="mwform-checkbox-field vertical-item">
+				</span>
+				<span class="mwform-checkbox-field vertical-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="b"  />
+						<input type="checkbox" name="checkbox[data][]" value="b" />
 						<span class="mwform-checkbox-field-text">b</span>
 					</label>
-				</span><span class="mwform-checkbox-field vertical-item">
+				</span>
+				<span class="mwform-checkbox-field vertical-item">
 					<label>
-						<input type="checkbox" name="checkbox[data][]" value="c"  />
+						<input type="checkbox" name="checkbox[data][]" value="c" />
 						<span class="mwform-checkbox-field-text">c</span>
 					</label>
-				</span><input type="hidden" name="checkbox[separator]" value="," />',
+				</span>
+				<input type="hidden" name="checkbox[separator]" value="," />'
+			),
 			$this->Form->checkbox( 'checkbox', array( 'a' => 'a', 'b' => 'b', 'c' => 'c' ), array( 'vertically' => 'true' ) )
 		);
 	}
