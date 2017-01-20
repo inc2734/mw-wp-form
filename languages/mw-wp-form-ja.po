@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.13.0\n"
+"Project-Id-Version: MW WP Form 2.14.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
 "POT-Creation-Date: 2017-01-20 14:51+0900\n"
-"PO-Revision-Date: 2017-01-20 14:51+0900\n"
+"PO-Revision-Date: 2017-01-20 14:54+0900\n"
 "Last-Translator: inc2734 <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
