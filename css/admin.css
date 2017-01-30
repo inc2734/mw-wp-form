@@ -94,12 +94,18 @@ span#formkey_field {
 /**
  * 設定
  */
-#mw-wp-form_settings p {
+#mw-wp-form_settings .section {
 	border-bottom: #dfdfdf solid 1px;
 	margin: 0 0 15px;
 	padding: 0 0 15px;
 }
+#mw-wp-form_settings .section:last-child {
+	margin-bottom: 0;
+	border-bottom: none;
+	padding-bottom: 0;
+}
 #mw-wp-form_settings table {
+	margin: 0;
 	font-size: 100%;
 }
 #mw-wp-form_settings table td {
