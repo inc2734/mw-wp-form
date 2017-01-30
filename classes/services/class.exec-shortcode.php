@@ -1,12 +1,12 @@
 <?php
 /**
  * Name       : MW WP Form Exec Shortcode
- * Version    : 1.2.0
+ * Version    : 1.3.0
  * Description: ExecShortcode（mwform、mwform_formkey）の存在有無のチェックとそれらの抽象化レイヤー
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : March 10, 2016
+ * Modified   : January 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -80,6 +80,8 @@ class MW_WP_Form_Exec_Shortcode {
 			// ここで set_settings_by_mwform(), set_settings_by_mwform_formkey() が実行される
 			do_shortcode( $exec_shortcode );
 		}
+
+		do_action( 'mwform_after_exec_shortcode', $this->get( 'key' ) );
 
 		remove_shortcode( 'mwform' );
 		remove_shortcode( 'mwform_formkey' );
@@ -294,15 +296,18 @@ class MW_WP_Form_Exec_Shortcode {
 	 */
 	public function mwform_formkey( $attributes ) {
 		$view_flg = $this->view_flg;
-		$post_id  = $this->get_form_id_by_mwform_formkey( $attributes );
+		$form_id  = $this->get_form_id_by_mwform_formkey( $attributes );
+		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
+
+		do_action( 'mwform_before_load_content_' . $form_key );
 
 		// 入力画面
 		if ( $view_flg === 'input' ) {
-			$content = $this->get_input_page_content( $post_id );
+			$content = $this->get_input_page_content( $form_id );
 		}
 		// 確認画面
 		elseif ( $view_flg == 'confirm' ) {
-			$content = $this->get_confirm_page_content( $post_id );
+			$content = $this->get_confirm_page_content( $form_id );
 		}
 		// 完了画面
 		elseif ( $view_flg === 'complete' ) {
@@ -310,19 +315,22 @@ class MW_WP_Form_Exec_Shortcode {
 		} else {
 			$content = '';
 		}
+
+		do_action( 'mwform_after_load_content_' .  $form_key );
+
 		return do_shortcode( $content );
 	}
 
 	/**
 	 * 入力画面を表示
 	 *
-	 * @param int $post_id
+	 * @param int $form_id
 	 * @return string $content
 	 */
-	protected function get_input_page_content( $post_id ) {
+	protected function get_input_page_content( $form_id ) {
 		global $post;
 		$form_key = $this->get( 'key' );
-		$post     = get_post( $post_id );
+		$post     = get_post( $form_id );
 		setup_postdata( $post );
 		$content = apply_filters( 'mwform_post_content_raw_' . $form_key, get_the_content(), $this->Data );
 
@@ -351,11 +359,11 @@ class MW_WP_Form_Exec_Shortcode {
 	/**
 	 * 確認画面を表示
 	 *
-	 * @param int $post_id
+	 * @param int $form_id
 	 * @return string $content
 	 */
-	protected function get_confirm_page_content( $post_id ) {
-		return $this->get_input_page_content( $post_id );
+	protected function get_confirm_page_content( $form_id ) {
+		return $this->get_input_page_content( $form_id );
 	}
 
 	/**
@@ -366,7 +374,7 @@ class MW_WP_Form_Exec_Shortcode {
 	protected function get_complete_page_content() {
 		$form_key = $this->get( 'key' );
 		$Setting  = $this->Setting;
-		$content  = $Setting->get( 'complete_message' );
+		$content = apply_filters( 'mwform_complete_content_raw_' . $form_key, $Setting->get( 'complete_message' ), $this->Data );
 
 		$has_wpautop = false;
 		if ( has_filter( 'the_content', 'wpautop' ) ) {

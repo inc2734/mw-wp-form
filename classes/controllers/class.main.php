@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Main Controller
  * Description: フロントエンドにおいて、適切な画面にリダイレクトさせる
- * Version    : 1.4.0
+ * Version    : 1.5.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 23, 2014
- * Modified   : December 27, 2016
+ * Modified   : January 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -139,7 +139,6 @@ class MW_WP_Form_Main_Controller {
 			$post_condition,
 			$this->Setting->get( 'querystring' )
 		);
-		$url      = $this->Redirected->get_url();
 		$view_flg = $this->Redirected->get_view_flg();
 		$this->Data->set_view_flg( $view_flg );
 
@@ -163,6 +162,9 @@ class MW_WP_Form_Main_Controller {
 				$this->Data->clear_values();
 			}
 		}
+
+		do_action( 'mwform_before_redirect_' . $form_key );
+		$url = apply_filters( 'mwform_redirect_url_' . $form_key, $this->Redirected->get_url(), $this->Data );
 		$this->redirect( $url );
 
 		// スクロール用スクリプトのロード
