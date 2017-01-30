@@ -252,7 +252,6 @@ class MW_WP_Form {
 	 * @param WP_Screen $screen
 	 */
 	public function current_screen( $screen ) {
-		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
 		if ( $screen->id === MWF_Config::NAME ) {
 			$validation_rules = $this->get_validation_rules();
 			$Controller = new MW_WP_Form_Admin_Controller( $validation_rules );
