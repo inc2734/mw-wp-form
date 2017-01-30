@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Setting
- * Version    : 1.2.0
+ * Version    : 1.3.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : August 22, 2016
+ * Modified   : January 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -236,6 +236,8 @@ class MW_WP_Form_Setting {
 			$new_values[$key] = $value;
 		}
 		update_post_meta( $this->post_id, MWF_Config::NAME, $new_values );
+		$form_key = MWF_Functions::get_form_key_from_form_id( $this->post_id );
+		do_action( 'mwform_settings_save_' . $form_key );
 	}
 
 	/**
