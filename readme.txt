@@ -90,6 +90,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Added filter hook mwform_complete_content_raw_mw-wp-form-xxx
 * Added   : Added action hook mwform_settings_meta_box
 * Added   : Added action hook mwform_settings_save_mw-wp-form-xxx
+* Added   : Added action hook mwform_contact_data_save-mwf_xxx
 
 = 2.14.2 =
 * Bugfix  : Fixed type on japanese.
