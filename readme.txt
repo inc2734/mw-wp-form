@@ -4,7 +4,7 @@ Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 4.0
 Tested up to: 4.7.1
-Stable tag: 2.15.0
+Stable tag: 3.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -80,7 +80,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 == Changelog ==
 
-= 2.15.0 =
+= 3.0.0 =
 * Added   : Added method MWF_Functions::get_form_id_from_form_key( $form_key );
 * Added   : Added action hook mwform_after_exec_shortcode
 * Added   : Added action hook mwform_before_load_content_mw-wp-form-xxx
