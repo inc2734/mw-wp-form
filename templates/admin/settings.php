@@ -4,9 +4,9 @@
 			type="checkbox"
 			name="<?php echo esc_attr( MWF_Config::NAME ); ?>[querystring]"
 			value="1"
-			<?php checked( $querystring, 1 ); ?> />
-			<?php esc_html_e( 'Activate Query string of post', 'mw-wp-form' ); ?>
+			<?php checked( $querystring, 1 ); ?>
 		/>
+		<?php esc_html_e( 'Activate Query string of post', 'mw-wp-form' ); ?>
 	</label>
 	<br />
 	<span class="mwf_note">
