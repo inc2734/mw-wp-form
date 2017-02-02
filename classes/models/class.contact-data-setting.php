@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Contact Data Setting
  * Description: 管理画面クラス
- * Version    : 1.0.3
+ * Version    : 1.0.4
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : May 26, 2015
+ * Modified   : February 2, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -174,7 +174,7 @@ class MW_WP_Form_Contact_Data_Setting {
 		}
 		update_post_meta( $this->post_id, MWF_config::CONTACT_DATA_NAME, $permit_values );
 
-		$contact_data_post_type = MWF_Functions::get_contact_data_post_type_from_form_id( $this->post_id );
+		$contact_data_post_type = get_post_type( $this->post_id );
 		do_action( 'mwform_contact_data_save-' . $contact_data_post_type, $this->post_id );
 
 		if ( $is_save_no_permit_value !== true ) {
