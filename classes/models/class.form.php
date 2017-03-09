@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Form
  * Description: フォームヘルパー
- * Version    : 1.10.1
+ * Version    : 1.11.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : September 25, 2012
- * Modified   : January 14, 2017
+ * Modified   : March 9, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -787,6 +787,42 @@ class MW_WP_Form_Form {
 			esc_js( $name ),
 			trim( $options['js'], '{}' )
 		);
+		return self::remove_linefeed_space( $_ret );
+	}
+
+	/**
+	 * monthpicker生成
+	 *
+	 * @param string $name name属性
+	 * @param string $options
+	 * @return string HTML
+	 */
+	public function monthpicker( $name, $options = array() ) {
+		$defaults = array(
+			'id'          => null,
+			'class'       => null,
+			'size'        => 30,
+			'js'          => '',
+			'value'       => '',
+			'placeholder' => null,
+		);
+		$options = array_merge( $defaults, $options );
+		$_options = $options;
+		unset( $_options['js'] );
+		$attributes = $this->generate_attributes( $_options );
+
+		$_ret = sprintf(
+			'<input type="text" name="%s"%s />',
+			esc_attr( $name ),
+			$attributes
+		);
+		if ( $name ) {
+			$_ret .= sprintf(
+				'<script type="text/javascript">jQuery( function( $ ) { $("input[name=\'%s\']").MonthPicker( { %s } ); } );</script>',
+				esc_js( $name ),
+				trim( $options['js'], '{}' )
+			);
+		}
 		return self::remove_linefeed_space( $_ret );
 	}
 

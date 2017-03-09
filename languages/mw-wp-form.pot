@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.14.2\n"
+"Project-Id-Version: MW WP Form 3.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
-"POT-Creation-Date: 2017-01-20 05:51:08+00:00\n"
+"POT-Creation-Date: 2017-03-09 06:07:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -190,9 +190,10 @@ msgid "Send post value when you split the post value and display value by \":\" 
 msgstr ""
 
 #: classes/form-fields/class.checkbox.php:141
-#: classes/form-fields/class.datepicker.php:156
+#: classes/form-fields/class.datepicker.php:155
 #: classes/form-fields/class.email.php:127
 #: classes/form-fields/class.hidden.php:84
+#: classes/form-fields/class.monthpicker.php:166
 #: classes/form-fields/class.password.php:119
 #: classes/form-fields/class.radio.php:137
 #: classes/form-fields/class.select.php:133
@@ -217,10 +218,11 @@ msgid "Arranged vertically."
 msgstr ""
 
 #: classes/form-fields/class.checkbox.php:156
-#: classes/form-fields/class.datepicker.php:166
+#: classes/form-fields/class.datepicker.php:165
 #: classes/form-fields/class.email.php:137
 #: classes/form-fields/class.file.php:123
 #: classes/form-fields/class.image.php:126
+#: classes/form-fields/class.monthpicker.php:176
 #: classes/form-fields/class.number.php:133
 #: classes/form-fields/class.password.php:129
 #: classes/form-fields/class.radio.php:147
@@ -233,10 +235,11 @@ msgid "Dsiplay error"
 msgstr ""
 
 #: classes/form-fields/class.checkbox.php:158
-#: classes/form-fields/class.datepicker.php:168
+#: classes/form-fields/class.datepicker.php:167
 #: classes/form-fields/class.email.php:139
 #: classes/form-fields/class.file.php:125
 #: classes/form-fields/class.image.php:128
+#: classes/form-fields/class.monthpicker.php:178
 #: classes/form-fields/class.number.php:135
 #: classes/form-fields/class.password.php:131
 #: classes/form-fields/class.radio.php:149
@@ -298,6 +301,10 @@ msgstr ""
 
 #: classes/form-fields/class.image.php:30
 msgid "Image"
+msgstr ""
+
+#: classes/form-fields/class.monthpicker.php:30
+msgid "Monthpicker"
 msgstr ""
 
 #: classes/form-fields/class.number.php:30
@@ -566,51 +573,51 @@ msgstr ""
 msgid "Inquiry data"
 msgstr ""
 
-#: mw-wp-form.php:293
+#: mw-wp-form.php:292
 msgid "Add New Form"
 msgstr ""
 
-#: mw-wp-form.php:294
+#: mw-wp-form.php:293
 msgid "Edit Form"
 msgstr ""
 
-#: mw-wp-form.php:295
+#: mw-wp-form.php:294
 msgid "New Form"
 msgstr ""
 
-#: mw-wp-form.php:296
+#: mw-wp-form.php:295
 msgid "View Form"
 msgstr ""
 
-#: mw-wp-form.php:297
+#: mw-wp-form.php:296
 msgid "Search Forms"
 msgstr ""
 
-#: mw-wp-form.php:298
+#: mw-wp-form.php:297
 msgid "No Forms found"
 msgstr ""
 
-#: mw-wp-form.php:299
+#: mw-wp-form.php:298
 msgid "No Forms found in Trash"
 msgstr ""
 
-#: mw-wp-form.php:316
+#: mw-wp-form.php:315
 msgid "Edit "
 msgstr ""
 
-#: mw-wp-form.php:317
+#: mw-wp-form.php:316
 msgid "View"
 msgstr ""
 
-#: mw-wp-form.php:318
+#: mw-wp-form.php:317
 msgid "Search"
 msgstr ""
 
-#: mw-wp-form.php:319
+#: mw-wp-form.php:318
 msgid "No data found"
 msgstr ""
 
-#: mw-wp-form.php:320
+#: mw-wp-form.php:319
 msgid "No data found in Trash"
 msgstr ""
 
@@ -693,39 +700,39 @@ msgstr ""
 msgid "Input the key to use as transmission to automatic reply email. {} is unnecessary."
 msgstr ""
 
-#: templates/admin/settings.php:2
+#: templates/admin/settings.php:9
 msgid "Activate Query string of post"
 msgstr ""
 
-#: templates/admin/settings.php:3
+#: templates/admin/settings.php:13
 msgid "If this field is active, MW WP Form get query string. And get post data from query string \"post_id\". You can use $post's property in editor."
 msgstr ""
 
-#: templates/admin/settings.php:4
+#: templates/admin/settings.php:15
 msgid "Example: {ID}, {post_title}, {post_meta} etc..."
 msgstr ""
 
-#: templates/admin/settings.php:7
+#: templates/admin/settings.php:27
 msgid "Saving inquiry data in database"
 msgstr ""
 
-#: templates/admin/settings.php:10
+#: templates/admin/settings.php:39
 msgid "Enable scrolling of screen transition."
 msgstr ""
 
-#: templates/admin/settings.php:13
+#: templates/admin/settings.php:44
 msgid "Next Tracking Number"
 msgstr ""
 
-#: templates/admin/settings.php:16
+#: templates/admin/settings.php:57
 msgid "I want to change."
 msgstr ""
 
-#: templates/admin/settings.php:20
+#: templates/admin/settings.php:63
 msgid "Akismet Setting"
 msgstr ""
 
-#: templates/admin/settings.php:35
+#: templates/admin/settings.php:78
 msgid "Input the key to use Akismet."
 msgstr ""
 

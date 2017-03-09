@@ -1,8 +1,8 @@
 <?php
 /**
- * Name       : MW WP Form Field Datepicker
- * Description: datepickerを出力
- * Version    : 1.8.1
+ * Name       : MW WP Form Field Monthpicker
+ * Description: monthpickerを出力
+ * Version    : 1.0.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 14, 2012
@@ -10,7 +10,7 @@
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
-class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
+class MW_WP_Form_Field_Monthpicker extends MW_WP_Form_Abstract_Form_Field {
 
 	/**
 	 * $type
@@ -26,8 +26,8 @@ class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function set_names() {
 		return array(
-			'shortcode_name' => 'mwform_datepicker',
-			'display_name'   => __( 'Datepicker', 'mw-wp-form' ),
+			'shortcode_name' => 'mwform_monthpicker',
+			'display_name'   => __( 'Monthpicker', 'mw-wp-form' ),
 		);
 	}
 
@@ -57,32 +57,43 @@ class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
 	protected function input_page() {
 		global $wp_scripts;
 		$ui = $wp_scripts->query( 'jquery-ui-core' );
-		wp_enqueue_style( 'jquery.ui', '//ajax.googleapis.com/ajax/libs/jqueryui/' . $ui->ver . '/themes/smoothness/jquery-ui.min.css', array(), $ui->ver );
-		wp_enqueue_script( 'jquery-ui-datepicker' );
+		wp_enqueue_style(
+			'jquery.ui', '//ajax.googleapis.com/ajax/libs/jqueryui/' . $ui->ver . '/themes/smoothness/jquery-ui.min.css',
+			array(),
+			$ui->ver
+		);
+
+		wp_enqueue_style(
+			'jquery-ui-monthpicker',
+			untrailingslashit( plugin_dir_url( 'mw-wp-form/mw-wp-form.php' ) ) . '/js/jquery-ui-month-picker/MonthPicker.min.css',
+			array(),
+			$ui->ver
+		);
+
+		wp_enqueue_script(
+			'jquery-ui-monthpicker',
+			untrailingslashit( plugin_dir_url( 'mw-wp-form/mw-wp-form.php' ) ) . '/js/jquery-ui-month-picker/MonthPicker.min.js',
+			array( 'jquery', 'jquery-ui-button', 'jquery-ui-datepicker' ),
+			$ui->ver,
+			true
+		);
 
 		$Json_Parser = new MW_WP_Form_Json_Parser( $this->atts['js'] );
 		$this->atts['js'] = $Json_Parser->create_json();
 		$js = json_decode( $this->atts['js'], true );
 
-		// jsの指定がないときはデフォルトで年付き変更機能追加
-		if ( empty( $js ) ) {
-			$js = array(
-				'showMonthAfterYear' => 'true',
-				'changeYear'         => 'true',
-				'changeMonth'        => 'true',
-			);
-		}
+		$js = array_merge( $js, array(
+			'Button' => 'false',
+		) );
 
-		$translate_datepicker = apply_filters( 'mwform_translate_datepicker_' . $this->form_key, true );
-		if ( $translate_datepicker && get_locale() == 'ja' ) {
+		$translate_monthpicker = apply_filters( 'mwform_translate_monthpicker_' . $this->form_key, true );
+		if ( $translate_monthpicker && get_locale() == 'ja' ) {
 			$js = array_merge( array(
-				'yearSuffix'      => '年',
-				'dateFormat'      => 'yy年mm月dd日',
-				'dayNames'        => array( '日曜日', '月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日' ),
-				'dayNamesMin'     => array( '日', '月', '火', '水', '木', '金', '土' ),
-				'dayNamesShort'   => array( '日曜', '月曜', '火曜', '水曜', '木曜', '金曜', '土曜' ),
-				'monthNames'      => array( '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月' ),
-				'monthNamesShort' => array( '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月' ),
+				'i18n' => array(
+					'year'   => '',
+					'months' => array( '1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月' )
+				),
+				'MonthFormat' => 'yy年mm月',
 			), $js );
 		}
 
@@ -94,7 +105,7 @@ class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
 		}
 
 		$_ret  = '';
-		$_ret .= $this->Form->datepicker( $this->atts['name'], array(
+		$_ret .= $this->Form->monthpicker( $this->atts['name'], array(
 			'id'          => $this->atts['id'],
 			'class'       => $this->atts['class'],
 			'size'        => $this->atts['size'],

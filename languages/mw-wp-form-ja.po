@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 2.14.2\n"
+"Project-Id-Version: MW WP Form 3.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
-"POT-Creation-Date: 2017-01-20 14:51+0900\n"
-"PO-Revision-Date: 2017-01-20 14:54+0900\n"
+"POT-Creation-Date: 2017-03-09 15:08+0900\n"
+"PO-Revision-Date: 2017-03-09 15:08+0900\n"
 "Last-Translator: inc2734 <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -202,9 +202,10 @@ msgid ""
 msgstr "選択肢を「:」で送信値と表示値に分割したとき、送信値をメールで送信"
 
 #: classes/form-fields/class.checkbox.php:141
-#: classes/form-fields/class.datepicker.php:156
+#: classes/form-fields/class.datepicker.php:155
 #: classes/form-fields/class.email.php:127
 #: classes/form-fields/class.hidden.php:84
+#: classes/form-fields/class.monthpicker.php:166
 #: classes/form-fields/class.password.php:119
 #: classes/form-fields/class.radio.php:137
 #: classes/form-fields/class.select.php:133
@@ -229,10 +230,11 @@ msgid "Arranged vertically."
 msgstr "垂直に配置する"
 
 #: classes/form-fields/class.checkbox.php:156
-#: classes/form-fields/class.datepicker.php:166
+#: classes/form-fields/class.datepicker.php:165
 #: classes/form-fields/class.email.php:137
 #: classes/form-fields/class.file.php:123
 #: classes/form-fields/class.image.php:126
+#: classes/form-fields/class.monthpicker.php:176
 #: classes/form-fields/class.number.php:133
 #: classes/form-fields/class.password.php:129
 #: classes/form-fields/class.radio.php:147
@@ -245,10 +247,11 @@ msgid "Dsiplay error"
 msgstr "エラー表示"
 
 #: classes/form-fields/class.checkbox.php:158
-#: classes/form-fields/class.datepicker.php:168
+#: classes/form-fields/class.datepicker.php:167
 #: classes/form-fields/class.email.php:139
 #: classes/form-fields/class.file.php:125
 #: classes/form-fields/class.image.php:128
+#: classes/form-fields/class.monthpicker.php:178
 #: classes/form-fields/class.number.php:135
 #: classes/form-fields/class.password.php:131
 #: classes/form-fields/class.radio.php:149
@@ -311,6 +314,10 @@ msgstr "hiddenの値を表示"
 #: classes/form-fields/class.image.php:30
 msgid "Image"
 msgstr "画像フィールド"
+
+#: classes/form-fields/class.monthpicker.php:30
+msgid "Monthpicker"
+msgstr "年月"
 
 #: classes/form-fields/class.number.php:30
 msgid "Number"
@@ -578,51 +585,51 @@ msgstr "グラフ"
 msgid "Inquiry data"
 msgstr "問い合わせデータ"
 
-#: mw-wp-form.php:293
+#: mw-wp-form.php:292
 msgid "Add New Form"
 msgstr "フォームを追加"
 
-#: mw-wp-form.php:294
+#: mw-wp-form.php:293
 msgid "Edit Form"
 msgstr "フォームを編集"
 
-#: mw-wp-form.php:295
+#: mw-wp-form.php:294
 msgid "New Form"
 msgstr "新しいフォーム"
 
-#: mw-wp-form.php:296
+#: mw-wp-form.php:295
 msgid "View Form"
 msgstr "フォームを表示"
 
-#: mw-wp-form.php:297
+#: mw-wp-form.php:296
 msgid "Search Forms"
 msgstr "フォームを検索"
 
-#: mw-wp-form.php:298
+#: mw-wp-form.php:297
 msgid "No Forms found"
 msgstr "フォームがありません"
 
-#: mw-wp-form.php:299
+#: mw-wp-form.php:298
 msgid "No Forms found in Trash"
 msgstr "ゴミ箱にフォームはありません"
 
-#: mw-wp-form.php:316
+#: mw-wp-form.php:315
 msgid "Edit "
 msgstr "編集"
 
-#: mw-wp-form.php:317
+#: mw-wp-form.php:316
 msgid "View"
 msgstr "表示"
 
-#: mw-wp-form.php:318
+#: mw-wp-form.php:317
 msgid "Search"
 msgstr "検索"
 
-#: mw-wp-form.php:319
+#: mw-wp-form.php:318
 msgid "No data found"
 msgstr "データがありません"
 
-#: mw-wp-form.php:320
+#: mw-wp-form.php:319
 msgid "No data found in Trash"
 msgstr "ゴミ箱にデータはありません"
 
@@ -711,11 +718,11 @@ msgid ""
 "unnecessary."
 msgstr "自動返信メールに使用する項目のキーを入力してください。{ }は不要です。"
 
-#: templates/admin/settings.php:2
+#: templates/admin/settings.php:9
 msgid "Activate Query string of post"
 msgstr "URL引数を有効にする"
 
-#: templates/admin/settings.php:3
+#: templates/admin/settings.php:13
 msgid ""
 "If this field is active, MW WP Form get query string. And get post data from "
 "query string \"post_id\". You can use $post's property in editor."
@@ -724,31 +731,31 @@ msgstr ""
 "とに投稿を取得します。その投稿（$post） のプロパティを使用できるようになりま"
 "す。"
 
-#: templates/admin/settings.php:4
+#: templates/admin/settings.php:15
 msgid "Example: {ID}, {post_title}, {post_meta} etc..."
 msgstr "例：{ID}、{post_title}、{post_meta}など…"
 
-#: templates/admin/settings.php:7
+#: templates/admin/settings.php:27
 msgid "Saving inquiry data in database"
 msgstr "問い合わせデータをデータベースに保存"
 
-#: templates/admin/settings.php:10
+#: templates/admin/settings.php:39
 msgid "Enable scrolling of screen transition."
 msgstr "画面変遷時のスクロールを有効にする"
 
-#: templates/admin/settings.php:13
+#: templates/admin/settings.php:44
 msgid "Next Tracking Number"
 msgstr "次の問い合わせ番号"
 
-#: templates/admin/settings.php:16
+#: templates/admin/settings.php:57
 msgid "I want to change."
 msgstr "変更する"
 
-#: templates/admin/settings.php:20
+#: templates/admin/settings.php:63
 msgid "Akismet Setting"
 msgstr "Akismet 設定"
 
-#: templates/admin/settings.php:35
+#: templates/admin/settings.php:78
 msgid "Input the key to use Akismet."
 msgstr "Akismetを使用する項目のキーを入力してください。"
 
