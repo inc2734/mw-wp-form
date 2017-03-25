@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MW WP Form 3.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
-"POT-Creation-Date: 2017-03-09 15:08+0900\n"
-"PO-Revision-Date: 2017-03-09 15:08+0900\n"
+"POT-Creation-Date: 2017-03-25 21:29+0900\n"
+"PO-Revision-Date: 2017-03-25 21:30+0900\n"
 "Last-Translator: inc2734 <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -534,6 +534,14 @@ msgstr "文字数が足りません。"
 msgid "The number of the minimum characters"
 msgstr "最小文字数"
 
+#: classes/validation-rules/class.month.php:32
+msgid "This is not the format of a date (Year/Month)."
+msgstr "日付（年月）の形式ではありません。"
+
+#: classes/validation-rules/class.month.php:73
+msgid "Date(Year/Month)"
+msgstr "日付（年月）"
+
 #: classes/validation-rules/class.noempty.php:32
 #: classes/validation-rules/class.nofalse.php:32
 msgid "Please enter."
@@ -576,60 +584,60 @@ msgstr "URL"
 msgid "This is not the format of a zip code."
 msgstr "郵便番号の形式ではありません。"
 
-#: mw-wp-form.php:168 mw-wp-form.php:169 templates/chart/index.php:4
+#: mw-wp-form.php:169 mw-wp-form.php:170 templates/chart/index.php:4
 msgid "Chart"
 msgstr "グラフ"
 
-#: mw-wp-form.php:197 mw-wp-form.php:198
+#: mw-wp-form.php:198 mw-wp-form.php:199
 #: templates/stores-inquiry-data-form-list/index.php:2
 msgid "Inquiry data"
 msgstr "問い合わせデータ"
 
-#: mw-wp-form.php:292
+#: mw-wp-form.php:293
 msgid "Add New Form"
 msgstr "フォームを追加"
 
-#: mw-wp-form.php:293
+#: mw-wp-form.php:294
 msgid "Edit Form"
 msgstr "フォームを編集"
 
-#: mw-wp-form.php:294
+#: mw-wp-form.php:295
 msgid "New Form"
 msgstr "新しいフォーム"
 
-#: mw-wp-form.php:295
+#: mw-wp-form.php:296
 msgid "View Form"
 msgstr "フォームを表示"
 
-#: mw-wp-form.php:296
+#: mw-wp-form.php:297
 msgid "Search Forms"
 msgstr "フォームを検索"
 
-#: mw-wp-form.php:297
+#: mw-wp-form.php:298
 msgid "No Forms found"
 msgstr "フォームがありません"
 
-#: mw-wp-form.php:298
+#: mw-wp-form.php:299
 msgid "No Forms found in Trash"
 msgstr "ゴミ箱にフォームはありません"
 
-#: mw-wp-form.php:315
+#: mw-wp-form.php:316
 msgid "Edit "
 msgstr "編集"
 
-#: mw-wp-form.php:316
+#: mw-wp-form.php:317
 msgid "View"
 msgstr "表示"
 
-#: mw-wp-form.php:317
+#: mw-wp-form.php:318
 msgid "Search"
 msgstr "検索"
 
-#: mw-wp-form.php:318
+#: mw-wp-form.php:319
 msgid "No data found"
 msgstr "データがありません"
 
-#: mw-wp-form.php:319
+#: mw-wp-form.php:320
 msgid "No data found in Trash"
 msgstr "ゴミ箱にデータはありません"
 

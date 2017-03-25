@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: MW WP Form 3.1.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
-"POT-Creation-Date: 2017-03-09 06:07:50+00:00\n"
+"POT-Creation-Date: 2017-03-25 12:29:04+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -522,6 +522,14 @@ msgstr ""
 msgid "The number of the minimum characters"
 msgstr ""
 
+#: classes/validation-rules/class.month.php:32
+msgid "This is not the format of a date (Year/Month)."
+msgstr ""
+
+#: classes/validation-rules/class.month.php:73
+msgid "Date(Year/Month)"
+msgstr ""
+
 #: classes/validation-rules/class.noempty.php:32
 #: classes/validation-rules/class.nofalse.php:32
 msgid "Please enter."
@@ -564,60 +572,60 @@ msgstr ""
 msgid "This is not the format of a zip code."
 msgstr ""
 
-#: mw-wp-form.php:168 mw-wp-form.php:169 templates/chart/index.php:4
+#: mw-wp-form.php:169 mw-wp-form.php:170 templates/chart/index.php:4
 msgid "Chart"
 msgstr ""
 
-#: mw-wp-form.php:197 mw-wp-form.php:198
+#: mw-wp-form.php:198 mw-wp-form.php:199
 #: templates/stores-inquiry-data-form-list/index.php:2
 msgid "Inquiry data"
 msgstr ""
 
-#: mw-wp-form.php:292
+#: mw-wp-form.php:293
 msgid "Add New Form"
 msgstr ""
 
-#: mw-wp-form.php:293
+#: mw-wp-form.php:294
 msgid "Edit Form"
 msgstr ""
 
-#: mw-wp-form.php:294
+#: mw-wp-form.php:295
 msgid "New Form"
 msgstr ""
 
-#: mw-wp-form.php:295
+#: mw-wp-form.php:296
 msgid "View Form"
 msgstr ""
 
-#: mw-wp-form.php:296
+#: mw-wp-form.php:297
 msgid "Search Forms"
 msgstr ""
 
-#: mw-wp-form.php:297
+#: mw-wp-form.php:298
 msgid "No Forms found"
 msgstr ""
 
-#: mw-wp-form.php:298
+#: mw-wp-form.php:299
 msgid "No Forms found in Trash"
 msgstr ""
 
-#: mw-wp-form.php:315
+#: mw-wp-form.php:316
 msgid "Edit "
 msgstr ""
 
-#: mw-wp-form.php:316
+#: mw-wp-form.php:317
 msgid "View"
 msgstr ""
 
-#: mw-wp-form.php:317
+#: mw-wp-form.php:318
 msgid "Search"
 msgstr ""
 
-#: mw-wp-form.php:318
+#: mw-wp-form.php:319
 msgid "No data found"
 msgstr ""
 
-#: mw-wp-form.php:319
+#: mw-wp-form.php:320
 msgid "No data found in Trash"
 msgstr ""
 

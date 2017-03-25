@@ -42,6 +42,7 @@ class MW_WP_Form {
 		'tel'           => '',
 		'mail'          => '',
 		'date'          => '',
+		'month'         => '',
 		'url'           => '',
 		'eq'            => '',
 		'between'       => '',
