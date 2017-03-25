@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Admin
  * Description: 管理画面クラス
- * Version    : 2.1.0
+ * Version    : 2.1.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : February 21, 2013
- * Modified   : August 22, 2016
+ * Modified   : March 25, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -39,7 +39,11 @@ class MW_WP_Form_Admin {
 			'admin_mail_from',
 		);
 		foreach ( $triminglists as $name ) {
-			$data[$name] = trim( mb_convert_kana( $data[$name], 's', get_option( 'blog_charset' ) ) );
+			if ( function_exists( 'mb_convert_kana' ) ) {
+				$data[$name] = trim( mb_convert_kana( $data[$name], 's', get_option( 'blog_charset' ) ) );
+			} else {
+				$data[$name] = trim( $data[$name] );
+			}
 		}
 
 		if ( !empty( $data['validation'] ) && is_array( $data['validation'] ) ) {
