@@ -149,7 +149,6 @@ class MW_WP_Form_Main_Controller {
 		// complete のとき
 		if ( $view_flg === 'complete' ) {
 			if ( !$this->is_complete_twice() ) {
-				// @todo
 				$is_mail_sended = $this->send();
 			}
 			// 手動フォームの場合は完了画面に ExecShortcode が無く footer の clear_values が
@@ -157,6 +156,10 @@ class MW_WP_Form_Main_Controller {
 			if ( !$form_id ) {
 				$this->Data->clear_values();
 			}
+		}
+
+		if ( isset( $is_mail_sended ) && false === $is_mail_sended ) {
+			$this->Data->set_send_error();
 		}
 
 		do_action( 'mwform_before_redirect_' . $form_key );
@@ -277,7 +280,7 @@ class MW_WP_Form_Main_Controller {
 			$is_admin_mail_sended = $Mail_Service->send_admin_mail();
 
 			if ( ! $is_admin_mail_sended ) {
-				return;
+				return false;
 			}
 
 			// 自動返信メールの送信

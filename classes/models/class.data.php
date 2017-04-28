@@ -541,4 +541,20 @@ class MW_WP_Form_Data {
 	public function get_view_flg() {
 		return $this->view_flg;
 	}
+
+	/**
+	 * 送信エラーを示すフラグをセット
+	 */
+	public function set_send_error() {
+		$this->set( MWF_Config::SEND_ERROR, true );
+	}
+
+	/**
+	 * 送信エラーを示すフラグを返す
+	 *
+	 * @return boolean
+	 */
+	public function get_send_error() {
+		return $this->get( MWF_Config::SEND_ERROR );
+	}
 }

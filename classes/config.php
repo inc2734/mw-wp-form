@@ -66,4 +66,9 @@ class MWF_Config {
 	 * CONTACT_DATA_NAME
 	 */
 	const CONTACT_DATA_NAME = '_mw-wp-form_data';
+
+	/**
+	 * 送信エラーかどうかを判定する MW_WP_Form_Data のキー
+	 */
+	const SEND_ERROR = 'mw-wp-form-send-error';
 }

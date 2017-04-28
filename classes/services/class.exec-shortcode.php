@@ -301,8 +301,12 @@ class MW_WP_Form_Exec_Shortcode {
 
 		do_action( 'mwform_before_load_content_' . $form_key );
 
+		// 送信エラー画面
+		if ( $this->Data->get_send_error() ) {
+			$content = $this->get_send_error_page_content( $form_id );
+		}
 		// 入力画面
-		if ( $view_flg === 'input' ) {
+		elseif ( $view_flg === 'input' ) {
 			$content = $this->get_input_page_content( $form_id );
 		}
 		// 確認画面
@@ -333,7 +337,23 @@ class MW_WP_Form_Exec_Shortcode {
 		$post     = get_post( $form_id );
 		setup_postdata( $post );
 		$content = apply_filters( 'mwform_post_content_raw_' . $form_key, get_the_content(), $this->Data );
+		$content = $this->wpautop( $content );
+		$content = sprintf(
+			'[mwform]%s[/mwform]',
+			apply_filters( 'mwform_post_content_' . $form_key, $content, $this->Data )
+		);
+		wp_reset_postdata();
+		return $content;
+	}
 
+	/**
+	 * wpautop の設定に応じてコンテンツを改行する
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	protected function wpautop( $content ) {
+		$form_key = $this->get( 'key' );
 		$has_wpautop = false;
 		if ( has_filter( 'the_content', 'wpautop' ) ) {
 			$has_wpautop = true;
@@ -348,11 +368,6 @@ class MW_WP_Form_Exec_Shortcode {
 			$content = wpautop( $content );
 		}
 
-		$content = sprintf(
-			'[mwform]%s[/mwform]',
-			apply_filters( 'mwform_post_content_' . $form_key, $content, $this->Data )
-		);
-		wp_reset_postdata();
 		return $content;
 	}
 
@@ -375,25 +390,31 @@ class MW_WP_Form_Exec_Shortcode {
 		$form_key = $this->get( 'key' );
 		$Setting  = $this->Setting;
 		$content = apply_filters( 'mwform_complete_content_raw_' . $form_key, $Setting->get( 'complete_message' ), $this->Data );
-
-		$has_wpautop = false;
-		if ( has_filter( 'the_content', 'wpautop' ) ) {
-			$has_wpautop = true;
-		}
-		$has_wpautop = apply_filters(
-			'mwform_content_wpautop_' . $form_key,
-			$has_wpautop,
-			$this->view_flg
-		);
-
-		if ( $has_wpautop ) {
-			$content = wpautop( $content );
-		}
-
+		$content = $this->wpautop( $content );
 		$content = sprintf(
 			'[mwform_complete_message]%s[/mwform_complete_message]',
 			apply_filters( 'mwform_complete_content_' . $form_key, $content, $this->Data )
 		);
+		return $content;
+	}
+
+	/**
+	 * 送信エラー画面を表示
+	 *
+	 * @return string $content
+	 */
+	public function get_send_error_page_content() {
+		$form_key = $this->get( 'key' );
+		$content = sprintf(
+			'<div id="mw_wp_form_%s" class="mw_wp_form mw_wp_form_send_error">
+				%s
+			<!-- end .mw_wp_form --></div>',
+			esc_attr( $form_key ),
+			__( 'There was an error trying to send your message. Please try again later.', 'mw-wp-form' )
+		);
+		$content = apply_filters( 'mwform_send_error_content_raw_' . $form_key, $content, $this->Data );
+		$content = $this->wpautop( $content );
+		$content = apply_filters( 'mwform_send_error_content_' . $form_key, $content, $this->Data );
 		return $content;
 	}
 
