@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Mail
  * Description: メールクラス
- * Version    : 2.1.0
+ * Version    : 2.1.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 20, 2012
- * Modified   : January 13, 2017
+ * Modified   : April 28, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -73,6 +73,8 @@ class MW_WP_Form_Mail {
 
 	/**
 	 * メール送信
+	 *
+	 * @return boolean
 	 */
 	public function send() {
 		if ( !$this->to ) {
@@ -118,14 +120,16 @@ class MW_WP_Form_Mail {
 				$body,
 				implode( "\n", $this->attachments )
 			);
-			file_put_contents( $temp_dir . '/mw-wp-form-debug.log', $contents, FILE_APPEND );
+			$is_mail_sended = file_put_contents( $temp_dir . '/mw-wp-form-debug.log', $contents, FILE_APPEND );
 		} else {
-			@wp_mail( $to, $subject, $body, $headers, $this->attachments );
+			$is_mail_sended = wp_mail( $to, $subject, $body, $headers, $this->attachments );
 		}
 
 		remove_action( 'phpmailer_init'   , array( $this, 'set_return_path' ) );
 		remove_filter( 'wp_mail_from'     , array( $this, 'set_mail_from' ) );
 		remove_filter( 'wp_mail_from_name', array( $this, 'set_mail_from_name' ) );
+
+		return $is_mail_sended;
 	}
 
 	/**

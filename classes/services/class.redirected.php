@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Redirected
- * Version    : 1.0.1
+ * Version    : 1.0.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : April 3, 2015
+ * Modified   : April 28, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -31,7 +31,7 @@ class MW_WP_Form_Redirected {
 	 * @var bool
 	 */
 	protected $querystring;
-	
+
 	/**
 	 * __construct
 	 *
@@ -48,7 +48,7 @@ class MW_WP_Form_Redirected {
 
 		$this->initialize( $input, $confirm, $complete, $valdation_error, $is_valid, $post_condition );
 	}
-	
+
 	/**
 	 * initialize
 	 *

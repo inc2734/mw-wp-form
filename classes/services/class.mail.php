@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Mail Service
- * Version    : 1.3.1
+ * Version    : 1.3.2
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : March 18, 2016
+ * Modified   : April 28, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -79,6 +79,8 @@ class MW_WP_Form_Mail_Service {
 
 	/**
 	 * 管理者メールの送信とデータベースへの保存
+	 *
+	 * @return boolean
 	 */
 	public function send_admin_mail() {
 		if ( $this->Setting->get( 'usedb' ) ) {
@@ -100,13 +102,22 @@ class MW_WP_Form_Mail_Service {
 			clone $Mail_admin,
 			clone $this->Data
 		);
-		$Mail_admin->send();
+		$is_admin_mail_sended = $Mail_admin->send();
+
+		// DB保存時に送信に失敗したときは保存したデータを破棄
+		// 本来はメール送信が成功した後に保存すべきだが、広報互換性を保つためにこのような処理にする必要あり
+		// 例えば https://2inc.org/blog/2013/11/10/3840/ が動作しなくなるため
+		if ( ! $is_admin_mail_sended && $this->Setting->get( 'usedb' ) ) {
+			wp_delete_post( $saved_mail_id );
+		}
 
 		// DB非保存時は管理者メール送信後、ファイルを削除
 		if ( !$this->Setting->get( 'usedb' ) ) {
 			$File = new MW_WP_Form_File();
 			$File->delete_files( $this->attachments );
 		}
+
+		return $is_admin_mail_sended;
 	}
 
 	/**
@@ -124,6 +135,8 @@ class MW_WP_Form_Mail_Service {
 
 	/**
 	 * 自動返信メールの送信
+	 *
+	 * @return boolean
 	 */
 	public function send_reply_mail() {
 		$Mail_auto = $this->get_parsed_mail_object( $this->Mail_auto_raw );
@@ -134,7 +147,8 @@ class MW_WP_Form_Mail_Service {
 			clone $Mail_auto,
 			clone $this->Data
 		);
-		$Mail_auto->send();
+		$is_reply_mail_sended = $Mail_auto->send();
+		return $is_reply_mail_sended;
 	}
 
 	/**

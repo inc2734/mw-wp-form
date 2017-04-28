@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Main Controller
  * Description: フロントエンドにおいて、適切な画面にリダイレクトさせる
- * Version    : 1.5.0
+ * Version    : 1.5.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 23, 2014
- * Modified   : January 30, 2017
+ * Modified   : April 28, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -149,12 +149,8 @@ class MW_WP_Form_Main_Controller {
 		// complete のとき
 		if ( $view_flg === 'complete' ) {
 			if ( !$this->is_complete_twice() ) {
-				$this->send();
-
-				do_action(
-					'mwform_after_send_' . $form_key,
-					$this->Data
-				);
+				// @todo
+				$is_mail_sended = $this->send();
 			}
 			// 手動フォームの場合は完了画面に ExecShortcode が無く footer の clear_values が
 			// 効かないためここで消す
@@ -260,6 +256,8 @@ class MW_WP_Form_Main_Controller {
 
 	/**
 	 * メール送信
+	 *
+	 * @return boolean
 	 */
 	protected function send() {
 		$Mail         = new MW_WP_Form_Mail();
@@ -276,7 +274,11 @@ class MW_WP_Form_Main_Controller {
 				}
 			}
 
-			$Mail_Service->send_admin_mail();
+			$is_admin_mail_sended = $Mail_Service->send_admin_mail();
+
+			if ( ! $is_admin_mail_sended ) {
+				return;
+			}
 
 			// 自動返信メールの送信
 			$automatic_reply_email = $this->Setting->get( 'automatic_reply_email' );
@@ -286,12 +288,14 @@ class MW_WP_Form_Main_Controller {
 					$automatic_reply_email
 				);
 				if ( $automatic_reply_email && !$is_invalid_mail_address ) {
-					$Mail_Service->send_reply_mail();
+					$is_reply_mail_sended = $Mail_Service->send_reply_mail();
 				}
 			}
 
 			// 問い合わせ番号を加算
 			$Mail_Service->update_tracking_number();
+
+			return true;
 		}
 	}
 
