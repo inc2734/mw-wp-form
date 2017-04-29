@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Mail
  * Description: メールクラス
- * Version    : 2.1.1
+ * Version    : 2.2.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 20, 2012
- * Modified   : April 28, 2017
+ * Modified   : April 29, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -129,7 +129,7 @@ class MW_WP_Form_Mail {
 		remove_filter( 'wp_mail_from'     , array( $this, 'set_mail_from' ) );
 		remove_filter( 'wp_mail_from_name', array( $this, 'set_mail_from_name' ) );
 
-		return $is_mail_sended;
+		return apply_filters( 'mwform_is_mail_sended', $is_mail_sended );
 	}
 
 	/**
@@ -364,16 +364,25 @@ class MW_WP_Form_Mail {
 	 * メールを送信内容に置換
 	 *
 	 * @param MW_WP_Form_Setting $Setting
-	 * @param bool $do_update
 	 */
-	public function parse( $Setting, $do_update = false ) {
-		$Data = MW_WP_Form_Data::getInstance();
-
+	public function parse( $Setting ) {
 		$this->Mail_Parser = new MW_WP_Form_Mail_Parser( $this, $Setting );
-		$Mail = $this->Mail_Parser->get_parsed_mail_object( $do_update );
+		$Mail = $this->Mail_Parser->get_parsed_mail_object();
 		foreach ( get_object_vars( $Mail ) as $key => $value ) {
 			$this->$key = $value;
 		}
+	}
+
+	/**
+	 * メールをデータベースに保存
+	 *
+	 * @param MW_WP_Form_Setting $Setting
+	 * @return int
+	 */
+	public function save( $Setting ) {
+		$this->Mail_Parser = new MW_WP_Form_Mail_Parser( $this, $Setting );
+		$this->Mail_Parser->save();
+		return $this->get_saved_mail_id();
 	}
 
 	/**

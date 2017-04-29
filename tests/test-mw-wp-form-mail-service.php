@@ -284,6 +284,9 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 	/**
 	 */
 	public function test_データベースに保存() {
+		add_filter( 'mwform_is_mail_sended', function() {
+			return true;
+		} );
 		$this->Setting->set( 'usedb', 1 );
 		$Mail_Service = new MW_WP_Form_Mail_Service(
 			$this->Mail, $this->form_key, $this->Setting

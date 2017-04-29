@@ -317,7 +317,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$this->Mail->from   = '{from}';
 		$this->Mail->sender = '{sender}';
 		$this->Mail->body   = '{body}';
-		$this->Mail->parse( $Setting, false );
+		$this->Mail->parse( $Setting );
 
 		$this->assertEquals( '', $this->Mail->to );
 		$this->assertEquals( '', $this->Mail->cc );
@@ -328,9 +328,9 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @group parse
+	 * @group save
 	 */
-	public function test_parse_データベースに保存() {
+	public function test_save() {
 		$post_id = $this->factory->post->create( array(
 			'post_type' => MWF_Config::NAME,
 		) );
@@ -338,7 +338,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Data = MW_WP_Form_Data::getInstance( MWF_Functions::get_form_key_from_form_id( $post_id ) );
 		$Data->set( 'example', 'example' );
 		$this->Mail->body = '{example}';
-		$this->Mail->parse( $Setting, true );
+		$this->Mail->save( $Setting );
 
 		$posts = get_posts( array(
 			'post_type' => MWF_Functions::get_contact_data_post_type_from_form_id( $post_id ),
@@ -363,7 +363,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Data = MW_WP_Form_Data::getInstance( MWF_Functions::get_form_key_from_form_id( $post_id ) );
 		$Data->set( 'example', 'example' );
 		$this->Mail->body = '{example}';
-		$this->Mail->parse( $Setting, true );
+		$this->Mail->save( $Setting );
 		$this->assertNotEmpty( $this->Mail->get_saved_mail_id() );
 	}
 
@@ -378,7 +378,6 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Data = MW_WP_Form_Data::getInstance( MWF_Functions::get_form_key_from_form_id( $post_id ) );
 		$Data->set( 'example', 'example' );
 		$this->Mail->body = '{example}';
-		$this->Mail->parse( $Setting, false );
 		$this->assertNull( $this->Mail->get_saved_mail_id() );
 	}
 }
