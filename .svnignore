@@ -5,3 +5,4 @@ tests
 .travis.yml
 phpunit.xml.dist
 phpcs.ruleset.xml
+vendor
