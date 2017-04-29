@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 3.1.0\n"
+"Project-Id-Version: MW WP Form 3.2.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
-"POT-Creation-Date: 2017-03-25 12:29:04+00:00\n"
+"POT-Creation-Date: 2017-04-29 13:28:37+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -168,7 +168,9 @@ msgstr ""
 #: classes/form-fields/class.checkbox.php:130
 #: classes/form-fields/class.radio.php:126
 #: classes/form-fields/class.select.php:122
-msgid "You can split the post value and display value by \":\". But display value is sent in e-mail."
+msgid ""
+"You can split the post value and display value by \":\". But display value "
+"is sent in e-mail."
 msgstr ""
 
 #: classes/form-fields/class.checkbox.php:131
@@ -186,7 +188,9 @@ msgstr ""
 #: classes/form-fields/class.checkbox.php:138
 #: classes/form-fields/class.radio.php:134
 #: classes/form-fields/class.select.php:130
-msgid "Send post value when you split the post value and display value by \":\" in choices."
+msgid ""
+"Send post value when you split the post value and display value by \":\" in "
+"choices."
 msgstr ""
 
 #: classes/form-fields/class.checkbox.php:141
@@ -388,6 +392,10 @@ msgstr ""
 
 #: classes/models/class.csv.php:147 templates/contact-data/detail.php:62
 msgid "Memo"
+msgstr ""
+
+#: classes/services/class.exec-shortcode.php:413
+msgid "There was an error trying to send your message. Please try again later."
 msgstr ""
 
 #: classes/validation-rules/class.akismet.php:30
@@ -646,7 +654,9 @@ msgid "It is automatically converted to Tracking number when you input {%s}."
 msgstr ""
 
 #: templates/admin/admin-mail-options.php:9
-msgid "If Admin Email Options is a blank, Automatic Replay Email Options is used as Admin Email Options."
+msgid ""
+"If Admin Email Options is a blank, Automatic Replay Email Options is used as "
+"Admin Email Options."
 msgstr ""
 
 #: templates/admin/admin-mail-options.php:12
@@ -705,7 +715,9 @@ msgid "Automatic reply email"
 msgstr ""
 
 #: templates/admin/mail-options.php:29
-msgid "Input the key to use as transmission to automatic reply email. {} is unnecessary."
+msgid ""
+"Input the key to use as transmission to automatic reply email. {} is "
+"unnecessary."
 msgstr ""
 
 #: templates/admin/settings.php:9
@@ -713,7 +725,9 @@ msgid "Activate Query string of post"
 msgstr ""
 
 #: templates/admin/settings.php:13
-msgid "If this field is active, MW WP Form get query string. And get post data from query string \"post_id\". You can use $post's property in editor."
+msgid ""
+"If this field is active, MW WP Form get query string. And get post data from "
+"query string \"post_id\". You can use $post's property in editor."
 msgstr ""
 
 #: templates/admin/settings.php:15
@@ -797,7 +811,9 @@ msgid "Validation Error Page URL"
 msgstr ""
 
 #: templates/admin/url.php:29
-msgid "This urls are the redirection urls at the time of button press. When URL setting is empty, The page redirect on the same page."
+msgid ""
+"This urls are the redirection urls at the time of button press. When URL "
+"setting is empty, The page redirect on the same page."
 msgstr ""
 
 #: templates/admin/url.php:30
@@ -833,7 +849,9 @@ msgid "Bar chart"
 msgstr ""
 
 #: templates/chart/index.php:49
-msgid "Separator string (If the check box. If the separator attribute is not set to \",\")"
+msgid ""
+"Separator string (If the check box. If the separator attribute is not set to "
+"\",\")"
 msgstr ""
 
 #: templates/chart/index.php:71
@@ -850,7 +868,9 @@ msgid "CSV Download"
 msgstr ""
 
 #: templates/stores-inquiry-data-form-list/index.php:4
-msgid "You can see the inquiry data that are saved in the database by clicking on the link below."
+msgid ""
+"You can see the inquiry data that are saved in the database by clicking on "
+"the link below."
 msgstr ""
 
 #: templates/stores-inquiry-data-form-list/index.php:8
@@ -873,6 +893,7 @@ msgstr ""
 #: templates/stores-inquiry-data-form-list/index.php:19
 msgid "cases"
 msgstr ""
+
 #. Plugin Name of the plugin/theme
 msgid "MW WP Form"
 msgstr ""
@@ -882,7 +903,10 @@ msgid "http://plugins.2inc.org/mw-wp-form/"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "MW WP Form is shortcode base contact form plugin. This plugin have many feature. For example you can use many validation rules, contact data saving, and chart aggregation using saved contact data."
+msgid ""
+"MW WP Form is shortcode base contact form plugin. This plugin have many "
+"feature. For example you can use many validation rules, contact data saving, "
+"and chart aggregation using saved contact data."
 msgstr ""
 
 #. Author of the plugin/theme

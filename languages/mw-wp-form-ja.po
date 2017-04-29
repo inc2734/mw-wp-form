@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the MW WP Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: MW WP Form 3.1.0\n"
+"Project-Id-Version: MW WP Form 3.2.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mw-wp-form\n"
-"POT-Creation-Date: 2017-03-25 21:29+0900\n"
-"PO-Revision-Date: 2017-03-25 21:30+0900\n"
+"POT-Creation-Date: 2017-04-29 22:29+0900\n"
+"PO-Revision-Date: 2017-04-29 22:29+0900\n"
 "Last-Translator: inc2734 <inc@2inc.org>\n"
 "Language-Team: Takashi Kitajima <inc@2inc.org>\n"
 "Language: ja\n"
@@ -401,6 +401,10 @@ msgstr "対応済み"
 #: classes/models/class.csv.php:147 templates/contact-data/detail.php:62
 msgid "Memo"
 msgstr "メモ"
+
+#: classes/services/class.exec-shortcode.php:413
+msgid "There was an error trying to send your message. Please try again later."
+msgstr "エラーが発生しました、後ほど、もう一度お試しください"
 
 #: classes/validation-rules/class.akismet.php:30
 msgid "The contents which you input were judged with spam."
