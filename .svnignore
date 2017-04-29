@@ -3,4 +3,5 @@ bin
 tests
 .gitignore
 .travis.yml
-phpunit.xml
+phpunit.xml.dist
+phpcs.ruleset.xml
