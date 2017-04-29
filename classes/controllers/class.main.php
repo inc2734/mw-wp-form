@@ -160,6 +160,11 @@ class MW_WP_Form_Main_Controller {
 
 		if ( isset( $is_mail_sended ) && false === $is_mail_sended ) {
 			$this->Data->set_send_error();
+		} elseif ( isset( $is_mail_sended ) && true === $is_mail_sended ) {
+			do_action(
+				'mwform_after_send_' . $form_key,
+				$this->Data
+			);
 		}
 
 		do_action( 'mwform_before_redirect_' . $form_key );
