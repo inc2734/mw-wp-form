@@ -85,7 +85,6 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : Added filter hook mwform_is_mail_sended
 * Added   : Added filter hook mwform_send_error_content_raw_mw-wp-form-xxx
 * Added   : Added filter hook mwform_send_error_content_mw-wp-form-xxx
-* Added   : Added filter hook mwform_is_mail_sended
 
 = 3.1.0 =
 * Added   : Added the month picker field.
