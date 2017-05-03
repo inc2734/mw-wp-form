@@ -2,11 +2,11 @@
 /**
  * Name       : MW WP Form Mail
  * Description: メールクラス
- * Version    : 2.2.0
+ * Version    : 2.2.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : July 20, 2012
- * Modified   : April 29, 2017
+ * Modified   : May 4, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -77,8 +77,8 @@ class MW_WP_Form_Mail {
 	 * @return boolean
 	 */
 	public function send() {
-		if ( !$this->to ) {
-			return;
+		if ( ! $this->to ) {
+			return apply_filters( 'mwform_is_mail_sended', false );
 		}
 
 		$sender      = $this->sender;

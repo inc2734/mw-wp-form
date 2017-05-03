@@ -350,4 +350,51 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 
 		remove_all_filters( 'mwform_admin_mail_' . $this->form_key );
 	}
+
+	/**
+	 * @group mwform_is_mail_sended
+	 * @group send_admin_mail
+	 */
+	public function test_send_admin_mail__toがfalseのときはtrue() {
+		$Mail = new MW_WP_Form_Mail();
+		$Setting = new MW_WP_Form_Setting( $this->post_id );
+		$Mail_Service = new MW_WP_Form_Mail_Service(
+			$Mail, $this->form_key, $Setting
+		);
+		add_filter( 'mwform_admin_mail_' . $this->form_key, function( $Mail, $values, $Data ) {
+			$Mail->to = false;
+			return $Mail;
+		}, 10, 3 );
+		$this->assertTrue($Mail_Service->send_admin_mail());
+	}
+
+	/**
+	 * @group mwform_is_mail_sended
+	 * @group send_admin_mail
+	 */
+	public function test_send_admin_mail__toがfalseのときでもDBに保存() {
+		$Setting = new MW_WP_Form_Setting( $this->post_id );
+		$Mail = new MW_WP_Form_Mail();
+
+		add_filter( 'mwform_is_mail_sended', function( $is_mail_sended ) {
+			return false;
+		} );
+
+		add_filter( 'mwform_admin_mail_' . $this->form_key, function( $Mail, $values, $Data ) {
+			$Mail->to = false;
+			return $Mail;
+		}, 10, 3 );
+
+		$Setting->set( 'usedb', 1 );
+		$Mail_Service = new MW_WP_Form_Mail_Service(
+			$Mail, $this->form_key, $Setting
+		);
+		$Mail_Service->send_admin_mail();
+
+		$posts = get_posts( array(
+			'post_type'      => MWF_Functions::get_contact_data_post_type_from_form_id( $Setting->get( 'post_id' ) ),
+			'posts_per_page' => -1,
+		) );
+		$this->assertEquals( 1, count( $posts ) );
+	}
 }

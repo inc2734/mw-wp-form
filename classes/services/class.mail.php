@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Mail Service
- * Version    : 1.4.0
+ * Version    : 1.4.1
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : January 1, 2015
- * Modified   : April 29, 2017
+ * Modified   : May 4, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -97,6 +97,12 @@ class MW_WP_Form_Mail_Service {
 			clone $this->Data
 		);
 		$is_admin_mail_sended = $Mail_admin->send();
+
+		// to が false の場合は意図的に送信していない（例えばDB保存だけおこないたい等）ということなので
+		// 送信エラー画面が表示されるのはおかしい。そのためここでは true を返す
+		if ( ! $Mail_admin->to ) {
+			$is_admin_mail_sended = true;
+		}
 
 		if ( isset( $Mail_admin_for_save ) && $is_admin_mail_sended ) {
 			$saved_mail_id = $this->save( $Mail_admin_for_save );
