@@ -69,7 +69,7 @@
 			<div class="%s" style="width: 100%%; max-width: 800px"></div>',
 			esc_html( $chart['target'] ),
 			esc_html__( 'The number of inquiries', 'mw-wp-form' ),
-			count( $form_posts ),
+			$post_count,
 			esc_attr( MWF_Config::NAME . '-chart-div-' . $postdata_key )
 		);
 	}
@@ -88,9 +88,9 @@
 						$_item = '(Empty)';
 					}
 					if ( empty( $raw_data[$_item] ) ) {
-						$raw_data[$_item] = count( $values );
+						$raw_data[$_item] = $values;
 					} else {
-						$raw_data[$_item] += count( $values );
+						$raw_data[$_item] += $values;
 					}
 				}
 			} else {
@@ -98,16 +98,16 @@
 					$item = '(Empty)';
 				}
 				if ( empty( $raw_data[$item] ) ) {
-					$raw_data[$item] = count( $values );
+					$raw_data[$item] = $values;
 				} else {
-					$raw_data[$item] += count( $values );
+					$raw_data[$item] += $values;
 				}
 			}
 		}
 		$data[] = array( '', '' );
 		foreach ( $raw_data as $raw_data_key => $raw_data_value ) {
 			if ( $chart['chart'] === 'bar' ) {
-				$value = $raw_data_value / count( $form_posts );
+				$value = $raw_data_value / $post_count;
 			} else {
 				$value = $raw_data_value;
 			}
