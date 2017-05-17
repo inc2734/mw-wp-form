@@ -57,7 +57,7 @@ class MW_WP_Form_Mail_Service {
 	 */
 	public function __construct( MW_WP_Form_Mail $Mail, $form_key, MW_WP_Form_Setting $Setting, array $attachments = array() ) {
 		$this->form_key       = $form_key;
-		$this->Data           = MW_WP_Form_Data::getInstance();
+		$this->Data           = NEW_MW_WP_Form_Data::connect( $form_key );
 		$this->Mail_raw       = $Mail;
 		$this->Mail_admin_raw = clone $Mail;
 		$this->Mail_auto_raw  = clone $Mail;

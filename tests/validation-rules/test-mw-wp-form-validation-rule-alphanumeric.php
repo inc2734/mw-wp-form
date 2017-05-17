@@ -12,7 +12,7 @@ class MW_WP_Form_Validation_Rule_AlphaNumeric_Test extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		$form_key   = MWF_Config::NAME . '-1';
-		$this->Data = MW_WP_Form_Data::getInstance( $form_key );
+		$this->Data = NEW_MW_WP_Form_Data::connect( $form_key );
 		$this->Rule = new MW_WP_Form_Validation_Rule_AlphaNumeric();
 		$this->Rule->set_Data( $this->Data );
 	}

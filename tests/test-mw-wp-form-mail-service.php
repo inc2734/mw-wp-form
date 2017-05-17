@@ -26,7 +26,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 			'post_type' => MWF_Config::NAME,
 		) );
 		$this->form_key = MWF_Config::NAME . '-' . $this->post_id;
-		$this->Data = MW_WP_Form_Data::getInstance( $this->form_key );
+		$this->Data = NEW_MW_WP_Form_Data::connect( $this->form_key );
 		$Validation_Rule_Mail = new MW_WP_Form_Validation_Rule_Mail();
 		$Validation_Rule_Mail->set_Data( $this->Data );
 	}

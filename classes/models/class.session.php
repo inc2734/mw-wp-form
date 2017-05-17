@@ -41,9 +41,16 @@ class MW_WP_Form_Session {
 		} else {
 			$session_id = sha1( wp_create_nonce( $this->name ) . ip2long( $this->get_remote_addr() ) . uniqid() );
 			$secure = apply_filters( 'mwform_secure_cookie', is_ssl() );
-			//setcookie( $this->name, $session_id, 0, COOKIEPATH, COOKIE_DOMAIN, $secure, true );
+			try {
+				set_error_handler( array( 'self', 'error_handler' ) );
+				setcookie( $this->name, $session_id, 0, COOKIEPATH, COOKIE_DOMAIN, $secure, true );
+			} catch ( ErrorException $e ) {
+			}
 		}
 		$this->session_id = $session_id;
+	}
+
+	public static function error_handler( $errno, $errstr, $errfile, $errline ) {
 	}
 
 	/**

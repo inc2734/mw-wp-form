@@ -100,14 +100,15 @@ class MW_WP_Form_Main_Controller {
 
 			$form_id  = $_POST[MWF_Config::NAME . '-form-id'];
 			$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
-			$Data     = MW_WP_Form_Data::getInstance( $form_key, $_POST, $_FILES );
+			$Data     = NEW_MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
 			$this->Data = $Data;
 
-			$Error = new MW_WP_Form_Error();
+			$Error = NEW_MW_WP_Form_Error::connect( $form_key );
 			$Validation = new MW_WP_Form_Validation( $Error );
 			$Validation->set_validation_rules( $this->validation_rules );
 
 			$Setting = new MW_WP_Form_Setting( $form_id );
+			$this->Setting = $Setting;
 			$Validation->set_rules( $Setting );
 
 			foreach ( $this->validation_rules as $validation_name => $validation_rule ) {
@@ -145,12 +146,6 @@ class MW_WP_Form_Main_Controller {
 
 			if ( $view_flg === 'complete' ) {
 				$is_mail_sended = $this->send();
-
-				// 手動フォームの場合は完了画面に ExecShortcode が無く footer の clear_values が
-				// 効かないためここで消す
-				if ( ! $form_id ) {
-					$Data->clear_values();
-				}
 			}
 
 			if ( isset( $is_mail_sended ) && false === $is_mail_sended ) {
@@ -178,9 +173,6 @@ class MW_WP_Form_Main_Controller {
 
 		}
 
-		//add_action( 'wp_footer'         , array( $Data, 'clear_values' ) );
-		//add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
-
 		return $template;
 	}
 
@@ -202,7 +194,7 @@ class MW_WP_Form_Main_Controller {
 		$form_key      = $this->ExecShortcode->get( 'key' );
 		$form_id       = $this->ExecShortcode->get_form_id();
 		$this->Setting = new MW_WP_Form_Setting( $form_id );
-		$this->Data    = MW_WP_Form_Data::getInstance( $form_key, $_POST, $_FILES );
+		$this->Data    = NEW_MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
 
 		foreach ( $this->validation_rules as $validation_name => $validation_rule ) {
 			if ( is_callable( array( $validation_rule, 'set_Data' ) ) ) {
@@ -212,7 +204,7 @@ class MW_WP_Form_Main_Controller {
 
 		nocache_headers();
 
-		$Error = new MW_WP_Form_Error();
+		$Error = MW_WP_Form_Error();
 		$this->Validation = new MW_WP_Form_Validation( $Error );
 		$this->Validation->set_validation_rules( $this->validation_rules );
 		$this->Validation->set_rules( $this->Setting );
@@ -369,38 +361,35 @@ class MW_WP_Form_Main_Controller {
 		$attachments  = $this->get_attachments();
 		$Mail_Service = new MW_WP_Form_Mail_Service( $Mail, $form_key, $this->Setting, $attachments );
 
-		// 管理画面で作成した場合だけ自動で送信
-		if ( $this->ExecShortcode->is_generated_by_formkey() ) {
-			// データベース非保存の場合はファイルも保存されないので、メールで URL が飛ばないように消す
-			if ( !$this->Setting->get( 'usedb' ) ) {
-				foreach ( $attachments as $key => $attachment ) {
-					$this->Data->clear_value( $key );
-				}
+		// データベース非保存の場合はファイルも保存されないので、メールで URL が飛ばないように消す
+		if ( !$this->Setting->get( 'usedb' ) ) {
+			foreach ( $attachments as $key => $attachment ) {
+				$this->Data->clear_value( $key );
 			}
-
-			$is_admin_mail_sended = $Mail_Service->send_admin_mail();
-
-			if ( ! $is_admin_mail_sended ) {
-				return false;
-			}
-
-			// 自動返信メールの送信
-			$automatic_reply_email = $this->Setting->get( 'automatic_reply_email' );
-			if ( $automatic_reply_email ) {
-				$automatic_reply_email = $this->Data->get_post_value_by_key( $automatic_reply_email );
-				$is_invalid_mail_address = $this->validation_rules['mail']->rule(
-					$automatic_reply_email
-				);
-				if ( $automatic_reply_email && !$is_invalid_mail_address ) {
-					$is_reply_mail_sended = $Mail_Service->send_reply_mail();
-				}
-			}
-
-			// 問い合わせ番号を加算
-			$Mail_Service->update_tracking_number();
-
-			return true;
 		}
+
+		$is_admin_mail_sended = $Mail_Service->send_admin_mail();
+
+		if ( ! $is_admin_mail_sended ) {
+			return false;
+		}
+
+		// 自動返信メールの送信
+		$automatic_reply_email = $this->Setting->get( 'automatic_reply_email' );
+		if ( $automatic_reply_email ) {
+			$automatic_reply_email = $this->Data->get_post_value_by_key( $automatic_reply_email );
+			$is_invalid_mail_address = $this->validation_rules['mail']->rule(
+				$automatic_reply_email
+			);
+			if ( $automatic_reply_email && !$is_invalid_mail_address ) {
+				$is_reply_mail_sended = $Mail_Service->send_reply_mail();
+			}
+		}
+
+		// 問い合わせ番号を加算
+		$Mail_Service->update_tracking_number();
+
+		return true;
 	}
 
 	/**

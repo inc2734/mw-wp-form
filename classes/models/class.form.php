@@ -23,8 +23,6 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_raw()',
 			'MW_WP_Form_Data::get_raw()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_raw( $key );
 	}
 
 	/**
@@ -39,8 +37,6 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_raw_in_children()',
 			'MW_WP_Form_Data::get_raw_in_children()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_raw_in_children( $key, $children );
 	}
 
 	/**
@@ -54,8 +50,6 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_zip_value()',
 			'MW_WP_Form_Data::get_separated_value()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_separated_value( $key );
 	}
 
 	/**
@@ -69,8 +63,6 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_tel_value()',
 			'MW_WP_Form_Data::get_separated_value()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_separated_value( $key );
 	}
 
 	/**
@@ -85,8 +77,6 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_checked_value()',
 			'MW_WP_Form_Data::get_separated_value()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_separated_value( $key, $data );
 	}
 
 	/**
@@ -101,8 +91,6 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_radio_value()',
 			'MW_WP_Form_Data::get_in_children()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_in_children( $key, $data );
 	}
 
 	/**
@@ -117,8 +105,6 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_selected_value()',
 			'MW_WP_Form_Data::get_in_children()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_in_children( $key, $data );
 	}
 
 	/**
@@ -133,8 +119,6 @@ class MW_WP_Form_Form {
 			'MW_WP_Form_Form::get_separated_raw_value()',
 			'MW_WP_Form_Data::get_separated_raw_value()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_separated_raw_value( $key, $children );
 	}
 
 	/**

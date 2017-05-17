@@ -74,10 +74,11 @@ class NEW_MW_WP_Form_Exec_Shortcode {
 	public function mwform_formkey( $attributes ) {
 		$this->form_id  = $this->_get_form_id_by_mwform_formkey( $attributes );
 		$this->form_key = MWF_Functions::get_form_key_from_form_id( $this->form_id );
-		$this->Data     = MW_WP_Form_Data::getInstance( $this->form_key );
-		var_dump($this->Data->get_view_flg());
+		$this->Data     = NEW_MW_WP_Form_Data::connect( $this->form_key );
 		$this->view_flg = ( $this->Data->get_view_flg() ) ? $this->Data->get_view_flg() : 'input';
 		add_action( 'wp_footer', array( $this->Data, 'clear_values' ) );
+		$Error = NEW_MW_WP_Form_Error::connect( $this->form_key );
+		add_action( 'wp_footer', array( $Error, 'clear_errors' ) );
 
 		do_action( 'mwform_before_load_content_' . $this->form_key );
 
@@ -111,7 +112,7 @@ class NEW_MW_WP_Form_Exec_Shortcode {
 		}
 
 		// 画面表示用のショートコードを登録
-		$Error = new MW_WP_Form_Error();
+		$Error = NEW_MW_WP_Form_Error::connect( $this->form_key );
 		do_action(
 			'mwform_add_shortcode',
 			new MW_WP_Form_Form(),
@@ -744,7 +745,9 @@ class MW_WP_Form_Exec_Shortcode {
 		$this->view_flg = $view_flg;
 		$this->Setting  = $Setting;
 		$this->Form     = $Form;
-		$this->Data     = MW_WP_Form_Data::getInstance();
+		$form_id        = $Setting->get( 'post_id' );
+		$form_key       = MWF_Functions::get_form_key_from_form_id( $form_id );
+		$this->Data     = NEW_MW_WP_Form_Data::connect( $form_key );
 		add_shortcode( 'mwform_formkey'         , array( $this, 'mwform_formkey' ) );
 		add_shortcode( 'mwform'                 , array( $this, 'mwform' ) );
 		add_shortcode( 'mwform_complete_message', array( $this, 'mwform_complete_message' ) );

@@ -281,10 +281,11 @@ class MW_WP_Form_Mail {
 		$this->bcc         = '';
 		$this->attachments = array();
 
-		$Data = MW_WP_Form_Data::getInstance();
+		$form_id = $Setting->get( 'post_id' );
+		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
+		$Data = NEW_MW_WP_Form_Data::connect( $form_key );
 		$automatic_reply_email = $Setting->get( 'automatic_reply_email' );
 
-		$form_id = $Setting->get( 'post_id' );
 		if ( $form_id ) {
 			$Validation = new MW_WP_Form_Validation_Rule_Mail();
 			$Validation->set_Data( $Data );

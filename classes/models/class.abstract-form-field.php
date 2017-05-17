@@ -123,10 +123,11 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function get_error( $key ) {
 		$_ret = '';
-		if ( is_array( $this->Error->get_error( $key ) ) ) {
+		$Error = NEW_MW_WP_Form_Error::connect( $this->form_key );
+		if ( is_array( $Error->get_error( $key ) ) ) {
 			$start_tag = '<span class="error">';
 			$end_tag   = '</span>';
-			foreach ( $this->Error->get_error( $key ) as $rule => $error ) {
+			foreach ( $Error->get_error( $key ) as $rule => $error ) {
 				$rule = strtolower( $rule );
 				$error = apply_filters(
 					'mwform_error_message_' . $this->form_key,
@@ -201,12 +202,12 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 * @param MW_WP_Form_Error $Error
 	 * @param string $form_key
 	 */
-	public function add_shortcode( MW_WP_Form_Form $Form, $view_flg, MW_WP_Form_Error $Error, $form_key ) {
+	public function add_shortcode( MW_WP_Form_Form $Form, $view_flg, NEW_MW_WP_Form_Error $Error, $form_key ) {
 		if ( !empty( $this->shortcode_name ) ) {
 			$this->Form     = $Form;
 			$this->Error    = $Error;
 			$this->form_key = $form_key;
-			$this->Data     = MW_WP_Form_Data::getInstance();
+			$this->Data     = NEW_MW_WP_Form_Data::connect( $form_key );
 			switch( $view_flg ) {
 				case 'input' :
 					add_shortcode( $this->shortcode_name, array( $this, '_input_page' ) );

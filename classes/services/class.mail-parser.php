@@ -39,8 +39,10 @@ class MW_WP_Form_Mail_Parser {
 	 */
 	public function __construct( MW_WP_Form_Mail $Mail, MW_WP_Form_Setting $Setting ) {
 		$this->Mail    = $Mail;
-		$this->Data    = MW_WP_Form_Data::getInstance();
 		$this->Setting = $Setting;
+		$form_id       = $Setting->get( 'post_id' );
+		$form_key      = MWF_Functions::get_form_key_from_form_id( $form_id );
+		$this->Data    = NEW_MW_WP_Form_Data::connect( $form_key );
 	}
 
 	/**

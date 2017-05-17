@@ -211,7 +211,7 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 		$ExecShortcode = new MW_WP_Form_Exec_Shortcode( $post, '' );
 		$view_flg = 'input';
 		$Form = new MW_WP_Form_Form();
-		$Data = MW_WP_Form_Data::getInstance( $ExecShortcode->get( 'key' ) );
+		$Data = NEW_MW_WP_Form_Data::connect( $ExecShortcode->get( 'key' ) );
 		$ExecShortcode->add_shortcode( $view_flg, $this->Setting, $Form );
 
 		$this->assertTrue( shortcode_exists( 'mwform_formkey' ) );
@@ -447,7 +447,7 @@ class MW_WP_Form_Exec_Shortcode_Test extends WP_UnitTestCase {
 		$post = $this->generate_page_has_mwform_formkey( $this->Setting );
 		$ExecShortcode = new MW_WP_Form_Exec_Shortcode( $post, '' );
 		$Form = new MW_WP_Form_Form();
-		$Data = MW_WP_Form_Data::getInstance( $ExecShortcode->get( 'key' ) );
+		$Data = NEW_MW_WP_Form_Data::connect( $ExecShortcode->get( 'key' ) );
 		$ExecShortcode->add_shortcode( $view_flg, $this->Setting, $Form );
 		$attributes = array(
 			'key' => $this->Setting->get( 'post_id' ),

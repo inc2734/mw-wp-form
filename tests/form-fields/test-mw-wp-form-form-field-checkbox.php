@@ -15,7 +15,7 @@ class MW_WP_Form_Field_Checkbox_Test extends WP_UnitTestCase {
 	 * @var MW_WP_Form_Data
 	 */
 	protected $Data;
-	
+
 	/**
 	 * setUp
 	 */
@@ -23,7 +23,7 @@ class MW_WP_Form_Field_Checkbox_Test extends WP_UnitTestCase {
 		parent::setUp();
 		$this->Field    = new MW_WP_Form_Field_Checkbox();
 		$this->form_key = MWF_Config::NAME . '-1';
-		$this->Data     = MW_WP_Form_Data::getInstance( $this->form_key );
+		$this->Data     = NEW_MW_WP_Form_Data::connect( $this->form_key );
 	}
 
 	public function test_valueが未設定ならmwform_value_フックを実行() {
