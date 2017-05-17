@@ -60,10 +60,9 @@ class MW_WP_Form_Main_Controller {
 	 * initialize
 	 */
 	public function initialize() {
-		add_filter( 'nocache_headers'     , array( $this, 'nocache_headers' ) , 1 );
-		add_action( 'parse_request'       , array( $this, 'remove_query_vars_from_post' ) );
-		add_filter( 'template_include'    , array( $this, 'template_include' ), 10000 );
-		add_filter( 'mwform_form_end_html', array( $this, 'mwform_form_end_html' ) );
+		add_filter( 'nocache_headers' , array( $this, 'nocache_headers' ) , 1 );
+		add_action( 'parse_request'   , array( $this, 'remove_query_vars_from_post' ) );
+		add_filter( 'template_include', array( $this, 'new_template_include' ), 10000 );
 	}
 
 	/**
@@ -86,6 +85,103 @@ class MW_WP_Form_Main_Controller {
 				}
 			}
 		}
+	}
+
+	public function new_template_include( $template ) {
+		global $post;
+
+		/**
+		 * - 送信時はバリデーションチェック、トークンチェックを行い、リダイレクト先を決定する
+		 * - 決定したリダイレクト先にリダイレクトする
+		 * - リダイレクト先が現在表示しようとしているページと同じ場合は無視する
+		 */
+		if ( ! empty( $_POST ) && ! empty( $_POST[MWF_Config::NAME . '-form-id'] ) ) {
+			nocache_headers();
+
+			$form_id  = $_POST[MWF_Config::NAME . '-form-id'];
+			$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
+			$Data     = MW_WP_Form_Data::getInstance( $form_key, $_POST, $_FILES );
+			$this->Data = $Data;
+
+			$Error = new MW_WP_Form_Error();
+			$Validation = new MW_WP_Form_Validation( $Error );
+			$Validation->set_validation_rules( $this->validation_rules );
+
+			$Setting = new MW_WP_Form_Setting( $form_id );
+			$Validation->set_rules( $Setting );
+
+			foreach ( $this->validation_rules as $validation_name => $validation_rule ) {
+				if ( is_callable( array( $validation_rule, 'set_Data' ) ) ) {
+					$validation_rule->set_Data( $Data );
+				}
+			}
+
+			$Validation = apply_filters(
+				'mwform_validation_' . $form_key,
+				$Validation,
+				$Data->gets(),
+				clone $Data
+			);
+
+			$token_check    = $this->token_check();
+			$post_condition = $Data->get_post_condition( $token_check );
+			$is_valid = $Validation->check();
+			$Redirected = new MW_WP_Form_Redirected(
+				$Setting->get( 'input_url' ),
+				$Setting->get( 'confirmation_url' ),
+				$Setting->get( 'complete_url' ),
+				$Setting->get( 'validation_error_url' ),
+				$is_valid,
+				$post_condition,
+				$Setting->get( 'querystring' )
+			);
+			$this->Redirected = $Redirected;
+			$view_flg = $Redirected->get_view_flg();
+			$Data->set_view_flg( $view_flg );
+
+			if ( in_array( $post_condition, array( 'confirm', 'complete' ) ) ) {
+				$this->file_upload();
+			}
+
+			if ( $view_flg === 'complete' ) {
+				$is_mail_sended = $this->send();
+
+				// 手動フォームの場合は完了画面に ExecShortcode が無く footer の clear_values が
+				// 効かないためここで消す
+				if ( ! $form_id ) {
+					$Data->clear_values();
+				}
+			}
+
+			if ( isset( $is_mail_sended ) && false === $is_mail_sended ) {
+				$Data->set_send_error();
+			} elseif ( isset( $is_mail_sended ) && true === $is_mail_sended ) {
+				do_action(
+					'mwform_after_send_' . $form_key,
+					$Data
+				);
+			}
+
+			do_action( 'mwform_before_redirect_' . $form_key );
+			$url = apply_filters( 'mwform_redirect_url_' . $form_key, $Redirected->get_url(), $Data );
+			$this->redirect( $url );
+
+		} else {
+
+			/**
+			 * [mwform], [mwform_formkey] の登録
+			 * - 確認・完了画面に直接アクセスされた場合はエラーメッセージを表示しフォームを表示しない
+			 * - スクロールスクリプトのロードには Setting ← Post ID が必要。そのため Exec_Shortcode 内で実行させる
+			 * - mwform_add_shortcode と入力フィールドショートコードの実行も Exec_Shortcode 内で行う
+			 */
+			$ExecShortcode = new New_MW_WP_Form_Exec_Shortcode();
+
+		}
+
+		//add_action( 'wp_footer'         , array( $Data, 'clear_values' ) );
+		//add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
+
+		return $template;
 	}
 
 	/**

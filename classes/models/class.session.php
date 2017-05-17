@@ -41,7 +41,7 @@ class MW_WP_Form_Session {
 		} else {
 			$session_id = sha1( wp_create_nonce( $this->name ) . ip2long( $this->get_remote_addr() ) . uniqid() );
 			$secure = apply_filters( 'mwform_secure_cookie', is_ssl() );
-			@setcookie( $this->name, $session_id, 0, COOKIEPATH, COOKIE_DOMAIN, $secure, true );
+			//setcookie( $this->name, $session_id, 0, COOKIEPATH, COOKIE_DOMAIN, $secure, true );
 		}
 		$this->session_id = $session_id;
 	}

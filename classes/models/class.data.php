@@ -531,6 +531,7 @@ class MW_WP_Form_Data {
 	 */
 	public function set_view_flg( $view_flg ) {
 		$this->view_flg = $view_flg;
+		$this->Session->set( MWF_Config::NAME . '-view_flg', $view_flg );
 	}
 
 	/**
@@ -539,7 +540,12 @@ class MW_WP_Form_Data {
 	 * @return string $this->view_flg
 	 */
 	public function get_view_flg() {
-		return $this->view_flg;
+		if ( $this->view_flg ) {
+			return $this->view_flg;
+		} elseif ( $this->Session->get( MWF_Config::NAME . '-view_flg' ) ) {
+			return $this->Session->get( MWF_Config::NAME . '-view_flg' );
+		}
+		return 'input';
 	}
 
 	/**
