@@ -283,7 +283,7 @@ class MW_WP_Form_Mail {
 
 		$form_id = $Setting->get( 'post_id' );
 		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
-		$Data = NEW_MW_WP_Form_Data::connect( $form_key );
+		$Data = MW_WP_Form_Data::connect( $form_key );
 		$automatic_reply_email = $Setting->get( 'automatic_reply_email' );
 
 		if ( $form_id ) {

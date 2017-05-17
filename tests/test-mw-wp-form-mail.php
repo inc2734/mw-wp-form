@@ -130,7 +130,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Setting->set( 'mail_sender'          , 'sender' );
 		$Setting->set( 'mail_subject'         , 'subject' );
 		$Setting->set( 'mail_content'         , 'body' );
-		$Data = NEW_MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
+		$Data = MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
 		$Data->set( 'メールアドレス', 'to@example.com' );
 		$Mail->set_admin_mail_raw_params( $Setting );
 
@@ -153,7 +153,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 			'post_type' => MWF_Config::NAME,
 		) );
 		$Setting = new MW_WP_Form_Setting( $post_id );
-		$Data = NEW_MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
+		$Data = MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
 		$Mail->set_reply_mail_raw_params( $Setting );
 
 		$this->assertEquals( '', $Mail->to );
@@ -178,7 +178,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Setting->set( 'mail_sender'          , 'sender' );
 		$Setting->set( 'mail_subject'         , 'subject' );
 		$Setting->set( 'mail_content'         , 'body' );
-		$Data = NEW_MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
+		$Data = MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
 		$Data->set( 'メールアドレス', 'to@example.com' );
 		$Mail->set_reply_mail_raw_params( $Setting );
 
@@ -199,7 +199,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 			'post_type' => MWF_Config::NAME,
 		) );
 		$Setting = new MW_WP_Form_Setting( $post_id );
-		$Data = NEW_MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
+		$Data = MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
 		$Mail->cc  = 'cc@example.com';
 		$Mail->bcc = 'bcc@example.com';
 		$Mail->set_reply_mail_raw_params( $Setting );
@@ -316,7 +316,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 			'post_type' => MWF_Config::NAME,
 		) );
 		$Setting = new MW_WP_Form_Setting( $post_id );
-		$Data = NEW_MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
+		$Data = MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
 		$Data->set( 'to'    , 'to@example.com' );
 		$Data->set( 'cc'    , 'cc@example.com' );
 		$Data->set( 'bcc'   , 'bcc@example.com' );
@@ -348,7 +348,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 			'post_type' => MWF_Config::NAME,
 		) );
 		$Setting = new MW_WP_Form_Setting( $post_id );
-		$Data = NEW_MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
+		$Data = MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
 		$Data->set( 'example', 'example' );
 		$Mail->body = '{example}';
 		$Mail->save( $Setting );
@@ -374,7 +374,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 			'post_type' => MWF_Config::NAME,
 		) );
 		$Setting = new MW_WP_Form_Setting( $post_id );
-		$Data = NEW_MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
+		$Data = MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
 		$Data->set( 'example', 'example' );
 		$Mail->body = '{example}';
 		$Mail->save( $Setting );
@@ -390,7 +390,7 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 			'post_type' => MWF_Config::NAME,
 		) );
 		$Setting = new MW_WP_Form_Setting( $post_id );
-		$Data = NEW_MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
+		$Data = MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
 		$Data->set( 'example', 'example' );
 		$Mail->body = '{example}';
 		$this->assertNull( $Mail->get_saved_mail_id() );

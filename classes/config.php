@@ -71,4 +71,9 @@ class MWF_Config {
 	 * 送信エラーかどうかを判定する MW_WP_Form_Data のキー
 	 */
 	const SEND_ERROR = 'mw-wp-form-send-error';
+
+	/**
+	 * Nonce field name
+	 */
+	const TOKEN_NAME = 'mw_wp_form_token';
 }

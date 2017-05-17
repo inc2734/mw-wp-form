@@ -29,7 +29,7 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 		$this->form_key = MWF_Config::NAME . '-' . $post_id;
 		$this->Mail    = new MW_WP_Form_Mail();
 		$this->Setting = new MW_WP_Form_Setting( $post_id );
-		$this->Data    = NEW_MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
+		$this->Data    = MW_WP_Form_Data::connect( MWF_Functions::get_form_key_from_form_id( $post_id ) );
 	}
 
 	/**

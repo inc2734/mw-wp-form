@@ -18,11 +18,6 @@ class MW_WP_Form_Main_Controller {
 	protected $Data;
 
 	/**
-	 * @var MW_WP_Form_Exec_Shortcode
-	 */
-	protected $ExecShortcode;
-
-	/**
 	 * @var MW_WP_Form_Redrected
 	 */
 	protected $Redirected;
@@ -38,17 +33,6 @@ class MW_WP_Form_Main_Controller {
 	protected $validation_rules = array();
 
 	/**
-	 * @var string
-	 */
-	protected $token_name = 'mw_wp_form_token';
-
-	/**
-	 * リダイレクトされてからの complete であれば true
-	 * @var bool
-	 */
-	protected $complete_twice = false;
-
-	/**
 	 * __construct
 	 * @param array $validation_rules
 	 */
@@ -62,15 +46,15 @@ class MW_WP_Form_Main_Controller {
 	public function initialize() {
 		add_filter( 'nocache_headers' , array( $this, 'nocache_headers' ) , 1 );
 		add_action( 'parse_request'   , array( $this, 'remove_query_vars_from_post' ) );
-		add_filter( 'template_include', array( $this, 'new_template_include' ), 10000 );
+		add_filter( 'template_include', array( $this, 'template_include' ), 10000 );
 	}
 
 	/**
 	 * WordPressへのリクエストに含まれている、$_POSTの値を削除
 	 */
 	public function remove_query_vars_from_post( $wp_query ) {
-		if ( isset( $_POST[$this->token_name] ) ) {
-			$request_token = $_POST[$this->token_name];
+		if ( isset( $_POST[MWF_Config::TOKEN_NAME] ) ) {
+			$request_token = $_POST[MWF_Config::TOKEN_NAME];
 		}
 		if ( isset( $request_token ) ) {
 			foreach ( $_POST as $key => $value ) {
@@ -87,7 +71,13 @@ class MW_WP_Form_Main_Controller {
 		}
 	}
 
-	public function new_template_include( $template ) {
+	/**
+	 * 表示画面でのプラグインの処理等
+	 *
+	 * @param string $template
+	 * @return string $template
+	 */
+	public function template_include( $template ) {
 		global $post;
 
 		/**
@@ -100,10 +90,10 @@ class MW_WP_Form_Main_Controller {
 
 			$form_id  = $_POST[MWF_Config::NAME . '-form-id'];
 			$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
-			$Data     = NEW_MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
+			$Data     = MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
 			$this->Data = $Data;
 
-			$Error = NEW_MW_WP_Form_Error::connect( $form_key );
+			$Error = MW_WP_Form_Error::connect( $form_key );
 			$Validation = new MW_WP_Form_Validation( $Error );
 			$Validation->set_validation_rules( $this->validation_rules );
 
@@ -124,8 +114,7 @@ class MW_WP_Form_Main_Controller {
 				clone $Data
 			);
 
-			$token_check    = $this->token_check();
-			$post_condition = $Data->get_post_condition( $token_check );
+			$post_condition = $Data->get_post_condition();
 			$is_valid = $Validation->check();
 			$Redirected = new MW_WP_Form_Redirected(
 				$Setting->get( 'input_url' ),
@@ -169,118 +158,9 @@ class MW_WP_Form_Main_Controller {
 			 * - スクロールスクリプトのロードには Setting ← Post ID が必要。そのため Exec_Shortcode 内で実行させる
 			 * - mwform_add_shortcode と入力フィールドショートコードの実行も Exec_Shortcode 内で行う
 			 */
-			$ExecShortcode = new New_MW_WP_Form_Exec_Shortcode();
+			$ExecShortcode = new MW_WP_Form_Exec_Shortcode();
 
 		}
-
-		return $template;
-	}
-
-	/**
-	 * 表示画面でのプラグインの処理等
-	 *
-	 * @param string $template
-	 * @return string $template
-	 */
-	public function template_include( $template ) {
-		global $post;
-
-		$this->ExecShortcode = new MW_WP_Form_Exec_Shortcode( $post, $template );
-		$has_shortcode = $this->ExecShortcode->has_shortcode();
-		if ( !$has_shortcode ) {
-			return $template;
-		}
-
-		$form_key      = $this->ExecShortcode->get( 'key' );
-		$form_id       = $this->ExecShortcode->get_form_id();
-		$this->Setting = new MW_WP_Form_Setting( $form_id );
-		$this->Data    = NEW_MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
-
-		foreach ( $this->validation_rules as $validation_name => $validation_rule ) {
-			if ( is_callable( array( $validation_rule, 'set_Data' ) ) ) {
-				$validation_rule->set_Data( $this->Data );
-			}
-		}
-
-		nocache_headers();
-
-		$Error = MW_WP_Form_Error();
-		$this->Validation = new MW_WP_Form_Validation( $Error );
-		$this->Validation->set_validation_rules( $this->validation_rules );
-		$this->Validation->set_rules( $this->Setting );
-		$this->Validation = apply_filters(
-			'mwform_validation_' . $form_key,
-			$this->Validation,
-			$this->Data->gets(),
-			clone $this->Data
-		);
-
-		$token_check    = $this->token_check();
-		$post_condition = $this->Data->get_post_condition( $token_check );
-		$is_valid = $this->Validation->check();
-		$this->Redirected = new MW_WP_Form_Redirected(
-			$this->ExecShortcode->get( 'input_url' ),
-			$this->ExecShortcode->get( 'confirmation_url' ),
-			$this->ExecShortcode->get( 'complete_url' ),
-			$this->ExecShortcode->get( 'validation_error_url' ),
-			$is_valid,
-			$post_condition,
-			$this->Setting->get( 'querystring' )
-		);
-		$view_flg = $this->Redirected->get_view_flg();
-		$this->Data->set_view_flg( $view_flg );
-
-		// confirm もしくは complete のとき
-		if ( in_array( $post_condition, array( 'confirm', 'complete' ) ) ) {
-			$this->file_upload();
-		}
-		// complete のとき
-		if ( $view_flg === 'complete' ) {
-			if ( !$this->is_complete_twice() ) {
-				$is_mail_sended = $this->send();
-			}
-			// 手動フォームの場合は完了画面に ExecShortcode が無く footer の clear_values が
-			// 効かないためここで消す
-			if ( !$form_id ) {
-				$this->Data->clear_values();
-			}
-		}
-
-		if ( isset( $is_mail_sended ) && false === $is_mail_sended ) {
-			$this->Data->set_send_error();
-		} elseif ( isset( $is_mail_sended ) && true === $is_mail_sended ) {
-			do_action(
-				'mwform_after_send_' . $form_key,
-				$this->Data
-			);
-		}
-
-		do_action( 'mwform_before_redirect_' . $form_key );
-		$url = apply_filters( 'mwform_redirect_url_' . $form_key, $this->Redirected->get_url(), $this->Data );
-		$this->redirect( $url );
-
-		// スクロール用スクリプトのロード
-		if ( $this->Setting->get( 'scroll' ) ) {
-			if ( $post_condition !== 'input' ) {
-				add_action( 'wp_enqueue_scripts', array( $this, 'scroll_script' ) );
-			}
-		}
-
-		// 画面表示用のショートコードを登録
-		do_action(
-			'mwform_add_shortcode',
-			new MW_WP_Form_Form(),
-			$view_flg,
-			$Error,
-			$form_key,
-			$this->Data
-		);
-
-		$Form = new MW_WP_Form_Form();
-		$this->ExecShortcode->add_shortcode( $view_flg, $this->Setting, $Form );
-
-		add_action( 'wp_footer'         , array( $this->Data, 'clear_values' ) );
-		add_action( 'wp_enqueue_scripts', array( $this      , 'wp_enqueue_scripts' ) );
 
 		return $template;
 	}
@@ -299,44 +179,6 @@ class MW_WP_Form_Main_Controller {
 			wp_redirect( $redirect );
 			exit();
 		}
-	}
-
-	/**
-	 * wp_enqueue_scripts
-	 */
-	public function wp_enqueue_scripts() {
-		global $post;
-
-		$url = plugin_dir_url( __FILE__ );
-		wp_enqueue_style( MWF_Config::NAME, $url . '../../css/style.css' );
-
-		$style  = $this->Setting->get( 'style' );
-		$styles = apply_filters( 'mwform_styles', array() );
-		if ( is_array( $styles ) && isset( $styles[$style] ) ) {
-			$css = $styles[$style];
-			wp_enqueue_style( MWF_Config::NAME . '_style', $css );
-		}
-
-		do_action( 'mwform_enqueue_scripts_' . $this->ExecShortcode->get( 'key' ) );
-		wp_enqueue_script( MWF_Config::NAME, $url . '../../js/form.js', array( 'jquery' ), false, true );
-	}
-
-	/**
-	 * scroll_script
-	 */
-	public function scroll_script() {
-		$url = plugin_dir_url( __FILE__ );
-		wp_register_script(
-			MWF_Config::NAME . '-scroll',
-			$url . '../../js/scroll.js',
-			array( 'jquery' ),
-			false,
-			true
-		);
-		wp_localize_script( MWF_Config::NAME . '-scroll', 'mwform_scroll', array(
-			'offset' => apply_filters( 'mwform_scroll_offset_' . $this->ExecShortcode->get( 'key' ), 0 ),
-		) );
-		wp_enqueue_script( MWF_Config::NAME . '-scroll' );
 	}
 
 	/**
@@ -456,51 +298,5 @@ class MW_WP_Form_Main_Controller {
 		$uploaded_files = $File->upload( $files );
 		$this->Data->push_uploaded_file_keys( $uploaded_files );
 		$this->Data->regenerate_upload_file_keys();
-	}
-
-	/**
-	 * トークンチェック
-	 *
-	 * @return bool
-	 */
-	protected function token_check() {
-		if ( isset( $_POST[$this->token_name] ) ) {
-			$request_token = $_POST[$this->token_name];
-		}
-		$values   = $this->Data->gets();
-		$form_key = $this->Data->get_form_key();
-		if ( isset( $request_token ) && wp_verify_nonce( $request_token, $form_key ) ) {
-			return true;
-		} elseif ( empty( $_POST ) && $values ) {
-			$this->complete_twice = true;
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * トークンを挿入
-	 *
-	 * @param string $html
-	 * @return string
-	 */
-	public function mwform_form_end_html( $html ) {
-		if ( is_a( $this->ExecShortcode, 'MW_WP_Form_Exec_Shortcode' ) ) {
-			$form_key = $this->Data->get_form_key();
-			$html .= wp_nonce_field( $form_key, $this->token_name, true, false );
-			return $html;
-		}
-	}
-
-	/**
-	 * リダイレクト後の complete かチェック
-	 *
-	 * @return bool
-	 */
-	protected function is_complete_twice() {
-		if ( $this->complete_twice === true ) {
-			return true;
-		}
-		return false;
 	}
 }

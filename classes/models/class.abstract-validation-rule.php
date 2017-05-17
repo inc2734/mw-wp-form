@@ -37,7 +37,7 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	 *
 	 * @param MW_WP_Form_Data $Data
 	 */
-	public function set_Data( NEW_MW_WP_Form_Data $Data ) {
+	public function set_Data( MW_WP_Form_Data $Data ) {
 		$this->Data = $Data;
 	}
 

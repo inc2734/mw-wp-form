@@ -15,7 +15,7 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 			'post_type' => MWF_Config::NAME,
 		) );
 		$form_key   = MWF_Functions::get_form_key_from_form_id( $post_id );
-		$this->Data = NEW_MW_WP_Form_Data::connect( $form_key );
+		$this->Data = MW_WP_Form_Data::connect( $form_key );
 	}
 
 	/**
