@@ -90,13 +90,16 @@ class MW_WP_Form_Main_Controller {
 		if ( ! empty( $_POST ) && ! empty( $_POST[ MWF_Config::NAME . '-form-id' ] ) ) {
 			nocache_headers();
 
-			$form_id = $_POST[ MWF_Config::NAME . '-form-id' ];
+			$form_id           = $_POST[ MWF_Config::NAME . '-form-id' ];
+			$form_verify_token = $_POST[ MWF_Config::NAME . '-form-verify-token' ];
+			$Setting           = new MW_WP_Form_Setting( (int) $form_id );
+
 			if ( MWF_Config::NAME !== get_post_type( $form_id ) ) {
 				wp_safe_redirect( home_url() );
 				exit;
 			}
 
-			if ( sha1( serialize( new MW_WP_Form_Setting( $form_id ) ) ) !== $form_verify_token ) {
+			if ( $Setting->generate_form_verify_token() !== $form_verify_token ) {
 				wp_safe_redirect( home_url() );
 				exit;
 			}
@@ -161,11 +164,23 @@ class MW_WP_Form_Main_Controller {
 			 * - スクロールスクリプトのロードには Setting ← Post ID が必要。そのため Exec_Shortcode 内で実行させる
 			 * - mwform_add_shortcode と入力フィールドショートコードの実行も Exec_Shortcode 内で行う
 			 */
-			$ExecShortcode = new MW_WP_Form_Exec_Shortcode();
+			add_shortcode( 'mwform_formkey', array( $this, '_mwform_formkey' ) );
 
 		}
 
 		return $template;
+	}
+
+	/**
+	 * Add shortcode for [mwform_formkey]
+	 *
+	 * @param array $attributes
+	 * @return string html
+	 * @example [mwform_formkey key="post_id"]
+	 */
+	public function _mwform_formkey( $attributes ) {
+		$Exec_Shortcode = new MW_WP_Form_Exec_Shortcode();
+		return $Exec_Shortcode->initialize( $attributes );
 	}
 
 	/**

@@ -32,8 +32,6 @@ class MW_WP_Form_Exec_Shortcode {
 	protected $view_flg;
 
 	public function __construct() {
-		// @todo mwform_formkey にフックするポイントを初期化地点としたい
-		add_shortcode( 'mwform_formkey'         , array( $this, '_mwform_formkey' ) );
 		add_shortcode( 'mwform'                 , array( $this, '_mwform' ) );
 		add_shortcode( 'mwform_complete_message', array( $this, '_mwform_complete_message' ) );
 
@@ -49,7 +47,7 @@ class MW_WP_Form_Exec_Shortcode {
 	 * @return string html
 	 * @example [mwform_formkey key="post_id"]
 	 */
-	public function _mwform_formkey( $attributes ) {
+	public function initialize( $attributes ) {
 		$this->form_id  = $this->_get_form_id_by_mwform_formkey( $attributes );
 		$this->form_key = MWF_Functions::get_form_key_from_form_id( $this->form_id );
 		$this->Data     = MW_WP_Form_Data::connect( $this->form_key );
@@ -445,10 +443,12 @@ class MW_WP_Form_Exec_Shortcode {
 			esc_attr( MWF_Config::NAME . '-form-id' ),
 			esc_attr( $this->form_id )
 		);
+
+		$Setting = new MW_WP_Form_Setting( $this->form_id );
 		$html .= sprintf(
 			'<input type="hidden" name="%1$s" value="%2$s" />',
 			esc_attr( MWF_Config::NAME . '-form-verify-token' ),
-			esc_attr( sha1( serialize( new MW_WP_Form_Setting( $this->form_id ) ) ) )
+			esc_attr( $Setting->generate_form_verify_token() )
 		);
 		return $html;
 	}

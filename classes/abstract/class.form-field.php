@@ -88,7 +88,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 		$this->_set_names();
 		$this->defaults = $this->set_defaults();
 		$this->_add_mwform_tag_generator();
-		// @todo mwform_add_shortcode にフックするポイントを初期化地点としたい
+		// @todo mwform_add_shortcode にフックするポイントを初期化地点としたい。ただそうすると管理画面用処理が実行されない…
 		add_action( 'mwform_add_shortcode', array( $this, '_add_shortcode' ), 10, 5 );
 		add_filter( 'mwform_form_fields'  , array( $this, '_mwform_form_fields' ) );
 	}
