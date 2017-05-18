@@ -37,12 +37,9 @@ class MW_WP_Form_Main_Controller {
 	 */
 	protected $validation_rules = array();
 
-	/**
-	 * __construct
-	 * @param array $validation_rules
-	 */
-	public function __construct( array $validation_rules ) {
-		$this->validation_rules = $validation_rules;
+	public function __construct() {
+		$Validation_Rules = new MW_WP_Form_Validation_Rules();
+		$this->validation_rules = $Validation_Rules->get_validation_rules();
 	}
 
 	/**

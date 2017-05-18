@@ -22,12 +22,9 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 */
 	protected $styles = array();
 
-	/**
-	 * __construct
-	 * @param array $validation_rules
-	 */
-	public function __construct( array $validation_rules ) {
-		foreach ( $validation_rules as $validation_name => $instance ) {
+	public function __construct() {
+		$Validation_Rules = new MW_WP_Form_Validation_Rules();
+		foreach ( $Validation_Rules->get_validation_rules() as $validation_name => $instance ) {
 			if ( is_callable( array( $instance, 'admin' ) ) ) {
 				$this->validation_rules[$instance->getName()] = $instance;
 			}
