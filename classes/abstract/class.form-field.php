@@ -86,11 +86,38 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 */
 	public function __construct() {
 		$this->_set_names();
-		$this->defaults = $this->set_defaults();
-		$this->_add_mwform_tag_generator();
-		// @todo mwform_add_shortcode にフックするポイントを初期化地点としたい。ただそうすると管理画面用処理が実行されない…
-		add_action( 'mwform_add_shortcode', array( $this, '_add_shortcode' ), 10, 5 );
+		$this->_set_defaults();
 		add_filter( 'mwform_form_fields'  , array( $this, '_mwform_form_fields' ) );
+	}
+
+	/**
+	 * Add form field shortcodes
+	 *
+	 * @param MW_WP_Form_Form $Form
+	 * @param string $form_key
+	 * @param string $view_flg
+	 */
+	public function initialize( MW_WP_Form_Form $Form, $form_key, $view_flg ) {
+		if ( empty( $this->shortcode_name ) ) {
+			return;
+		}
+
+		$this->Form     = $Form;
+		$this->form_key = $form_key;
+		$this->Data     = MW_WP_Form_Data::connect( $form_key );
+
+		switch( $view_flg ) {
+			case 'input' :
+				add_shortcode( $this->shortcode_name, array( $this, '_input_page' ) );
+				break;
+			case 'confirm' :
+				add_shortcode( $this->shortcode_name, array( $this, '_confirm_page' ) );
+				break;
+			case 'complete' :
+				break;
+			default :
+				exit( '$view_flg is not right value. $view_flg is ' . $view_flg . ' now.' );
+		}
 	}
 
 	/**
@@ -98,16 +125,26 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 * shortcode_name、display_nameを定義。各子クラスで上書きする。
 	 * @return array shortcode_name, display_name
 	 */
-	protected function set_names() {
-		return array(
-			'shortcode_name' => $this->shortcode_name,
-			'display_name'   => $this->display_name,
-		);
-	}
+	abstract protected function set_names();
 	private function _set_names() {
 		$args = $this->set_names();
+
+		if ( empty( $args['shortcode_name'] ) || empty( $args['display_name'] ) ) {
+			exit( get_class() . '::set_names() returns not right values. Returned values is ' . serialize( $args ) . ' now.' );
+		}
+
 		$this->shortcode_name = $args['shortcode_name'];
 		$this->display_name   = $args['display_name'];
+	}
+
+	/**
+	 * set_defaults
+	 * $this->defaultsを設定し返す
+	 * @return array defaults
+	 */
+	abstract protected function set_defaults();
+	private function _set_defaults() {
+		$this->defaults = $this->set_defaults();
 	}
 
 	/**
@@ -149,13 +186,6 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * set_defaults
-	 * $this->defaultsを設定し返す
-	 * @return array defaults
-	 */
-	abstract protected function set_defaults();
-
-	/**
 	 * input_page
 	 * 入力ページでのフォーム項目を返す
 	 * @param array $atts
@@ -188,36 +218,6 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 		$this->element_content = $element_content;
 		$this->atts = shortcode_atts( $this->defaults, $atts );
 		return $this->confirm_page();
-	}
-
-	/**
-	 * Add form field shortcodes
-	 *
-	 * @param MW_WP_Form_Form $Form
-	 * @param string $form_key
-	 * @param string $view_flg
-	 */
-	public function _add_shortcode( MW_WP_Form_Form $Form, $form_key, $view_flg ) {
-		if ( empty( $this->shortcode_name ) ) {
-			return;
-		}
-
-		$this->Form     = $Form;
-		$this->form_key = $form_key;
-		$this->Data     = MW_WP_Form_Data::connect( $form_key );
-
-		switch( $view_flg ) {
-			case 'input' :
-				add_shortcode( $this->shortcode_name, array( $this, '_input_page' ) );
-				break;
-			case 'confirm' :
-				add_shortcode( $this->shortcode_name, array( $this, '_confirm_page' ) );
-				break;
-			case 'complete' :
-				break;
-			default :
-				exit( '$view_flg is not right value. $view_flg is ' . $view_flg . ' now.' );
-		}
 	}
 
 	/**
@@ -258,24 +258,22 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * _add_mwform_tag_generator
 	 * フォームタグジェネレータのタグ選択肢とダイアログを設定
 	 */
-	protected function _add_mwform_tag_generator() {
-		add_action( 'mwform_tag_generator_dialog', array( $this, 'add_mwform_tag_generator' ) );
-		if ( $this->type !== 'other' ) {
+	public function add_tag_generator() {
+		add_action( 'mwform_tag_generator_dialog', array( $this, '_mwform_tag_generator_dialog' ) );
+		if ( 'other' !== $this->type ) {
 			$tag = 'mwform_tag_generator_' . $this->type . '_option';
 		} else {
 			$tag = 'mwform_tag_generator_option';
 		}
-		add_action( $tag, array( $this, 'mwform_tag_generator_option' ) );
+		add_action( $tag, array( $this, '_mwform_tag_generator_option' ) );
 	}
 
 	/**
-	 * add_mwform_tag_generator
 	 * タグジェネレータのダイアログ枠を出力
 	 */
-	public function add_mwform_tag_generator() {
+	public function _mwform_tag_generator_dialog() {
 		?>
 		<div id="dialog-<?php echo esc_attr( $this->shortcode_name ); ?>" class="mwform-dialog" title="<?php echo esc_attr( $this->shortcode_name ); ?>">
 			<div class="form">
@@ -286,16 +284,14 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * add_mwform_tag_generator
 	 * タグジェネレータのダイアログを出力。各フォーム項目クラスでオーバーライド
 	 */
 	public function mwform_tag_generator_dialog( array $options = array() ) {}
 
 	/**
-	 * mwform_tag_generator_option
 	 * フォームタグ挿入ボタンのセレクトボックスに選択項目を追加
 	 */
-	public function mwform_tag_generator_option() {
+	public function _mwform_tag_generator_option() {
 		$display_name = $this->qtags['display'];
 		if ( $this->display_name ) {
 			$display_name = $this->display_name;

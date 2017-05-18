@@ -56,4 +56,19 @@ class MW_WP_Form_Validation_Rule_Tel extends MW_WP_Form_Abstract_Validation_Rule
 		<label><input type="checkbox" <?php checked( $value[$this->getName()], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( 'Tel', 'mw-wp-form' ); ?></label>
 		<?php
 	}
+
+	/**
+	 * @param array $validation_rules MW_WP_Form_Abstract_Validation_Rule を継承したオブジェクトの一覧
+	 * @return array $validation_rules
+	 */
+	public function _mwform_validation_rules( array $validation_rules ) {
+		$validation_rules = parent::_mwform_validation_rules( $validation_rules );
+
+		if ( 'ja' === get_locale() ) {
+			return $validation_rules;
+		}
+
+		$validation_rules[ $this->getName() ] = '';
+		return $validation_rules;
+	}
 }

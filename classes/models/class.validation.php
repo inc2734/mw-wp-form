@@ -34,12 +34,6 @@ class MW_WP_Form_Validation {
 	protected $validate = array();
 
 	/**
-	 * バリデーションルールの配列
-	 * @var array
-	 */
-	protected $validation_rules = array();
-
-	/**
 	 * @param string $form_key
 	 */
 	public function __construct( $form_key ) {
@@ -49,28 +43,6 @@ class MW_WP_Form_Validation {
 		$this->Setting  = new MW_WP_Form_Setting( $form_id );
 
 		$this->_set_rules();
-	}
-
-	/**
-	 * 各バリデーションルールクラスのインスタンスをセット
-	 *
-	 * @param array $validation_rules
-	 */
-	public function set_validation_rules( array $validation_rules ) {
-		foreach ( $validation_rules as $validation_name => $instance ) {
-			if ( is_callable( array( $instance, 'rule' ) ) ) {
-				$this->validation_rules[$instance->getName()] = $instance;
-			}
-		}
-	}
-
-	/**
-	 * セットされたバリデーションルールクラスを取得
-	 *
-	 * @return array
-	 */
-	public function get_validation_rules() {
-		return $this->validation_rules;
 	}
 
 	/**
@@ -165,6 +137,9 @@ class MW_WP_Form_Validation {
 	 * @param array $rules
 	 */
 	protected function _check( $key, array $rules ) {
+		$Validation_Rules = MW_WP_Form_Validation_Rules::instantiation();
+		$validation_rules = $Validation_Rules->get_validation_rules();
+
 		foreach ( $rules as $rule_set ) {
 			if ( ! isset( $rule_set['rule'] ) ) {
 				continue;
@@ -176,11 +151,11 @@ class MW_WP_Form_Validation {
 			}
 
 			$rule = $rule_set['rule'];
-			if ( ! isset( $this->validation_rules[ $rule ] ) ) {
+			if ( ! isset( $validation_rules[ $rule ] ) ) {
 				continue;
 			}
 
-			$validation_rule = $this->validation_rules[ $rule ];
+			$validation_rule = $validation_rules[ $rule ];
 			if ( ! is_callable( array( $validation_rule, 'rule' ) ) ) {
 				continue;
 			}

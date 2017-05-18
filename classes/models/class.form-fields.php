@@ -1,46 +1,36 @@
 <?php
-/**
- * @todo こんな大袈裟なクラスは多分いらない。MW WP Form の初期化時に全部 new してしまって、
- * 使うとき、もしくは __construct 時に jp のフィルタリングするのが良さそう
- */
 class MW_WP_Form_Form_Fields {
 
 	/**
-	 * フォームフィールドの配列
-	 * @var array
+	 * @var MW_WP_Form_Form_Fields
 	 */
-	protected $form_fields = array();
+	protected static $Instance;
 
 	/**
-	 * 日本語の時のみ使用できるフォーム項目
 	 * @var array
 	 */
-	protected $form_fields_only_jp = array(
-		'MW_WP_Form_Field_Zip',
-		'MW_WP_Form_Field_Tel',
-	);
+	protected static $form_fields = array();
 
-	public function __construct() {
-		$plugin_dir_path = plugin_dir_path( __FILE__ ) . '../../';
-
-		foreach ( $this->form_fields_only_jp as $key => $value ) {
-			$this->form_fields_only_jp[$key] = strtolower( $value );
-		}
-
-		foreach ( glob( $plugin_dir_path . './classes/form-fields/*.php' ) as $filename ) {
-			$class_name = $this->_get_class_name_from_form_field_filename( $filename );
+	private function __construct() {
+		foreach ( glob( plugin_dir_path( __FILE__ ) . '../form-fields/*.php' ) as $filename ) {
+			$class_name = self::_get_class_name_from_form_field_filename( $filename );
 			if ( ! class_exists( $class_name ) ) {
-				continue;
-			}
-
-			if ( 'ja' !== get_locale() && in_array( strtolower( $class_name ), $this->form_fields_only_jp ) ) {
 				continue;
 			}
 
 			new $class_name();
 		}
 
-		$this->form_fields = apply_filters( 'mwform_form_fields', $this->form_fields );
+		self::$form_fields = apply_filters( 'mwform_form_fields', self::$form_fields );
+	}
+
+	public static function instantiation() {
+		if ( isset( self::$Instance ) ) {
+			return self::$Instance;
+		}
+
+		self::$Instance = new self();
+		return self::$Instance;
 	}
 
 	/**
@@ -49,7 +39,7 @@ class MW_WP_Form_Form_Fields {
 	 * @return array
 	 */
 	public function get_form_fields() {
-		return $form_fields;
+		return self::$form_fields;
 	}
 
 	/**
@@ -58,7 +48,7 @@ class MW_WP_Form_Form_Fields {
 	 * @param string $filename ファイル名
 	 * @return string クラス名
 	 */
-	protected function _get_class_name_from_form_field_filename( $filename ) {
+	protected static function _get_class_name_from_form_field_filename( $filename ) {
 		$class_name = preg_replace( '/^class\./', '', basename( $filename, '.php' ) );
 		$class_name = str_replace( '-', '_', $class_name );
 		$class_name = 'MW_WP_Form_Field_' . $class_name;

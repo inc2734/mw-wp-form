@@ -33,16 +33,6 @@ class MW_WP_Form_Main_Controller {
 	protected $Validation;
 
 	/**
-	 * @var array
-	 */
-	protected $validation_rules = array();
-
-	public function __construct() {
-		$Validation_Rules = new MW_WP_Form_Validation_Rules();
-		$this->validation_rules = $Validation_Rules->get_validation_rules();
-	}
-
-	/**
 	 * initialize
 	 */
 	public function initialize() {
@@ -110,12 +100,13 @@ class MW_WP_Form_Main_Controller {
 
 			$Validation = new MW_WP_Form_Validation( $form_key );
 			$this->Validation = $Validation;
-			$Validation->set_validation_rules( $this->validation_rules );
 
 			$Setting = new MW_WP_Form_Setting( $form_id );
 			$this->Setting = $Setting;
 
-			foreach ( $this->validation_rules as $validation_name => $validation_rule ) {
+			$Validation_Rules = MW_WP_Form_Validation_Rules::instantiation();
+			$validation_rules = $Validation_Rules->get_validation_rules();
+			foreach ( $validation_rules as $validation_name => $validation_rule ) {
 				if ( is_callable( array( $validation_rule, 'set_Data' ) ) ) {
 					$validation_rule->set_Data( $Data );
 				}
@@ -237,8 +228,10 @@ class MW_WP_Form_Main_Controller {
 		// 自動返信メールの送信
 		$automatic_reply_email = $this->Setting->get( 'automatic_reply_email' );
 		if ( $automatic_reply_email ) {
-			$automatic_reply_email = $this->Data->get_post_value_by_key( $automatic_reply_email );
-			$is_invalid_mail_address = $this->validation_rules['mail']->rule(
+			$automatic_reply_email   = $this->Data->get_post_value_by_key( $automatic_reply_email );
+			$Validation_Rules        = MW_WP_Form_Validation_Rules::instantiation();
+			$validation_rules        = $Validation_Rules->get_validation_rules();
+			$is_invalid_mail_address = $validation_rules['mail']->rule(
 				$automatic_reply_email
 			);
 			if ( $automatic_reply_email && !$is_invalid_mail_address ) {

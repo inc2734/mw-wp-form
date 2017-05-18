@@ -116,4 +116,20 @@ class MW_WP_Form_Field_Zip extends MW_WP_Form_Abstract_Form_Field {
 		</p>
 		<?php
 	}
+
+	/**
+	 * mwform_form_fields
+	 * @param array $form_fields MW_WP_Form_Abstract_Form_Field を継承したオブジェクトの一覧
+	 * @return array $form_fields
+	 */
+	public function _mwform_form_fields( array $form_fields ) {
+		$form_fields = parent::_mwform_form_fields( $form_fields );
+
+		if ( 'ja' === get_locale() ) {
+			return $form_fields;
+		}
+
+		unset( $form_fields[ $this->get_shortcode_name() ] );
+		return $form_fields;
+	}
 }

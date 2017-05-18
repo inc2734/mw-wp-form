@@ -12,23 +12,11 @@
 class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 
 	/**
-	 * バリデーションルールの配列
-	 * @var array
-	 */
-	protected $validation_rules = array();
-
-	/**
 	 * フォームスタイルの配列
 	 */
 	protected $styles = array();
 
 	public function __construct() {
-		$Validation_Rules = new MW_WP_Form_Validation_Rules();
-		foreach ( $Validation_Rules->get_validation_rules() as $validation_name => $instance ) {
-			if ( is_callable( array( $instance, 'admin' ) ) ) {
-				$this->validation_rules[$instance->getName()] = $instance;
-			}
-		}
 		$this->styles = apply_filters( 'mwform_styles', $this->styles );
 	}
 
@@ -42,6 +30,12 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		add_action( 'media_buttons'        , array( $this , 'tag_generator' ) );
 		add_action( 'admin_enqueue_scripts', array( $this , 'admin_enqueue_scripts' ) );
 		add_action( 'save_post'            , array( $Admin, 'save_post' ) );
+
+		$Form_Fields = MW_WP_Form_Form_Fields::instantiation();
+		$form_fields = $Form_Fields->get_form_fields();
+		foreach ( $form_fields as $form_field ) {
+			$form_field->add_tag_generator();
+		}
 	}
 
 	/**
@@ -152,19 +146,23 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 */
 	public function validation_rule() {
 		$validation = $this->get_option( 'validation' );
-		if ( !$validation ) {
+		if ( ! $validation ) {
 			$validation = array();
 		}
+
 		$validation_keys = array(
 			'target' => '',
 		);
-		foreach ( $this->validation_rules as $validation_rule => $instance ) {
+
+		$Validation_Rules = MW_WP_Form_Validation_Rules::instantiation();
+
+		foreach ( $Validation_Rules->get_validation_rules() as $validation_rule => $instance ) {
 			$validation_keys[$instance->getName()] = '';
 		}
 		// 空の隠れバリデーションフィールド（コピー元）を挿入
 		array_unshift( $validation, $validation_keys );
 		$this->assign( 'validation'      , $validation );
-		$this->assign( 'validation_rules', $this->validation_rules );
+		$this->assign( 'validation_rules', $Validation_Rules->get_validation_rules() );
 		$this->assign( 'validation_keys' , $validation_keys );
 		$this->render( 'admin/validation-rule' );
 	}
@@ -254,9 +252,11 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		if ( $post_type !== MWF_Config::NAME ) {
 			return;
 		}
+
 		if ( $editor_id !== 'content' ) {
 			return;
 		}
+
 		$this->render( 'admin/tag-generator' );
 	}
 

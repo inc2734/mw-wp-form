@@ -64,17 +64,16 @@ class MW_WP_Form {
 	 * 各管理画面の初期化、もしくはフロント画面の初期化
 	 */
 	public function after_setup_theme() {
-		// フォームフィールドの読み込み、インスタンス化
-		new MW_WP_Form_Form_Fields();
+		MW_WP_Form_Form_Fields::instantiation();
+		MW_WP_Form_Validation_Rules::instantiation();
 
-		$plugin_dir_path = plugin_dir_path( __FILE__ );
 		if ( current_user_can( MWF_Config::CAPABILITY ) && is_admin() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 			add_action( 'admin_menu'           , array( $this, 'admin_menu_for_chart' ) );
 			add_action( 'admin_menu'           , array( $this, 'admin_menu_for_contact_data_list' ) );
 			add_action( 'admin_init'           , array( $this, 'register_setting' ) );
 			add_action( 'current_screen'       , array( $this, 'current_screen' ) );
-		} elseif ( !is_admin() ) {
+		} elseif ( ! is_admin() ) {
 			$Controller = new MW_WP_Form_Main_Controller();
 			$Controller->initialize();
 		}
