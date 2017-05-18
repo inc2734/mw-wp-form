@@ -445,6 +445,11 @@ class MW_WP_Form_Exec_Shortcode {
 			esc_attr( MWF_Config::NAME . '-form-id' ),
 			esc_attr( $this->form_id )
 		);
+		$html .= sprintf(
+			'<input type="hidden" name="%1$s" value="%2$s" />',
+			esc_attr( MWF_Config::NAME . '-form-verify-token' ),
+			esc_attr( sha1( serialize( new MW_WP_Form_Setting( $this->form_id ) ) ) )
+		);
 		return $html;
 	}
 

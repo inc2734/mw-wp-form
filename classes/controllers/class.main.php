@@ -87,10 +87,20 @@ class MW_WP_Form_Main_Controller {
 		 * - 決定したリダイレクト先にリダイレクトする
 		 * - リダイレクト先が現在表示しようとしているページと同じ場合は無視する
 		 */
-		if ( ! empty( $_POST ) && ! empty( $_POST[MWF_Config::NAME . '-form-id'] ) ) {
+		if ( ! empty( $_POST ) && ! empty( $_POST[ MWF_Config::NAME . '-form-id' ] ) ) {
 			nocache_headers();
 
-			$form_id  = $_POST[MWF_Config::NAME . '-form-id'];
+			$form_id = $_POST[ MWF_Config::NAME . '-form-id' ];
+			if ( MWF_Config::NAME !== get_post_type( $form_id ) ) {
+				wp_safe_redirect( home_url() );
+				exit;
+			}
+
+			if ( sha1( serialize( new MW_WP_Form_Setting( $form_id ) ) ) !== $form_verify_token ) {
+				wp_safe_redirect( home_url() );
+				exit;
+			}
+
 			$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
 			$Data     = MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
 			$this->Data = $Data;
@@ -169,7 +179,7 @@ class MW_WP_Form_Main_Controller {
 		if ( !empty( $_POST ) || $redirect != $REQUEST_URI ) {
 			$redirect = wp_sanitize_redirect( $redirect );
 			$redirect = wp_validate_redirect( $redirect, home_url() );
-			wp_redirect( $redirect );
+			wp_safe_redirect( $redirect );
 			exit();
 		}
 	}
