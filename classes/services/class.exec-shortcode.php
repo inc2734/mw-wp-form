@@ -32,6 +32,7 @@ class MW_WP_Form_Exec_Shortcode {
 	protected $view_flg;
 
 	public function __construct() {
+		// @todo mwform_formkey にフックするポイントを初期化地点としたい
 		add_shortcode( 'mwform_formkey'         , array( $this, '_mwform_formkey' ) );
 		add_shortcode( 'mwform'                 , array( $this, '_mwform' ) );
 		add_shortcode( 'mwform_complete_message', array( $this, '_mwform_complete_message' ) );
@@ -54,9 +55,6 @@ class MW_WP_Form_Exec_Shortcode {
 		$this->Data     = MW_WP_Form_Data::connect( $this->form_key );
 		$this->view_flg = ( $this->Data->get_view_flg() ) ? $this->Data->get_view_flg() : 'input';
 		add_action( 'wp_footer', array( $this->Data, 'clear_values' ) );
-		// @todo 2つ呼ぶのはめんどくさいので、全部データで管理したい
-		$Error = MW_WP_Form_Error::connect( $this->form_key );
-		add_action( 'wp_footer', array( $Error, 'clear_errors' ) );
 
 		do_action( 'mwform_before_load_content_' . $this->form_key );
 
@@ -77,7 +75,7 @@ class MW_WP_Form_Exec_Shortcode {
 		// Enqueue scroll to MW WP Form script
 		$Setting = new MW_WP_Form_Setting( $this->form_id );
 		if ( $Setting->get( 'scroll' ) ) {
-			if ( 'input' !== $this->view_flg || 'back' === $this->Data->get_post_condition() ) {
+			if ( 'input' !== $this->view_flg || in_array( $this->Data->get_post_condition(), array( 'back', 'confirm' ) ) ) {
 				add_action( 'wp_footer', array( $this, '_enqueue_scroll_script' ) );
 			}
 		}
@@ -86,10 +84,8 @@ class MW_WP_Form_Exec_Shortcode {
 		do_action(
 			'mwform_add_shortcode',
 			new MW_WP_Form_Form(),
-			$this->view_flg,
-			MW_WP_Form_Error::connect( $this->form_key ),
 			$this->form_key,
-			$this->Data
+			$this->view_flg
 		);
 
 		return do_shortcode( $content );

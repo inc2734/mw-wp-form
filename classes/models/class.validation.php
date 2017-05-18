@@ -13,9 +13,19 @@
 class MW_WP_Form_Validation {
 
 	/**
-	 * @var MW_WP_Form_Error
+	 * @var string
 	 */
-	protected $Error;
+	protected $form_key;
+
+	/**
+	 * @var MW_WP_Form_Data
+	 */
+	protected $Data;
+
+	/**
+	 * @var MW_WP_Form_Setting
+	 */
+	protected $Setting;
 
 	/**
 	 * バリデートをかける項目（name属性）と、それにかけるバリデーションの配列
@@ -30,12 +40,15 @@ class MW_WP_Form_Validation {
 	protected $validation_rules = array();
 
 	/**
-	 * __construct
-	 *
-	 * @param MW_WP_Form_Error $Error
+	 * @param string $form_key
 	 */
-	public function __construct( MW_WP_Form_Error $Error ) {
-		$this->Error = $Error;
+	public function __construct( $form_key ) {
+		$this->form_key = $form_key;
+		$this->Data     = MW_WP_Form_Data::connect( $form_key );
+		$form_id        = MWF_Functions::get_form_id_from_form_key( $form_key );
+		$this->Setting  = new MW_WP_Form_Setting( $form_id );
+
+		$this->_set_rules();
 	}
 
 	/**
@@ -61,62 +74,49 @@ class MW_WP_Form_Validation {
 	}
 
 	/**
-	 * バリデートが通っているかチェック
-	 *
-	 * @return bool
+	 * Set validation rules of this form
 	 */
-	protected function is_valid() {
-		$errors = $this->Error->get_errors();
-		if ( empty( $errors ) ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * set_rules
-	 *
-	 * @param MW_WP_Form_Setting $Setting
-	 */
-	public function set_rules( MW_WP_Form_Setting $Setting ) {
-		$form_id  = $Setting->get( 'post_id' );
-		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
-		$Data = MW_WP_Form_Data::connect( $form_key );
-
-		$rules = array();
-		$validations = $Setting->get('validation' );
+	protected function _set_rules() {
+		$validations = $this->Setting->get( 'validation' );
 		if ( $validations ) {
 			foreach ( $validations as $validation ) {
 				foreach ( $validation as $rule => $options ) {
 					if ( $rule == 'target' ) {
 						continue;
 					}
-					if ( !is_array( $options ) ) {
+					if ( ! is_array( $options ) ) {
 						$options = array();
 					}
 					$this->set_rule( $validation['target'], $rule, $options );
 				}
 			}
 		}
+
 		$Akismet = new MW_WP_Form_Akismet();
 		$akismet_check = $Akismet->check(
-			$Setting->get( 'akismet_author' ),
-			$Setting->get( 'akismet_author_email' ),
-			$Setting->get( 'akismet_author_url' ),
-			$Data
+			$this->Setting->get( 'akismet_author' ),
+			$this->Setting->get( 'akismet_author_email' ),
+			$this->Setting->get( 'akismet_author_url' ),
+			$this->Data
 		);
 		if ( $akismet_check ) {
 			$this->set_rule( MWF_Config::AKISMET, 'akismet_check' );
 		}
+
+		$Validation = apply_filters(
+			'mwform_validation_' . $this->form_key,
+			$this,
+			$this->Data->gets(),
+			clone $this->Data
+		);
 	}
 
 	/**
-	 * set_rule
+	 * Set validation rule of the form field.
 	 *
-	 * @param string ターゲットのname属性
-	 * @param string バリデーションルール名
-	 * @param array オプション
+	 * @param string $key
+	 * @param string $rule
+	 * @param array $options
 	 * @return MW_WP_Form_Validation
 	 */
 	public function set_rule( $key, $rule, array $options = array() ) {
@@ -124,66 +124,73 @@ class MW_WP_Form_Validation {
 			'rule'    => strtolower( $rule ),
 			'options' => $options
 		);
-		$this->validate[$key][] = $rules;
+		$this->validate[ $key ][] = $rules;
 		return $this;
 	}
 
 	/**
-	 * validate実行
+	 * Validation check form fields
 	 *
-	 * @return bool エラーがなければ true
+	 * @return bool Return true when nothing errors
 	 */
 	public function check() {
 		foreach ( $this->validate as $key => $rules ) {
 			$this->_check( $key, $rules );
 		}
-		return $this->is_valid();
+
+		return (bool) ! $this->Data->get_validation_errors();
 	}
 
 	/**
-	 * 特定の項目のvalidate実行
+	 * Validation check the one form field
 	 *
 	 * @param string $key
-	 * @return bool エラーがなければ true
+	 * @return bool Return true when nothing errors
 	 */
 	public function single_check( $key ) {
 		$rules = array();
-		if ( is_array( $this->validate ) && isset( $this->validate[$key] ) ) {
-			$rules = $this->validate[$key];
+
+		if ( is_array( $this->validate ) && isset( $this->validate[ $key ] ) ) {
+			$rules = $this->validate[ $key ];
 			$this->_check( $key, $rules );
 		}
-		if ( $this->Error->get_error( $key ) ) {
-			return false;
-		}
-		return true;
+
+		return (bool) ! $this->Data->get_validation_error( $key );
 	}
 
 	/**
-	 * validate実行の実体
+	 * Set varidation errors into MW_WP_Form_Data
 	 *
 	 * @param string $key
 	 * @param array $rules
 	 */
 	protected function _check( $key, array $rules ) {
 		foreach ( $rules as $rule_set ) {
-			if ( !isset( $rule_set['rule'] ) ) {
+			if ( ! isset( $rule_set['rule'] ) ) {
 				continue;
 			}
-			$rule = $rule_set['rule'];
-			if ( !isset( $this->validation_rules[$rule] ) ) {
-				continue;
-			}
+
 			$options = array();
 			if ( isset( $rule_set['options'] ) ) {
 				$options = $rule_set['options'];
 			}
-			$validation_rule = $this->validation_rules[$rule];
-			if ( is_callable( array( $validation_rule, 'rule' ) ) ) {
-				$message = $validation_rule->rule( $key, $options );
-				if ( !empty( $message ) ) {
-					$this->Error->set_error( $key, $rule, $message );
-				}
+
+			$rule = $rule_set['rule'];
+			if ( ! isset( $this->validation_rules[ $rule ] ) ) {
+				continue;
 			}
+
+			$validation_rule = $this->validation_rules[ $rule ];
+			if ( ! is_callable( array( $validation_rule, 'rule' ) ) ) {
+				continue;
+			}
+
+			$message = $validation_rule->rule( $key, $options );
+			if ( empty( $message ) ) {
+				continue;
+			}
+
+			$this->Data->set_validation_error( $key, $rule, $message );
 		}
 	}
 }

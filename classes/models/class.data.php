@@ -23,6 +23,7 @@ class MW_WP_Form_Data {
 	protected $Session_form_key;
 	protected $Session_view_flg;
 	protected $Session_send_error;
+	protected $Session_validation_error;
 
 	/**
 	 * @var array
@@ -50,8 +51,9 @@ class MW_WP_Form_Data {
 		$this->_set_request_valiables();
 		$this->_set_files_valiables();
 
-		$this->Session_view_flg   = new MW_WP_Form_Session( $form_key . '-view-flg' );
-		$this->Session_send_error = new MW_WP_Form_Session( $form_key . '-send-error' );
+		$this->Session_view_flg         = new MW_WP_Form_Session( $form_key . '-view-flg' );
+		$this->Session_send_error       = new MW_WP_Form_Session( $form_key . '-send-error' );
+		$this->Session_validation_error = new MW_WP_Form_Session( $form_key . '-validation-error' );
 	}
 
 	/**
@@ -212,6 +214,7 @@ class MW_WP_Form_Data {
 		$this->Session_form_key->clear_values();
 		$this->Session_view_flg->clear_values();
 		$this->Session_send_error->clear_values();
+		$this->Session_validation_error->clear_values();
 	}
 
 	/**
@@ -584,7 +587,7 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Nonoce check
+	 * Nonce check
 	 *
 	 * @return bool
 	 */
@@ -603,5 +606,51 @@ class MW_WP_Form_Data {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Set the error message
+	 *
+	 * @param string $key name attribute
+	 * @param string $rule
+	 * @param string $message
+	 */
+	public function set_validation_error( $key, $rule, $message ) {
+		if ( ! is_string( $message ) ) {
+			exit( 'The Validate error message must be string!' );
+		}
+		$errors = $this->Session_validation_error->get( $key );
+		if ( ! is_array( $errors ) ) {
+			$errors = array();
+		}
+		$errors[ $rule ] = $message;
+		$this->Session_validation_error->set( $key, $errors );
+	}
+
+	/**
+	 * Return error messages the one form field
+	 *
+	 * @param string $key name attribute
+	 * @return array
+	 */
+	public function get_validation_error( $key ) {
+		$errors = $this->Session_validation_error->get( $key );
+		if ( is_null( $errors ) ) {
+			return array();
+		}
+		return $errors;
+	}
+
+	/**
+	 * Return all error messages
+	 *
+	 * @return array
+	 */
+	public function get_validation_errors() {
+		$errors = $this->Session_validation_error->gets();
+		if ( ! is_array( $errors ) ) {
+			return array();
+		}
+		return $errors;
 	}
 }

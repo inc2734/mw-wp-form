@@ -101,7 +101,6 @@ class MW_WP_Form {
 		include_once( $plugin_dir_path . 'classes/models/class.contact-data.php' );
 		include_once( $plugin_dir_path . 'classes/models/class.contact-data-setting.php' );
 		include_once( $plugin_dir_path . 'classes/models/class.data.php' );
-		include_once( $plugin_dir_path . 'classes/models/class.error.php' );
 		include_once( $plugin_dir_path . 'classes/models/class.file.php' );
 		include_once( $plugin_dir_path . 'classes/models/class.abstract-form-field.php' );
 		include_once( $plugin_dir_path . 'classes/models/class.form.php' );
@@ -405,6 +404,7 @@ class MW_WP_Form {
 	/**
 	 * バリデーションルールのインスタンス化。配列にはフックを通して格納する。
 	 *
+	 * @todo ここに定義があるのは違和感があるし、コントローラーに引数で渡すのも違和感があるので外だしして引数で渡すのをやめる
 	 * @param string $key フォーム識別子
 	 * @return $validation_rules バリデーションルールオブジェクトの配列
 	 */

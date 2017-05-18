@@ -28,6 +28,11 @@ class MW_WP_Form_Main_Controller {
 	protected $Setting;
 
 	/**
+	 * @var MW_WP_Form_Validation
+	 */
+	protected $Validation;
+
+	/**
 	 * @var array
 	 */
 	protected $validation_rules = array();
@@ -93,13 +98,12 @@ class MW_WP_Form_Main_Controller {
 			$Data     = MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
 			$this->Data = $Data;
 
-			$Error = MW_WP_Form_Error::connect( $form_key );
-			$Validation = new MW_WP_Form_Validation( $Error );
+			$Validation = new MW_WP_Form_Validation( $form_key );
+			$this->Validation = $Validation;
 			$Validation->set_validation_rules( $this->validation_rules );
 
 			$Setting = new MW_WP_Form_Setting( $form_id );
 			$this->Setting = $Setting;
-			$Validation->set_rules( $Setting );
 
 			foreach ( $this->validation_rules as $validation_name => $validation_rule ) {
 				if ( is_callable( array( $validation_rule, 'set_Data' ) ) ) {
@@ -107,21 +111,13 @@ class MW_WP_Form_Main_Controller {
 				}
 			}
 
-			$Validation = apply_filters(
-				'mwform_validation_' . $form_key,
-				$Validation,
-				$Data->gets(),
-				clone $Data
-			);
-
 			$post_condition = $Data->get_post_condition();
-			$is_valid = $Validation->check();
 			$Redirected = new MW_WP_Form_Redirected(
 				$Setting->get( 'input_url' ),
 				$Setting->get( 'confirmation_url' ),
 				$Setting->get( 'complete_url' ),
 				$Setting->get( 'validation_error_url' ),
-				$is_valid,
+				$Validation->check(),
 				$post_condition,
 				$Setting->get( 'querystring' )
 			);
