@@ -27,9 +27,19 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	 * __construct
 	 */
 	public function __construct() {
-		if ( !$this->getName() ) {
+		if ( ! $this->getName() ) {
 			exit( 'MW_WP_Form_Abstract_Validation_Rule::$name must override.' );
 		}
+
+		add_filter( 'mwform_validation_rules'  , array( $this, '_mwform_validation_rules' ) );
+	}
+
+	/**
+	 * @param array $validation_rules MW_WP_Form_Abstract_Validation_Rule を継承したオブジェクトの一覧
+	 * @return array $validation_rules
+	 */
+	public function _mwform_validation_rules( array $validation_rules ) {
+		return array_merge( $validation_rules, array( $this->getName() => $this ) );
 	}
 
 	/**

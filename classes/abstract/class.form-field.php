@@ -311,8 +311,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 * @return array $form_fields
 	 */
 	public function _mwform_form_fields( array $form_fields ) {
-		$form_fields = array_merge( $form_fields, array( $this->shortcode_name => $this ) );
-		return $form_fields;
+		return array_merge( $form_fields, array( $this->shortcode_name => $this ) );
 	}
 
 	/**

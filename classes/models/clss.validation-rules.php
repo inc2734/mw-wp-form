@@ -41,13 +41,7 @@ class MW_WP_Form_Validation_Rules {
 		'MW_WP_Form_Validation_Rule_Tel',
 	);
 
-	/**
-	 * バリデーションルールのインスタンス化。配列にはフックを通して格納する。
-	 *
-	 * @param string $key フォーム識別子
-	 * @return $validation_rules バリデーションルールオブジェクトの配列
-	 */
-	public function get_validation_rules() {
+	public function __construct() {
 		$plugin_dir_path = plugin_dir_path( __FILE__ ) . '../../';
 
 		foreach ( $this->validation_rules_only_jp as $key => $value ) {
@@ -64,8 +58,7 @@ class MW_WP_Form_Validation_Rules {
 				continue;
 			}
 
-			$instance = new $class_name();
-			$this->validation_rules[ $instance->getName() ] = $instance;
+			new $class_name();
 		}
 
 		$this->validation_rules = apply_filters(
@@ -73,7 +66,15 @@ class MW_WP_Form_Validation_Rules {
 			$this->validation_rules,
 			null // 後方互換性のために残してるだけ
 		);
+	}
 
+	/**
+	 * バリデーションルールのインスタンス化。配列にはフックを通して格納する。
+	 *
+	 * @param string $key フォーム識別子
+	 * @return $validation_rules バリデーションルールオブジェクトの配列
+	 */
+	public function get_validation_rules() {
 		return $this->validation_rules;
 	}
 
