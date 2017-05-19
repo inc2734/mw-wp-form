@@ -24,19 +24,17 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 	protected $postdata = array();
 
 	/**
-	 * Settings API グループ名
-	 * @var string
-	 */
-	protected $option_group;
-
-	/**
 	 * __construct
 	 */
 	public function __construct() {
-		$this->option_group = MWF_Config::NAME . '-' . 'chart-group';
-		if ( !empty( $_GET['formkey'] ) ) {
+		if ( ! empty( $_GET['formkey'] ) ) {
 			$this->formkey = $_GET['formkey'];
 		}
+
+		$hook = MWF_Config::NAME . '_page_' . MWF_Config::NAME . '-chart';
+
+		add_action( 'load-' . $hook, array( $this, '_save' ) );
+		add_action( $hook          , array( $this, '_index' ) );
 	}
 
 	/**
@@ -90,10 +88,38 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 		);
 	}
 
+	public function _save() {
+		if ( ! isset( $_POST[ MWF_Config::NAME . '-chart-nonce-field' ] ) ) {
+			return;
+		}
+
+		if ( empty( $_POST[ MWF_Config::NAME . '-chart-nonce-field' ] ) ) {
+			return;
+		}
+
+		if ( ! check_admin_referer( MWF_Config::NAME . '-chart-action', MWF_Config::NAME . '-chart-nonce-field' ) ) {
+			return;
+		}
+
+		if ( ! $this->formkey ) {
+			return;
+		}
+
+		$option_name = MWF_Config::NAME . '-chart-' . $this->formkey;
+		$sanitized_values = $this->_sanitize( $_POST[ $option_name ] );
+		update_option( $option_name, $sanitized_values );
+		wp_redirect(
+			admin_url(
+				'edit.php?post_type=' . MWF_Config::NAME . '&page=' . MWF_Config::NAME . '-chart&formkey=' . $this->formkey
+			)
+		);
+		exit;
+	}
+
 	/**
 	 * グラフページを表示
 	 */
-	public function index() {
+	public function _index() {
 		$post_type = $this->formkey;
 
 		// form_posts
@@ -141,10 +167,33 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 		array_unshift( $postdata, $default_keys );
 
 		$this->assign( 'post_type'   , $post_type );
-		$this->assign( 'option_group', $this->option_group );
 		$this->assign( 'form_posts'  , $form_posts );
 		$this->assign( 'custom_keys' , $custom_keys );
 		$this->assign( 'postdata'    , $postdata );
 		$this->render( 'chart/index' );
+	}
+
+	/**
+	 * 設定データのサニタイズ
+	 *
+	 * @param array $input フォームから送信されたデータ
+	 * @return array
+	 */
+	public function _sanitize( $input ) {
+		if ( ! is_array( $input ) || ! isset( $input['chart'] ) || ! is_array( $input['chart'] ) ) {
+			return array();
+		}
+
+		$new_input = array();
+
+		foreach ( $input['chart'] as $key => $value ) {
+			if ( empty( $value['target'] ) ) {
+				continue;
+			}
+
+			$new_input['chart'][ $key ] = $value;
+		}
+
+		return $new_input;
 	}
 }

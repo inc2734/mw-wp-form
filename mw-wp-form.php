@@ -12,6 +12,8 @@
  * Domain Path: /languages/
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * @todo テストの更新
  */
 include_once( plugin_dir_path( __FILE__ ) . 'classes/functions.php' );
 include_once( plugin_dir_path( __FILE__ ) . 'classes/config.php' );
@@ -71,7 +73,6 @@ class MW_WP_Form {
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 			add_action( 'admin_menu'           , array( $this, 'admin_menu_for_chart' ) );
 			add_action( 'admin_menu'           , array( $this, 'admin_menu_for_contact_data_list' ) );
-			add_action( 'admin_init'           , array( $this, 'register_setting' ) );
 			add_action( 'current_screen'       , array( $this, 'current_screen' ) );
 		} elseif ( ! is_admin() ) {
 			$Controller = new MW_WP_Form_Main_Controller();
@@ -102,18 +103,8 @@ class MW_WP_Form {
 			esc_html__( 'Chart', 'mw-wp-form' ),
 			MWF_Config::CAPABILITY,
 			MWF_Config::NAME . '-chart',
-			array( $this, 'display_chart' )
+			'__return_false'
 		);
-	}
-
-	/**
-	 * グラフページを表示
-	 */
-	public function display_chart() {
-		// ここでは画面の呼び出しだけ。
-		// JSの読み込みや画面の表示可否判定は current_screen() で行う（ここでは遅い）。
-		$Controller = new MW_WP_Form_Chart_Controller();
-		$Controller->index();
 	}
 
 	/**
@@ -141,42 +132,6 @@ class MW_WP_Form {
 	public function display_stores_inquiry_data_form_list() {
 		$Controller = new MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller();
 		$Controller->index();
-	}
-
-	/**
-	 * グラフページ用の register_setting
-	 */
-	public function register_setting() {
-		$formkey = ( !empty( $_GET['formkey'] ) ) ? $_GET['formkey'] : '';
-		if ( !empty( $_POST[MWF_Config::NAME . '-formkey'] ) ) {
-			$formkey = $_POST[MWF_Config::NAME . '-formkey'];
-		}
-		if ( !empty( $formkey ) ) {
-			$option_group = MWF_Config::NAME . '-' . 'chart-group';
-			register_setting(
-				$option_group,
-				MWF_Config::NAME . '-chart-' . $formkey,
-				array( $this, 'sanitize' )
-			);
-		}
-	}
-
-	/**
-	 * グラフページ設定データのサニタイズ
-	 *
-	 * @param array $input フォームから送信されたデータ
-	 * @return array
-	 */
-	public function sanitize( $input ) {
-		$new_input = array();
-		if ( is_array( $input ) && isset( $input['chart'] ) && is_array( $input['chart'] ) ) {
-			foreach ( $input['chart'] as $key => $value ) {
-				if ( !empty( $value['target'] ) ) {
-					$new_input['chart'][$key] = $value;
-				}
-			}
-		}
-		return $new_input;
 	}
 
 	/**

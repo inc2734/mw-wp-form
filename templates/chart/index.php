@@ -5,10 +5,9 @@
 		:
 		<?php echo esc_html( get_the_title( $post_id ) ); ?>
 	</h2>
-	<form method="post" action="options.php">
+	<form method="post" action="">
 		<?php
-		settings_fields( $option_group );
-		do_settings_sections( $option_group );
+		wp_nonce_field( MWF_Config::NAME . '-chart-action', MWF_Config::NAME . '-chart-nonce-field' );
 		?>
 		<div id="<?php echo esc_attr( MWF_Config::NAME . '_chart' ); ?>" class="postbox">
 			<div class="inside">
