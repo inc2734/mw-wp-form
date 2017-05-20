@@ -122,16 +122,8 @@ class MW_WP_Form {
 			__( 'Inquiry data', 'mw-wp-form' ),
 			MWF_Config::CAPABILITY,
 			MWF_Config::NAME . '-save-data',
-			array( $this, 'display_stores_inquiry_data_form_list' )
+			'__return_false'
 		);
-	}
-
-	/**
-	 * 問い合わせデータ閲覧ページを表示
-	 */
-	public function display_stores_inquiry_data_form_list() {
-		$Controller = new MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller();
-		$Controller->index();
 	}
 
 	/**
@@ -158,6 +150,10 @@ class MW_WP_Form {
 		}
 		elseif ( $screen->id === MWF_Config::NAME . '_page_' . MWF_Config::NAME . '-chart' ) {
 			$Controller = new MW_WP_Form_Chart_Controller();
+			$Controller->initialize();
+		}
+		elseif ( $screen->id === MWF_Config::NAME . '_page_' . MWF_Config::NAME . '-save-data' ) {
+			$Controller = new MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller();
 			$Controller->initialize();
 		}
 	}
