@@ -16,8 +16,6 @@ class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Con
 		add_action( $hook , array( $this, '_index' ) );
 	}
 
-	public function initialize() {}
-
 	public function _index() {
 		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
 		$form_list = array();

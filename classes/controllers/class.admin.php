@@ -18,12 +18,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 
 	public function __construct() {
 		$this->styles = apply_filters( 'mwform_styles', $this->styles );
-	}
 
-	/**
-	 * initialize
-	 */
-	public function initialize() {
 		$Admin = new MW_WP_Form_Admin();
 		add_action( 'add_meta_boxes'       , array( $this , 'add_meta_boxes' ) );
 		add_filter( 'default_content'      , array( $this , 'default_content' ) );

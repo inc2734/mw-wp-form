@@ -16,14 +16,12 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	 */
 	protected $post_type;
 
-	/**
-	 * initialize
-	 */
-	public function initialize() {
+	public function __construct() {
 		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
-		if ( !isset( $_GET['post_type'] ) ) {
+		if ( ! isset( $_GET['post_type'] ) ) {
 			exit;
 		}
+
 		$this->post_type = $_GET['post_type'];
 		if ( !in_array( $this->post_type, $contact_data_post_types ) ) {
 			exit;

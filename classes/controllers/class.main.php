@@ -32,10 +32,7 @@ class MW_WP_Form_Main_Controller {
 	 */
 	protected $Validation;
 
-	/**
-	 * initialize
-	 */
-	public function initialize() {
+	public function __construct() {
 		add_filter( 'nocache_headers' , array( $this, 'nocache_headers' ) , 1 );
 		add_action( 'parse_request'   , array( $this, 'remove_query_vars_from_post' ) );
 		add_filter( 'template_include', array( $this, 'template_include' ), 10000 );

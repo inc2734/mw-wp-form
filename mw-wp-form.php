@@ -76,7 +76,6 @@ class MW_WP_Form {
 			add_action( 'current_screen'       , array( $this, 'current_screen' ) );
 		} elseif ( ! is_admin() ) {
 			$Controller = new MW_WP_Form_Main_Controller();
-			$Controller->initialize();
 		}
 	}
 
@@ -134,27 +133,21 @@ class MW_WP_Form {
 	public function current_screen( $screen ) {
 		if ( $screen->id === MWF_Config::NAME ) {
 			$Controller = new MW_WP_Form_Admin_Controller();
-			$Controller->initialize();
 		}
 		elseif ( $screen->id === 'edit-' . MWF_Config::NAME ) {
 			$Controller = new MW_WP_Form_Admin_List_Controller();
-			$Controller->initialize();
 		}
 		elseif ( MWF_Functions::is_contact_data_post_type( $screen->id ) ) {
 			$Controller = new MW_WP_Form_Contact_Data_Controller();
-			$Controller->initialize();
 		}
 		elseif ( preg_match( '/^edit-' . MWF_Config::DBDATA . '\d+$/', $screen->id ) ) {
 			$Controller = new MW_WP_Form_Contact_Data_List_Controller();
-			$Controller->initialize();
 		}
 		elseif ( $screen->id === MWF_Config::NAME . '_page_' . MWF_Config::NAME . '-chart' ) {
 			$Controller = new MW_WP_Form_Chart_Controller();
-			$Controller->initialize();
 		}
 		elseif ( $screen->id === MWF_Config::NAME . '_page_' . MWF_Config::NAME . '-save-data' ) {
 			$Controller = new MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller();
-			$Controller->initialize();
 		}
 	}
 

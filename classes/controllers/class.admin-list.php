@@ -10,11 +10,8 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
-	
-	/**
-	 * initialize
-	 */
-	public function initialize() {
+
+	public function __construct() {
 		$screen = get_current_screen();
 		add_filter( 'views_' . $screen->id , array( $this, 'donate_link' ) );
 		add_action( 'admin_head'           , array( $this, 'add_columns' ) );

@@ -31,21 +31,16 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 			$this->formkey = $_GET['formkey'];
 		}
 
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+		if ( ! in_array( $this->formkey, $contact_data_post_types ) ) {
+			exit;
+		}
+		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts') );
+
 		$hook = MWF_Config::NAME . '_page_' . MWF_Config::NAME . '-chart';
 
 		add_action( 'load-' . $hook, array( $this, '_save' ) );
 		add_action( $hook          , array( $this, '_index' ) );
-	}
-
-	/**
-	 * initialize
-	 */
-	public function initialize() {
-		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
-		if ( !in_array( $this->formkey, $contact_data_post_types ) ) {
-			exit;
-		}
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts') );
 	}
 
 	/**

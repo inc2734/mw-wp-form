@@ -11,29 +11,29 @@
  */
 class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 
-	/**
-	 * initialize
-	 */
-	public function initialize() {
+	public function __construct() {
 		$screen = get_current_screen();
-		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
-		if ( $screen->base ==='post' && !in_array( $screen->id, $contact_data_post_types ) ) {
+		if ( $screen->base !=='post' ) {
 			exit;
 		}
-		if ( $screen->base ==='post' && in_array( $screen->id, $contact_data_post_types ) ) {
-			$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $screen->post_type, array() );
-			if ( !empty( $_args ) && is_array( $_args ) ) {
-				$args = array(
-					'post_type'      => $screen->post_type,
-					'post_status'    => 'publish',
-					'posts_per_page' => 1,
-					'p'              => $_GET['post'],
-				);
-				$args = array_merge( $_args, $args );
-				$permit_posts = get_posts( $args );
-				if ( empty( $permit_posts ) ) {
-					exit;
-				}
+
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+		if ( ! in_array( $screen->id, $contact_data_post_types ) ) {
+			exit;
+		}
+
+		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $screen->post_type, array() );
+		if ( ! empty( $_args ) && is_array( $_args ) ) {
+			$args = array(
+				'post_type'      => $screen->post_type,
+				'post_status'    => 'publish',
+				'posts_per_page' => 1,
+				'p'              => $_GET['post'],
+			);
+			$args = array_merge( $_args, $args );
+			$permit_posts = get_posts( $args );
+			if ( empty( $permit_posts ) ) {
+				exit;
 			}
 		}
 
