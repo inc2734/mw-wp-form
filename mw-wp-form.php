@@ -14,6 +14,8 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  *
  * @todo テストの更新
+ * @todo standard coding
+ * @todo 日本語 > English
  */
 include_once( plugin_dir_path( __FILE__ ) . 'classes/functions.php' );
 include_once( plugin_dir_path( __FILE__ ) . 'classes/config.php' );
