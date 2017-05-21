@@ -1,21 +1,25 @@
 <?php
 /**
  * Name       : MW WP Form Redirected
- * Version    : 1.0.2
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : http://2inc.org
  * Created    : December 31, 2014
- * Modified   : April 28, 2017
+ * Modified   : May 21, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Redirected {
 
 	/**
-	 * 現在のモード
-	 * @var string input|confirm|complete|back
+	 * @var string
 	 */
-	protected $mode_check = 'input';
+	protected $form_key;
+
+	/**
+	 * @var MW_WP_Form_Setting
+	 */
+	protected $Setting;
 
 	/**
 	 * @var string input|confirm|complete
@@ -27,104 +31,50 @@ class MW_WP_Form_Redirected {
 	 */
 	protected $url;
 
-	/**
-	 * @var bool
-	 */
-	protected $querystring;
+	public function __construct( $form_key, $Setting, $is_valid, $post_condition ) {
+		$this->form_key = $form_key;
+		$this->Setting  = $Setting;
 
-	/**
-	 * __construct
-	 *
-	 * @param string $input
-	 * @param string $confirm
-	 * @param string $complete
-	 * @param string $valdation_error
-	 * @param bool $is_valid
-	 * @param bool $post_condition
-	 * @param bool $querystring
-	 */
-	public function __construct( $input, $confirm, $complete, $valdation_error, $is_valid, $post_condition, $querystring ) {
-		$this->querystring = $querystring; // parse_url
+		$input        = $this->parse_url( $this->Setting->get( 'input_url' ) );
+		$confirm      = $this->parse_url( $this->Setting->get( 'confirmation_url' ) );
+		$complete     = $this->parse_url( $this->Setting->get( 'complete_url' ) );
+		$error        = $this->parse_url( $this->Setting->get( 'validation_error_url' ) );
+		$REQUEST_URI  = $this->parse_url( $this->get_request_uri() );
 
-		$this->initialize( $input, $confirm, $complete, $valdation_error, $is_valid, $post_condition );
-	}
-
-	/**
-	 * initialize
-	 *
-	 * @param string $input
-	 * @param string $confirm
-	 * @param string $complete
-	 * @param string $valdation_error
-	 * @param bool $is_valid
-	 * @param bool $post_condition
-	 */
-	protected function initialize( $input, $confirm, $complete, $valdation_error, $is_valid, $post_condition ) {
-		$input            = $this->parse_url( $input );
-		$confirm          = $this->parse_url( $confirm );
-		$complete         = $this->parse_url( $complete );
-		$validation_error = $this->parse_url( $valdation_error );
-		$REQUEST_URI      = $this->parse_url( $this->get_request_uri() );
-
-		// 入力画面（戻る）のとき
-		if ( $post_condition === 'back' ) {
+		if ( 'back' === $post_condition ) {
 			$this->url = $input;
 			return;
 		}
-		// 確認画面のとき
-		elseif ( $post_condition === 'confirm' ) {
+
+		if ( 'confirm' === $post_condition ) {
 			if ( $is_valid ) {
 				$this->view_flg = 'confirm';
 				$this->url      = $confirm;
-				return;
 			} else {
-				if ( $validation_error ) {
-					$this->url = $validation_error;
-					return;
+				if ( $error ) {
+					$this->url = $error;
 				} else {
 					$this->url = $input;
-					return;
 				}
 			}
+			return;
 		}
-		// 完了画面のとき
-		elseif ( $post_condition === 'complete' ) {
+
+		if ( 'complete' === $post_condition ) {
 			if ( $is_valid ) {
 				$this->view_flg = 'complete';
 				$this->url      = $complete;
-				return;
 			} else {
-				if ( $validation_error ) {
-					$this->url = $validation_error;
-					return;
+				if ( $error ) {
+					$this->url = $error;
 				} else {
 					$this->url = $input;
-					return;
 				}
 			}
-		}
-		// 完了 or 確認画面 or エラーURLが設定済みで
-		// 完了 or 確認画面 or エラーに直接アクセスした場合、
-		// 入力画面に戻れれば戻る。戻れない場合はトップに戻す
-		else {
-			$check_urls = array(
-				$confirm, $complete,
-			);
-			$back_url = ( $input ) ? $input : home_url();
-			foreach ( $check_urls as $check_url ) {
-				if ( $REQUEST_URI === $check_url ) {
-					$this->url = $back_url;
-					return;
-				}
-			}
-			$this->url = $input;
 			return;
-
-			if ( $is_valid && $REQUEST_URI == $validation_error ) {
-				$this->url = $back_url;
-				return;
-			}
 		}
+
+		$this->url = ( $input ) ? $input : home_url();
 	}
 
 	/**
@@ -193,7 +143,7 @@ class MW_WP_Form_Redirected {
 
 		// URL設定でURL引数が使用されている場合はそれを使う。
 		// 「URL引数を有効にする」が有効の場合は $_GET を利用する（重複するURL引数はURL設定のものが優先される ※post_id除く）
-		if ( $this->querystring ) {
+		if ( $this->Setting->get( 'querystring' ) ) {
 			$query_string = array_merge( $_GET, $query_string );
 			if ( isset( $_GET['post_id'] ) && MWF_Functions::is_numeric( $_GET['post_id'] ) ) {
 				$query_string['post_id'] = $_GET['post_id'];
@@ -204,5 +154,26 @@ class MW_WP_Form_Redirected {
 			$url = $url . '?' . http_build_query( $query_string, null, '&' );
 		}
 		return $url;
+	}
+
+	/**
+	 * 現在のURLと引数で渡されたリダイレクトURLが同じであればリダイレクトしない
+	 */
+	public function redirect() {
+		$Data        = MW_WP_Form_Data::connect( $this->form_key );
+		$url         = ( $this->get_url() ) ? $this->get_url() : $this->get_request_uri();
+		$redirect    = apply_filters( 'mwform_redirect_url_' . $this->form_key, $url, $Data );
+		$REQUEST_URI = $this->get_request_uri();
+
+		if ( empty( $_POST ) && $redirect === $REQUEST_URI ) {
+			return;
+		}
+
+		do_action( 'mwform_before_redirect_' . $this->form_key );
+
+		$redirect = wp_sanitize_redirect( $redirect );
+		$redirect = wp_validate_redirect( $redirect, home_url() );
+		wp_safe_redirect( $redirect );
+		exit();
 	}
 }

@@ -18,19 +18,9 @@ class MW_WP_Form_Main_Controller {
 	protected $Data;
 
 	/**
-	 * @var MW_WP_Form_Redrected
-	 */
-	protected $Redirected;
-
-	/**
 	 * @var MW_WP_Form_Setting
 	 */
 	protected $Setting;
-
-	/**
-	 * @var MW_WP_Form_Validation
-	 */
-	protected $Validation;
 
 	public function __construct() {
 		add_filter( 'nocache_headers' , array( $this, 'nocache_headers' ) , 1 );
@@ -79,70 +69,55 @@ class MW_WP_Form_Main_Controller {
 
 			$form_id           = $_POST[ MWF_Config::NAME . '-form-id' ];
 			$form_verify_token = $_POST[ MWF_Config::NAME . '-form-verify-token' ];
-			$Setting           = new MW_WP_Form_Setting( (int) $form_id );
+			$this->Setting     = new MW_WP_Form_Setting( (int) $form_id );
 
 			if ( MWF_Config::NAME !== get_post_type( $form_id ) ) {
 				wp_safe_redirect( home_url() );
 				exit;
 			}
 
-			if ( $Setting->generate_form_verify_token() !== $form_verify_token ) {
+			if ( $this->Setting->generate_form_verify_token() !== $form_verify_token ) {
 				wp_safe_redirect( home_url() );
 				exit;
 			}
 
-			$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
-			$Data     = MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
-			$this->Data = $Data;
+			$form_key   = MWF_Functions::get_form_key_from_form_id( $form_id );
+			$this->Data = MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
 
 			$Validation = new MW_WP_Form_Validation( $form_key );
-			$this->Validation = $Validation;
-
-			$Setting = new MW_WP_Form_Setting( $form_id );
-			$this->Setting = $Setting;
 
 			$Validation_Rules = MW_WP_Form_Validation_Rules::instantiation();
 			$validation_rules = $Validation_Rules->get_validation_rules();
 			foreach ( $validation_rules as $validation_name => $validation_rule ) {
 				if ( is_callable( array( $validation_rule, 'set_Data' ) ) ) {
-					$validation_rule->set_Data( $Data );
+					$validation_rule->set_Data( $this->Data );
 				}
 			}
 
-			$post_condition = $Data->get_post_condition();
-			$Redirected = new MW_WP_Form_Redirected(
-				$Setting->get( 'input_url' ),
-				$Setting->get( 'confirmation_url' ),
-				$Setting->get( 'complete_url' ),
-				$Setting->get( 'validation_error_url' ),
-				$Validation->check(),
-				$post_condition,
-				$Setting->get( 'querystring' )
-			);
-			$this->Redirected = $Redirected;
-			$view_flg = $Redirected->get_view_flg();
-			$Data->set_view_flg( $view_flg );
+			$post_condition = $this->Data->get_post_condition();
 
 			if ( in_array( $post_condition, array( 'confirm', 'complete' ) ) ) {
 				$this->file_upload();
 			}
+
+			$Redirected = new MW_WP_Form_Redirected( $form_key, $this->Setting, $Validation->check(), $post_condition );
+			$view_flg   = $Redirected->get_view_flg();
+			$this->Data->set_view_flg( $view_flg );
 
 			if ( $view_flg === 'complete' ) {
 				$is_mail_sended = $this->send();
 			}
 
 			if ( isset( $is_mail_sended ) && false === $is_mail_sended ) {
-				$Data->set_send_error();
+				$this->Data->set_send_error();
 			} elseif ( isset( $is_mail_sended ) && true === $is_mail_sended ) {
 				do_action(
 					'mwform_after_send_' . $form_key,
-					$Data
+					clone $this->Data
 				);
 			}
 
-			do_action( 'mwform_before_redirect_' . $form_key );
-			$url = apply_filters( 'mwform_redirect_url_' . $form_key, $Redirected->get_url(), $Data );
-			$this->redirect( $url );
+			$Redirected->redirect();
 
 		} else {
 
@@ -169,22 +144,6 @@ class MW_WP_Form_Main_Controller {
 	public function _mwform_formkey( $attributes ) {
 		$Exec_Shortcode = new MW_WP_Form_Exec_Shortcode();
 		return $Exec_Shortcode->initialize( $attributes );
-	}
-
-	/**
-	 * 現在のURLと引数で渡されたリダイレクトURLが同じであればリダイレクトしない
-	 *
-	 * @param string リダイレクトURL
-	 */
-	private function redirect( $url ) {
-		$redirect = ( empty( $url ) ) ? $this->Redirected->get_request_uri() : $url;
-		$REQUEST_URI = $this->Redirected->get_request_uri();
-		if ( !empty( $_POST ) || $redirect != $REQUEST_URI ) {
-			$redirect = wp_sanitize_redirect( $redirect );
-			$redirect = wp_validate_redirect( $redirect, home_url() );
-			wp_safe_redirect( $redirect );
-			exit();
-		}
 	}
 
 	/**

@@ -31,6 +31,11 @@ class MW_WP_Form_Exec_Shortcode {
 	 */
 	protected $view_flg;
 
+	/**
+	 * @var MW_WP_Form_Setting
+	 */
+	protected $Setting;
+
 	public function __construct() {
 		add_shortcode( 'mwform'                 , array( $this, '_mwform' ) );
 		add_shortcode( 'mwform_complete_message', array( $this, '_mwform_complete_message' ) );
@@ -52,11 +57,14 @@ class MW_WP_Form_Exec_Shortcode {
 		$this->form_key = MWF_Functions::get_form_key_from_form_id( $this->form_id );
 		$this->Data     = MW_WP_Form_Data::connect( $this->form_key );
 		$this->view_flg = ( $this->Data->get_view_flg() ) ? $this->Data->get_view_flg() : 'input';
+		$this->Setting  = new MW_WP_Form_Setting( $this->form_id );
 		add_action( 'wp_footer', array( $this->Data, 'clear_values' ) );
 
 		do_action( 'mwform_before_load_content_' . $this->form_key );
 
-		if ( $this->Data->get_send_error() ) {
+		if ( $this->_is_direct_access() ) {
+			$content = $this->_get_direct_access_error_page_content();
+		} elseif ( $this->Data->get_send_error() ) {
 			$content = $this->_get_send_error_page_content();
 		} elseif ( $this->view_flg === 'input' ) {
 			$content = $this->_get_input_page_content();
@@ -71,8 +79,7 @@ class MW_WP_Form_Exec_Shortcode {
 		do_action( 'mwform_after_load_content_' .  $this->form_key );
 
 		// Enqueue scroll to MW WP Form script
-		$Setting = new MW_WP_Form_Setting( $this->form_id );
-		if ( $Setting->get( 'scroll' ) ) {
+		if ( $this->Setting->get( 'scroll' ) ) {
 			if ( 'input' !== $this->view_flg || in_array( $this->Data->get_post_condition(), array( 'back', 'confirm' ) ) ) {
 				add_action( 'wp_footer', array( $this, '_enqueue_scroll_script' ) );
 			}
@@ -165,10 +172,9 @@ class MW_WP_Form_Exec_Shortcode {
 	 * @return string $content
 	 */
 	protected function _get_complete_page_content() {
-		$Setting = new MW_WP_Form_Setting( $this->form_id );
 		$content = apply_filters(
 			'mwform_complete_content_raw_' . $this->form_key,
-			$Setting->get( 'complete_message' ),
+			$this->Setting->get( 'complete_message' ),
 			$this->Data
 		);
 		$content = $this->_wpautop( $content );
@@ -184,7 +190,7 @@ class MW_WP_Form_Exec_Shortcode {
 	 *
 	 * @return string $content
 	 */
-	public function _get_send_error_page_content() {
+	protected function _get_send_error_page_content() {
 		$content = sprintf(
 			'<div id="mw_wp_form_%s" class="mw_wp_form mw_wp_form_send_error">
 				%s
@@ -196,6 +202,51 @@ class MW_WP_Form_Exec_Shortcode {
 		$content = $this->_wpautop( $content );
 		$content = apply_filters( 'mwform_send_error_content_' . $this->form_key, $content, $this->Data );
 		return $content;
+	}
+
+	/**
+	 * Display direct access error page
+	 *
+	 * @return string $content
+	 */
+	protected function _get_direct_access_error_page_content() {
+		$content = sprintf(
+			'<div id="mw_wp_form_%s" class="mw_wp_form mw_wp_form_direct_access_error">
+				%s
+			<!-- end .mw_wp_form --></div>',
+			esc_attr( $this->form_key ),
+			__( 'You can not access this page directly.', 'mw-wp-form' )
+		);
+		$content = apply_filters( 'mwform_direct_access_error_content_raw_' . $this->form_key, $content, $this->Data );
+		$content = $this->_wpautop( $content );
+		$content = apply_filters( 'mwform_direct_access_error_content_' . $this->form_key, $content, $this->Data );
+		return $content;
+	}
+
+	/**
+	 * Return true when direct access to confirm or complete or validation error page.
+	 *
+	 * @return bool
+	 */
+	protected function _is_direct_access() {
+		if ( 'input' !== $this->view_flg ) {
+			return false;
+		}
+
+		$confirm  = $this->Setting->get( 'confirmation_url' );
+		$complete = $this->Setting->get( 'complete_url' );
+		$error    = $this->Setting->get( 'validation_error_url' );
+
+	 	if ( ! $confirm && ! $complete && ! $error ) {
+			return false;
+		}
+
+		$Redirected = new MW_WP_Form_Redirected( $this->form_key, $this->Setting, false, $this->Data->get_post_condition() );
+		if ( $Redirected->get_request_uri() === $Redirected->get_url() ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -275,8 +326,7 @@ class MW_WP_Form_Exec_Shortcode {
 	 * @return string
 	 */
 	protected function _replace_post_property( $content ) {
-		$Setting = new MW_WP_Form_Setting( $this->form_id );
-		if ( $Setting->get( 'querystring' ) ) {
+		if ( $this->Setting->get( 'querystring' ) ) {
 			$content = preg_replace_callback(
 				'/{(.+?)}/',
 				array( $this, '_get_post_property_from_querystring' ),
@@ -392,9 +442,7 @@ class MW_WP_Form_Exec_Shortcode {
 	 * @return string
 	 */
 	protected function _get_class_by_style() {
-		$Setting = new MW_WP_Form_Setting( $this->form_id );
-		$style   = $Setting->get( 'style' );
-
+		$style = $this->Setting->get( 'style' );
 		if ( $style ) {
 			return 'mw_wp_form_' . $style;
 		}
@@ -441,11 +489,10 @@ class MW_WP_Form_Exec_Shortcode {
 			esc_attr( $this->form_id )
 		);
 
-		$Setting = new MW_WP_Form_Setting( $this->form_id );
 		$html .= sprintf(
 			'<input type="hidden" name="%1$s" value="%2$s" />',
 			esc_attr( MWF_Config::NAME . '-form-verify-token' ),
-			esc_attr( $Setting->generate_form_verify_token() )
+			esc_attr( $this->Setting->generate_form_verify_token() )
 		);
 		return $html;
 	}
@@ -459,8 +506,7 @@ class MW_WP_Form_Exec_Shortcode {
 		$url = plugin_dir_url( __FILE__ );
 		wp_enqueue_style( MWF_Config::NAME, $url . '../../css/style.css' );
 
-		$Setting = new MW_WP_Form_Setting( $this->form_id );
-		$style  = $Setting->get( 'style' );
+		$style  = $this->Setting->get( 'style' );
 		$styles = apply_filters( 'mwform_styles', array() );
 		if ( is_array( $styles ) && isset( $styles[ $style ] ) ) {
 			$css = $styles[ $style ];
