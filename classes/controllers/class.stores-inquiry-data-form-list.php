@@ -12,8 +12,8 @@
 class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Controller {
 
 	public function __construct() {
-		$hook = MWF_Config::NAME . '_page_' . MWF_Config::NAME . '-save-data';
-		add_action( $hook , array( $this, '_index' ) );
+		$screen = get_current_screen();
+		add_action( $screen->id , array( $this, '_index' ) );
 	}
 
 	public function _index() {
@@ -23,9 +23,9 @@ class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Con
 			$post_type_object = get_post_type_object( $post_type );
 			$form_list[$post_type] = array(
 				'title'             => $post_type_object->labels->singular_name,
-				'count'             => $this->get_count( $post_type ),
-				'modified_datetime' => $this->get_modified_datetime( $post_type ),
-				'created_datetime'  => $this->get_created_datetime( $post_type )
+				'count'             => $this->_get_count( $post_type ),
+				'modified_datetime' => $this->_get_modified_datetime( $post_type ),
+				'created_datetime'  => $this->_get_created_datetime( $post_type )
 			);
 		}
 		$this->assign( 'form_list', $form_list );
@@ -38,29 +38,17 @@ class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Con
 	 * @param string $post_type 投稿タイプ名
 	 * @return numeric 投稿数
 	 */
-	protected function get_count( $post_type ) {
-		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $post_type, array() );
-		$args  = array(
+	protected function _get_count( $post_type ) {
+		$args = apply_filters( 'mwform_get_inquiry_data_args-' . $post_type, array() );
+		if ( empty( $args ) || ! is_array( $args ) ) {
+			$args = array();
+		}
+		$args = array_merge( $args, array(
 			'post_type'      => $post_type,
 			'posts_per_page' => 1,
-		);
-		if ( !empty( $_args ) && is_array( $_args ) ) {
-			$args = array_merge( $_args, $args );
-		}
+		) );
 		$query = new WP_Query( $args );
 		return $query->found_posts;
-	}
-
-	/**
-	 * フォームの作成日時を取得
-	 *
-	 * @param string $post_type 投稿タイプ名
-	 * @return string 作成日
-	 */
-	protected function get_created_datetime( $post_type ) {
-		$post_id   = preg_replace( '/^mwf_(.+?)$/', '$1', $post_type );
-		$post_date = get_the_date( get_option( 'date_format' ), $post_id );
-		return $post_date;
 	}
 
 	/**
@@ -69,7 +57,7 @@ class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Con
 	 * @param string $post_type 投稿タイプ名
 	 * @return string 問い合わせデータの最新保存日
 	 */
-	protected function get_modified_datetime( $post_type ) {
+	protected function _get_modified_datetime( $post_type ) {
 		global $post;
 		$inquiry_posts = get_posts( array(
 			'post_type'      => $post_type,
@@ -85,5 +73,17 @@ class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Con
 		}
 		wp_reset_postdata();
 		return $modified_datetime;
+	}
+
+	/**
+	 * フォームの作成日時を取得
+	 *
+	 * @param string $post_type 投稿タイプ名
+	 * @return string 作成日
+	 */
+	protected function _get_created_datetime( $post_type ) {
+		$post_id   = preg_replace( '/^mwf_(.+?)$/', '$1', $post_type );
+		$post_date = get_the_date( get_option( 'date_format' ), $post_id );
+		return $post_date;
 	}
 }

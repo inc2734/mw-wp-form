@@ -12,36 +12,36 @@
 class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 
 	/**
-	 * フォームスタイルの配列
+	 * @var array
 	 */
 	protected $styles = array();
 
 	public function __construct() {
 		$this->styles = apply_filters( 'mwform_styles', $this->styles );
-
-		$Admin = new MW_WP_Form_Admin();
-		add_action( 'add_meta_boxes'       , array( $this , 'add_meta_boxes' ) );
-		add_filter( 'default_content'      , array( $this , 'default_content' ) );
-		add_action( 'media_buttons'        , array( $this , 'tag_generator' ) );
-		add_action( 'admin_enqueue_scripts', array( $this , 'admin_enqueue_scripts' ) );
-		add_action( 'save_post'            , array( $Admin, 'save_post' ) );
+		$Admin        = new MW_WP_Form_Admin();
 
 		$Form_Fields = MW_WP_Form_Form_Fields::instantiation();
 		$form_fields = $Form_Fields->get_form_fields();
 		foreach ( $form_fields as $form_field ) {
 			$form_field->add_tag_generator();
 		}
+
+		add_action( 'add_meta_boxes'       , array( $this , '_add_meta_boxes' ) );
+		add_filter( 'default_content'      , array( $this , '_default_content' ) );
+		add_action( 'media_buttons'        , array( $this , '_tag_generator' ) );
+		add_action( 'admin_enqueue_scripts', array( $this , '_admin_enqueue_scripts' ) );
+		add_action( 'save_post'            , array( $Admin, 'save_post' ) );
 	}
 
 	/**
 	 * カスタムフィールドを出力
 	 */
-	public function add_meta_boxes() {
+	public function _add_meta_boxes() {
 		// 完了画面内容
 		add_meta_box(
 			MWF_Config::NAME . '_complete_message_metabox',
 			__( 'Complete Message', 'mw-wp-form' ),
-			array( $this, 'complete_message' ),
+			array( $this, '_complete_message' ),
 			MWF_Config::NAME, 'normal'
 		);
 
@@ -49,7 +49,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		add_meta_box(
 			MWF_Config::NAME . '_url',
 			__( 'URL Options', 'mw-wp-form' ),
-			array( $this, 'url' ),
+			array( $this, '_url' ),
 			MWF_Config::NAME, 'normal'
 		);
 
@@ -57,7 +57,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		add_meta_box(
 			MWF_Config::NAME . '_validation',
 			__( 'Validation Rule', 'mw-wp-form' ),
-			array( $this, 'validation_rule' ),
+			array( $this, '_validation_rule' ),
 			MWF_Config::NAME, 'normal'
 		);
 
@@ -65,7 +65,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		add_meta_box(
 			MWF_Config::NAME . '_addon',
 			__( 'Add-ons', 'mw-wp-form' ),
-			array( $this, 'add_ons' ),
+			array( $this, '_add_ons' ),
 			MWF_Config::NAME, 'side'
 		);
 
@@ -73,7 +73,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		add_meta_box(
 			MWF_Config::NAME . '_formkey',
 			__( 'Form Key', 'mw-wp-form' ),
-			array( $this, 'form_key' ),
+			array( $this, '_form_key' ),
 			MWF_Config::NAME, 'side'
 		);
 
@@ -81,7 +81,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		add_meta_box(
 			MWF_Config::NAME . '_mail',
 			__( 'Automatic Reply Email Options', 'mw-wp-form' ),
-			array( $this, 'mail_options' ),
+			array( $this, '_mail_options' ),
 			MWF_Config::NAME, 'side'
 		);
 
@@ -89,7 +89,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		add_meta_box(
 			MWF_Config::NAME . '_admin_mail',
 			__( 'Admin Email Options', 'mw-wp-form' ),
-			array( $this, 'admin_mail_options' ),
+			array( $this, '_admin_mail_options' ),
 			MWF_Config::NAME, 'side'
 		);
 
@@ -97,7 +97,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 		add_meta_box(
 			MWF_Config::NAME . '_settings',
 			__( 'settings', 'mw-wp-form' ),
-			array( $this, 'settings' ),
+			array( $this, '_settings' ),
 			MWF_Config::NAME, 'side'
 		);
 
@@ -106,125 +106,10 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			add_meta_box(
 				MWF_Config::NAME . '_styles',
 				__( 'Style setting', 'mw-wp-form' ),
-				array( $this, 'style' ),
+				array( $this, '_style' ),
 				MWF_Config::NAME, 'side'
 			);
 		}
-	}
-
-	/**
-	 * 完了画面内容
-	 */
-	public function complete_message() {
-		wp_editor(
-			$this->get_option( 'complete_message' ), MWF_Config::NAME . '_complete_message',
-			array(
-				'textarea_name' => MWF_Config::NAME . '[complete_message]',
-				'textarea_rows' => 7,
-			)
-		);
-	}
-
-	/**
-	 * URL設定
-	 */
-	public function url() {
-		$this->assign( 'input_url'           , $this->get_option( 'input_url' ) );
-		$this->assign( 'confirmation_url'    , $this->get_option( 'confirmation_url' ) );
-		$this->assign( 'complete_url'        , $this->get_option( 'complete_url' ) );
-		$this->assign( 'validation_error_url', $this->get_option( 'validation_error_url' ) );
-		$this->render( 'admin/url' );
-	}
-
-	/**
-	 * バリデーション
-	 */
-	public function validation_rule() {
-		$validation = $this->get_option( 'validation' );
-		if ( ! $validation ) {
-			$validation = array();
-		}
-
-		$validation_keys = array(
-			'target' => '',
-		);
-
-		$Validation_Rules = MW_WP_Form_Validation_Rules::instantiation();
-
-		foreach ( $Validation_Rules->get_validation_rules() as $validation_rule => $instance ) {
-			$validation_keys[$instance->getName()] = '';
-		}
-		// 空の隠れバリデーションフィールド（コピー元）を挿入
-		array_unshift( $validation, $validation_keys );
-		$this->assign( 'validation'      , $validation );
-		$this->assign( 'validation_rules', $Validation_Rules->get_validation_rules() );
-		$this->assign( 'validation_keys' , $validation_keys );
-		$this->render( 'admin/validation-rule' );
-	}
-
-	/**
-	 * アドオン
-	 */
-	public function add_ons() {
-		$this->render( 'admin/add-ons' );
-	}
-
-	/**
-	 * フォーム識別子
-	 */
-	public function form_key() {
-		$this->assign( 'post_id', get_the_ID() );
-		$this->render( 'admin/form-key' );
-	}
-
-	/**
-	 * 自動返信メール設定
-	 */
-	public function mail_options() {
-		$this->assign( 'mail_subject'         , $this->get_option( 'mail_subject' ) );
-		$this->assign( 'mail_sender'          , $this->get_option( 'mail_sender' ) );
-		$this->assign( 'mail_from'            , $this->get_option( 'mail_from' ) );
-		$this->assign( 'mail_content'         , $this->get_option( 'mail_content' ) );
-		$this->assign( 'automatic_reply_email', $this->get_option( 'automatic_reply_email' ) );
-		$this->render( 'admin/mail-options' );
-	}
-
-	/**
-	 * 管理者メール設定
-	 */
-	public function admin_mail_options() {
-		$this->assign( 'mail_to'               , $this->get_option( 'mail_to' ) );
-		$this->assign( 'mail_cc'               , $this->get_option( 'mail_cc' ) );
-		$this->assign( 'mail_bcc'              , $this->get_option( 'mail_bcc' ) );
-		$this->assign( 'admin_mail_subject'    , $this->get_option( 'admin_mail_subject' ) );
-		$this->assign( 'admin_mail_sender'     , $this->get_option( 'admin_mail_sender' ) );
-		$this->assign( 'mail_return_path'      , $this->get_option( 'mail_return_path' ) );
-		$this->assign( 'admin_mail_from'       , $this->get_option( 'admin_mail_from' ) );
-		$this->assign( 'admin_mail_content'    , $this->get_option( 'admin_mail_content' ) );
-		$this->render( 'admin/admin-mail-options' );
-	}
-
-	/**
-	 * 設定
-	 */
-	public function settings() {
-		$this->assign( 'querystring'         , $this->get_option( 'querystring' ) );
-		$this->assign( 'usedb'               , $this->get_option( 'usedb' ) );
-		$this->assign( 'scroll'              , $this->get_option( 'scroll' ) );
-		$this->assign( 'akismet_author'      , $this->get_option( 'akismet_author' ) );
-		$this->assign( 'akismet_author_email', $this->get_option( 'akismet_author_email' ) );
-		$this->assign( 'akismet_author_url'  , $this->get_option( 'akismet_author_url' ) );
-		$this->assign( 'tracking_number'     , $this->get_option( MWF_Config::TRACKINGNUMBER ) );
-		$this->render( 'admin/settings' );
-	}
-
-	/**
-	 * スタイル
-	 */
-	public function style() {
-		$this->assign( 'styles', $this->styles );
-		$this->assign( 'style' , $this->get_option( 'style' ) );
-		$this->render( 'admin/style' );
 	}
 
 	/**
@@ -233,7 +118,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * @param string $content
 	 * @return string
 	 */
-	public function default_content( $content ) {
+	public function _default_content( $content ) {
 		return apply_filters( 'mwform_default_content', '' );
 	}
 
@@ -242,13 +127,13 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 *
 	 * @param string $editor_id
 	 */
-	public function tag_generator( $editor_id ) {
+	public function _tag_generator( $editor_id ) {
 		$post_type = get_post_type();
-		if ( $post_type !== MWF_Config::NAME ) {
+		if ( MWF_Config::NAME !== $post_type ) {
 			return;
 		}
 
-		if ( $editor_id !== 'content' ) {
+		if ( 'content' !== $editor_id ) {
 			return;
 		}
 
@@ -256,42 +141,32 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * get_option
-	 * フォームの設定データを返す
-	 * @param string $key 設定データのキー
-	 * @return mixed 設定データ
-	 */
-	protected function get_option( $key ) {
-		global $post;
-		$Setting = new MW_WP_Form_Setting( $post->ID );
-
-		if ( $key === MWF_Config::TRACKINGNUMBER ) {
-			$value = $Setting->get_tracking_number();
-		} else {
-			$value = $Setting->get( $key );
-		}
-
-		if ( !empty( $value ) ) {
-			return $value;
-		} else {
-			$date     = $post->post_date;
-			$modified = $post->post_modified;
-			if ( $date === $modified ){
-				return apply_filters( 'mwform_default_settings', '', $key );
-			}
-		}
-	}
-
-	/**
 	 * admin_enqueue_scripts
 	 */
-	public function admin_enqueue_scripts() {
-		$post_type = get_post_type();
+	public function _admin_enqueue_scripts() {
 		$url = plugins_url( MWF_Config::NAME );
-		wp_enqueue_style( MWF_Config::NAME . '-admin', $url . '/css/admin.css' );
-		wp_enqueue_style( MWF_Config::NAME . '-admin-repeatable', $url . '/css/admin-repeatable.css' );
-		wp_enqueue_script( MWF_Config::NAME . '-repeatable', $url . '/js/mw-wp-form-repeatable.js' );
-		wp_enqueue_script( MWF_Config::NAME . '-admin', $url . '/js/admin.js', array( 'jquery-ui-dialog', 'jquery-ui-sortable' ) );
+
+		wp_enqueue_style(
+			MWF_Config::NAME . '-admin',
+			$url . '/css/admin.css'
+		);
+
+		wp_enqueue_style(
+			MWF_Config::NAME . '-admin-repeatable',
+			$url . '/css/admin-repeatable.css'
+		);
+
+		wp_enqueue_script(
+			MWF_Config::NAME . '-repeatable',
+			$url . '/js/mw-wp-form-repeatable.js'
+		);
+
+		wp_enqueue_script(
+			MWF_Config::NAME . '-admin',
+			$url . '/js/admin.js',
+			array( 'jquery-ui-dialog', 'jquery-ui-sortable' )
+		);
+
 		wp_enqueue_script( 'jquery-ui-dialog' );
 		wp_enqueue_script( 'jquery-ui-sortable' );
 
@@ -303,5 +178,149 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			array(),
 			$ui->ver
 		);
+	}
+
+	/**
+	 * 完了画面内容
+	 */
+	public function _complete_message() {
+		wp_editor(
+			$this->_get_option( 'complete_message' ),
+			MWF_Config::NAME . '_complete_message',
+			array(
+				'textarea_name' => MWF_Config::NAME . '[complete_message]',
+				'textarea_rows' => 7,
+			)
+		);
+	}
+
+	/**
+	 * URL設定
+	 */
+	public function _url() {
+		$this->assign( 'input_url'           , $this->_get_option( 'input_url' ) );
+		$this->assign( 'confirmation_url'    , $this->_get_option( 'confirmation_url' ) );
+		$this->assign( 'complete_url'        , $this->_get_option( 'complete_url' ) );
+		$this->assign( 'validation_error_url', $this->_get_option( 'validation_error_url' ) );
+		$this->render( 'admin/url' );
+	}
+
+	/**
+	 * バリデーション
+	 */
+	public function _validation_rule() {
+		$validation = $this->_get_option( 'validation' );
+		if ( ! $validation ) {
+			$validation = array();
+		}
+
+		$validation_keys = array(
+			'target' => '',
+		);
+
+		$Validation_Rules = MW_WP_Form_Validation_Rules::instantiation();
+
+		foreach ( $Validation_Rules->get_validation_rules() as $validation_rule => $instance ) {
+			$validation_keys[ $instance->getName() ] = '';
+		}
+
+		// 空の隠れバリデーションフィールド（コピー元）を挿入
+		array_unshift( $validation, $validation_keys );
+		$this->assign( 'validation'      , $validation );
+		$this->assign( 'validation_rules', $Validation_Rules->get_validation_rules() );
+		$this->assign( 'validation_keys' , $validation_keys );
+		$this->render( 'admin/validation-rule' );
+	}
+
+	/**
+	 * アドオン
+	 */
+	public function _add_ons() {
+		$this->render( 'admin/add-ons' );
+	}
+
+	/**
+	 * フォーム識別子
+	 */
+	public function _form_key() {
+		$this->assign( 'post_id', get_the_ID() );
+		$this->render( 'admin/form-key' );
+	}
+
+	/**
+	 * 自動返信メール設定
+	 */
+	public function _mail_options() {
+		$this->assign( 'mail_subject'         , $this->_get_option( 'mail_subject' ) );
+		$this->assign( 'mail_sender'          , $this->_get_option( 'mail_sender' ) );
+		$this->assign( 'mail_from'            , $this->_get_option( 'mail_from' ) );
+		$this->assign( 'mail_content'         , $this->_get_option( 'mail_content' ) );
+		$this->assign( 'automatic_reply_email', $this->_get_option( 'automatic_reply_email' ) );
+		$this->render( 'admin/mail-options' );
+	}
+
+	/**
+	 * 管理者メール設定
+	 */
+	public function _admin_mail_options() {
+		$this->assign( 'mail_to'               , $this->_get_option( 'mail_to' ) );
+		$this->assign( 'mail_cc'               , $this->_get_option( 'mail_cc' ) );
+		$this->assign( 'mail_bcc'              , $this->_get_option( 'mail_bcc' ) );
+		$this->assign( 'admin_mail_subject'    , $this->_get_option( 'admin_mail_subject' ) );
+		$this->assign( 'admin_mail_sender'     , $this->_get_option( 'admin_mail_sender' ) );
+		$this->assign( 'mail_return_path'      , $this->_get_option( 'mail_return_path' ) );
+		$this->assign( 'admin_mail_from'       , $this->_get_option( 'admin_mail_from' ) );
+		$this->assign( 'admin_mail_content'    , $this->_get_option( 'admin_mail_content' ) );
+		$this->render( 'admin/admin-mail-options' );
+	}
+
+	/**
+	 * 設定
+	 */
+	public function _settings() {
+		$this->assign( 'querystring'         , $this->_get_option( 'querystring' ) );
+		$this->assign( 'usedb'               , $this->_get_option( 'usedb' ) );
+		$this->assign( 'scroll'              , $this->_get_option( 'scroll' ) );
+		$this->assign( 'akismet_author'      , $this->_get_option( 'akismet_author' ) );
+		$this->assign( 'akismet_author_email', $this->_get_option( 'akismet_author_email' ) );
+		$this->assign( 'akismet_author_url'  , $this->_get_option( 'akismet_author_url' ) );
+		$this->assign( 'tracking_number'     , $this->_get_option( MWF_Config::TRACKINGNUMBER ) );
+		$this->render( 'admin/settings' );
+	}
+
+	/**
+	 * スタイル
+	 */
+	public function _style() {
+		$this->assign( 'styles', $this->styles );
+		$this->assign( 'style' , $this->_get_option( 'style' ) );
+		$this->render( 'admin/style' );
+	}
+
+	/**
+	 * フォームの設定データを返す
+	 *
+	 * @param string $key 設定データのキー
+	 * @return mixed 設定データ
+	 */
+	protected function _get_option( $key ) {
+		global $post;
+		$Setting = new MW_WP_Form_Setting( $post->ID );
+
+		if ( MWF_Config::TRACKINGNUMBER === $key ) {
+			$value = $Setting->get_tracking_number();
+		} else {
+			$value = $Setting->get( $key );
+		}
+
+		if ( ! empty( $value ) ) {
+			return $value;
+		}
+
+		$date     = $post->post_date;
+		$modified = $post->post_modified;
+		if ( $date === $modified ){
+			return apply_filters( 'mwform_default_settings', '', $key );
+		}
 	}
 }

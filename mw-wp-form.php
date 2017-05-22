@@ -16,8 +16,6 @@
  * @todo テストの更新
  * @todo standard coding
  * @todo 日本語 > English
- * @todo 確認・完了・エラー画面に直接アクセスしたときの対応
- * @todo 各コントローラーのリファクタリング
  */
 include_once( plugin_dir_path( __FILE__ ) . 'classes/functions.php' );
 include_once( plugin_dir_path( __FILE__ ) . 'classes/config.php' );

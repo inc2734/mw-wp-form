@@ -13,9 +13,9 @@ class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 
 	public function __construct() {
 		$screen = get_current_screen();
-		add_filter( 'views_' . $screen->id , array( $this, 'donate_link' ) );
-		add_action( 'admin_head'           , array( $this, 'add_columns' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
+		add_filter( 'views_' . $screen->id , array( $this, '_donate_link' ) );
+		add_action( 'admin_head'           , array( $this, '_add_columns' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue_scripts' ) );
 	}
 
 	/**
@@ -24,7 +24,7 @@ class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 	 * @param array $views
 	 * @return array
 	 */
-	public function donate_link( $views ) {
+	public function _donate_link( $views ) {
 		$donation = array(
 			'donation' =>
 				'<div class="donation"><p>' .
@@ -37,19 +37,19 @@ class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * admin_enqueue_scripts
+	 * add_columns
 	 */
-	public function admin_enqueue_scripts() {
-		$url = plugins_url( MWF_Config::NAME );
-		wp_enqueue_style( MWF_Config::NAME . '-admin-list', $url . '/css/admin-list.css' );
+	public function _add_columns() {
+		add_filter( 'manage_posts_columns'      , array( $this, '_manage_posts_columns' ) );
+		add_action( 'manage_posts_custom_column', array( $this, '_manage_posts_custom_column' ), 10, 2 );
 	}
 
 	/**
-	 * add_columns
+	 * admin_enqueue_scripts
 	 */
-	public function add_columns() {
-		add_filter( 'manage_posts_columns'      , array( $this, 'manage_posts_columns' ) );
-		add_action( 'manage_posts_custom_column', array( $this, 'manage_posts_custom_column' ), 10, 2 );
+	public function _admin_enqueue_scripts() {
+		$url = plugins_url( MWF_Config::NAME );
+		wp_enqueue_style( MWF_Config::NAME . '-admin-list', $url . '/css/admin-list.css' );
 	}
 
 	/**
@@ -57,7 +57,7 @@ class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 	 * @param array $columns
 	 * @return array $columns
 	 */
-	public function manage_posts_columns( $columns ) {
+	public function _manage_posts_columns( $columns ) {
 		$date = $columns['date'];
 		unset( $columns['date'] );
 		$columns['mwform_form_key'] = __( 'Form Key', 'mw-wp-form' );
@@ -70,7 +70,7 @@ class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 	 * @param string $column_name
 	 * @param int $post_id
 	 */
-	public function manage_posts_custom_column( $column_name, $post_id ) {
+	public function _manage_posts_custom_column( $column_name, $post_id ) {
 		$this->assign( 'post_id', get_the_ID() );
 		if ( $column_name === 'mwform_form_key' ) {
 			$this->render( 'admin-list/form-key' );

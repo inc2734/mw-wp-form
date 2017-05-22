@@ -23,9 +23,6 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 	 */
 	protected $postdata = array();
 
-	/**
-	 * __construct
-	 */
 	public function __construct() {
 		if ( ! empty( $_GET['formkey'] ) ) {
 			$this->formkey = $_GET['formkey'];
@@ -35,19 +32,19 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 		if ( ! in_array( $this->formkey, $contact_data_post_types ) ) {
 			exit;
 		}
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts') );
+		add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue_scripts') );
 
-		$hook = MWF_Config::NAME . '_page_' . MWF_Config::NAME . '-chart';
-
-		add_action( 'load-' . $hook, array( $this, '_save' ) );
-		add_action( $hook          , array( $this, '_index' ) );
+		$screen = get_current_screen();
+		add_action( 'load-' . $screen->id, array( $this, '_save' ) );
+		add_action( $screen->id          , array( $this, '_index' ) );
 	}
 
 	/**
 	 * CSS、JSの読み込み
 	 */
-	public function admin_enqueue_scripts() {
+	public function _admin_enqueue_scripts() {
 		global $wp_scripts;
+
 		$ui = $wp_scripts->query( 'jquery-ui-core' );
 		wp_enqueue_style(
 			'jquery.ui',
@@ -55,11 +52,21 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 			array( 'jquery' ),
 			$ui->ver
 		);
+
 		wp_enqueue_script( 'jquery-ui-sortable' );
 
 		$url = plugins_url( MWF_Config::NAME );
-		wp_enqueue_style( MWF_Config::NAME . '-admin-repeatable', $url . '/css/admin-repeatable.css' );
-		wp_enqueue_script( 'jsapi', 'https://www.google.com/jsapi' );
+
+		wp_enqueue_style(
+			MWF_Config::NAME . '-admin-repeatable',
+			$url . '/css/admin-repeatable.css'
+		);
+
+		wp_enqueue_script(
+			'jsapi',
+			'https://www.google.com/jsapi'
+		);
+
 		wp_enqueue_script(
 			MWF_Config::NAME . '-repeatable',
 			$url . '/js/mw-wp-form-repeatable.js',
@@ -67,6 +74,7 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 			null,
 			true
 		);
+
 		wp_enqueue_script(
 			MWF_Config::NAME . '-google-chart',
 			$url . '/js/mw-wp-form-google-chart.js',
@@ -74,6 +82,7 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 			null,
 			true
 		);
+
 		wp_enqueue_script(
 			MWF_Config::NAME . '-admin-chart',
 			$url . '/js/admin-chart.js',
@@ -117,19 +126,15 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 	public function _index() {
 		$post_type = $this->formkey;
 
-		// form_posts
-		$default_args = array(
-			'posts_per_page' => -1,
-		);
-		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $post_type, $default_args );
-		$args = array(
-			'post_type' => $post_type,
-		);
-		if ( !empty( $_args ) && is_array( $_args ) ) {
-			$args = array_merge( $_args, $args );
-		} else {
-			$args = array_merge( $_args, $default_args );
+		$args = apply_filters( 'mwform_get_inquiry_data_args-' . $post_type, array() );
+		if ( empty( $args ) || ! is_array( $args ) ) {
+			$args = array();
 		}
+		$args = array_merge( $args, array(
+			'posts_per_page' => -1,
+			'post_type'      => $post_type,
+		) );
+
 		$form_posts = get_posts( $args );
 
 		// custom_keys
@@ -142,7 +147,7 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 						continue;
 					}
 					$post_meta = get_post_meta( $post->ID, $post_custom_key, true );
-					$custom_keys[$post_custom_key][$post_meta][] = $post->ID;
+					$custom_keys[ $post_custom_key ][ $post_meta ][] = $post->ID;
 				}
 			}
 		}
