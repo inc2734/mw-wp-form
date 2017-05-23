@@ -167,6 +167,7 @@ class MW_WP_Form_Mail_Parser {
 
 	/**
 	 * {キー}の部分を検索し、その値をデータベースに保存
+	 * 値が null でも保存（チェッボックス未チェックで直送信でも保存させるため）
 	 *
 	 * @param string $value
 	 */
@@ -184,18 +185,28 @@ class MW_WP_Form_Mail_Parser {
 		$form_id = $this->Setting->get( 'post_id' );
 		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
 
+		$data = array();
+
 		foreach ( $matches[1] as $key ) {
 			$value = $this->_parse( $key );
-			// 値が null でも保存（チェッボックス未チェックで直送信でも保存させるため）
+
 			$ignore_keys = apply_filters( 'mwform_no_save_keys_' . $form_key, array() );
-			if ( ! in_array( $key, $ignore_keys ) ) {
-				// ファイルは MWF_Functions::save_attachments_in_media() で ID が保存されるため
-				// ここで送信された値（URL）は保存しない
-				if ( ! array_key_exists( $key, $this->Mail->attachments ) ) {
-					update_post_meta( $this->saved_mail_id, $key, $value );
-				}
+			if ( in_array( $key, $ignore_keys ) ) {
+				continue;
 			}
+
+			// ファイルは MWF_Functions::save_attachments_in_media() で ID が保存されるため
+			// ここで送信された値（URL）は保存しない
+			if ( array_key_exists( $key, $this->Mail->attachments ) ) {
+				continue;
+			}
+
+			$data[ $key ] = ( is_null( $value ) ) ? '' : $value;
 		}
+
+		$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $this->saved_mail_id );
+		$Contact_Data_Setting->sets( $data );
+		$Contact_Data_Setting->save();
 	}
 
 	/**

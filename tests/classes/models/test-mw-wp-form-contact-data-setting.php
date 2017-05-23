@@ -189,10 +189,12 @@ class MW_WP_Form_Contact_Data_Setting_Test extends WP_UnitTestCase {
 	public function save() {
 		$Setting = $this->_instantiation_Contact_Data_Setting( array(
 			'first-name' => 'John',
+			'last-name'  => null,
 		) );
 		$Setting->save();
 
 		$this->assertEquals( 'John', get_post_meta( $Setting->get( 'post_id' ), 'first-name', true ) );
+		$this->assertSame( '', get_post_meta( $Setting->get( 'post_id' ), 'last-name', true ) );
 		$this->assertEquals( '', get_post_meta( $Setting->get( 'post_id' ), 'response_status', true ) );
 		$this->assertEquals( '', get_post_meta( $Setting->get( 'post_id' ), 'memo', true ) );
 	}

@@ -106,8 +106,6 @@ class MW_WP_Form_Mail_Service {
 
 		if ( isset( $Mail_admin_for_save ) && $is_admin_mail_sended ) {
 			$saved_mail_id = $this->_save( $Mail_admin_for_save );
-			$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $saved_mail_id );
-			$Contact_Data_Setting->save();
 		}
 
 		// DB非保存時は管理者メール送信後、ファイルを削除

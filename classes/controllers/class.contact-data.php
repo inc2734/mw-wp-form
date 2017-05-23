@@ -36,12 +36,11 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 			}
 		}
 
-		$Contact_Data = new MW_WP_Form_Contact_Data();
 		add_action( 'add_meta_boxes'       , array( $this, '_add_meta_boxes' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue_scripts' ) );
 		add_action( 'admin_print_styles'   , array( $this, '_admin_print_styles' ) );
 		add_action( 'edit_form_top'        , array( $this, '_edit_form_top' ) );
-		add_action( 'save_post'            , array( $Contact_Data, 'save_post' ) );
+		add_action( 'save_post'            , array( $this, '_save_post' ) );
 	}
 
 	/**
@@ -82,6 +81,49 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 		$link = admin_url( '/edit.php?post_type=' . $post_type );
 		$this->_assign( 'link', $link );
 		$this->_render( 'contact-data/returning-link' );
+	}
+
+	/**
+	 * @param int $post_id
+	 */
+	public function save_post( $post_id ) {
+		if ( ! isset( $_POST['post_type'] ) ) {
+			return;
+		}
+
+		$contact_data_post_types = MW_WP_Form_Contact_Data_setting::get_form_post_types();
+		if ( ! in_array( $_POST['post_type'], $contact_data_post_types ) ) {
+			return;
+		}
+
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_POST[ MWF_Config::NAME . '_nonce' ], MWF_Config::NAME ) ) {
+			return;
+		}
+
+		if ( !current_user_can( MWF_Config::CAPABILITY ) ) {
+			return;
+		}
+
+		$Contact_Data_Setting = new MW_WP_Form_Contact_Data_setting( $post_id );
+		$permit_keys = $Contact_Data_Setting->get_permit_keys();
+		$data = array();
+		foreach ( $permit_keys as $key ) {
+			if ( isset( $_POST[ MWF_Config::CONTACT_DATA_NAME ][ $key ] ) ) {
+				$value = $_POST[ MWF_Config::CONTACT_DATA_NAME ][ $key ];
+				if ( 'response_status' === $key ) {
+					if ( ! array_key_exists( $value, $Contact_Data_Setting->get_response_statuses() ) ) {
+						continue;
+					}
+				}
+				$data[ $key ] = $value;
+			}
+		}
+		$Contact_Data_Setting->sets( $data );
+		$Contact_Data_Setting->save();
 	}
 
 	/**
