@@ -17,18 +17,27 @@ class MW_WP_Form_Admin {
 	 * @param int $post_id
 	 */
 	public function save_post( $post_id ) {
-		if ( !( isset( $_POST['post_type'] ) && $_POST['post_type'] === MWF_Config::NAME ) )
-			return $post_id;
-		if ( !isset( $_POST[MWF_Config::NAME . '_nonce'] ) )
-			return $post_id;
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-			return $post_id;
-		if ( !wp_verify_nonce( $_POST[MWF_Config::NAME . '_nonce'], MWF_Config::NAME ) )
-			return $post_id;
-		if ( !current_user_can( MWF_Config::CAPABILITY ) )
-			return $post_id;
+		if ( ! isset( $_POST['post_type'] ) || $_POST['post_type'] !== MWF_Config::NAME ) {
+			return;
+		}
 
-		$data = $_POST[MWF_Config::NAME];
+		if ( ! isset( $_POST[ MWF_Config::NAME . '_nonce' ] ) ) {
+			return;
+		}
+
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_POST[ MWF_Config::NAME . '_nonce' ], MWF_Config::NAME ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( MWF_Config::CAPABILITY ) ) {
+			return;
+		}
+
+		$data = $_POST[ MWF_Config::NAME ];
 
 		$triminglists = array(
 			'mail_from',
@@ -40,61 +49,64 @@ class MW_WP_Form_Admin {
 		);
 		foreach ( $triminglists as $name ) {
 			if ( function_exists( 'mb_convert_kana' ) ) {
-				$data[$name] = trim( mb_convert_kana( $data[$name], 's', get_option( 'blog_charset' ) ) );
+				$data[ $name ] = trim( mb_convert_kana( $data[ $name ], 's', get_option( 'blog_charset' ) ) );
 			} else {
-				$data[$name] = trim( $data[$name] );
+				$data[ $name ] = trim( $data[ $name ] );
 			}
 		}
 
-		if ( !empty( $data['validation'] ) && is_array( $data['validation'] ) ) {
+		if ( ! empty( $data['validation'] ) && is_array( $data['validation'] ) ) {
 			$validation = array();
 			foreach ( $data['validation'] as $_validation ) {
-				if ( empty( $_validation['target'] ) ) continue;
+				if ( empty( $_validation['target'] ) ) {
+					continue;
+				}
+
 				foreach ( $_validation as $key => $value ) {
-					// between min, max
 					if ( $key == 'between' ) {
-						if ( !MWF_Functions::is_numeric( $value['min'] ) ) {
-							unset( $_validation[$key]['min'] );
+						if ( ! MWF_Functions::is_numeric( $value['min'] ) ) {
+							unset( $_validation[ $key ]['min'] );
 						}
-						if ( !MWF_Functions::is_numeric( $value['max'] ) ) {
-							unset( $_validation[$key]['max'] );
+						if ( ! MWF_Functions::is_numeric( $value['max'] ) ) {
+							unset( $_validation[ $key ]['max'] );
 						}
-					}
-					// minlength min
-					elseif ( $key == 'minlength' && !MWF_Functions::is_numeric( $value['min'] ) ) {
-						unset( $_validation[$key] );
-					}
-					// fileType types
-					elseif ( $key == 'fileType' && isset( $value['types'] ) && !preg_match( '/^[0-9A-Za-z,]+$/', $value['types'] ) ) {
-						unset( $_validation[$key] );
-					}
-					// fileSize bytes
-					elseif ( $key == 'fileSize' && !MWF_Functions::is_numeric( $value['bytes'] ) ) {
-						unset( $_validation[$key] );
 					}
 
-					// 要素が空のときは削除
-					// 単一項目のとき
-					if ( empty( $value ) ) {
-						unset( $_validation[$key] );
+					if ( $key == 'minlength' && ! MWF_Functions::is_numeric( $value['min'] ) ) {
+						unset( $_validation[ $key ] );
 					}
-					// 配列のとき
-					elseif ( is_array( $value ) && !array_diff( $value, array( '' ) ) ) {
-						unset( $_validation[$key] );
+
+					if ( $key == 'fileType' && isset( $value['types'] ) && ! preg_match( '/^[0-9A-Za-z,]+$/', $value['types'] ) ) {
+						unset( $_validation[ $key ] );
+					}
+
+					if ( $key == 'fileSize' && !MWF_Functions::is_numeric( $value['bytes'] ) ) {
+						unset( $_validation[ $key ] );
+					}
+
+					if ( empty( $value ) ) {
+						unset( $_validation[ $key ] );
+					}
+
+					if ( is_array( $value ) && ! array_diff( $value, array( '' ) ) ) {
+						unset( $_validation[ $key ] );
 					}
 				}
+
 				$validation[] = $_validation;
 			}
+
 			$data['validation'] = $validation;
 		}
 
-		// チェックボックスの項目は、未設定のときはデータが来ないのでここで処理する
 		if ( empty( $data['querystring'] ) ) {
 			$data['querystring'] = false;
 		}
+
 		if ( empty( $data['usedb'] ) ) {
 			$data['usedb'] = false;
 		}
+
 		if ( empty( $data['scroll'] ) ) {
 			$data['scroll'] = false;
 		}
@@ -102,8 +114,8 @@ class MW_WP_Form_Admin {
 		$Setting = new MW_WP_Form_Setting( $post_id );
 		$Setting->sets( $data );
 
-		if ( isset( $_POST[MWF_Config::TRACKINGNUMBER] ) ) {
-			$tracking_number = $_POST[MWF_Config::TRACKINGNUMBER];
+		if ( isset( $_POST[ MWF_Config::TRACKINGNUMBER ] ) ) {
+			$tracking_number = $_POST[ MWF_Config::TRACKINGNUMBER ];
 			$Setting->update_tracking_number( $tracking_number );
 		}
 
@@ -131,10 +143,10 @@ class MW_WP_Form_Admin {
 		$forms = $this->get_forms();
 		foreach ( $forms as $form ) {
 			$Setting = new MW_WP_Form_Setting( $form->ID );
-			if ( !$Setting->get( 'usedb' ) ) {
+			if ( ! $Setting->get( 'usedb' ) ) {
 				continue;
 			}
-			$forms_using_database[$form->ID] = $form;
+			$forms_using_database[ $form->ID ] = $form;
 		}
 		return $forms_using_database;
 	}

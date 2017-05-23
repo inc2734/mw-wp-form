@@ -38,15 +38,17 @@ class MW_WP_Form_File {
 	 * @return array ( name属性値 => アップロードできたファイルのURL, … )
 	 */
 	public function upload( array $files = array() ) {
-		$this->clean_temp_dir();
+		$this->_clean_temp_dir();
 
 		$uploaded_files = array();
 		foreach ( $files as $key => $file ) {
-			$uploaded_file = $this->single_file_upload( $key );
-			if ( $uploaded_file ) {
-				$uploaded_files[$key] = $uploaded_file;
+			$uploaded_file = $this->_single_file_upload( $key );
+			if ( ! $uploaded_file ) {
+				continue;
 			}
+			$uploaded_files[ $key ] = $uploaded_file;
 		}
+
 		return $uploaded_files;
 	}
 
@@ -56,14 +58,15 @@ class MW_WP_Form_File {
 	 * @param string $key アップロードしたいファイルの name 属性
 	 * @return string アップロードできたファイルのURL
 	 */
-	protected function single_file_upload( $key ) {
+	protected function _single_file_upload( $key ) {
 		$this->create_temp_dir();
 
-		$file = '';
-		if ( is_array( $_FILES ) && isset( $_FILES[$key] ) ) {
-			$file = $_FILES[$key];
-			return $this->_file_upload( $file );
+		if ( ! is_array( $_FILES ) || ! isset( $_FILES[ $key ] ) ) {
+			return;
 		}
+
+		$file = $_FILES[ $key ];
+		return $this->_file_upload( $file );
 	}
 
 	/**
@@ -83,7 +86,7 @@ class MW_WP_Form_File {
 			 && is_uploaded_file( $file['tmp_name'] ) ) {
 
 			$extension = pathinfo( $file['name'], PATHINFO_EXTENSION );
-			$uploadfile = $this->set_upload_file_name( $extension );
+			$uploadfile = $this->_set_upload_file_name( $extension );
 
 			$is_uploaded = move_uploaded_file( $file['tmp_name'], $uploadfile['file'] );
 			if ( $is_uploaded ) {
@@ -98,13 +101,14 @@ class MW_WP_Form_File {
 	 * @param string 拡張子 ( ex: jpg )
 	 * @return array ( file =>, url => )
 	 */
-	protected function set_upload_file_name( $extension ) {
+	protected function _set_upload_file_name( $extension ) {
 		$count      = 0;
 		$basename   = uniqid( rand() );
 		$temp_dir   = $this->get_temp_dir();
 		$upload_dir = $temp_dir['dir'];
 		$upload_url = $temp_dir['url'];
-		if ( !is_writable( $temp_dir['dir'] ) ) {
+
+		if ( ! is_writable( $temp_dir['dir'] ) ) {
 			$wp_upload_dir = wp_upload_dir();
 			$upload_dir    = $wp_upload_dir['path'];
 			$upload_url    = $wp_upload_dir['url'];
@@ -120,6 +124,7 @@ class MW_WP_Form_File {
 		$filename = $filename_no_exension . '.' . $extension;
 		$uploadfile['file'] = trailingslashit( $upload_dir ) . $filename;
 		$uploadfile['url']  = trailingslashit( $upload_url ) . $filename;
+
 		return $uploadfile;
 	}
 
@@ -142,15 +147,17 @@ class MW_WP_Form_File {
 	 * @return bool
 	 */
 	public function create_temp_dir() {
-		$_ret = false;
 		$temp_dir = $this->get_temp_dir();
 		$temp_dir = $temp_dir['dir'];
-		if ( !file_exists( $temp_dir ) && !is_writable( $temp_dir ) ) {
-			$_ret = wp_mkdir_p( trailingslashit( $temp_dir ) );
-			@chmod( $temp_dir, 0733 );
-			return $_ret;
+
+		if ( file_exists( $temp_dir ) ) {
+			return is_writable( $temp_dir );
 		}
-		return $_ret;
+
+		$is_created = wp_mkdir_p( trailingslashit( $temp_dir ) );
+		$is_created = chmod( $temp_dir, 0733 );
+
+		return $is_created;
 	}
 
 	/**
@@ -165,23 +172,27 @@ class MW_WP_Form_File {
 			$temp_dir = trailingslashit( $temp_dir ) . $sub_dir;
 		}
 
-		if ( !file_exists( $temp_dir ) ) {
+		if ( ! file_exists( $temp_dir ) ) {
 			return;
 		}
+
 		$handle = opendir( $temp_dir );
-		if ( $handle === false ) {
+		if ( false === $handle ) {
 			return;
 		}
 
 		while ( false !== ( $file = readdir( $handle ) ) ) {
-			if ( $file !== '.' && $file !== '..' ) {
-				if ( is_dir( trailingslashit( $temp_dir ) . $file ) ) {
-					$this->remove_temp_dir( $file );
-				} else {
-					unlink( trailingslashit( $temp_dir ) . $file );
-				}
+			if ( '.' === $file || '..' === $file ) {
+				continue;
+			}
+
+			if ( is_dir( trailingslashit( $temp_dir ) . $file ) ) {
+				$this->remove_temp_dir( $file );
+			} else {
+				unlink( trailingslashit( $temp_dir ) . $file );
 			}
 		}
+
 		closedir( $handle );
 		rmdir( $temp_dir );
 	}
@@ -189,25 +200,30 @@ class MW_WP_Form_File {
 	/**
 	 * Tempディレクトリ内のファイルを削除
 	 */
-	protected function clean_temp_dir() {
+	protected function _clean_temp_dir() {
 		$temp_dir = $this->get_temp_dir();
 		$temp_dir = $temp_dir['dir'];
-		if ( !file_exists( $temp_dir ) ) {
+
+		if ( ! file_exists( $temp_dir ) ) {
 			return;
 		}
+
 		$handle = opendir( $temp_dir );
 		if ( $handle === false ) {
 			return;
 		}
+
 		while ( false !== ( $filename = readdir( $handle ) ) ) {
-			if ( $filename !== '.' && $filename !== '..' &&
-				 !is_dir( trailingslashit( $temp_dir ) . $filename ) ) {
-				$stat = stat( trailingslashit( $temp_dir ) . $filename );
-				if ( $stat['mtime'] + 3600 < time() ) {
-					unlink( trailingslashit( $temp_dir ) . $filename );
-				}
+			if ( '.' === $filename && '..' === $filename || is_dir( trailingslashit( $temp_dir ) . $filename ) ) {
+				continue;
+			}
+
+			$stat = stat( trailingslashit( $temp_dir ) . $filename );
+			if ( $stat['mtime'] + 3600 < time() ) {
+				unlink( trailingslashit( $temp_dir ) . $filename );
 			}
 		}
+
 		closedir( $handle );
 	}
 

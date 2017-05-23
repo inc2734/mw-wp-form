@@ -16,9 +16,6 @@ class MW_WP_Form_CSV {
 	 */
 	protected $post_type;
 
-	/**
-	 * __construct
-	 */
 	public function __construct( $post_type ) {
 		$this->post_type = $post_type;
 	}
@@ -29,12 +26,12 @@ class MW_WP_Form_CSV {
 	public function download() {
 		$key_of_csv_download = MWF_Config::NAME . '-csv-download';
 
-		if ( !isset( $_POST[$key_of_csv_download] ) || !check_admin_referer( MWF_Config::NAME ) ) {
+		if ( ! isset( $_POST[$key_of_csv_download] ) || ! check_admin_referer( MWF_Config::NAME ) ) {
 			return;
 		}
 
-		$posts_per_page = $this->get_posts_per_page();
-		$paged          = $this->get_paged();
+		$posts_per_page = $this->_get_posts_per_page();
+		$paged          = $this->_get_paged();
 
 		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $this->post_type, array() );
 		$args  = array(
@@ -43,7 +40,7 @@ class MW_WP_Form_CSV {
 			'paged'          => $paged,
 			'post_status'    => 'any',
 		);
-		if ( !empty( $_args ) && is_array( $_args ) ) {
+		if ( ! empty( $_args ) && is_array( $_args ) ) {
 			$args = array_merge( $_args, $args );
 		}
 		$posts_mwf = get_posts( $args );
@@ -52,15 +49,15 @@ class MW_WP_Form_CSV {
 		$csv = '';
 
 		// 見出しを追加
-		$rows[0] = $this->get_csv_headings( $posts_mwf );
+		$rows[0] = $this->_get_csv_headings( $posts_mwf );
 
 		// 各データを追加
-		$rows = array_merge( $rows, $this->get_rows( $posts_mwf, $rows[0] ) );
+		$rows = array_merge( $rows, $this->_get_rows( $posts_mwf, $rows[0] ) );
 
 		// エンコード
 		foreach ( $rows as $key => $row ) {
 			foreach ( $row as $column_name => $column ) {
-				$row[$column_name] = $this->escape_double_quote( $column );
+				$row[ $column_name ] = $this->_escape_double_quote( $column );
 			}
 			$csv .= implode( ',', $row ) . "\r\n";
 		}
@@ -79,18 +76,18 @@ class MW_WP_Form_CSV {
 	 *
 	 * @return int
 	 */
-	public function get_posts_per_page() {
-		$posts_per_page = -1;
-		if ( ( isset( $_POST['download-all'] ) && $_POST['download-all'] === 'true' ) === false ) {
-			$current_user = wp_get_current_user();
-			$_posts_per_page = get_user_meta( $current_user->ID, 'edit_' . $this->post_type . '_per_page', true );
-			if ( !empty( $_posts_per_page ) ) {
-				$posts_per_page = $_posts_per_page;
-			} else {
-				$posts_per_page = 20;
-			}
+	public function _get_posts_per_page() {
+		if ( isset( $_POST['download-all'] ) && 'true' === $_POST['download-all'] ) {
+			return -1;
 		}
-		return $posts_per_page;
+
+		$current_user    = wp_get_current_user();
+		$_posts_per_page = get_user_meta( $current_user->ID, 'edit_' . $this->post_type . '_per_page', true );
+		if ( ! empty( $_posts_per_page ) ) {
+			return -1;
+		}
+
+		return 20;
 	}
 
 	/**
@@ -98,16 +95,14 @@ class MW_WP_Form_CSV {
 	 *
 	 * @return int
 	 */
-	public function get_paged() {
-		$posts_per_page = $this->get_posts_per_page();
-		$paged = 1;
+	public function _get_paged() {
+		$posts_per_page = $this->_get_posts_per_page();
 		if ( isset( $_GET['paged'] ) ) {
-			$_paged = $_GET['paged'];
 			if ( MWF_Functions::is_numeric( $_paged ) && $posts_per_page > 0 ) {
-				$paged = $_paged;
+				return $_GET['paged'];
 			}
 		}
-		return $paged;
+		return -1;
 	}
 
 	/**
@@ -116,7 +111,7 @@ class MW_WP_Form_CSV {
 	 * @param array $posts
 	 * @return array
 	 */
-	protected function get_csv_headings( array $posts ) {
+	protected function _get_csv_headings( array $posts ) {
 		$columns = array(
 			'ID'              => 'ID',
 			'response_status' => __( 'Response Status', 'mw-wp-form' ),
@@ -127,20 +122,24 @@ class MW_WP_Form_CSV {
 		$_columns = array();
 		foreach ( $posts as $post ) {
 			$post_custom_keys = get_post_custom_keys( $post->ID );
-			if ( !is_array( $post_custom_keys ) ) {
+			if ( ! is_array( $post_custom_keys ) ) {
 				continue;
 			}
+
 			foreach ( $post_custom_keys as $key ) {
 				if ( preg_match( '/^_/', $key ) ) {
 					continue;
 				}
-				if ( $key === MWF_Config::TRACKINGNUMBER ) {
-					$columns[$key] = MWF_Functions::get_tracking_number_title( $this->post_type );
+
+				if ( MWF_Config::TRACKINGNUMBER === $key ) {
+					$columns[ $key ] = MWF_Functions::get_tracking_number_title( $this->post_type );
 					continue;
 				}
-				$_columns[$key] = $key;
+
+				$_columns[ $key ] = $key;
 			}
 		}
+
 		ksort( $_columns );
 		$_columns = apply_filters( 'mwform_inquiry_data_columns-' . $this->post_type, $_columns );
 		$columns = array_merge( $columns, $_columns );
@@ -155,8 +154,9 @@ class MW_WP_Form_CSV {
 	 * @param array $headings
 	 * @return array
 	 */
-	protected function get_rows( array $posts, array $headings ) {
+	protected function _get_rows( array $posts, array $headings ) {
 		global $post;
+
 		$rows = array();
 		foreach ( $posts as $post ) {
 			setup_postdata( $post );
@@ -165,18 +165,20 @@ class MW_WP_Form_CSV {
 				$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $post->ID );
 				$response_statuses    = $Contact_Data_Setting->get_response_statuses();
 				$column = '';
-				if ( $key === 'response_status' ) {
+
+				if ( 'response_status' === $key ) {
 					$response_status = $Contact_Data_Setting->get( 'response_status' );
 					$column = $response_statuses[$response_status];
-				} elseif ( $key === 'memo' ) {
+				} elseif ( 'memo' === $key ) {
 					$column = $Contact_Data_Setting->get( 'memo' );
-				} elseif ( $key === MWF_Config::TRACKINGNUMBER ) {
+				} elseif ( MWF_Config::TRACKINGNUMBER === $key) {
 					$column = get_post_meta( get_the_ID(), MWF_Config::TRACKINGNUMBER, true );
 				} elseif ( isset( $post->$key ) ) {
 					$post_meta = $post->$key;
+
 					if ( $Contact_Data_Setting->is_upload_file_key( $post, $key ) ) {
 						// 過去バージョンでの不具合でメタデータが空になっていることがあるのでその場合は代替処理
-						if ( $post_meta === '' ) {
+						if ( '' === $post_meta ) {
 							$post_meta = MWF_Functions::get_multimedia_id__fallback( $post, $key );
 						}
 						$column = wp_get_attachment_url( $post_meta );
@@ -184,7 +186,7 @@ class MW_WP_Form_CSV {
 						$column = ( $post_meta ) ? $post_meta : '';
 					}
 				}
-				$columns[$key] = $column;
+				$columns[ $key ] = $column;
 			}
 			$rows[] = $columns;
 		}
@@ -198,7 +200,7 @@ class MW_WP_Form_CSV {
 	 * @param string $value
 	 * @return string
 	 */
-	protected function escape_double_quote( $value ) {
+	protected function _escape_double_quote( $value ) {
 		$value = str_replace( '"', '""', $value );
 		return '"' . $value . '"';
 	}

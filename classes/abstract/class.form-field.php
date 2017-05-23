@@ -81,9 +81,6 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected $element_content = null;
 
-	/**
-	 * __construct
-	 */
 	public function __construct() {
 		$this->_set_names();
 		$this->_set_defaults();
@@ -121,8 +118,8 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * set_names
 	 * shortcode_name、display_nameを定義。各子クラスで上書きする。
+	 *
 	 * @return array shortcode_name, display_name
 	 */
 	abstract protected function set_names();
@@ -138,8 +135,8 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * set_defaults
 	 * $this->defaultsを設定し返す
+	 *
 	 * @return array defaults
 	 */
 	abstract protected function set_defaults();
@@ -148,7 +145,6 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * get_error
 	 * @param  string $key name属性
 	 * @return string エラーHTML
 	 */
@@ -186,8 +182,8 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * input_page
 	 * 入力ページでのフォーム項目を返す
+	 *
 	 * @param array $atts
 	 * @param string $element_content
 	 * @return string HTML
@@ -195,7 +191,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	abstract protected function input_page();
 	public function _input_page( $atts, $element_content = null ) {
 		$this->element_content = $element_content;
-		if ( array_key_exists( 'value', $this->defaults ) && isset( $atts['name'] ) && !isset( $atts['value'] ) ) {
+		if ( array_key_exists( 'value', $this->defaults ) && isset( $atts['name'] ) && ! isset( $atts['value'] ) ) {
 			$atts['value'] = apply_filters(
 				'mwform_value_' . $this->form_key,
 				$this->defaults['value'],
@@ -207,8 +203,8 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * confirm_page
 	 * 確認ページでのフォーム項目を返す
+	 *
 	 * @param array $atts
 	 * @param string $element_content
 	 * @return string HTML
@@ -228,9 +224,10 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 */
 	public function get_children( $_children ) {
 		$children = array();
-		if ( !empty( $_children ) && !is_array( $_children ) ) {
+		if ( ! empty( $_children ) && ! is_array( $_children ) ) {
 			$_children = explode( ',', $_children );
 		}
+
 		if ( is_array( $_children ) ) {
 			foreach ( $_children as $child ) {
 				$temp_replacement = '@-[_-_]-@';
@@ -242,18 +239,20 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 					$child = array( $child );
 				}
 				foreach ( $child as $child_key => $child_value ) {
-					$child[$child_key] = str_replace( $temp_replacement, ':', $child_value );
+					$child[ $child_key ] = str_replace( $temp_replacement, ':', $child_value );
 				}
 				if ( count( $child ) === 1 ) {
-					$children[$child[0]] = $child[0];
+					$children[ $child[0] ] = $child[0] ;
 				} else {
-					$children[$child[0]] = $child[1];
+					$children[ $child[0] ] = $child[1];
 				}
 			}
 		}
+
 		if ( $this->form_key ) {
 			$children = apply_filters( 'mwform_choices_' . $this->form_key, $children, $this->atts );
 		}
+
 		return $children;
 	}
 
@@ -302,7 +301,6 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * mwform_form_fields
 	 * @param array $form_fields MW_WP_Form_Abstract_Form_Field を継承したオブジェクトの一覧
 	 * @return array $form_fields
 	 */
@@ -311,7 +309,6 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * get_display_name
 	 * @return string 表示名
 	 */
 	public function get_display_name() {
@@ -319,7 +316,6 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * get_shortcode_name
 	 * @return string ショートコード名
 	 */
 	public function get_shortcode_name() {
@@ -328,17 +324,19 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 
 	/**
 	 * get_value_for_generator
-	 * MW WP Fomr Generator 用
 	 */
 	public function get_value_for_generator( $key, $options ) {
 		$attributes = array_keys( $this->defaults );
 		$attributes = array_flip( $attributes );
-		if ( isset( $attributes[$key] ) ) {
-			if ( isset( $options[$key] ) ) {
-				return $options[$key];
-			} else {
-				return '';
-			}
+
+		if ( ! isset( $attributes[ $key ] ) ) {
+			return;
+		}
+
+		if ( isset( $options[ $key ] ) ) {
+			return $options[ $key ];
+		} else {
+			return '';
 		}
 	}
 }

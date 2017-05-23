@@ -28,22 +28,26 @@ class MW_WP_Form_Validation_Rule_In extends MW_WP_Form_Abstract_Validation_Rule 
 	public function rule( $key, array $options = array() ) {
 		$value = $this->Data->get( $key );
 		$value = ( string ) $value;
-		if ( !MWF_Functions::is_empty( $value ) ) {
-			$defaults = array(
-				'options' => array(),
-				'message' => __( 'This value is invalid.', 'mw-wp-form' )
-			);
-			$options = array_merge( $defaults, $options );
-			if ( is_array( $options['options'] ) ) {
-				foreach ( $options['options'] as $option ) {
-					$option = ( string ) $option;
-					if ( $value === $option ) {
-						return;
-					}
+
+		if ( MWF_Functions::is_empty( $value ) ) {
+			return;
+		}
+
+		$defaults = array(
+			'options' => array(),
+			'message' => __( 'This value is invalid.', 'mw-wp-form' )
+		);
+		$options = array_merge( $defaults, $options );
+		if ( is_array( $options['options'] ) ) {
+			foreach ( $options['options'] as $option ) {
+				$option = ( string ) $option;
+				if ( $value === $option ) {
+					return;
 				}
 			}
-			return $options['message'];
 		}
+
+		return $options['message'];
 	}
 
 	/**

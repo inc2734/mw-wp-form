@@ -81,33 +81,35 @@ class MW_WP_Form_Mail {
 			return apply_filters( 'mwform_is_mail_sended', false );
 		}
 
+		$to          = trim( $this->to );
 		$sender      = $this->sender;
 		$from        = $this->from;
 		$return_path = $this->return_path;
 		$subject     = $this->subject;
 		$body        = $this->body;
 
-		add_action( 'phpmailer_init'   , array( $this, 'set_return_path' ) );
-		add_filter( 'wp_mail_from'     , array( $this, 'set_mail_from' ) );
-		add_filter( 'wp_mail_from_name', array( $this, 'set_mail_from_name' ) );
-
-		if ( defined( 'MWFORM_DEBUG' ) && MWFORM_DEBUG === true ) {
-			$File     = new MW_WP_Form_File();
-			$File->create_temp_dir();
-			$temp_dir = $File->get_temp_dir();
-			$temp_dir = trailingslashit( $temp_dir['dir'] );
-			$temp_dir = apply_filters( 'mwform_log_directory', $temp_dir );
-		}
+		add_action( 'phpmailer_init'   , array( $this, '_set_return_path' ) );
+		add_filter( 'wp_mail_from'     , array( $this, '_set_mail_from' ) );
+		add_filter( 'wp_mail_from_name', array( $this, '_set_mail_from_name' ) );
 
 		$headers = array();
+
 		if ( $this->cc ) {
 			$headers[] = 'Cc: ' . $this->cc;
 		}
+
 		if ( $this->bcc ) {
 			$headers[] = 'Bcc: ' . $this->bcc;
 		}
-		$to = trim( $this->to );
-		if ( !empty( $File ) ) {
+
+		if ( defined( 'MWFORM_DEBUG' ) && true === MWFORM_DEBUG ) {
+			$File = new MW_WP_Form_File();
+			$File->create_temp_dir();
+
+			$temp_dir = $File->get_temp_dir();
+			$temp_dir = trailingslashit( $temp_dir['dir'] );
+			$temp_dir = apply_filters( 'mwform_log_directory', $temp_dir );
+
 			$contents = sprintf(
 				"====================\n\nSend Date: %s\nTo: %s\nSender: %s\nFrom: %s\nReturn-Path: %s\nSubject: %s\nheaders:%s\n-----\n%s\n-----\nattachments:\n%s\n\n",
 				date( 'M j Y, H:i:s' ),
@@ -125,9 +127,9 @@ class MW_WP_Form_Mail {
 			$is_mail_sended = wp_mail( $to, $subject, $body, $headers, $this->attachments );
 		}
 
-		remove_action( 'phpmailer_init'   , array( $this, 'set_return_path' ) );
-		remove_filter( 'wp_mail_from'     , array( $this, 'set_mail_from' ) );
-		remove_filter( 'wp_mail_from_name', array( $this, 'set_mail_from_name' ) );
+		remove_action( 'phpmailer_init'   , array( $this, '_set_return_path' ) );
+		remove_filter( 'wp_mail_from'     , array( $this, '_set_mail_from' ) );
+		remove_filter( 'wp_mail_from_name', array( $this, '_set_mail_from_name' ) );
 
 		return apply_filters( 'mwform_is_mail_sended', $is_mail_sended );
 	}
@@ -138,7 +140,7 @@ class MW_WP_Form_Mail {
 	 * @param string $email fromメールアドレス
 	 * @return string
 	 */
-	public function set_mail_from( $email ) {
+	public function _set_mail_from( $email ) {
 		if ( filter_var( $this->from, FILTER_VALIDATE_EMAIL ) ) {
 			return $this->from;
 		}
@@ -151,7 +153,7 @@ class MW_WP_Form_Mail {
 	 * @param string $sender 送信者名
 	 * @return string
 	 */
-	public function set_mail_from_name( $sender ) {
+	public function _set_mail_from_name( $sender ) {
 		return $this->sender;
 	}
 
@@ -160,7 +162,7 @@ class MW_WP_Form_Mail {
 	 *
 	 * @param phpmailer $phpmailer
 	 */
-	public function set_return_path( $phpmailer ) {
+	public function _set_return_path( $phpmailer ) {
 		$phpmailer->Sender = $this->return_path;
 	}
 
@@ -286,45 +288,47 @@ class MW_WP_Form_Mail {
 		$Data = MW_WP_Form_Data::connect( $form_key );
 		$automatic_reply_email = $Setting->get( 'automatic_reply_email' );
 
-		if ( $form_id ) {
-			$Validation = new MW_WP_Form_Validation_Rule_Mail();
-			$Validation->set_Data( $Data );
-			$is_invalid_mail_address = $Validation->rule(
-				$automatic_reply_email
-			);
-
-			// 送信先を指定
-			if ( $automatic_reply_email && !$is_invalid_mail_address ) {
-				$this->to = $Data->get_post_value_by_key( $automatic_reply_email );
-			}
-
-			// Return-Path を指定
-			$mail_return_path = get_bloginfo( 'admin_email' );
-			if ( $Setting->get( 'mail_return_path' ) ) {
-				$mail_return_path = $Setting->get( 'mail_return_path' );
-			}
-			$this->return_path = $mail_return_path;
-
-			// 送信元を指定
-			$reply_mail_from = get_bloginfo( 'admin_email' );
-			if ( $Setting->get( 'mail_from' ) ) {
-				$reply_mail_from = $Setting->get( 'mail_from' );
-			}
-			$this->from = $reply_mail_from;
-
-			// 送信者を指定
-			$reply_mail_sender = get_bloginfo( 'name' );
-			if ( $Setting->get( 'mail_sender' ) ) {
-				$reply_mail_sender = $Setting->get( 'mail_sender' );
-			}
-			$this->sender = $reply_mail_sender;
-
-			// タイトルを指定
-			$this->subject = $Setting->get( 'mail_subject' );
-
-			// 本文を指定
-			$this->body = $Setting->get( 'mail_content' );
+		if ( ! $form_id ) {
+			return;
 		}
+
+		$Validation = new MW_WP_Form_Validation_Rule_Mail();
+		$Validation->set_Data( $Data );
+		$is_invalid_mail_address = $Validation->rule(
+			$automatic_reply_email
+		);
+
+		// 送信先を指定
+		if ( $automatic_reply_email && !$is_invalid_mail_address ) {
+			$this->to = $Data->get_post_value_by_key( $automatic_reply_email );
+		}
+
+		// Return-Path を指定
+		$mail_return_path = get_bloginfo( 'admin_email' );
+		if ( $Setting->get( 'mail_return_path' ) ) {
+			$mail_return_path = $Setting->get( 'mail_return_path' );
+		}
+		$this->return_path = $mail_return_path;
+
+		// 送信元を指定
+		$reply_mail_from = get_bloginfo( 'admin_email' );
+		if ( $Setting->get( 'mail_from' ) ) {
+			$reply_mail_from = $Setting->get( 'mail_from' );
+		}
+		$this->from = $reply_mail_from;
+
+		// 送信者を指定
+		$reply_mail_sender = get_bloginfo( 'name' );
+		if ( $Setting->get( 'mail_sender' ) ) {
+			$reply_mail_sender = $Setting->get( 'mail_sender' );
+		}
+		$this->sender = $reply_mail_sender;
+
+		// タイトルを指定
+		$this->subject = $Setting->get( 'mail_subject' );
+
+		// 本文を指定
+		$this->body = $Setting->get( 'mail_content' );
 	}
 
 	/**
@@ -335,13 +339,15 @@ class MW_WP_Form_Mail {
 		$admin_mail_from   = get_bloginfo( 'admin_email' );
 		$admin_mail_sender = get_bloginfo( 'name' );
 
-		if ( !$this->to ) {
+		if ( ! $this->to ) {
 			$this->to = $admin_mail_to;
 		}
-		if ( !$this->from ) {
+
+		if ( ! $this->from ) {
 			$this->from = $admin_mail_from;
 		}
-		if ( !$this->sender ) {
+
+		if ( ! $this->sender ) {
 			$this->sender = $admin_mail_sender;
 		}
 	}
@@ -353,10 +359,11 @@ class MW_WP_Form_Mail {
 		$reply_mail_from   = get_bloginfo( 'admin_email' );
 		$reply_mail_sender = get_bloginfo( 'name' );
 
-		if ( !$this->from ) {
+		if ( ! $this->from ) {
 			$this->from = $reply_mail_from;;
 		}
-		if ( !$this->sender ) {
+
+		if ( ! $this->sender ) {
 			$this->sender = $reply_mail_sender;;
 		}
 	}

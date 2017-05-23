@@ -166,11 +166,11 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 		// 空の隠れフィールド（コピー元）を挿入
 		array_unshift( $postdata, $default_keys );
 
-		$this->assign( 'post_type'   , $post_type );
-		$this->assign( 'form_posts'  , $form_posts );
-		$this->assign( 'custom_keys' , $custom_keys );
-		$this->assign( 'postdata'    , $postdata );
-		$this->render( 'chart/index' );
+		$this->_assign( 'post_type'   , $post_type );
+		$this->_assign( 'form_posts'  , $form_posts );
+		$this->_assign( 'custom_keys' , $custom_keys );
+		$this->_assign( 'postdata'    , $postdata );
+		$this->_render( 'chart/index' );
 	}
 
 	/**

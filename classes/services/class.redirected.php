@@ -35,11 +35,11 @@ class MW_WP_Form_Redirected {
 		$this->form_key = $form_key;
 		$this->Setting  = $Setting;
 
-		$input        = $this->parse_url( $this->Setting->get( 'input_url' ) );
-		$confirm      = $this->parse_url( $this->Setting->get( 'confirmation_url' ) );
-		$complete     = $this->parse_url( $this->Setting->get( 'complete_url' ) );
-		$error        = $this->parse_url( $this->Setting->get( 'validation_error_url' ) );
-		$REQUEST_URI  = $this->parse_url( $this->get_request_uri() );
+		$input        = $this->_parse_url( $this->Setting->get( 'input_url' ) );
+		$confirm      = $this->_parse_url( $this->Setting->get( 'confirmation_url' ) );
+		$complete     = $this->_parse_url( $this->Setting->get( 'complete_url' ) );
+		$error        = $this->_parse_url( $this->Setting->get( 'validation_error_url' ) );
+		$REQUEST_URI  = $this->_parse_url( $this->get_request_uri() );
 
 		if ( 'back' === $post_condition ) {
 			$this->url = $input;
@@ -124,7 +124,7 @@ class MW_WP_Form_Redirected {
 	 * @param string URL
 	 * @return string URL
 	 */
-	protected function parse_url( $url ) {
+	protected function _parse_url( $url ) {
 		if ( empty( $url ) ) {
 			return '';
 		}

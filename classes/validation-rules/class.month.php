@@ -27,24 +27,29 @@ class MW_WP_Form_Validation_Rule_Month extends MW_WP_Form_Abstract_Validation_Ru
 	 */
 	public function rule( $key, array $options = array() ) {
 		$value = $this->Data->get( $key );
-		if ( !MWF_Functions::is_empty( $value ) ) {
-			$defaults = array(
-				'message' => __( 'This is not the format of a date (Year/Month).', 'mw-wp-form' )
-			);
-			$options = array_merge( $defaults, $options );
-			$timestamp = strtotime( $value );
-			if ( !$timestamp ) {
-				$timestamp = $this->convert_jpdate_to_timestamp( $value );
-			}
-			if ( !$timestamp ) {
-				return $options['message'];
-			}
-			$year  = date( 'Y', $timestamp );
-			$month = date( 'm', $timestamp );
-			$checkdate = checkdate( $month, 1, $year );
-			if ( !$timestamp || !$checkdate || preg_match( '/^[a-zA-Z]$/', $value ) || preg_match( '/^\s+$/', $value ) ) {
-				return $options['message'];
-			}
+
+		if ( MWF_Functions::is_empty( $value ) ) {
+			return;
+		}
+
+		$defaults = array(
+			'message' => __( 'This is not the format of a date (Year/Month).', 'mw-wp-form' )
+		);
+		$options = array_merge( $defaults, $options );
+		$timestamp = strtotime( $value );
+		if ( ! $timestamp ) {
+			$timestamp = $this->convert_jpdate_to_timestamp( $value );
+		}
+		if ( ! $timestamp ) {
+			return $options['message'];
+		}
+
+		$year  = date( 'Y', $timestamp );
+		$month = date( 'm', $timestamp );
+		$checkdate = checkdate( $month, 1, $year );
+
+		if ( ! $timestamp || ! $checkdate || preg_match( '/^[a-zA-Z]$/', $value ) || preg_match( '/^\s+$/', $value ) ) {
+			return $options['message'];
 		}
 	}
 
@@ -70,7 +75,7 @@ class MW_WP_Form_Validation_Rule_Month extends MW_WP_Form_Abstract_Validation_Ru
 	 */
 	public function admin( $key, $value ) {
 		?>
-		<label><input type="checkbox" <?php checked( $value[$this->getName()], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( 'Date(Year/Month)', 'mw-wp-form' ); ?></label>
+		<label><input type="checkbox" <?php checked( $value[ $this->getName() ], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( 'Date(Year/Month)', 'mw-wp-form' ); ?></label>
 		<?php
 	}
 }

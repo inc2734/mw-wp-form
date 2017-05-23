@@ -22,6 +22,11 @@ class MW_WP_Form_Main_Controller {
 	 */
 	protected $Setting;
 
+	/**
+	 * @var MW_WP_Form_Validation
+	 */
+	protected $Validation;
+
 	public function __construct() {
 		add_action( 'parse_request'   , array( $this, '_remove_query_vars_from_post' ) );
 		add_filter( 'nocache_headers' , array( $this, '_nocache_headers' ) , 1 );
@@ -99,7 +104,7 @@ class MW_WP_Form_Main_Controller {
 			$form_key   = MWF_Functions::get_form_key_from_form_id( $form_id );
 			$this->Data = MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
 
-			$Validation = new MW_WP_Form_Validation( $form_key );
+			$this->Validation = new MW_WP_Form_Validation( $form_key );
 
 			$Validation_Rules = MW_WP_Form_Validation_Rules::instantiation();
 			$validation_rules = $Validation_Rules->get_validation_rules();
@@ -115,7 +120,7 @@ class MW_WP_Form_Main_Controller {
 				$this->_file_upload();
 			}
 
-			$Redirected = new MW_WP_Form_Redirected( $form_key, $this->Setting, $Validation->check(), $post_condition );
+			$Redirected = new MW_WP_Form_Redirected( $form_key, $this->Setting, $this->Validation->check(), $post_condition );
 			$view_flg   = $Redirected->get_view_flg();
 			$this->Data->set_view_flg( $view_flg );
 

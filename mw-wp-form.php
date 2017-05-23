@@ -16,28 +16,25 @@
  * @todo テストの更新
  * @todo standard coding
  * @todo 日本語 > English
+ * @todo メール設定が空のときによしなにするのはやめて、新規作成時（もしくはメール設定が保存されていない時）は初期値が入力された状態にしたい
  */
 include_once( plugin_dir_path( __FILE__ ) . 'classes/functions.php' );
 include_once( plugin_dir_path( __FILE__ ) . 'classes/config.php' );
 
 class MW_WP_Form {
 
-	/**
-	 * __construct
-	 */
 	public function __construct() {
-		add_action( 'plugins_loaded', array( $this, 'load_initialize_files' ), 9 );
-		add_action( 'plugins_loaded', array( $this, 'initialize' ), 11 );
-		// 有効化した時の処理
-		register_activation_hook( __FILE__, array( __CLASS__, 'activation' ) );
-		// アンインストールした時の処理
-		register_uninstall_hook( __FILE__, array( __CLASS__, 'uninstall' ) );
+		add_action( 'plugins_loaded', array( $this, '_load_initialize_files' ), 9 );
+		add_action( 'plugins_loaded', array( $this, '_initialize' ), 11 );
+
+		register_activation_hook( __FILE__, array( __CLASS__, '_activation' ) );
+		register_uninstall_hook( __FILE__ , array( __CLASS__, '_uninstall' ) );
 	}
 
 	/**
 	 * initialize に必要なファイルをロード
 	 */
-	public function load_initialize_files() {
+	public function _load_initialize_files() {
 		$plugin_dir_path = plugin_dir_path( __FILE__ );
 		$includes = array(
 			'/classes/abstract',
@@ -57,25 +54,25 @@ class MW_WP_Form {
 	/**
 	 * initialize
 	 */
-	public function initialize() {
+	public function _initialize() {
 		load_plugin_textdomain( 'mw-wp-form', false, basename( dirname( __FILE__ ) ) . '/languages' );
 
-		add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ), 11 );
-		add_action( 'init', array( $this, 'register_post_type' ) );
+		add_action( 'after_setup_theme', array( $this, '_after_setup_theme' ), 11 );
+		add_action( 'init'             , array( $this, '_register_post_type' ) );
 	}
 
 	/**
 	 * 各管理画面の初期化、もしくはフロント画面の初期化
 	 */
-	public function after_setup_theme() {
+	public function _after_setup_theme() {
 		MW_WP_Form_Form_Fields::instantiation();
 		MW_WP_Form_Validation_Rules::instantiation();
 
 		if ( current_user_can( MWF_Config::CAPABILITY ) && is_admin() ) {
-			add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-			add_action( 'admin_menu'           , array( $this, 'admin_menu_for_chart' ) );
-			add_action( 'admin_menu'           , array( $this, 'admin_menu_for_contact_data_list' ) );
-			add_action( 'current_screen'       , array( $this, 'current_screen' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue_scripts' ) );
+			add_action( 'admin_menu'           , array( $this, '_admin_menu_for_chart' ) );
+			add_action( 'admin_menu'           , array( $this, '_admin_menu_for_contact_data_list' ) );
+			add_action( 'current_screen'       , array( $this, '_current_screen' ) );
 		} elseif ( ! is_admin() ) {
 			$Controller = new MW_WP_Form_Main_Controller();
 		}
@@ -84,7 +81,7 @@ class MW_WP_Form {
 	/**
 	 * 共通CSSの読み込み
 	 */
-	public function admin_enqueue_scripts() {
+	public function _admin_enqueue_scripts() {
 		$url = plugins_url( MWF_Config::NAME );
 		wp_enqueue_style( MWF_Config::NAME . '-admin-common', $url . '/css/admin-common.css' );
 	}
@@ -92,7 +89,7 @@ class MW_WP_Form {
 	/**
 	 * グラフページのメニューを追加
 	 */
-	public function admin_menu_for_chart() {
+	public function _admin_menu_for_chart() {
 		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
 		if ( empty( $contact_data_post_types ) ) {
 			return;
@@ -111,7 +108,7 @@ class MW_WP_Form {
 	/**
 	 * 問い合わせデータ閲覧ページのメニューを追加
 	 */
-	public function admin_menu_for_contact_data_list() {
+	public function _admin_menu_for_contact_data_list() {
 		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
 		if ( empty( $contact_data_post_types ) ) {
 			return;
@@ -132,7 +129,7 @@ class MW_WP_Form {
 	 *
 	 * @param WP_Screen $screen
 	 */
-	public function current_screen( $screen ) {
+	public function _current_screen( $screen ) {
 		if ( $screen->id === MWF_Config::NAME ) {
 			$Controller = new MW_WP_Form_Admin_Controller();
 		}
@@ -156,8 +153,8 @@ class MW_WP_Form {
 	/**
 	 * 管理画面（カスタム投稿タイプ）の設定
 	 */
-	public function register_post_type() {
-		if ( !current_user_can( MWF_Config::CAPABILITY ) && is_admin() ) {
+	public function _register_post_type() {
+		if ( ! current_user_can( MWF_Config::CAPABILITY ) && is_admin() ) {
 			return;
 		}
 
@@ -208,15 +205,17 @@ class MW_WP_Form {
 	/**
 	 * 有効化した時の処理
 	 */
-	public static function activation() {
+	public static function _activation() {
 	}
 
 	/**
 	 * アンインストールした時の処理
 	 */
-	public static function uninstall() {
+	public static function _uninstall() {
 		$plugin_dir_path = plugin_dir_path( __FILE__ );
 		include_once( $plugin_dir_path . 'classes/models/class.admin.php' );
+		include_once( $plugin_dir_path . 'classes/models/class.file.php' );
+
 		$Admin = new MW_WP_Form_Admin();
 		$forms = $Admin->get_forms();
 
@@ -228,21 +227,25 @@ class MW_WP_Form {
 
 		foreach ( $data_post_ids as $data_post_id ) {
 			delete_option( MWF_Config::NAME . '-chart-' . $data_post_id );
+
 			$data_posts = get_posts( array(
 				'post_type'      => MWF_Functions::get_contact_data_post_type_from_form_id( $data_post_id ),
 				'posts_per_page' => -1,
 			) );
-			if ( empty( $data_posts ) ) continue;
+			if ( empty( $data_posts ) ) {
+				continue;
+			}
+
 			foreach ( $data_posts as $data_post ) {
 				wp_delete_post( $data_post->ID, true );
 			}
 		}
 
-		include_once( plugin_dir_path( __FILE__ ) . 'classes/models/class.file.php' );
 		$File = new MW_WP_Form_File();
 		$File->remove_temp_dir();
 
 		delete_option( MWF_Config::NAME );
 	}
 }
+
 $MW_WP_Form = new MW_WP_Form();

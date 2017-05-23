@@ -71,9 +71,9 @@ class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 	 * @param int $post_id
 	 */
 	public function _manage_posts_custom_column( $column_name, $post_id ) {
-		$this->assign( 'post_id', get_the_ID() );
+		$this->_assign( 'post_id', get_the_ID() );
 		if ( $column_name === 'mwform_form_key' ) {
-			$this->render( 'admin-list/form-key' );
+			$this->_render( 'admin-list/form-key' );
 		}
 	}
 }

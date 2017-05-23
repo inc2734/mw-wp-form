@@ -30,27 +30,20 @@ class MW_WP_Form_Session {
 	protected $expiration = 1440;
 
 	/**
-	 * __construct
-	 *
 	 * @param string $name 識別子
 	 */
 	public function __construct( $name ) {
 		$this->name = MWF_Config::NAME . '_session_' . $name;
-		if ( isset( $_COOKIE[$this->name] ) ) {
-			$session_id = $_COOKIE[$this->name];
+
+		if ( isset( $_COOKIE[ $this->name ] ) ) {
+			$session_id = $_COOKIE[ $this->name ];
 		} else {
 			$session_id = sha1( wp_create_nonce( $this->name ) . ip2long( $this->get_remote_addr() ) . uniqid() );
 			$secure = apply_filters( 'mwform_secure_cookie', is_ssl() );
-			try {
-				set_error_handler( array( 'self', 'error_handler' ) );
-				setcookie( $this->name, $session_id, 0, COOKIEPATH, COOKIE_DOMAIN, $secure, true );
-			} catch ( ErrorException $e ) {
-			}
+			@setcookie( $this->name, $session_id, 0, COOKIEPATH, COOKIE_DOMAIN, $secure, true );
 		}
-		$this->session_id = $session_id;
-	}
 
-	public static function error_handler( $errno, $errstr, $errfile, $errline ) {
+		$this->session_id = $session_id;
 	}
 
 	/**
@@ -62,7 +55,7 @@ class MW_WP_Form_Session {
 		$transient_data = get_transient( $this->session_id );
 		if ( is_array( $transient_data ) ) {
 			foreach ( $data as $key => $value ) {
-				$transient_data[$key] = $value;
+				$transient_data[ $key ] = $value;
 			}
 		} else {
 			$transient_data = $data;
@@ -79,7 +72,7 @@ class MW_WP_Form_Session {
 	public function set( $key, $value ) {
 		$transient_data = get_transient( $this->session_id );
 		if ( is_array( $transient_data ) ) {
-			$transient_data[$key] = $value;
+			$transient_data[ $key ] = $value;
 		} else {
 			$transient_data = array( $key => $value );
 		}
@@ -95,7 +88,7 @@ class MW_WP_Form_Session {
 	public function push( $key, $value ) {
 		$transient_data = get_transient( $this->session_id );
 		if ( is_array( $transient_data ) ) {
-			$transient_data[$key][] = $value;
+			$transient_data[ $key ][] = $value;
 		} else {
 			$transient_data = array( $key => array( $value ) );
 		}
@@ -110,10 +103,9 @@ class MW_WP_Form_Session {
 	 */
 	public function get( $key ) {
 		$transient_data = get_transient( $this->session_id );
-		if ( is_array( $transient_data ) && isset( $transient_data[$key] ) ) {
-			return $transient_data[$key];
+		if ( is_array( $transient_data ) && isset( $transient_data[ $key ] ) ) {
+			return $transient_data[ $key ];
 		}
-		return null;
 	}
 
 	/**
@@ -136,8 +128,8 @@ class MW_WP_Form_Session {
 	 */
 	public function clear_value( $key ) {
 		$transient_data = get_transient( $this->session_id );
-		if ( is_array( $transient_data ) && isset( $transient_data[$key] ) ) {
-			unset( $transient_data[$key] );
+		if ( is_array( $transient_data ) && isset( $transient_data[ $key ] ) ) {
+			unset( $transient_data[ $key ] );
 			set_transient( $this->session_id, $transient_data, $this->expiration );
 		}
 	}

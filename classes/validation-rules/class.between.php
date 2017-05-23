@@ -28,28 +28,31 @@ class MW_WP_Form_Validation_Rule_Between extends MW_WP_Form_Abstract_Validation_
 	public function rule( $key, array $options = array() ) {
 		$value = $this->Data->get( $key );
 		$value = MWF_Functions::convert_eol( $value );
-		if ( !MWF_Functions::is_empty( $value ) ) {
-			$defaults = array(
-				'min'     => 0,
-				'max'     => 0,
-				'message' => __( 'The number of characters is invalid.', 'mw-wp-form' )
-			);
-			$options = array_merge( $defaults, $options );
-			$length = mb_strlen( $value, get_bloginfo( 'charset' ) );
-			if ( MWF_Functions::is_numeric( $options['min'] ) ) {
-				if ( MWF_Functions::is_numeric( $options['max'] ) ) {
-					if ( !( $options['min'] <= $length && $length <= $options['max'] ) ) {
-						return $options['message'];
-					}
-				} else {
-					if ( $options['min'] > $length ) {
-						return $options['message'];
-					}
-				}
-			} elseif ( MWF_Functions::is_numeric( $options['max'] ) ) {
-				if ( $options['max'] < $length ) {
+
+		if ( MWF_Functions::is_empty( $value ) ) {
+			return;
+		}
+
+		$defaults = array(
+			'min'     => 0,
+			'max'     => 0,
+			'message' => __( 'The number of characters is invalid.', 'mw-wp-form' )
+		);
+		$options = array_merge( $defaults, $options );
+		$length = mb_strlen( $value, get_bloginfo( 'charset' ) );
+		if ( MWF_Functions::is_numeric( $options['min'] ) ) {
+			if ( MWF_Functions::is_numeric( $options['max'] ) ) {
+				if ( $options['min'] > $length || $length > $options['max'] ) {
 					return $options['message'];
 				}
+			}
+
+			if ( $options['min'] > $length ) {
+				return $options['message'];
+			}
+		} elseif ( MWF_Functions::is_numeric( $options['max'] ) ) {
+			if ( $options['max'] < $length ) {
+				return $options['message'];
 			}
 		}
 	}
@@ -63,12 +66,12 @@ class MW_WP_Form_Validation_Rule_Between extends MW_WP_Form_Abstract_Validation_
 	public function admin( $key, $value ) {
 		$min = '';
 		$max = '';
-		if ( is_array( $value[$this->getName()] ) ) {
-			if ( isset( $value[$this->getName()]['min'] ) ) {
-				$min = $value[$this->getName()]['min'];
+		if ( is_array( $value[ $this->getName() ] ) ) {
+			if ( isset( $value[ $this->getName() ]['min'] ) ) {
+				$min = $value[ $this->getName() ]['min'];
 			}
-			if ( isset( $value[$this->getName()]['max'] ) ) {
-				$max = $value[$this->getName()]['max'];
+			if ( isset( $value[ $this->getName() ]['max'] ) ) {
+				$max = $value[ $this->getName() ]['max'];
 			}
 		}
 		?>

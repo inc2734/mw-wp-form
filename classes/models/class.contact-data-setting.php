@@ -54,32 +54,34 @@ class MW_WP_Form_Contact_Data_Setting {
 	 * @param int $post_id
 	 */
 	public function __construct( $post_id ) {
-		if ( MWF_Functions::is_contact_data_post_type( get_post_type( $post_id ) ) ) {
-			$this->post_id = $post_id;
-			$this->response_statuses = array(
-				'not-supported' => esc_html__( 'Not supported', 'mw-wp-form' ),
-				'reservation'   => esc_html__( 'Reservation', 'mw-wp-form' ),
-				'supported'     => esc_html__( 'Supported', 'mw-wp-form' ),
-			);
+		if ( ! MWF_Functions::is_contact_data_post_type( get_post_type( $post_id ) ) ) {
+			return;
+		}
 
-			$post_custom = get_post_custom( $post_id );
-			$post_meta   = array();
-			foreach ( $post_custom as $key => $value ) {
-				if ( preg_match( '/^_/', $key ) ) {
-					continue;
-				}
-				$post_meta[$key] = $value[0];
-			}
+		$this->post_id = $post_id;
+		$this->response_statuses = array(
+			'not-supported' => esc_html__( 'Not supported', 'mw-wp-form' ),
+			'reservation'   => esc_html__( 'Reservation', 'mw-wp-form' ),
+			'supported'     => esc_html__( 'Supported', 'mw-wp-form' ),
+		);
 
-			$permit_values = get_post_meta( $this->post_id, MWF_config::CONTACT_DATA_NAME, true );
-			if ( !$permit_values ) {
-				$permit_values = array();
+		$post_custom = get_post_custom( $post_id );
+		$post_meta   = array();
+		foreach ( $post_custom as $key => $value ) {
+			if ( preg_match( '/^_/', $key ) ) {
+				continue;
 			}
+			$post_meta[ $key ] = $value[0];
+		}
 
-			$values = array_merge( $post_meta, $permit_values );
-			if ( is_array( $values ) ) {
-				$this->sets( $values );
-			}
+		$permit_values = get_post_meta( $this->post_id, MWF_config::CONTACT_DATA_NAME, true );
+		if ( ! $permit_values ) {
+			$permit_values = array();
+		}
+
+		$values = array_merge( $post_meta, $permit_values );
+		if ( is_array( $values ) ) {
+			$this->sets( $values );
 		}
 	}
 
@@ -107,8 +109,8 @@ class MW_WP_Form_Contact_Data_Setting {
 	public function gets() {
 		$options = $this->options;
 		$permit_keys = $this->get_permit_keys();
-		foreach ( $permit_keys as $value ) {
-			$options[$value] = $this->$value;
+		foreach ( $permit_keys as $permit_key ) {
+			$options[ $permit_key ] = $this->$permit_key;
 		}
 		return $options;
 	}
@@ -122,16 +124,14 @@ class MW_WP_Form_Contact_Data_Setting {
 	public function get( $key ) {
 		$permit_keys = $this->get_permit_keys();
 		if ( in_array( $key, $permit_keys ) ) {
-			$value = $this->$key;
-			if ( $key === 'response_status' ) {
-				if ( isset( $this->response_statuses[$value] ) ) {
-					return $value;
+			if ( 'response_status' === $key ) {
+				if ( isset( $this->response_statuses[ $this->response_status ] ) ) {
+					return $this->response_status;
 				}
-				return $value;
 			}
-			return $value;
-		} elseif ( isset( $this->options[$key] ) ) {
-			return $this->options[$key];
+			return $this->$key;
+		} elseif ( isset( $this->options[ $key ] ) ) {
+			return $this->options[ $key ];
 		}
 	}
 
@@ -146,7 +146,7 @@ class MW_WP_Form_Contact_Data_Setting {
 		if ( in_array( $key, $permit_keys ) ) {
 			$this->$key = $value;
 		} else {
-			$this->options[$key] = $value;
+			$this->options[ $key ] = $value;
 		}
 	}
 
@@ -170,7 +170,7 @@ class MW_WP_Form_Contact_Data_Setting {
 		$permit_keys   = $this->get_permit_keys();
 		$permit_values = array();
 		foreach ( $permit_keys as $key ) {
-			$permit_values[$key] = $this->$key;
+			$permit_values[ $key ] = $this->$key;
 		}
 		update_post_meta( $this->post_id, MWF_config::CONTACT_DATA_NAME, $permit_values );
 
@@ -192,9 +192,10 @@ class MW_WP_Form_Contact_Data_Setting {
 	 * @return array
 	 */
 	public static function get_posts() {
-		if ( self::$contact_data_post_types !== null ) {
+		if ( ! is_null( self::$contact_data_post_types ) ) {
 			return self::$contact_data_post_types;
 		}
+
 		$contact_data_post_types = array();
 		$Admin = new MW_WP_Form_Admin();
 		$forms = $Admin->get_forms_using_database();
@@ -202,18 +203,21 @@ class MW_WP_Form_Contact_Data_Setting {
 			$post_type = MWF_Functions::get_contact_data_post_type_from_form_id( $form->ID );
 			$contact_data_post_types[] = $post_type;
 		}
+
 		$raw_post_types = $contact_data_post_types;
 		$new_post_types = array();
 		$contact_data_post_types = apply_filters(
 			'mwform_contact_data_post_types',
 			$contact_data_post_types
 		);
+
 		// もともとの配列に含まれていない値は削除する
 		foreach ( $contact_data_post_types as $post_type ) {
 			if ( in_array( $post_type, $raw_post_types ) ) {
 				$new_post_types[] = $post_type;
 			}
 		}
+
 		self::$contact_data_post_types = $new_post_types;
 		return self::$contact_data_post_types;
 	}

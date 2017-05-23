@@ -65,15 +65,15 @@ class MW_WP_Form_Mail_Service {
 		$this->Setting        = $Setting;
 
 		if ( $this->Setting->get( 'post_id' ) ) {
-			$this->set_admin_mail_raw_params();
+			$this->_set_admin_mail_raw_params();
 			// 管理者宛メールにだけ添付ファイルを添付
-			$this->set_attachments( $this->Mail_admin_raw );
-			$this->Mail_admin_raw = $this->apply_filters_mwform_admin_mail_raw( $this->Mail_admin_raw );
+			$this->_set_attachments( $this->Mail_admin_raw );
+			$this->Mail_admin_raw = $this->_apply_filters_mwform_admin_mail_raw( $this->Mail_admin_raw );
 
-			$this->set_reply_mail_raw_params();
-			$this->Mail_auto_raw = $this->apply_filters_mwform_auto_mail_raw( $this->Mail_auto_raw );
+			$this->_set_reply_mail_raw_params();
+			$this->Mail_auto_raw = $this->_apply_filters_mwform_auto_mail_raw( $this->Mail_auto_raw );
 		} else {
-			$Mail = $this->apply_filters_mwform_mail( $Mail );
+			$Mail = $this->_apply_filters_mwform_mail( $Mail );
 		}
 	}
 
@@ -83,14 +83,14 @@ class MW_WP_Form_Mail_Service {
 	 * @return boolean
 	 */
 	public function send_admin_mail() {
-		$Mail_admin = $this->get_parsed_mail_object( $this->Mail_admin_raw );
+		$Mail_admin = $this->_get_parsed_mail_object( $this->Mail_admin_raw );
 		if ( $this->Setting->get( 'usedb' ) ) {
 			$Mail_admin_for_save = clone $this->Mail_admin_raw;
 		}
 
 		$Mail_admin->set_admin_mail_reaquire_params();
-		$Mail_admin = $this->apply_filters_mwform_mail( $Mail_admin );
-		$Mail_admin = $this->apply_filters_mwform_admin_mail( $Mail_admin );
+		$Mail_admin = $this->_apply_filters_mwform_mail( $Mail_admin );
+		$Mail_admin = $this->_apply_filters_mwform_admin_mail( $Mail_admin );
 		do_action(
 			'mwform_before_send_admin_mail_' . $this->form_key,
 			clone $Mail_admin,
@@ -105,13 +105,13 @@ class MW_WP_Form_Mail_Service {
 		}
 
 		if ( isset( $Mail_admin_for_save ) && $is_admin_mail_sended ) {
-			$saved_mail_id = $this->save( $Mail_admin_for_save );
+			$saved_mail_id = $this->_save( $Mail_admin_for_save );
 			$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $saved_mail_id );
 			$Contact_Data_Setting->save();
 		}
 
 		// DB非保存時は管理者メール送信後、ファイルを削除
-		if ( !$this->Setting->get( 'usedb' ) ) {
+		if ( ! $this->Setting->get( 'usedb' ) ) {
 			$File = new MW_WP_Form_File();
 			$File->delete_files( $this->attachments );
 		}
@@ -125,7 +125,7 @@ class MW_WP_Form_Mail_Service {
 	 * @param MW_WP_Form_Mail $_Mail
 	 * @return MW_WP_Form_Mail
 	 */
-	protected function get_parsed_mail_object( MW_WP_Form_Mail $_Mail ) {
+	protected function _get_parsed_mail_object( MW_WP_Form_Mail $_Mail ) {
 		$Mail = clone $_Mail;
 		$Mail->parse( $this->Setting );
 		return $Mail;
@@ -137,7 +137,7 @@ class MW_WP_Form_Mail_Service {
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return int 保存されたメール（投稿）の ID
 	 */
-	protected function save( MW_WP_Form_Mail $Mail ) {
+	protected function _save( MW_WP_Form_Mail $Mail ) {
 		return $Mail->save( $this->Setting );
 	}
 
@@ -147,7 +147,7 @@ class MW_WP_Form_Mail_Service {
 	 * @return boolean
 	 */
 	public function send_reply_mail() {
-		$Mail_auto = $this->get_parsed_mail_object( $this->Mail_auto_raw );
+		$Mail_auto = $this->_get_parsed_mail_object( $this->Mail_auto_raw );
 		$Mail_auto->set_reply_mail_reaquire_params();
 		$Mail_auto = $this->apply_filters_mwform_auto_mail( $Mail_auto );
 		do_action(
@@ -164,31 +164,29 @@ class MW_WP_Form_Mail_Service {
 	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 */
-	protected function set_attachments( MW_WP_Form_Mail $Mail ) {
+	protected function _set_attachments( MW_WP_Form_Mail $Mail ) {
 		$Mail->attachments = $this->attachments;
 	}
 
 	/**
 	 * 管理者メールに項目を設定
 	 */
-	protected function set_admin_mail_raw_params() {
+	protected function _set_admin_mail_raw_params() {
 		$this->Mail_admin_raw->set_admin_mail_raw_params( $this->Setting );
 	}
 
 	/**
 	 * 自動返信メールに項目を設定
 	 */
-	private function set_reply_mail_raw_params() {
+	private function _set_reply_mail_raw_params() {
 		$this->Mail_auto_raw->set_reply_mail_raw_params( $this->Setting );
 	}
 
 	/**
-	 * apply_filters_mwform_admin_mail_raw
-	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
-	protected function apply_filters_mwform_admin_mail_raw( MW_WP_Form_Mail $Mail ) {
+	protected function _apply_filters_mwform_admin_mail_raw( MW_WP_Form_Mail $Mail ) {
 		return apply_filters(
 			'mwform_admin_mail_raw_' . $this->form_key,
 			$Mail,
@@ -198,12 +196,10 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * apply_filters_mwform_mail
-	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
-	protected function apply_filters_mwform_mail( MW_WP_Form_Mail $Mail ) {
+	protected function _apply_filters_mwform_mail( MW_WP_Form_Mail $Mail ) {
 		return apply_filters(
 			'mwform_mail_' . $this->form_key,
 			$Mail,
@@ -213,12 +209,10 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * apply_filters_mwform_admin_mail
-	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
-	protected function apply_filters_mwform_admin_mail( MW_WP_Form_Mail $Mail ) {
+	protected function _apply_filters_mwform_admin_mail( MW_WP_Form_Mail $Mail ) {
 		return apply_filters(
 			'mwform_admin_mail_' . $this->form_key,
 			$Mail,
@@ -228,12 +222,10 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * apply_filters_mwform_auto_mail_raw
-	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
-	protected function apply_filters_mwform_auto_mail_raw( MW_WP_Form_Mail $Mail ) {
+	protected function _apply_filters_mwform_auto_mail_raw( MW_WP_Form_Mail $Mail ) {
 		return apply_filters(
 			'mwform_auto_mail_raw_' . $this->form_key,
 			$Mail,
@@ -243,12 +235,10 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * apply_filters_mwform_auto_mail
-	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
-	protected function apply_filters_mwform_auto_mail( MW_WP_Form_Mail $Mail ) {
+	protected function _apply_filters_mwform_auto_mail( MW_WP_Form_Mail $Mail ) {
 		return apply_filters(
 			'mwform_auto_mail_' . $this->form_key,
 			$Mail,

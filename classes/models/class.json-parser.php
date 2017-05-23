@@ -90,8 +90,8 @@ class MW_WP_Form_Json_Parser {
 	 * シングルクォーテーション用の処理
 	 */
 	protected function proccess_single_quote() {
-		if ( !$this->d_quote_stay ) {
-			if ( !$this->s_quote_stay ) {
+		if ( ! $this->d_quote_stay ) {
+			if ( ! $this->s_quote_stay ) {
 				$this->s_quote_stay = true;
 			} else {
 				$this->s_quote_stay = false;
@@ -105,8 +105,8 @@ class MW_WP_Form_Json_Parser {
 	 * ダブルクォーテーション用の処理
 	 */
 	protected function proccess_double_quote() {
-		if ( !$this->s_quote_stay ) {
-			if ( !$this->d_quote_stay ) {
+		if ( ! $this->s_quote_stay ) {
+			if ( ! $this->d_quote_stay ) {
 				$this->d_quote_stay = true;
 			} else {
 				$this->d_quote_stay = false;
@@ -120,7 +120,7 @@ class MW_WP_Form_Json_Parser {
 	 * カンマ用の処理
 	 */
 	protected function proccess_comma() {
-		if ( !$this->s_quote_stay || !$this->d_quote_stay ) {
+		if ( ! $this->s_quote_stay || ! $this->d_quote_stay ) {
 			$this->index ++;
 			$this->colon_stay = true;
 			$this->key = 'key';
@@ -151,7 +151,7 @@ class MW_WP_Form_Json_Parser {
 	public function json_encode() {
 		$js = array();
 		foreach ( $this->temp as $param ) {
-			if ( !isset( $param['key'] ) ) {
+			if ( ! isset( $param['key'] ) ) {
 				continue;
 			}
 			$key   = $param['key'];

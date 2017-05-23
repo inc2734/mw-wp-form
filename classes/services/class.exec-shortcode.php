@@ -80,7 +80,7 @@ class MW_WP_Form_Exec_Shortcode {
 
 		// Enqueue scroll to MW WP Form script
 		if ( $this->Setting->get( 'scroll' ) ) {
-			if ( 'input' !== $this->view_flg || in_array( $this->Data->get_post_condition(), array( 'back', 'confirm' ) ) ) {
+			if ( 'input' !== $this->view_flg || in_array( $this->Data->get_post_condition(), array( 'back', 'confirm', 'complete' ) ) ) {
 				add_action( 'wp_footer', array( $this, '_enqueue_scroll_script' ) );
 			}
 		}

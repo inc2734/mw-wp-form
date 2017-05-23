@@ -96,7 +96,7 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	 * DB登録データの一覧で新規追加のリンクを消す
 	 */
 	public function _admin_print_styles() {
-		$this->render( 'contact-data-list/admin-print-styles' );
+		$this->_render( 'contact-data-list/admin-print-styles' );
 	}
 
 	/**
@@ -111,8 +111,8 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 			return;
 		}
 		$action = $_SERVER['REQUEST_URI'];
-		$this->assign( 'action', $action );
-		$this->render( 'contact-data-list/csv-button' );
+		$this->_assign( 'action', $action );
+		$this->_render( 'contact-data-list/csv-button' );
 	}
 
 	/**
@@ -215,7 +215,7 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 			$value = '&nbsp;';
 		}
 
-		$this->assign( 'column', $value );
-		$this->render( 'contact-data-list/column' );
+		$this->_assign( 'column', $value );
+		$this->_render( 'contact-data-list/column' );
 	}
 }

@@ -20,9 +20,7 @@ class MW_WP_Form_Data {
 	 * @var MW_WP_Form_Sesion
 	 */
 	protected $Session;
-	protected $Session_form_key;
-	protected $Session_view_flg;
-	protected $Session_send_error;
+	protected $Session_meta;
 	protected $Session_validation_error;
 
 	/**
@@ -41,19 +39,16 @@ class MW_WP_Form_Data {
 	 * @param array $FILES $_FILES
 	 */
 	private function __construct( $form_key, array $POST = array(), array $FILES = array() ) {
-		$this->Session_form_key = new MW_WP_Form_Session( $form_key . '-form-key' );
-		$this->_set_form_key( $form_key );
+		$this->Session                  = new MW_WP_Form_Session( $form_key );
+		$this->Session_meta             = new MW_WP_Form_Session( $form_key . '-meta' );
+		$this->Session_validation_error = new MW_WP_Form_Session( $form_key . '-validation-error' );
 
 		$this->POST  = $POST;
 		$this->FILES = $FILES;
 
-		$this->Session = new MW_WP_Form_Session( $form_key );
+		$this->_set_form_key( $form_key );
 		$this->_set_request_valiables();
 		$this->_set_files_valiables();
-
-		$this->Session_view_flg         = new MW_WP_Form_Session( $form_key . '-view-flg' );
-		$this->Session_send_error       = new MW_WP_Form_Session( $form_key . '-send-error' );
-		$this->Session_validation_error = new MW_WP_Form_Session( $form_key . '-validation-error' );
 	}
 
 	/**
@@ -96,14 +91,14 @@ class MW_WP_Form_Data {
 	 * @return string
 	 */
 	public function get_form_key() {
-		return $this->Session_form_key->get( 'form_key' );
+		return $this->Session_meta->get( 'form_key' );
 	}
 
 	/**
 	 * @param string $form_key
 	 */
 	protected function _set_form_key( $form_key ) {
-		$this->Session_form_key->set( 'form_key', $form_key );
+		$this->Session_meta->set( 'form_key', $form_key );
 	}
 
 	/**
@@ -211,9 +206,7 @@ class MW_WP_Form_Data {
 	 */
 	public function clear_values() {
 		$this->Session->clear_values();
-		$this->Session_form_key->clear_values();
-		$this->Session_view_flg->clear_values();
-		$this->Session_send_error->clear_values();
+		$this->Session_meta->clear_values();
 		$this->Session_validation_error->clear_values();
 	}
 
@@ -558,7 +551,7 @@ class MW_WP_Form_Data {
 	 * @param string null|input|confirm|complete
 	 */
 	public function set_view_flg( $view_flg ) {
-		$this->Session_view_flg->set( 'view_flg', $view_flg );
+		$this->Session_meta->set( 'view_flg', $view_flg );
 	}
 
 	/**
@@ -567,14 +560,14 @@ class MW_WP_Form_Data {
 	 * @param string null|input|confirm|complete
 	 */
 	public function get_view_flg() {
-		return $this->Session_view_flg->get( 'view_flg' );
+		return $this->Session_meta->get( 'view_flg' );
 	}
 
 	/**
 	 * 送信エラーを示すフラグをセット
 	 */
 	public function set_send_error() {
-		$this->Session_send_error->set( MWF_Config::SEND_ERROR, true );
+		$this->Session_meta->set( MWF_Config::SEND_ERROR, true );
 	}
 
 	/**
@@ -583,7 +576,7 @@ class MW_WP_Form_Data {
 	 * @return boolean
 	 */
 	public function get_send_error() {
-		return $this->Session_send_error->get( MWF_Config::SEND_ERROR );
+		return $this->Session_meta->get( MWF_Config::SEND_ERROR );
 	}
 
 	/**

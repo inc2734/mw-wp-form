@@ -31,7 +31,7 @@ class MW_WP_Form_Validation_Rule_FileSize extends MW_WP_Form_Abstract_Validation
 		if ( ! is_null( $data )  ) {
 
 			if ( is_array( $data ) && array_key_exists( $key, $data ) ) {
-				$file = $data[$key];
+				$file = $data[ $key ];
 				if ( ! empty( $file['size'] ) ) {
 					return $this->filesize_validate( $file['size'], $options );
 				} elseif ( ! empty( $file['error'] ) && $file['error'] == 1 ) {
@@ -85,8 +85,8 @@ class MW_WP_Form_Validation_Rule_FileSize extends MW_WP_Form_Abstract_Validation
 	 */
 	public function admin( $key, $value ) {
 		$bytes = '';
-		if ( is_array( $value[$this->getName()] ) && isset( $value[$this->getName()]['bytes'] ) ) {
-			$bytes = $value[$this->getName()]['bytes'];
+		if ( is_array( $value[ $this->getName() ] ) && isset( $value[ $this->getName() ]['bytes'] ) ) {
+			$bytes = $value[ $this->getName() ]['bytes'];
 		}
 		?>
 		<table>

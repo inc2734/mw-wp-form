@@ -27,16 +27,20 @@ class MW_WP_Form_Validation_Rule_Eq extends MW_WP_Form_Abstract_Validation_Rule 
 	 */
 	public function rule( $key, array $options = array() ) {
 		$value = $this->Data->get( $key );
-		if ( !is_null( $value ) ) {
-			$defaults = array(
-				'target'  => null,
-				'message' => __( 'This is not in agreement.', 'mw-wp-form' )
-			);
-			$options = array_merge( $defaults, $options );
-			$target_value = $this->Data->get( $options['target'] );
-			if ( ( string ) $value !== ( string ) $target_value ) {
-				return $options['message'];
-			}
+
+		if ( is_null( $value ) ) {
+			return;
+		}
+
+		$defaults = array(
+			'target'  => null,
+			'message' => __( 'This is not in agreement.', 'mw-wp-form' )
+		);
+		$options = array_merge( $defaults, $options );
+		$target_value = $this->Data->get( $options['target'] );
+
+		if ( ( string ) $value !== ( string ) $target_value ) {
+			return $options['message'];
 		}
 	}
 
@@ -48,8 +52,8 @@ class MW_WP_Form_Validation_Rule_Eq extends MW_WP_Form_Abstract_Validation_Rule 
 	 */
 	public function admin( $key, $value ) {
 		$target = '';
-		if ( is_array( $value[$this->getName()] ) && isset( $value[$this->getName()]['target'] ) ) {
-			$target = $value[$this->getName()]['target'];
+		if ( is_array( $value[ $this->getName() ] ) && isset( $value[ $this->getName() ]['target'] ) ) {
+			$target = $value[ $this->getName() ]['target'];
 		}
 		?>
 		<table>

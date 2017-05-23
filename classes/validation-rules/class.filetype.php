@@ -27,21 +27,24 @@ class MW_WP_Form_Validation_Rule_FileType extends MW_WP_Form_Abstract_Validation
 	 */
 	public function rule( $key, array $options = array() ) {
 		$value = $this->Data->get( $key );
-		if ( !MWF_Functions::is_empty( $value ) ) {
-			$defaults = array(
-				'types'   => '',
-				'message' => __( 'This file is invalid.', 'mw-wp-form' )
-			);
-			$options = array_merge( $defaults, $options );
-			$_types = explode( ',', $options['types'] );
-			foreach ( $_types as $type ) {
-				$types[] = preg_quote( trim( $type ), '/' );
-			}
-			$types = implode( '|', MWF_Functions::array_clean( $types ) );
-			$pattern = '/\.(' . $types . ')$/i';
-			if ( !preg_match( $pattern, $value ) ) {
-				return $options['message'];
-			}
+
+		if ( MWF_Functions::is_empty( $value ) ) {
+			return;
+		}
+
+		$defaults = array(
+			'types'   => '',
+			'message' => __( 'This file is invalid.', 'mw-wp-form' )
+		);
+		$options = array_merge( $defaults, $options );
+		$_types = explode( ',', $options['types'] );
+		foreach ( $_types as $type ) {
+			$types[] = preg_quote( trim( $type ), '/' );
+		}
+		$types = implode( '|', MWF_Functions::array_clean( $types ) );
+		$pattern = '/\.(' . $types . ')$/i';
+		if ( ! preg_match( $pattern, $value ) ) {
+			return $options['message'];
 		}
 	}
 
@@ -53,8 +56,8 @@ class MW_WP_Form_Validation_Rule_FileType extends MW_WP_Form_Abstract_Validation
 	 */
 	public function admin( $key, $value ) {
 		$types = '';
-		if ( is_array( $value[$this->getName()] ) && isset( $value[$this->getName()]['types'] ) ) {
-			$types = $value[$this->getName()]['types'];
+		if ( is_array( $value[ $this->getName() ] ) && isset( $value[ $this->getName() ]['types'] ) ) {
+			$types = $value[ $this->getName() ]['types'];
 		}
 		?>
 		<table>

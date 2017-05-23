@@ -167,11 +167,11 @@ class MW_WP_Form_Form {
 	 * @return string form開始タグ
 	 */
 	public function start( $options = array() ) {
-		$defaults = array(
+		$options = array_merge( array(
 			'action'  => '',
 			'enctype' => 'multipart/form-data',
-		);
-		$options = array_merge( $defaults, $options );
+		), $options );
+
 		return sprintf(
 			'<form method="post" action="%s" enctype="%s">',
 			esc_attr( $options['action'] ),

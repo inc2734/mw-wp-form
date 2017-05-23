@@ -28,8 +28,8 @@ class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Con
 				'created_datetime'  => $this->_get_created_datetime( $post_type )
 			);
 		}
-		$this->assign( 'form_list', $form_list );
-		$this->render( 'stores-inquiry-data-form-list/index' );
+		$this->_assign( 'form_list', $form_list );
+		$this->_render( 'stores-inquiry-data-form-list/index' );
 	}
 
 	/**

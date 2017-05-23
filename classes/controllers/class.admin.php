@@ -137,7 +137,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			return;
 		}
 
-		$this->render( 'admin/tag-generator' );
+		$this->_render( 'admin/tag-generator' );
 	}
 
 	/**
@@ -198,11 +198,11 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * URL設定
 	 */
 	public function _url() {
-		$this->assign( 'input_url'           , $this->_get_option( 'input_url' ) );
-		$this->assign( 'confirmation_url'    , $this->_get_option( 'confirmation_url' ) );
-		$this->assign( 'complete_url'        , $this->_get_option( 'complete_url' ) );
-		$this->assign( 'validation_error_url', $this->_get_option( 'validation_error_url' ) );
-		$this->render( 'admin/url' );
+		$this->_assign( 'input_url'           , $this->_get_option( 'input_url' ) );
+		$this->_assign( 'confirmation_url'    , $this->_get_option( 'confirmation_url' ) );
+		$this->_assign( 'complete_url'        , $this->_get_option( 'complete_url' ) );
+		$this->_assign( 'validation_error_url', $this->_get_option( 'validation_error_url' ) );
+		$this->_render( 'admin/url' );
 	}
 
 	/**
@@ -226,75 +226,75 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 
 		// 空の隠れバリデーションフィールド（コピー元）を挿入
 		array_unshift( $validation, $validation_keys );
-		$this->assign( 'validation'      , $validation );
-		$this->assign( 'validation_rules', $Validation_Rules->get_validation_rules() );
-		$this->assign( 'validation_keys' , $validation_keys );
-		$this->render( 'admin/validation-rule' );
+		$this->_assign( 'validation'      , $validation );
+		$this->_assign( 'validation_rules', $Validation_Rules->get_validation_rules() );
+		$this->_assign( 'validation_keys' , $validation_keys );
+		$this->_render( 'admin/validation-rule' );
 	}
 
 	/**
 	 * アドオン
 	 */
 	public function _add_ons() {
-		$this->render( 'admin/add-ons' );
+		$this->_render( 'admin/add-ons' );
 	}
 
 	/**
 	 * フォーム識別子
 	 */
 	public function _form_key() {
-		$this->assign( 'post_id', get_the_ID() );
-		$this->render( 'admin/form-key' );
+		$this->_assign( 'post_id', get_the_ID() );
+		$this->_render( 'admin/form-key' );
 	}
 
 	/**
 	 * 自動返信メール設定
 	 */
 	public function _mail_options() {
-		$this->assign( 'mail_subject'         , $this->_get_option( 'mail_subject' ) );
-		$this->assign( 'mail_sender'          , $this->_get_option( 'mail_sender' ) );
-		$this->assign( 'mail_from'            , $this->_get_option( 'mail_from' ) );
-		$this->assign( 'mail_content'         , $this->_get_option( 'mail_content' ) );
-		$this->assign( 'automatic_reply_email', $this->_get_option( 'automatic_reply_email' ) );
-		$this->render( 'admin/mail-options' );
+		$this->_assign( 'mail_subject'         , $this->_get_option( 'mail_subject' ) );
+		$this->_assign( 'mail_sender'          , $this->_get_option( 'mail_sender' ) );
+		$this->_assign( 'mail_from'            , $this->_get_option( 'mail_from' ) );
+		$this->_assign( 'mail_content'         , $this->_get_option( 'mail_content' ) );
+		$this->_assign( 'automatic_reply_email', $this->_get_option( 'automatic_reply_email' ) );
+		$this->_render( 'admin/mail-options' );
 	}
 
 	/**
 	 * 管理者メール設定
 	 */
 	public function _admin_mail_options() {
-		$this->assign( 'mail_to'               , $this->_get_option( 'mail_to' ) );
-		$this->assign( 'mail_cc'               , $this->_get_option( 'mail_cc' ) );
-		$this->assign( 'mail_bcc'              , $this->_get_option( 'mail_bcc' ) );
-		$this->assign( 'admin_mail_subject'    , $this->_get_option( 'admin_mail_subject' ) );
-		$this->assign( 'admin_mail_sender'     , $this->_get_option( 'admin_mail_sender' ) );
-		$this->assign( 'mail_return_path'      , $this->_get_option( 'mail_return_path' ) );
-		$this->assign( 'admin_mail_from'       , $this->_get_option( 'admin_mail_from' ) );
-		$this->assign( 'admin_mail_content'    , $this->_get_option( 'admin_mail_content' ) );
-		$this->render( 'admin/admin-mail-options' );
+		$this->_assign( 'mail_to'               , $this->_get_option( 'mail_to' ) );
+		$this->_assign( 'mail_cc'               , $this->_get_option( 'mail_cc' ) );
+		$this->_assign( 'mail_bcc'              , $this->_get_option( 'mail_bcc' ) );
+		$this->_assign( 'admin_mail_subject'    , $this->_get_option( 'admin_mail_subject' ) );
+		$this->_assign( 'admin_mail_sender'     , $this->_get_option( 'admin_mail_sender' ) );
+		$this->_assign( 'mail_return_path'      , $this->_get_option( 'mail_return_path' ) );
+		$this->_assign( 'admin_mail_from'       , $this->_get_option( 'admin_mail_from' ) );
+		$this->_assign( 'admin_mail_content'    , $this->_get_option( 'admin_mail_content' ) );
+		$this->_render( 'admin/admin-mail-options' );
 	}
 
 	/**
 	 * 設定
 	 */
 	public function _settings() {
-		$this->assign( 'querystring'         , $this->_get_option( 'querystring' ) );
-		$this->assign( 'usedb'               , $this->_get_option( 'usedb' ) );
-		$this->assign( 'scroll'              , $this->_get_option( 'scroll' ) );
-		$this->assign( 'akismet_author'      , $this->_get_option( 'akismet_author' ) );
-		$this->assign( 'akismet_author_email', $this->_get_option( 'akismet_author_email' ) );
-		$this->assign( 'akismet_author_url'  , $this->_get_option( 'akismet_author_url' ) );
-		$this->assign( 'tracking_number'     , $this->_get_option( MWF_Config::TRACKINGNUMBER ) );
-		$this->render( 'admin/settings' );
+		$this->_assign( 'querystring'         , $this->_get_option( 'querystring' ) );
+		$this->_assign( 'usedb'               , $this->_get_option( 'usedb' ) );
+		$this->_assign( 'scroll'              , $this->_get_option( 'scroll' ) );
+		$this->_assign( 'akismet_author'      , $this->_get_option( 'akismet_author' ) );
+		$this->_assign( 'akismet_author_email', $this->_get_option( 'akismet_author_email' ) );
+		$this->_assign( 'akismet_author_url'  , $this->_get_option( 'akismet_author_url' ) );
+		$this->_assign( 'tracking_number'     , $this->_get_option( MWF_Config::TRACKINGNUMBER ) );
+		$this->_render( 'admin/settings' );
 	}
 
 	/**
 	 * スタイル
 	 */
 	public function _style() {
-		$this->assign( 'styles', $this->styles );
-		$this->assign( 'style' , $this->_get_option( 'style' ) );
-		$this->render( 'admin/style' );
+		$this->_assign( 'styles', $this->styles );
+		$this->_assign( 'style' , $this->_get_option( 'style' ) );
+		$this->_render( 'admin/style' );
 	}
 
 	/**

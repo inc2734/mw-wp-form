@@ -174,18 +174,20 @@ class MW_WP_Form_Setting {
 	protected $scroll = false;
 
 	/**
-	 * __construct
-	 *
 	 * @param int $post_id
 	 */
 	public function __construct( $post_id ) {
-		if ( get_post_type( $post_id ) === MWF_Config::NAME ) {
-			$this->post_id = $post_id;
-			$values = get_post_meta( $post_id, MWF_Config::NAME, true );
-			if ( is_array( $values ) ) {
-				$this->sets( $values );
-			}
+		if ( MWF_Config::NAME !== get_post_type( $post_id ) ) {
+			return;
 		}
+
+		$this->post_id = $post_id;
+		$values = get_post_meta( $post_id, MWF_Config::NAME, true );
+		if ( ! is_array( $values ) ) {
+			return;
+		}
+
+		$this->sets( $values );
 	}
 
 	/**
@@ -230,10 +232,10 @@ class MW_WP_Form_Setting {
 		$values = get_object_vars( $this );
 		$new_values = array();
 		foreach ( $values as $key => $value ) {
-			if ( $key === 'post_id' ) {
+			if ( 'post_id' == $key ) {
 				continue;
 			}
-			$new_values[$key] = $value;
+			$new_values[ $key ] = $value;
 		}
 		update_post_meta( $this->post_id, MWF_Config::NAME, $new_values );
 		$form_key = MWF_Functions::get_form_key_from_form_id( $this->post_id );
@@ -250,7 +252,7 @@ class MW_WP_Form_Setting {
 			'post_type'      => MWF_Config::NAME,
 			'posts_per_page' => -1,
 		) );
-		if ( !is_array( $forms ) ) {
+		if ( ! is_array( $forms ) ) {
 			return array();
 		}
 		return $forms;
@@ -282,7 +284,7 @@ class MW_WP_Form_Setting {
 		} elseif ( MWF_Functions::is_numeric( $count ) ) {
 			$new_tracking_number = $count;
 		}
-		if ( !is_null( $new_tracking_number ) ) {
+		if ( ! is_null( $new_tracking_number ) ) {
 			update_post_meta( $this->post_id, MWF_Config::TRACKINGNUMBER, $new_tracking_number );
 		}
 	}
