@@ -26,23 +26,24 @@ class MW_WP_Form_CSV {
 	public function download() {
 		$key_of_csv_download = MWF_Config::NAME . '-csv-download';
 
-		if ( ! isset( $_POST[$key_of_csv_download] ) || ! check_admin_referer( MWF_Config::NAME ) ) {
+		if ( ! isset( $_POST[ $key_of_csv_download ] ) || ! check_admin_referer( MWF_Config::NAME ) ) {
 			return;
 		}
 
 		$posts_per_page = $this->_get_posts_per_page();
 		$paged          = $this->_get_paged();
 
-		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $this->post_type, array() );
-		$args  = array(
+		$args = apply_filters( 'mwform_get_inquiry_data_args-' . $this->post_type, array() );
+		if ( empty( $args ) || ! is_array( $args ) ) {
+			$args = array();
+		}
+		$args = array_merge( $args, array(
 			'post_type'      => $this->post_type,
 			'posts_per_page' => $posts_per_page,
 			'paged'          => $paged,
 			'post_status'    => 'any',
-		);
-		if ( ! empty( $_args ) && is_array( $_args ) ) {
-			$args = array_merge( $_args, $args );
-		}
+		) );
+
 		$posts_mwf = get_posts( $args );
 
 		// CSVの内容を貯める
@@ -81,10 +82,10 @@ class MW_WP_Form_CSV {
 			return -1;
 		}
 
-		$current_user    = wp_get_current_user();
-		$_posts_per_page = get_user_meta( $current_user->ID, 'edit_' . $this->post_type . '_per_page', true );
-		if ( ! empty( $_posts_per_page ) ) {
-			return -1;
+		$current_user   = wp_get_current_user();
+		$posts_per_page = get_user_meta( $current_user->ID, 'edit_' . $this->post_type . '_per_page', true );
+		if ( ! empty( $posts_per_page ) ) {
+			return $posts_per_page;
 		}
 
 		return 20;
@@ -98,11 +99,11 @@ class MW_WP_Form_CSV {
 	public function _get_paged() {
 		$posts_per_page = $this->_get_posts_per_page();
 		if ( isset( $_GET['paged'] ) ) {
-			if ( MWF_Functions::is_numeric( $_paged ) && $posts_per_page > 0 ) {
+			if ( MWF_Functions::is_numeric( $_GET['paged'] ) && $posts_per_page > 0 ) {
 				return $_GET['paged'];
 			}
 		}
-		return -1;
+		return 1;
 	}
 
 	/**

@@ -174,6 +174,9 @@ class MW_WP_Form_Contact_Data_Setting {
 		update_post_meta( $this->post_id, MWF_config::CONTACT_DATA_NAME, $permit_values );
 
 		foreach ( $this->options as $key => $value ) {
+			if ( is_null( $value ) ) {
+				$value = '';
+			}
 			update_post_meta( $this->post_id, $key, $value );
 		}
 

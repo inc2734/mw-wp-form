@@ -23,17 +23,19 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 		}
 
 		$args = apply_filters( 'mwform_get_inquiry_data_args-' . $screen->post_type, array() );
-		if ( ! empty( $args ) && is_array( $args ) ) {
-			$args = array_merge( $args, array(
-				'post_type'      => $screen->post_type,
-				'post_status'    => 'publish',
-				'posts_per_page' => 1,
-				'p'              => $_GET['post'],
-			) );
-			$permit_posts = get_posts( $args );
-			if ( empty( $permit_posts ) ) {
-				return;
-			}
+		if ( empty( $args ) || ! is_array( $args ) ) {
+			$args = array();
+		}
+
+		$args = array_merge( $args, array(
+			'post_type'      => $screen->post_type,
+			'posts_per_page' => 1,
+			'post_status'    => 'any',
+			'p'              => $_GET['post'],
+		) );
+		$permit_posts = get_posts( $args );
+		if ( empty( $permit_posts ) ) {
+			return;
 		}
 
 		add_action( 'add_meta_boxes'       , array( $this, '_add_meta_boxes' ) );

@@ -46,6 +46,7 @@ class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Con
 		$args = array_merge( $args, array(
 			'post_type'      => $post_type,
 			'posts_per_page' => 1,
+			'post_status'    => 'any',
 		) );
 		$query = new WP_Query( $args );
 		return $query->found_posts;
