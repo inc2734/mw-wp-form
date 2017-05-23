@@ -65,7 +65,7 @@ class MW_WP_Form_Validation {
 		}
 
 		$Akismet = new MW_WP_Form_Akismet();
-		$akismet_check = $Akismet->check(
+		$akismet_check = $Akismet->is_valid(
 			$this->Setting->get( 'akismet_author' ),
 			$this->Setting->get( 'akismet_author_email' ),
 			$this->Setting->get( 'akismet_author_url' ),

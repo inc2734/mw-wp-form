@@ -17,7 +17,7 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 			exit;
 		}
 
-		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_form_post_types();
 		if ( ! in_array( $screen->id, $contact_data_post_types ) ) {
 			exit;
 		}

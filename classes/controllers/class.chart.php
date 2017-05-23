@@ -28,7 +28,7 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 			$this->formkey = $_GET['formkey'];
 		}
 
-		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_form_post_types();
 		if ( ! in_array( $this->formkey, $contact_data_post_types ) ) {
 			exit;
 		}

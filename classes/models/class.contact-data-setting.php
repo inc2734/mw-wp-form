@@ -13,12 +13,6 @@
 class MW_WP_Form_Contact_Data_Setting {
 
 	/**
-	 * 問い合わせデータを保存しているフォームの投稿タイプの一覧
-	 * @var array
-	 */
-	protected static $contact_data_post_types;
-
-	/**
 	 * 保存された問い合わせデータの Post ID
 	 * @var int
 	 */
@@ -43,14 +37,6 @@ class MW_WP_Form_Contact_Data_Setting {
 	protected $memo = '';
 
 	/**
-	 * 対応状況種別の一覧
-	 * @var array
-	 */
-	protected $response_statuses = array();
-
-	/**
-	 * __construct
-	 *
 	 * @param int $post_id
 	 */
 	public function __construct( $post_id ) {
@@ -59,11 +45,6 @@ class MW_WP_Form_Contact_Data_Setting {
 		}
 
 		$this->post_id = $post_id;
-		$this->response_statuses = array(
-			'not-supported' => esc_html__( 'Not supported', 'mw-wp-form' ),
-			'reservation'   => esc_html__( 'Reservation', 'mw-wp-form' ),
-			'supported'     => esc_html__( 'Supported', 'mw-wp-form' ),
-		);
 
 		$post_custom = get_post_custom( $post_id );
 		$post_meta   = array();
@@ -91,7 +72,11 @@ class MW_WP_Form_Contact_Data_Setting {
 	 * @return array
 	 */
 	public function get_response_statuses() {
-		return $this->response_statuses;
+		return array(
+			'not-supported' => esc_html__( 'Not supported', 'mw-wp-form' ),
+			'reservation'   => esc_html__( 'Reservation', 'mw-wp-form' ),
+			'supported'     => esc_html__( 'Supported', 'mw-wp-form' ),
+		);
 	}
 
 	/**
@@ -100,7 +85,10 @@ class MW_WP_Form_Contact_Data_Setting {
 	 * @return array
 	 */
 	public function get_permit_keys() {
-		return array( 'response_status', 'memo' );
+		$vars = get_object_vars( $this );
+		unset( $vars[ 'post_id' ] );
+		unset( $vars[ 'options' ] );
+		return array_keys( $vars );
 	}
 
 	/**
@@ -122,10 +110,14 @@ class MW_WP_Form_Contact_Data_Setting {
 	 * @return mixed|null
 	 */
 	public function get( $key ) {
-		$permit_keys = $this->get_permit_keys();
-		if ( in_array( $key, $permit_keys ) ) {
+		$vars = get_object_vars( $this );
+		unset( $vars['options'] );
+		$attributes = array_keys( $vars );
+
+		if ( in_array( $key, $attributes ) ) {
 			if ( 'response_status' === $key ) {
-				if ( isset( $this->response_statuses[ $this->response_status ] ) ) {
+				$response_statuses = $this->get_response_statuses();
+				if ( isset( $response_statuses[ $this->response_status ] ) ) {
 					return $this->response_status;
 				}
 			}
@@ -143,10 +135,19 @@ class MW_WP_Form_Contact_Data_Setting {
 	 */
 	public function set( $key, $value ) {
 		$permit_keys = $this->get_permit_keys();
-		if ( in_array( $key, $permit_keys ) ) {
-			$this->$key = $value;
-		} else {
+		if ( ! in_array( $key, $permit_keys ) ) {
 			$this->options[ $key ] = $value;
+			return;
+		}
+
+		if ( 'response_status' !== $key ) {
+			$this->$key = $value;
+			return;
+		}
+
+		if ( array_key_exists( $value, $this->get_response_statuses() ) ) {
+			$this->$key = $value;
+			return;
 		}
 	}
 
@@ -162,11 +163,9 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * 保存
-	 *
-	 * @param bool $is_save_no_permit_value permit_keys以外のメタデータも更新する
+	 * Save values of permit keys and options
 	 */
-	public function save( $is_save_no_permit_value = false ) {
+	public function save() {
 		$permit_keys   = $this->get_permit_keys();
 		$permit_values = array();
 		foreach ( $permit_keys as $key ) {
@@ -174,16 +173,12 @@ class MW_WP_Form_Contact_Data_Setting {
 		}
 		update_post_meta( $this->post_id, MWF_config::CONTACT_DATA_NAME, $permit_values );
 
-		$contact_data_post_type = get_post_type( $this->post_id );
-		do_action( 'mwform_contact_data_save-' . $contact_data_post_type, $this->post_id );
-
-		if ( $is_save_no_permit_value !== true ) {
-			return;
-		}
-
 		foreach ( $this->options as $key => $value ) {
 			update_post_meta( $this->post_id, $key, $value );
 		}
+
+		$contact_data_post_type = get_post_type( $this->post_id );
+		do_action( 'mwform_contact_data_save-' . $contact_data_post_type, $this->post_id );
 	}
 
 	/**
@@ -191,11 +186,7 @@ class MW_WP_Form_Contact_Data_Setting {
 	 *
 	 * @return array
 	 */
-	public static function get_posts() {
-		if ( ! is_null( self::$contact_data_post_types ) ) {
-			return self::$contact_data_post_types;
-		}
-
+	public static function get_form_post_types() {
 		$contact_data_post_types = array();
 		$Admin = new MW_WP_Form_Admin();
 		$forms = $Admin->get_forms_using_database();
@@ -218,34 +209,37 @@ class MW_WP_Form_Contact_Data_Setting {
 			}
 		}
 
-		self::$contact_data_post_types = $new_post_types;
-		return self::$contact_data_post_types;
+		return $new_post_types;
+	}
+
+	public static function get_posts() {
+		MWF_Functions::deprecated_message(
+			'MW_WP_Form_Contact_Data_Setting::get_posts()',
+			'MW_WP_Form_Contact_Data_Setting::get_form_post_types()'
+		);
+
+		return self::get_form_post_types();
 	}
 
 	/**
 	 * $meta_key が $post の upload_file_key かどうか
 	 *
-	 * @param WP_Post $post
 	 * @param string $meta_key
 	 * @return bool
 	 */
-	public function is_upload_file_key( $post, $meta_key ) {
-		$upload_file_keys = $this->get_upload_file_keys( $post );
-		if ( is_array( $upload_file_keys ) && in_array( $meta_key, $upload_file_keys ) ) {
-			return true;
-		}
-		return false;
+	public function is_upload_file_key( $meta_key ) {
+		$upload_file_keys = $this->_get_upload_file_keys();
+		return ( is_array( $upload_file_keys ) && in_array( $meta_key, $upload_file_keys ) );
 	}
 
 	/**
-	 * $meta_key が upload_file_key に含まれている場合にキーを返す
+	 * $meta_key が upload_file_key に含まれている場合に添字を返す
 	 *
-	 * @param WP_Post $post
 	 * @param string $meta_key
 	 * @return int|false
 	 */
-	public function get_key_in_upload_file_keys( $post, $meta_key ) {
-		$upload_file_keys = $this->get_upload_file_keys( $post );
+	public function get_index_of_key_in_upload_file_keys( $meta_key ) {
+		$upload_file_keys = $this->_get_upload_file_keys();
 		if ( is_array( $upload_file_keys ) ) {
 			return array_search( $meta_key, $upload_file_keys );
 		}
@@ -255,16 +249,15 @@ class MW_WP_Form_Contact_Data_Setting {
 	/**
 	 * その投稿がもつ upload_file_key を取得
 	 *
-	 * @param WP_Post $post
 	 * @return array $upload_file_keys
 	 */
-	protected function get_upload_file_keys( $post ) {
+	protected function _get_upload_file_keys() {
 		// 前のバージョンでは MWF_Config::UPLOAD_FILE_KEYS を配列で保持していなかったので分岐させる
-		$_upload_file_keys = get_post_meta( $post->ID, '_' . MWF_Config::UPLOAD_FILE_KEYS, true );
+		$_upload_file_keys = get_post_meta( $this->post_id, '_' . MWF_Config::UPLOAD_FILE_KEYS, true );
 		if ( is_array( $_upload_file_keys ) ) {
 			$upload_file_keys = $_upload_file_keys;
 		} else {
-			$upload_file_keys = get_post_custom_values( '_' . MWF_Config::UPLOAD_FILE_KEYS, $post->ID );
+			$upload_file_keys = get_post_custom_values( '_' . MWF_Config::UPLOAD_FILE_KEYS, $this->post_id );
 		}
 		return $upload_file_keys;
 	}

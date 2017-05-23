@@ -17,7 +17,7 @@ class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Con
 	}
 
 	public function _index() {
-		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_form_post_types();
 		$form_list = array();
 		foreach ( $contact_data_post_types as $post_type ) {
 			$post_type_object = get_post_type_object( $post_type );

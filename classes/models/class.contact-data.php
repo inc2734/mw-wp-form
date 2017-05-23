@@ -21,7 +21,7 @@ class MW_WP_Form_Contact_Data {
 			return;
 		}
 
-		$contact_data_post_types = MW_WP_Form_Contact_Data_setting::get_posts();
+		$contact_data_post_types = MW_WP_Form_Contact_Data_setting::get_form_post_types();
 		if ( ! in_array( $_POST['post_type'], $contact_data_post_types ) ) {
 			return;
 		}

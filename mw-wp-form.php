@@ -90,7 +90,7 @@ class MW_WP_Form {
 	 * グラフページのメニューを追加
 	 */
 	public function _admin_menu_for_chart() {
-		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_form_post_types();
 		if ( empty( $contact_data_post_types ) ) {
 			return;
 		}
@@ -109,7 +109,7 @@ class MW_WP_Form {
 	 * 問い合わせデータ閲覧ページのメニューを追加
 	 */
 	public function _admin_menu_for_contact_data_list() {
-		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_form_post_types();
 		if ( empty( $contact_data_post_types ) ) {
 			return;
 		}

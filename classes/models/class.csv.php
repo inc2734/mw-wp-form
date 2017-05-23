@@ -176,7 +176,7 @@ class MW_WP_Form_CSV {
 				} elseif ( isset( $post->$key ) ) {
 					$post_meta = $post->$key;
 
-					if ( $Contact_Data_Setting->is_upload_file_key( $post, $key ) ) {
+					if ( $Contact_Data_Setting->is_upload_file_key( $key ) ) {
 						// 過去バージョンでの不具合でメタデータが空になっていることがあるのでその場合は代替処理
 						if ( '' === $post_meta ) {
 							$post_meta = MWF_Functions::get_multimedia_id__fallback( $post, $key );

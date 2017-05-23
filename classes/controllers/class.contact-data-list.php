@@ -17,7 +17,7 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	protected $post_type;
 
 	public function __construct() {
-		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_form_post_types();
 		if ( ! isset( $_GET['post_type'] ) ) {
 			exit;
 		}
@@ -200,7 +200,7 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 			$value = $response_statuses[ $response_status ];
 		} elseif ( is_array( $post_custom_keys ) && in_array( $column, $post_custom_keys ) ) {
 			$post_meta = get_post_meta( $post_id, $column, true );
-			if ( $Contact_Data_Setting->is_upload_file_key( $post, $column ) ) {
+			if ( $Contact_Data_Setting->is_upload_file_key( $column ) ) {
 				// 過去バージョンでの不具合でメタデータが空になっていることがあるのでその場合は代替処理
 				if ( $post_meta === '' ) {
 					$post_meta = MWF_Functions::get_multimedia_id__fallback( $post, $column );

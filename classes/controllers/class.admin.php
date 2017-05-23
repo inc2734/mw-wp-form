@@ -18,7 +18,6 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 
 	public function __construct() {
 		$this->styles = apply_filters( 'mwform_styles', $this->styles );
-		$Admin        = new MW_WP_Form_Admin();
 
 		$Form_Fields = MW_WP_Form_Form_Fields::instantiation();
 		$form_fields = $Form_Fields->get_form_fields();
@@ -26,11 +25,11 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			$form_field->add_tag_generator();
 		}
 
-		add_action( 'add_meta_boxes'       , array( $this , '_add_meta_boxes' ) );
-		add_filter( 'default_content'      , array( $this , '_default_content' ) );
-		add_action( 'media_buttons'        , array( $this , '_tag_generator' ) );
-		add_action( 'admin_enqueue_scripts', array( $this , '_admin_enqueue_scripts' ) );
-		add_action( 'save_post'            , array( $Admin, 'save_post' ) );
+		add_action( 'add_meta_boxes'       , array( $this, '_add_meta_boxes' ) );
+		add_filter( 'default_content'      , array( $this, '_default_content' ) );
+		add_action( 'media_buttons'        , array( $this, '_tag_generator' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue_scripts' ) );
+		add_action( 'save_post'            , array( $this, '_save_post' ) );
 	}
 
 	/**
@@ -178,6 +177,115 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			array(),
 			$ui->ver
 		);
+	}
+
+	/**
+	 * @param int $post_id
+	 */
+	public function _save_post( $post_id ) {
+		if ( ! isset( $_POST['post_type'] ) || $_POST['post_type'] !== MWF_Config::NAME ) {
+			return;
+		}
+
+		if ( ! isset( $_POST[ MWF_Config::NAME . '_nonce' ] ) ) {
+			return;
+		}
+
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if ( ! wp_verify_nonce( $_POST[ MWF_Config::NAME . '_nonce' ], MWF_Config::NAME ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( MWF_Config::CAPABILITY ) ) {
+			return;
+		}
+
+		$data = $_POST[ MWF_Config::NAME ];
+
+		$triminglists = array(
+			'mail_from',
+			'mail_return_path',
+			'mail_to',
+			'mail_cc',
+			'mail_bcc',
+			'admin_mail_from',
+		);
+		foreach ( $triminglists as $name ) {
+			if ( function_exists( 'mb_convert_kana' ) ) {
+				$data[ $name ] = trim( mb_convert_kana( $data[ $name ], 's', get_option( 'blog_charset' ) ) );
+			} else {
+				$data[ $name ] = trim( $data[ $name ] );
+			}
+		}
+
+		if ( ! empty( $data['validation'] ) && is_array( $data['validation'] ) ) {
+			$validation = array();
+			foreach ( $data['validation'] as $_validation ) {
+				if ( empty( $_validation['target'] ) ) {
+					continue;
+				}
+
+				foreach ( $_validation as $key => $value ) {
+					if ( $key == 'between' ) {
+						if ( ! MWF_Functions::is_numeric( $value['min'] ) ) {
+							unset( $_validation[ $key ]['min'] );
+						}
+						if ( ! MWF_Functions::is_numeric( $value['max'] ) ) {
+							unset( $_validation[ $key ]['max'] );
+						}
+					}
+
+					if ( $key == 'minlength' && ! MWF_Functions::is_numeric( $value['min'] ) ) {
+						unset( $_validation[ $key ] );
+					}
+
+					if ( $key == 'fileType' && isset( $value['types'] ) && ! preg_match( '/^[0-9A-Za-z,]+$/', $value['types'] ) ) {
+						unset( $_validation[ $key ] );
+					}
+
+					if ( $key == 'fileSize' && !MWF_Functions::is_numeric( $value['bytes'] ) ) {
+						unset( $_validation[ $key ] );
+					}
+
+					if ( empty( $value ) ) {
+						unset( $_validation[ $key ] );
+					}
+
+					if ( is_array( $value ) && ! array_diff( $value, array( '' ) ) ) {
+						unset( $_validation[ $key ] );
+					}
+				}
+
+				$validation[] = $_validation;
+			}
+
+			$data['validation'] = $validation;
+		}
+
+		if ( empty( $data['querystring'] ) ) {
+			$data['querystring'] = false;
+		}
+
+		if ( empty( $data['usedb'] ) ) {
+			$data['usedb'] = false;
+		}
+
+		if ( empty( $data['scroll'] ) ) {
+			$data['scroll'] = false;
+		}
+
+		$Setting = new MW_WP_Form_Setting( $post_id );
+		$Setting->sets( $data );
+
+		if ( isset( $_POST[ MWF_Config::TRACKINGNUMBER ] ) ) {
+			$tracking_number = $_POST[ MWF_Config::TRACKINGNUMBER ];
+			$Setting->update_tracking_number( $tracking_number );
+		}
+
+		$Setting->save();
 	}
 
 	/**

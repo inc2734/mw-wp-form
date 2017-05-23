@@ -455,13 +455,19 @@ class MWF_Functions {
 	 */
 	public static function get_multimedia_id__fallback( $post, $meta_key ) {
 		$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $post->ID );
-		$key = $Contact_Data_Setting->get_key_in_upload_file_keys( $post, $meta_key );
+		$index = $Contact_Data_Setting->get_index_of_key_in_upload_file_keys( $meta_key );
+
+		if ( false === $index ) {
+			return;
+		}
+
 		$attachments = get_posts( array(
 			'post_type'      => 'attachment',
 			'post_parent'    => $post->ID,
 			'posts_per_page' => 1,
-			'offset'         => $key,
+			'offset'         => $index,
 		) );
+
 		if ( isset( $attachments[0] ) ) {
 			return $attachments[0]->ID;
 		}

@@ -30,14 +30,15 @@ class MW_WP_Form_Akismet {
 	}
 
 	/**
-	 * check
+	 * Return true when through akismet check
+	 *
 	 * @param string $akismet_author
 	 * @param string $akismet_author_email
 	 * @param string $akismet_author_url
 	 * @param MW_WP_Form_Data $Data
 	 * @return bool
 	 */
-	public function check( $akismet_author, $akismet_author_email, $akismet_author_url, $Data ) {
+	public function is_valid( $akismet_author, $akismet_author_email, $akismet_author_url, $Data ) {
 		global $akismet_api_host, $akismet_api_port;
 
 		if ( ! $this->_is_enable() ) {
