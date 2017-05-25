@@ -87,10 +87,18 @@ class MW_WP_Form_Session {
 	 */
 	public function push( $key, $value ) {
 		$transient_data = get_transient( $this->session_id );
-		if ( is_array( $transient_data ) ) {
-			$transient_data[ $key ][] = $value;
-		} else {
+		if ( ! $transient_data ) {
 			$transient_data = array( $key => array( $value ) );
+		} elseif ( is_array( $transient_data ) ) {
+			if ( ! isset( $transient_data[ $key ] ) ) {
+				$transient_data[ $key ] = array( $value );
+			} else {
+				if ( is_array( $transient_data[ $key ] ) ) {
+					$transient_data[ $key ][] = $value;
+				} elseif ( ! $transient_data[ $key ] ) {
+					$transient_data[ $key ] = array( $value );
+				}
+			}
 		}
 		set_transient( $this->session_id, $transient_data, $this->expiration );
 	}

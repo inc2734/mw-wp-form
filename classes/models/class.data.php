@@ -60,16 +60,16 @@ class MW_WP_Form_Data {
 	 * @return MW_WP_Form_Data
 	 */
 	public static function connect( $form_key, $POST = null, $FILES = null ) {
-		if ( is_null( $POST ) || ! is_array( $POST ) ) {
+		if ( isset( self::$Instances[ $form_key ] ) && is_null( $POST ) && is_null( $FILES ) ) {
+			return self::$Instances[ $form_key ];
+		}
+
+		if ( ! is_array( $POST ) ) {
 			$POST = array();
 		}
 
-		if ( is_null( $FILES ) || ! is_array( $FILES ) ) {
+		if ( ! is_array( $FILES ) ) {
 			$FILES = array();
-		}
-
-		if ( isset( self::$Instances[ $form_key ] ) ) {
-			return self::$Instances[ $form_key ];
 		}
 
 		self::$Instances[ $form_key ] = new self( $form_key, $POST, $FILES );
@@ -82,7 +82,7 @@ class MW_WP_Form_Data {
 			'MW_WP_Form_Data::connect()'
 		);
 
-		self::connece( $form_key, $POST, $FILES );
+		self::connect( $form_key, $POST, $FILES );
 	}
 
 	/**
@@ -234,13 +234,23 @@ class MW_WP_Form_Data {
 			return;
 		}
 
-		$__children = $this->Session->get( '__children' );
+		if ( is_array( $post_value ) && ! array_key_exists( 'data', $post_value ) ) {
+			return;
+		}
+
+		$__children = $this->get_post_value_by_key( '__children' );
 
 		if ( empty( $children ) && isset( $__children[ $key ] ) ) {
 			if ( is_array( $__children[ $key ] ) ) {
 				$_children = $__children[ $key ];
 				foreach ( $_children as $_child ) {
+					if ( is_array( $_child ) ) {
+						continue;
+					}
 					$_child = json_decode( $_child, true );
+					if ( ! is_array( $_child ) ) {
+						continue;
+					}
 					foreach ( $_child as $_child_key => $_child_value ) {
 						$children[ $_child_key ] = $_child_value;
 					}
@@ -249,9 +259,6 @@ class MW_WP_Form_Data {
 		}
 
 		if ( is_array( $post_value ) ) {
-			if ( ! array_key_exists( 'data', $post_value ) ) {
-				return;
-			}
 			if ( $children ) {
 				return $this->get_separated_value( $key, $children );
 			}
@@ -281,14 +288,20 @@ class MW_WP_Form_Data {
 			return;
 		}
 
-		$__children = $this->Session->get( '__children' );
+		$__children = $this->get_post_value_by_key( '__children' );
 
 		$children = array();
 		if ( isset( $__children[ $key ] ) && is_array( $__children[ $key ] ) ) {
 			$_children = $__children[ $key ];
 			if ( is_array( $_children ) ) {
 				foreach ( $_children as $_child ) {
+					if ( is_array( $_child ) ) {
+						continue;
+					}
 					$_child = json_decode( $_child, true );
+					if ( ! is_array( $_child ) ) {
+						continue;
+					}
 					foreach ( $_child as $_child_key => $_child_value ) {
 						$children[ $_child_key ] = $_child_value;
 					}
@@ -585,20 +598,10 @@ class MW_WP_Form_Data {
 	 * @return bool
 	 */
 	protected function _is_valid_token() {
-		if ( isset( $_POST[ MWF_Config::TOKEN_NAME ] ) ) {
-			$request_token = $_POST[ MWF_Config::TOKEN_NAME ];
-		}
-
-		$values   = $this->gets();
-		$form_key = $this->get_form_key();
-
-		if ( isset( $request_token ) && wp_verify_nonce( $request_token, $form_key ) ) {
-			return true;
-		} elseif ( empty( $_POST ) && $values ) {
-			return true;
-		}
-
-		return false;
+		$request_token = $this->get_post_value_by_key( MWF_Config::TOKEN_NAME );
+		$values        = $this->gets();
+		$form_key      = $this->get_form_key();
+		return ( isset( $request_token ) && wp_verify_nonce( $request_token, $form_key ) );
 	}
 
 	/**
