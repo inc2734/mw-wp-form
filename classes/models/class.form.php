@@ -161,6 +161,27 @@ class MW_WP_Form_Form {
 	}
 
 	/**
+	 * テンプレートを読み込んで表示
+	 *
+	 * @todo テーマから上書きできるようにしたい
+	 * @param string $template ディレクトリ名/ファイル名（拡張子無し）
+	 */
+	protected function _render( $template, array $args = array() ) {
+		$template_path = locate_template( 'mw-wp-form/form-fields/' . $template );
+		if ( ! $template_path ) {
+			$template_path  = plugin_dir_path( __FILE__ ) . '../../templates/form-fields/' . $template . '.php';
+			if ( ! file_exists( $template_path ) ) {
+				return;
+			}
+		}
+
+		extract( $args );
+		ob_start();
+		include( $template_path );
+		return ob_get_clean();
+	}
+
+	/**
 	 * フォームタグ生成
 	 *
 	 * @param array $options
@@ -211,11 +232,12 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return self::remove_linefeed_space( sprintf(
-			'<input type="text" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
-		) );
+		return $this->remove_linefeed_space(
+			$this->_render( 'text', array(
+				'name'       => $name,
+				'attributes' => $attributes,
+			) )
+		);
 	}
 
 	/**
@@ -238,11 +260,12 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return self::remove_linefeed_space( sprintf(
-			'<input type="email" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
-		) );
+		return $this->remove_linefeed_space(
+			$this->_render( 'email', array(
+				'name'       => $name,
+				'attributes' => $attributes,
+			) )
+		);
 	}
 
 	/**
@@ -265,11 +288,12 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return self::remove_linefeed_space( sprintf(
-			'<input type="url" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
-		) );
+		return $this->remove_linefeed_space(
+			$this->_render( 'url', array(
+				'name'       => $name,
+				'attributes' => $attributes,
+			) )
+		);
 	}
 
 	/**
@@ -291,11 +315,12 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return self::remove_linefeed_space( sprintf(
-			'<input type="range" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
-		) );
+		return $this->remove_linefeed_space(
+			$this->_render( 'range', array(
+				'name'       => $name,
+				'attributes' => $attributes,
+			) )
+		);
 	}
 
 	/**
@@ -318,11 +343,12 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return self::remove_linefeed_space( sprintf(
-			'<input type="number" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
-		) );
+		return $this->remove_linefeed_space(
+			$this->_render( 'number', array(
+				'name'       => $name,
+				'attributes' => $attributes,
+			) )
+		);
 	}
 
 	/**
@@ -333,11 +359,12 @@ class MW_WP_Form_Form {
 	 * @return string HTML
 	 */
 	public function hidden( $name, $value ) {
-		return self::remove_linefeed_space( sprintf(
-			'<input type="hidden" name="%s" value="%s" />',
-			esc_attr( $name ),
-			esc_attr( $value )
-		) );
+		return $this->remove_linefeed_space(
+			$this->_render( 'hidden', array(
+				'name'  => $name,
+				'value' => $value,
+			) )
+		);
 	}
 
 	/**
@@ -359,11 +386,12 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return self::remove_linefeed_space( sprintf(
-			'<input type="password" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
-		) );
+		return $this->remove_linefeed_space(
+			$this->_render( 'password', array(
+				'name'       => $name,
+				'attributes' => $attributes,
+			) )
+		);
 	}
 
 	/**
@@ -397,26 +425,42 @@ class MW_WP_Form_Form {
 			}
 		}
 
-		$_ret  = '<span class="mwform-zip-field">';
-		$_ret .= '〒';
-		$_ret .= $this->text( $name . '[data][0]', array(
-			'class'     => $options['class'],
-			'size'      => 4,
-			'maxlength' => 3,
-			'value'     => $values[0],
-			'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-		) );
-		$_ret .= ' ' . $separator . ' ';
-		$_ret .= $this->text( $name . '[data][1]', array(
-			'class'     => $options['class'],
-			'size'      => 5,
-			'maxlength' => 4,
-			'value'     => $values[1],
-			'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-		) );
-		$_ret .= $this->separator( $name, $separator );
-		$_ret .= '</span>';
-		return self::remove_linefeed_space( $_ret );
+		return $this->remove_linefeed_space(
+			$this->_render( 'zip', array(
+				'name'      => $name,
+				'separator' => $separator,
+				'fields'    => array(
+					array(
+						'attributes' => $this->generate_attributes( array(
+							'class'     => $options['class'],
+							'size'      => 4,
+							'maxlength' => 3,
+							'value'     => $values[0],
+							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+						) ),
+					),
+					array(
+						'attributes' => $this->generate_attributes( array(
+							'class'     => $options['class'],
+							'size'      => 5,
+							'maxlength' => 4,
+							'value'     => $values[1],
+							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+						) ),
+					),
+					array(
+						'attributes' => $this->generate_attributes( array(
+							'class'     => $options['class'],
+							'size'      => 5,
+							'maxlength' => 4,
+							'value'     => $values[1],
+							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+						) ),
+					),
+				),
+			) )
+			. $this->separator( $name, $separator )
+		);
 	}
 
 	/**
@@ -450,33 +494,42 @@ class MW_WP_Form_Form {
 			}
 		}
 
-		$_ret  = '<span class="mwform-tel-field">';
-		$_ret .= $this->text( $name . '[data][0]', array(
-			'class'     => $options['class'],
-			'size'      => 6,
-			'maxlength' => 5,
-			'value'     => $values[0],
-			'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-		) );
-		$_ret .= ' ' . $separator . ' ';
-		$_ret .= $this->text( $name . '[data][1]', array(
-			'class'     => $options['class'],
-			'size'      => 5,
-			'maxlength' => 4,
-			'value'     => $values[1],
-			'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-		) );
-		$_ret .= ' ' . $separator . ' ';
-		$_ret .= $this->text( $name . '[data][2]', array(
-			'class'     => $options['class'],
-			'size'      => 5,
-			'maxlength' => 4,
-			'value'     => $values[2],
-			'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-		) );
-		$_ret .= $this->separator( $name, $separator );
-		$_ret .= '</span>';
-		return self::remove_linefeed_space( $_ret );
+		return $this->remove_linefeed_space(
+			$this->_render( 'tel', array(
+				'name'      => $name,
+				'separator' => $separator,
+				'fields'    => array(
+					array(
+						'attributes' => $this->generate_attributes( array(
+							'class'     => $options['class'],
+							'size'      => 6,
+							'maxlength' => 5,
+							'value'     => $values[0],
+							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+						) ),
+					),
+					array(
+						'attributes' => $this->generate_attributes( array(
+							'class'     => $options['class'],
+							'size'      => 5,
+							'maxlength' => 4,
+							'value'     => $values[1],
+							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+						) ),
+					),
+					array(
+						'attributes' => $this->generate_attributes( array(
+							'class'     => $options['class'],
+							'size'      => 5,
+							'maxlength' => 4,
+							'value'     => $values[2],
+							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+						) ),
+					),
+				),
+			) )
+			. $this->separator( $name, $separator )
+		);
 	}
 
 	/**
@@ -496,16 +549,17 @@ class MW_WP_Form_Form {
 			'placeholder' => null,
 		);
 		$options = array_merge( $defaults, $options );
-		$_options = $options;
-		unset( $_options['value'] );
-		$attributes = $this->generate_attributes( $_options );
+		$value   = $options['value'];
+		unset( $options['value'] );
+		$attributes = $this->generate_attributes( $options );
 
-		return self::remove_linefeed_space( sprintf(
-			'<textarea name="%s"%s>%s</textarea>',
-			esc_attr( $name ),
-			$attributes,
-			esc_html( $options['value'] )
-		) );
+		return $this->remove_linefeed_space(
+			$this->_render( 'textarea', array(
+				'name'       => $name,
+				'attributes' => $attributes,
+				'value'      => $value,
+			) )
+		);
 	}
 
 	/**
@@ -523,26 +577,19 @@ class MW_WP_Form_Form {
 			'value' => '',
 		);
 		$options = array_merge( $defaults, $options );
+		$value   = $options['value'];
 
-		$_options = $options;
-		unset( $_options['value'] );
-		$attributes = $this->generate_attributes( $_options );
-		$_ret = sprintf(
-			'<select name="%s"%s>',
-			esc_attr( $name ),
-			$attributes
+		unset( $options['value'] );
+		$attributes = $this->generate_attributes( $options );
+
+		return $this->remove_linefeed_space(
+			$this->_render( 'select', array(
+				'name'       => $name,
+				'value'      => $value,
+				'attributes' => $attributes,
+				'children'   => $children,
+			) )
 		);
-
-		foreach ( $children as $key => $_value ) {
-			$_ret .= sprintf(
-				'<option value="%s" %s>%s</option>',
-				esc_attr( $key ),
-				selected( $key, $options['value'], false ),
-				esc_html( $_value )
-			);
-		}
-		$_ret .= '</select>';
-		return self::remove_linefeed_space( $_ret );
 	}
 
 	/**
@@ -562,35 +609,29 @@ class MW_WP_Form_Form {
 		);
 		$options = array_merge( $defaults, $options );
 
-		$i    = 0;
-		$_ret = '';
-		foreach ( $children as $key => $_value ) {
+		$i = 0;
+		$fields = array();
+		foreach ( $children as $key => $label ) {
 			$i ++;
-			$vertically = ( $options['vertically'] === 'true' ) ? 'vertical-item' : 'horizontal-item';
-			$attributes_for_label = $this->generate_attributes( array(
-				'for' => $this->get_attr_id( $options['id'], $i ),
-			) );
-			$attributes = $this->generate_attributes( array(
-				'id'    => $this->get_attr_id( $options['id'], $i ),
-				'class' => $options['class'],
-			) );
-			$_ret .= sprintf(
-				'<span class="mwform-radio-field %s">
-					<label%s>
-						<input type="radio" name="%s" value="%s"%s %s />
-						<span class="mwform-radio-field-text">%s</span>
-					</label>
-				</span>',
-				$vertically,
-				$attributes_for_label,
-				esc_attr( $name ),
-				esc_attr( $key ),
-				checked( $key, $options['value'], false ),
-				$attributes,
-				esc_html( $_value )
+			$fields[ $key ] = array(
+				'label' => $label,
+				'attributes_for_label' => $this->generate_attributes( array(
+					'for' => $this->_get_attr_id( $options['id'], $i ),
+				) ),
+				'attributes' => $this->generate_attributes( array(
+					'for' => $this->_get_attr_id( $options['id'], $i ),
+				) )
 			);
 		}
-		return self::remove_linefeed_space( $_ret );
+
+		return $this->remove_linefeed_space(
+			$this->_render( 'radio', array(
+				'name'       => $name,
+				'vertically' => ( $options['vertically'] === 'true' ) ? 'vertical-item' : 'horizontal-item',
+				'value'      => $options['value'],
+				'fields'     => $fields,
+			) )
+		);
 	}
 
 	/**
@@ -616,36 +657,31 @@ class MW_WP_Form_Form {
 			$value = explode( $separator, $options['value'] );
 		}
 
-		$i    = 0;
-		$_ret = '';
-		foreach ( $children as $key => $_value ) {
+		$i = 0;
+		$fields = array();
+		foreach ( $children as $key => $label ) {
 			$i ++;
-			$vertically = ( $options['vertically'] === 'true' ) ? 'vertical-item' : 'horizontal-item';
-			$attributes_for_label = $this->generate_attributes( array(
-				'for' => $this->get_attr_id( $options['id'], $i ),
-			) );
-			$attributes = $this->generate_attributes( array(
-				'id'    => $this->get_attr_id( $options['id'], $i ),
-				'class' => $options['class'],
-			) );
-			$_ret .= sprintf(
-				'<span class="mwform-checkbox-field %s">
-					<label%s>
-						<input type="checkbox" name="%s" value="%s"%s %s />
-						<span class="mwform-checkbox-field-text">%s</span>
-					</label>
-				</span>',
-				$vertically,
-				$attributes_for_label,
-				esc_attr( $name . '[data][]' ),
-				esc_attr( $key ),
-				$attributes,
-				checked( ( is_array( $value ) && in_array( $key, $value ) ), true, false ),
-				esc_html( $_value )
+			$fields[ $key ] = array(
+				'label' => $label,
+				'attributes_for_label' => $this->generate_attributes( array(
+					'for' => $this->_get_attr_id( $options['id'], $i ),
+				) ),
+				'attributes' => $this->generate_attributes( array(
+					'id'    => $this->_get_attr_id( $options['id'], $i ),
+					'class' => $options['class'],
+				) )
 			);
 		}
-		$_ret .= $this->separator( $name, $separator );
-		return self::remove_linefeed_space( $_ret );
+
+		return $this->remove_linefeed_space(
+			$this->_render( 'checkbox', array(
+				'name'       => $name,
+				'vertically' => ( $options['vertically'] === 'true' ) ? 'vertical-item' : 'horizontal-item',
+				'value'      => $value,
+				'fields'     => $fields,
+			) )
+			. $this->separator( $name, $separator )
+		);
 	}
 
 	/**
@@ -662,12 +698,14 @@ class MW_WP_Form_Form {
 		);
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
-		return self::remove_linefeed_space( sprintf(
-			'<input type="submit" name="%s" value="%s"%s />',
-			esc_attr( $name ),
-			esc_attr( $value ),
-			$attributes
-		) );
+
+		return $this->remove_linefeed_space(
+			$this->_render( 'submit', array(
+				'name'       => $name,
+				'value'      => $value,
+				'attributes' => $attributes,
+			) )
+		);
 	}
 
 	/**
@@ -685,13 +723,15 @@ class MW_WP_Form_Form {
 		);
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
-		return self::remove_linefeed_space( sprintf(
-			'<button type="submit" name="%1$s" value="%2$s"%3$s>%4$s</button>',
-			esc_attr( $name ),
-			esc_attr( $value ),
-			$attributes,
-			wp_kses_post( $element_content )
-		) );
+
+		return $this->remove_linefeed_space(
+			$this->_render( 'button_submit', array(
+				'name'            => $name,
+				'value'           => $value,
+				'attributes'      => $attributes,
+				'element_content' => $element_content,
+			) )
+		);
 	}
 
 	/**
@@ -708,12 +748,14 @@ class MW_WP_Form_Form {
 		);
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
-		return self::remove_linefeed_space( sprintf(
-			'<input type="button" name="%s" value="%s"%s />',
-			esc_attr( $name ),
-			esc_attr( $value ),
-			$attributes
-		) );
+
+		return $this->remove_linefeed_space(
+			$this->_render( 'button', array(
+				'name'       => $name,
+				'value'      => $value,
+				'attributes' => $attributes,
+			) )
+		);
 	}
 
 	/**
@@ -731,13 +773,15 @@ class MW_WP_Form_Form {
 		);
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
-		return self::remove_linefeed_space( sprintf(
-			'<button type="button" name="%1$s" value="%2$s"%3$s>%4$s</button>',
-			esc_attr( $name ),
-			esc_attr( $value ),
-			$attributes,
-			wp_kses_post( $element_content )
-		) );
+
+		return $this->remove_linefeed_space(
+			$this->_render( 'button_button', array(
+				'name'            => $name,
+				'value'           => $value,
+				'attributes'      => $attributes,
+				'element_content' => $element_content,
+			) )
+		);
 	}
 
 	/**
@@ -757,21 +801,17 @@ class MW_WP_Form_Form {
 			'placeholder' => null,
 		);
 		$options = array_merge( $defaults, $options );
-		$_options = $options;
-		unset( $_options['js'] );
-		$attributes = $this->generate_attributes( $_options );
+		$js = $options['js'];
+		unset( $options['js'] );
+		$attributes = $this->generate_attributes( $options );
 
-		$_ret = sprintf(
-			'<input type="text" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
+		return $this->remove_linefeed_space(
+			$this->_render( 'datepicker', array(
+				'name'       => $name,
+				'attributes' => $attributes,
+				'js'         => $js,
+			) )
 		);
-		$_ret .= sprintf(
-			'<script type="text/javascript">jQuery( function( $ ) { $("input[name=\'%s\']").datepicker( { %s } ); } );</script>',
-			esc_js( $name ),
-			trim( $options['js'], '{}' )
-		);
-		return self::remove_linefeed_space( $_ret );
 	}
 
 	/**
@@ -791,23 +831,17 @@ class MW_WP_Form_Form {
 			'placeholder' => null,
 		);
 		$options = array_merge( $defaults, $options );
-		$_options = $options;
-		unset( $_options['js'] );
-		$attributes = $this->generate_attributes( $_options );
+		$js = $options['js'];
+		unset( $options['js'] );
+		$attributes = $this->generate_attributes( $options );
 
-		$_ret = sprintf(
-			'<input type="text" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
+		return $this->remove_linefeed_space(
+			$this->_render( 'monthpicker', array(
+				'name'       => $name,
+				'attributes' => $attributes,
+				'js'         => $js,
+			) )
 		);
-		if ( $name ) {
-			$_ret .= sprintf(
-				'<script type="text/javascript">jQuery( function( $ ) { $("input[name=\'%s\']").MonthPicker( { %s } ); } );</script>',
-				esc_js( $name ),
-				trim( $options['js'], '{}' )
-			);
-		}
-		return self::remove_linefeed_space( $_ret );
 	}
 
 	/**
@@ -825,17 +859,19 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return self::remove_linefeed_space( sprintf(
-			'<input type="file" name="%1$s"%2$s /><span data-mwform-file-delete="%1$s" class="mwform-file-delete">&times;</span>',
-			esc_attr( $name ),
-			$attributes
-		) );
+		return $this->remove_linefeed_space(
+			$this->_render( 'file', array(
+				'name'       => $name,
+				'attributes' => $attributes,
+			) )
+		);
 	}
 
 	/**
 	 * タグの属性を最適化して生成する
 	 * ※テストしやすいようにアクセス修飾子を public に
 	 *
+	 * @todo このメソッドはなくしてテンプレート内で組み立てるようにする
 	 * @param array $_attributes キーが属性名、要素が属性値の配列。要素が null のときは無視する
 	 */
 	public function generate_attributes( array $_attributes ) {
@@ -862,13 +898,15 @@ class MW_WP_Form_Form {
 	 * @param string $suffix
 	 * @return string
 	 */
-	protected function get_attr_id( $id, $suffix = '' ) {
-		if ( !MWF_Functions::is_empty( $id ) ) {
-			if ( $suffix ) {
-				$id .= '-' . $suffix;
-			}
-			return $id;
+	protected function _get_attr_id( $id, $suffix = '' ) {
+		if ( MWF_Functions::is_empty( $id ) ) {
+			return;
 		}
+
+		if ( $suffix ) {
+			$id .= '-' . $suffix;
+		}
+		return $id;
 	}
 
 	/**
@@ -877,9 +915,11 @@ class MW_WP_Form_Form {
 	 * @param string $string
 	 * @return string
 	 */
-	public static function remove_linefeed_space( $string ) {
+	public function remove_linefeed_space( $string ) {
+		$string = str_replace( array( "\r\n", "\r", "\n", "\t" ), '', $string );
 		$string = preg_replace( '/\s+\/>/', ' />', $string );
-		$string = preg_replace( '/>\s*</ms', '><', $string );
+		$string = preg_replace( '/"\s+?([^"\s])/', '" $1', $string );
+		$string = preg_replace( '/>[\t\s]*?</', '><', $string );
 		return $string;
 	}
 }
