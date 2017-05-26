@@ -141,11 +141,14 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		$Data->push( 'name-1', 'value-1-2' );
 		$Data->push( 'name-2', 'value-2-2' );
 		$Data->push( 'name-3', 'value-3-1' );
-		$this->assertEquals( array(
-			'name-1' => array( 'value-1-1', 'value-1-2' ),
-			'name-2' => 'value-2-1',
-			'name-3' => array( 'value-3-1' ),
-		), $Data->gets() );
+		$this->assertEquals(
+			array(
+				'name-1' => array( 'value-1-1', 'value-1-2' ),
+				'name-2' => array( 'value-2-1', 'value-2-2' ),
+				'name-3' => array( 'value-3-1' ),
+			),
+			$Data->gets()
+		);
 	}
 
 	/**

@@ -53,12 +53,12 @@ class MW_WP_Form_Session {
 	 */
 	public function save( array $data ) {
 		$transient_data = get_transient( $this->session_id );
-		if ( is_array( $transient_data ) ) {
-			foreach ( $data as $key => $value ) {
-				$transient_data[ $key ] = $value;
-			}
-		} else {
-			$transient_data = $data;
+		if ( ! is_array( $transient_data ) ) {
+			$transient_data = array();
+		}
+
+		foreach ( $data as $key => $value ) {
+			$transient_data[ $key ] = $value;
 		}
 		set_transient( $this->session_id, $transient_data, $this->expiration );
 	}
@@ -71,11 +71,11 @@ class MW_WP_Form_Session {
 	 */
 	public function set( $key, $value ) {
 		$transient_data = get_transient( $this->session_id );
-		if ( is_array( $transient_data ) ) {
-			$transient_data[ $key ] = $value;
-		} else {
-			$transient_data = array( $key => $value );
+		if ( ! is_array( $transient_data ) ) {
+			$transient_data = array();
 		}
+
+		$transient_data[ $key ] = $value;
 		set_transient( $this->session_id, $transient_data, $this->expiration );
 	}
 
@@ -87,17 +87,18 @@ class MW_WP_Form_Session {
 	 */
 	public function push( $key, $value ) {
 		$transient_data = get_transient( $this->session_id );
-		if ( ! $transient_data ) {
-			$transient_data = array( $key => array( $value ) );
-		} elseif ( is_array( $transient_data ) ) {
-			if ( ! isset( $transient_data[ $key ] ) ) {
-				$transient_data[ $key ] = array( $value );
+		if ( ! is_array( $transient_data ) ) {
+			$transient_data = array();
+		}
+
+		if ( ! isset( $transient_data[ $key ] ) ) {
+			$transient_data[ $key ] = array( $value );
+		} else {
+			if ( is_array( $transient_data[ $key ] ) ) {
+				$transient_data[ $key ][] = $value;
 			} else {
-				if ( is_array( $transient_data[ $key ] ) ) {
-					$transient_data[ $key ][] = $value;
-				} elseif ( ! $transient_data[ $key ] ) {
-					$transient_data[ $key ] = array( $value );
-				}
+				$transient_data[ $key ] = array( $transient_data[ $key ] );
+				$transient_data[ $key ][] = $value;
 			}
 		}
 		set_transient( $this->session_id, $transient_data, $this->expiration );
