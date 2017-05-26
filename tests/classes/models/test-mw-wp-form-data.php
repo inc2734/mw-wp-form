@@ -348,29 +348,423 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		$this->assertEquals( array( 'data' => 'value-3', 'separator' => ',' ), $Data->get_post_value_by_key( 'name-3' ) );
 	}
 
-	public function get_in_children() {}
+	/**
+	 * @test
+	 * @group get_in_children
+	 */
+	public function get_in_children() {
+		// Pattern: null
+		$Data = $this->_instantiation_Data();
+		$this->assertNull( $Data->get_in_children( 'name-1', array(
+				'value-1-1' => 'value-1-1-label',
+				'value-1-2' => 'value-1-2-label',
+		) ) );
 
-	public function get_raw_in_children() {}
+		// Pattern: array
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array( 'value-1-1' ),
+		) );
+		$this->assertNull( $Data->get_in_children( 'name-1', array(
+				'value-1-1' => 'value-1-1-label',
+				'value-1-2' => 'value-1-2-label',
+		) ) );
 
-	public function get_separator_value() {}
+		// Pattern: isset
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => 'value-1-1',
+		) );
+		$this->assertEquals( 'value-1-1-label', $Data->get_in_children( 'name-1', array(
+				'value-1-1' => 'value-1-1-label',
+				'value-1-2' => 'value-1-2-label',
+		) ) );
 
-	public function get_separated_raw_value() {}
+		// Pattern: ! isset
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => 'value-1-1',
+		) );
+		$this->assertEquals( '', $Data->get_in_children( 'name-1', array(
+				'value-1-2' => 'value-1-2-label',
+		) ) );
+	}
 
-	public function regenerate_upload_file_keys() {}
+	/**
+	 * @test
+	 * @group get_raw_in_children
+	 */
+	public function get_raw_in_children() {
+		// Pattern: null
+		$Data = $this->_instantiation_Data();
+		$this->assertNull( $Data->get_raw_in_children( 'name-1', array(
+				'value-1-1' => 'value-1-1-label',
+				'value-1-2' => 'value-1-2-label',
+		) ) );
 
-	public function push_uploaded_file_keys() {}
+		// Pattern: array
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array( 'value-1-1' ),
+		) );
+		$this->assertNull( $Data->get_raw_in_children( 'name-1', array(
+				'value-1-1' => 'value-1-1-label',
+				'value-1-2' => 'value-1-2-label',
+		) ) );
 
-	public function set_view_flg() {}
+		// Pattern: isset
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => 'value-1-1',
+		) );
+		$this->assertEquals( 'value-1-1', $Data->get_raw_in_children( 'name-1', array(
+				'value-1-1' => 'value-1-1-label',
+				'value-1-2' => 'value-1-2-label',
+		) ) );
 
-	public function get_view_flg() {}
+		// Pattern: ! isset
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => 'value-1-1',
+		) );
+		$this->assertEquals( '', $Data->get_raw_in_children( 'name-1', array(
+				'value-1-2' => 'value-1-2-label',
+		) ) );
+	}
 
-	public function set_send_error() {}
+	/**
+	 * @test
+	 * @group get_separator_value
+	 */
+	public function get_separator_value() {
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => 'value-1',
+		) );
+		$this->assertNull( $Data->get_separator_value( 'name-1' ) );
 
-	public function get_send_error() {}
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'separator' => ',',
+			),
+		) );
+		$this->assertEquals( ',', $Data->get_separator_value( 'name-1' ) );
+	}
 
-	public function set_validation_error() {}
+	/**
+	 * @test
+	 * @group get_separated_value
+	 */
+	public function get_separated_value() {
+		// Pattern: $children is empty
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'data'      => array( 'value-1-1' ),
+				'separator' => ',',
+			),
+		) );
+		$this->assertNull( $Data->get_separated_value( 'name-1', array() ) );
 
-	public function get_validation_error() {}
+		// Pattern: value is empty
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'data'      => array( 'value-1-1' ),
+				'separator' => ',',
+			),
+		) );
+		$this->assertNull( $Data->get_separated_value( 'name-2', array(
+			'value-1-1' => 'value-1-1-label',
+		) ) );
 
-	public function get_validation_errors() {}
+		// Pattern: The key doesn't have 'data'
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'separator' => ',',
+			),
+		) );
+		$this->assertNull( $Data->get_separated_value( 'name-1', array(
+			'value-1-1' => 'value-1-1-label',
+		) ) );
+
+		// Pattern: value is empty
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'data'      => array( 'value-1-1' ),
+				'separator' => ',',
+			),
+		) );
+		$this->assertNull( $Data->get_separated_value( 'name-2', array(
+			'value-1-1' => 'value-1-1-label',
+		) ) );
+
+		// Pattern: The key doesn't have separator
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'data' => array( 'value-1-1' ),
+			),
+		) );
+		$this->assertNull( $Data->get_separated_value( 'name-2', array(
+			'value-1-1' => 'value-1-1-label',
+		) ) );
+
+		// Pattern: normal
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'data'      => array( 'value-1-1' ),
+				'separator' => ',',
+			),
+		) );
+		$this->assertEquals( 'value-1-1-label', $Data->get_separated_value( 'name-1', array(
+			'value-1-1' => 'value-1-1-label',
+		) ) );
+
+		// Pattern: string
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'data'      => 'value-1-1',
+				'separator' => ',',
+			),
+		) );
+		$this->assertEquals( 'value-1-1-label', $Data->get_separated_value( 'name-1', array(
+			'value-1-1' => 'value-1-1-label',
+		) ) );
+	}
+
+	/**
+	 * @test
+	 * @group get_separated_raw_value
+	 */
+	public function get_separated_raw_value() {
+		// Pattern: $children is empty
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'data'      => array( 'value-1-1' ),
+				'separator' => ',',
+			),
+		) );
+		$this->assertNull( $Data->get_separated_raw_value( 'name-1', array() ) );
+
+		// Pattern: value is empty
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'data'      => array( 'value-1-1' ),
+				'separator' => ',',
+			),
+		) );
+		$this->assertNull( $Data->get_separated_raw_value( 'name-2', array(
+			'value-1-1' => 'value-1-1-label',
+		) ) );
+
+		// Pattern: The key doesn't have 'data'
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'separator' => ',',
+			),
+		) );
+		$this->assertNull( $Data->get_separated_raw_value( 'name-1', array(
+			'value-1-1' => 'value-1-1-label',
+		) ) );
+
+		// Pattern: value is empty
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'data'      => array( 'value-1-1' ),
+				'separator' => ',',
+			),
+		) );
+		$this->assertNull( $Data->get_separated_raw_value( 'name-2', array(
+			'value-1-1' => 'value-1-1-label',
+		) ) );
+
+		// Pattern: The key doesn't have separator
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'data' => array( 'value-1-1' ),
+			),
+		) );
+		$this->assertNull( $Data->get_separated_raw_value( 'name-2', array(
+			'value-1-1' => 'value-1-1-label',
+		) ) );
+
+		// Pattern: normal
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'data'      => array( 'value-1-1' ),
+				'separator' => ',',
+			),
+		) );
+		$this->assertEquals( 'value-1-1', $Data->get_separated_raw_value( 'name-1', array(
+			'value-1-1' => 'value-1-1-label',
+		) ) );
+
+		// Pattern: string
+		$Data = $this->_instantiation_Data( array(
+			'name-1' => array(
+				'data'      => 'value-1-1',
+				'separator' => ',',
+			),
+		) );
+		$this->assertEquals( 'value-1-1', $Data->get_separated_raw_value( 'name-1', array(
+			'value-1-1' => 'value-1-1-label',
+		) ) );
+	}
+
+	/**
+	 * @test
+	 * @group regenerate_upload_file_keys
+	 */
+	public function regenerate_upload_file_keys() {
+		$wp_upload_dir = wp_upload_dir();
+		system( "chmod 777 " . $wp_upload_dir['basedir'] );
+		system( "mkdir -p " . $wp_upload_dir['path'] );
+		file_put_contents( $wp_upload_dir['path'] . '/1.txt', 1 );
+
+		// Pattern: ! array
+		$Data = $this->_instantiation_Data( array(
+			MWF_Config::UPLOAD_FILE_KEYS => 'dummy',
+		) );
+		$Data->regenerate_upload_file_keys();
+		$this->assertEquals( array(), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
+
+		// Pattern: ! unique
+		$Data = $this->_instantiation_Data( array(
+			MWF_Config::UPLOAD_FILE_KEYS => array( 'name-1', 'name-1' ),
+		) );
+		$Data->set( 'name-1', $wp_upload_dir['url'] . '/1.txt' );
+		$Data->regenerate_upload_file_keys();
+		$this->assertEquals( array( 'name-1' ), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
+
+		// Pattern: file url is empty
+		$Data = $this->_instantiation_Data( array(
+			MWF_Config::UPLOAD_FILE_KEYS => array( 'name-1' ),
+		) );
+		$Data->regenerate_upload_file_keys();
+		$this->assertEquals( array(), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
+
+		// Pattern: ! file_exists
+		$Data = $this->_instantiation_Data( array(
+			MWF_Config::UPLOAD_FILE_KEYS => array( 'name-1', 'name-1' ),
+		) );
+		$Data->set( 'name-1', $wp_upload_dir['url'] . '/2.txt' );
+		$Data->regenerate_upload_file_keys();
+		$this->assertEquals( array(), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
+
+		// Pattern: file_exists
+		$Data = $this->_instantiation_Data( array(
+			MWF_Config::UPLOAD_FILE_KEYS => array( 'name-1' ),
+		) );
+		$Data->set( 'name-1', $wp_upload_dir['url'] . '/1.txt' );
+		$Data->regenerate_upload_file_keys();
+		$this->assertEquals( array( 'name-1' ), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
+
+		// shutdown process
+		unlink( $wp_upload_dir['path'] . '/1.txt' );
+	}
+
+	/**
+	 * @test
+	 * @group push_uploaded_file_keys
+	 */
+	public function push_uploaded_file_keys() {
+		$attachments = array(
+			'name-2' => 'https://exemple.com/dummy-1.txt',
+		);
+
+		// Pattern: ! array
+		$Data = $this->_instantiation_Data( array(
+			MWF_Config::UPLOAD_FILE_KEYS => 'name-1',
+		) );
+		$Data->push_uploaded_file_keys( $attachments );
+		$this->assertEquals( array( 'name-2' ), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
+
+		// Pattern: array
+		$Data = $this->_instantiation_Data( array(
+			MWF_Config::UPLOAD_FILE_KEYS => array( 'name-1' ),
+		) );
+		$Data->push_uploaded_file_keys( $attachments );
+		$this->assertEquals( array( 'name-1', 'name-2' ), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
+	}
+
+	/**
+	 * @test
+	 * @group set_view_flg
+	 */
+	public function set_view_flg() {
+		$Data = $this->_instantiation_Data();
+		$Data->set_view_flg( 'input' );
+		$this->assertEquals( 'input', $Data->get_view_flg() );
+	}
+
+	/**
+	 * @test
+	 * @group get_view_flg
+	 */
+	public function get_view_flg() {
+		$Data = $this->_instantiation_Data();
+		$Data->set_view_flg( 'input' );
+		$this->assertEquals( 'input', $Data->get_view_flg() );
+	}
+
+	/**
+	 * @test
+	 * @group set_send_error
+	 */
+	public function set_send_error() {
+		$Data = $this->_instantiation_Data();
+		$Data->set_send_error();
+		$this->assertTrue( $Data->get_send_error() );
+	}
+
+	/**
+	 * @test
+	 * @group get_send_error
+	 */
+	public function get_send_error() {
+		$Data = $this->_instantiation_Data();
+		$Data->set_send_error();
+		$this->assertTrue( $Data->get_send_error() );
+	}
+
+	/**
+	 * @test
+	 * @group set_validation_error
+	 */
+	public function set_validation_error() {
+		$Data = $this->_instantiation_Data();
+		$Data->set_validation_error( 'name-1', 'noempty', 'message' );
+		$this->assertEquals( array( 'noempty' => 'message' ), $Data->get_validation_error( 'name-1' ) );
+
+		$Data->set_validation_error( 'name-2', 'noempty', 'message' );
+		$this->assertEquals( array( 'noempty' => 'message' ), $Data->get_validation_error( 'name-2' ) );
+	}
+
+	/**
+	 * @test
+	 * @group get_validation_error
+	 */
+	public function get_validation_error() {
+		$Data = $this->_instantiation_Data();
+		$Data->set_validation_error( 'name-1', 'noempty', 'message' );
+		$this->assertEquals( array( 'noempty' => 'message' ), $Data->get_validation_error( 'name-1' ) );
+
+		$Data->set_validation_error( 'name-2', 'noempty', 'message' );
+		$this->assertEquals( array( 'noempty' => 'message' ), $Data->get_validation_error( 'name-2' ) );
+
+		$this->assertEquals( array(), $Data->get_validation_error( 'name-3' ) );
+	}
+
+	/**
+	 * @test
+	 * @group get_validation_errors
+	 */
+	public function get_validation_errors() {
+		$Data = $this->_instantiation_Data();
+		$this->assertEquals( array(), $Data->get_validation_errors() );
+
+		$Data->set_validation_error( 'name-1', 'noempty', 'message' );
+		$Data->set_validation_error( 'name-2', 'noempty', 'message' );
+		$this->assertEquals( array(
+			'name-1' => array( 'noempty' => 'message' ),
+			'name-2' => array( 'noempty' => 'message' ),
+		), $Data->get_validation_errors() );
+
+		$Data->set_validation_error( 'name-1', 'hiragana', 'message' );
+		$this->assertEquals( array(
+			'name-1' => array( 'noempty' => 'message', 'hiragana' => 'message' ),
+			'name-2' => array( 'noempty' => 'message' ),
+		), $Data->get_validation_errors() );
+	}
 }

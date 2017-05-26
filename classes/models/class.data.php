@@ -336,7 +336,6 @@ class MW_WP_Form_Data {
 
 	/**
 	 * $children の中に値が含まれているときだけ返す
-	 * 本当は protected 後方互換
 	 *
 	 * @param string $key name attribute
 	 * @param array $children
@@ -344,18 +343,19 @@ class MW_WP_Form_Data {
 	 */
 	public function get_in_children( $key, array $children ) {
 		$value = $this->get_post_value_by_key( $key );
-		if ( ! is_null( $value ) && ! is_array( $value ) ) {
-			if ( isset( $children[ $value ] ) ) {
-				return $children[ $value ];
-			} else {
-				return '';
-			}
+		if ( is_null( $value ) || is_array( $value ) ) {
+			return;
 		}
+
+		if ( isset( $children[ $value ] ) ) {
+			return $children[ $value ];
+		}
+
+		return '';
 	}
 
 	/**
 	 * $children の中に値が含まれているときだけ返す
-	 * 本当は protected 後方互換
 	 *
 	 * @param string $key name attribute
 	 * @param array $children
@@ -363,13 +363,15 @@ class MW_WP_Form_Data {
 	 */
 	public function get_raw_in_children( $key, array $children ) {
 		$value = $this->get_post_value_by_key( $key );
-		if ( ! is_null( $value ) && ! is_array( $value ) ) {
-			if ( isset( $children[ $value ] ) ) {
-				return $value;
-			} else {
-				return '';
-			}
+		if ( is_null( $value ) || is_array( $value ) ) {
+			return;
 		}
+
+		if ( isset( $children[ $value ] ) ) {
+			return $value;
+		}
+
+		return '';
 	}
 
 	/**
@@ -387,7 +389,6 @@ class MW_WP_Form_Data {
 
 	/**
 	 * 配列データを整形して表示値を返す。separator が送信されていない場合は null
-	 * 本当は protected 後方互換
 	 *
 	 * @param string $key name attribute
 	 * @param array $children 選択肢
@@ -396,6 +397,10 @@ class MW_WP_Form_Data {
 	public function get_separated_value( $key, array $children ) {
 		$separator = $this->get_separator_value( $key );
 		$value     = $this->get_post_value_by_key( $key );
+
+		if ( ! $children ) {
+			return;
+		}
 
 		if ( ! is_array( $value ) ) {
 			return;
@@ -412,10 +417,6 @@ class MW_WP_Form_Data {
 		// 入力 -> 確認のときは配列、確認 -> 入力のときは文字列
 		if ( ! is_array( $value['data'] ) ) {
 			$value['data'] = explode( $separator, $value['data'] );
-		}
-
-		if ( ! $children ) {
-			return;
 		}
 
 		$rightData = array();
@@ -440,6 +441,10 @@ class MW_WP_Form_Data {
 		$separator = $this->get_separator_value( $key );
 		$value     = $this->get_post_value_by_key( $key );
 
+		if ( ! $children ) {
+			return;
+		}
+
 		if ( ! is_array( $value ) ) {
 			return;
 		}
@@ -455,10 +460,6 @@ class MW_WP_Form_Data {
 		// 入力 -> 確認のときは配列、確認 -> 入力のときは文字列
 		if ( ! is_array( $value['data'] ) ) {
 			$value['data'] = explode( $separator, $value['data'] );
-		}
-
-		if ( ! $children ) {
-			return;
 		}
 
 		$rightData = array();
@@ -528,11 +529,9 @@ class MW_WP_Form_Data {
 		$wp_upload_dir = wp_upload_dir();
 		foreach ( $upload_file_keys as $key => $upload_file_key ) {
 			$upload_file_url = $this->get_post_value_by_key( $upload_file_key );
-			if ( $upload_file_url ) {
-				$filepath = MWF_Functions::fileurl_to_path( $upload_file_url );
-				if ( ! file_exists( $filepath ) ) {
-					unset( $upload_file_keys[ $key ] );
-				}
+			$filepath = MWF_Functions::fileurl_to_path( $upload_file_url );
+			if ( ! $upload_file_url || ! file_exists( $filepath ) ) {
+				unset( $upload_file_keys[ $key ] );
 			}
 		}
 
@@ -548,6 +547,7 @@ class MW_WP_Form_Data {
 		$upload_file_keys = $this->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
 		if ( ! is_array( $upload_file_keys ) ) {
 			$upload_file_keys = array();
+			$this->set( MWF_Config::UPLOAD_FILE_KEYS, $upload_file_keys );
 		}
 
 		foreach ( $uploaded_files as $key => $upload_file ) {
@@ -615,10 +615,7 @@ class MW_WP_Form_Data {
 		if ( ! is_string( $message ) ) {
 			exit( 'The Validate error message must be string!' );
 		}
-		$errors = $this->Session_validation_error->get( $key );
-		if ( ! is_array( $errors ) ) {
-			$errors = array();
-		}
+		$errors = $this->get_validation_error( $key );
 		$errors[ $rule ] = $message;
 		$this->Session_validation_error->set( $key, $errors );
 	}
@@ -631,7 +628,7 @@ class MW_WP_Form_Data {
 	 */
 	public function get_validation_error( $key ) {
 		$errors = $this->Session_validation_error->get( $key );
-		if ( is_null( $errors ) ) {
+		if ( is_null( $errors ) || ! is_array( $errors ) ) {
 			return array();
 		}
 		return $errors;
