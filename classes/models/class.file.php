@@ -16,7 +16,7 @@ class MW_WP_Form_File {
 	 * __construct
 	 */
 	public function __construct() {
-		add_filter( 'upload_mimes', array( $this, 'upload_mimes' ) );
+		add_filter( 'upload_mimes', array( $this, '_upload_mimes' ) );
 	}
 
 	/**
@@ -24,7 +24,7 @@ class MW_WP_Form_File {
 	 *
 	 * @param array $t MIMEタイプの配列
 	 */
-	public function upload_mimes( $t ) {
+	public function _upload_mimes( $t ) {
 		$t['psd'] = 'image/vnd.adobe.photoshop';
 		$t['eps'] = 'application/octet-stream';
 		$t['ai']  = 'application/pdf';
@@ -77,22 +77,24 @@ class MW_WP_Form_File {
 	 */
 	protected function _file_upload( $file ) {
 		if ( empty( $file['tmp_name'] ) ) {
-			return;
+			return false;
 		}
 
-		$is_uploaded = false;
-		if ( MWF_Functions::check_file_type( $file['tmp_name'], $file['name'] )
-			 && $file['error'] == UPLOAD_ERR_OK
-			 && is_uploaded_file( $file['tmp_name'] ) ) {
+		if ( ! MWF_Functions::check_file_type( $file['tmp_name'], $file['name'] )
+				 || ! $file['error'] == UPLOAD_ERR_OK
+				 || ! is_uploaded_file( $file['tmp_name'] ) ) {
 
-			$extension = pathinfo( $file['name'], PATHINFO_EXTENSION );
-			$uploadfile = $this->_set_upload_file_name( $extension );
-
-			$is_uploaded = move_uploaded_file( $file['tmp_name'], $uploadfile['file'] );
-			if ( $is_uploaded ) {
-				return $uploadfile['url'];
-			}
+			return false;
 		}
+
+		$extension   = pathinfo( $file['name'], PATHINFO_EXTENSION );
+		$uploadfile  = $this->_set_upload_file_name( $extension );
+		$is_uploaded = move_uploaded_file( $file['tmp_name'], $uploadfile['file'] );
+		if ( ! $is_uploaded ) {
+			return false;
+		}
+
+		return $uploadfile['url'];
 	}
 
 	/**
@@ -230,6 +232,7 @@ class MW_WP_Form_File {
 	/**
 	 * 指定したパスのファイルを削除
 	 *
+	 * @todo 消すファイルの条件を指定したほうが良い
 	 * @param array $attachments 消去するファイルパスの配列
 	 */
 	public function delete_files( array $files ) {
