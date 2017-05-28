@@ -163,7 +163,6 @@ class MW_WP_Form_Form {
 	/**
 	 * テンプレートを読み込んで表示
 	 *
-	 * @todo テーマから上書きできるようにしたい
 	 * @param string $template ディレクトリ名/ファイル名（拡張子無し）
 	 */
 	protected function _render( $template, array $args = array() ) {
