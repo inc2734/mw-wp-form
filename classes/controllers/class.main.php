@@ -104,23 +104,14 @@ class MW_WP_Form_Main_Controller {
 			$form_key   = MWF_Functions::get_form_key_from_form_id( $form_id );
 			$this->Data = MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
 
-			$this->Validation = new MW_WP_Form_Validation( $form_key );
-
-			$Validation_Rules = MW_WP_Form_Validation_Rules::instantiation();
-			$validation_rules = $Validation_Rules->get_validation_rules();
-			foreach ( $validation_rules as $validation_name => $validation_rule ) {
-				if ( is_callable( array( $validation_rule, 'set_Data' ) ) ) {
-					$validation_rule->set_Data( $this->Data );
-				}
-			}
-
 			$post_condition = $this->Data->get_post_condition();
-
 			if ( in_array( $post_condition, array( 'confirm', 'complete' ) ) ) {
 				$this->_file_upload();
 			}
 
-			$Redirected = new MW_WP_Form_Redirected( $form_key, $this->Setting, $this->Validation->check(), $post_condition );
+			$this->Validation = new MW_WP_Form_Validation( $form_key );
+
+			$Redirected = new MW_WP_Form_Redirected( $form_key, $this->Setting, $this->Validation->is_valid(), $post_condition );
 			$view_flg   = $Redirected->get_view_flg();
 			$this->Data->set_view_flg( $view_flg );
 
@@ -194,7 +185,7 @@ class MW_WP_Form_Main_Controller {
 		$automatic_reply_email = $this->Setting->get( 'automatic_reply_email' );
 		if ( $automatic_reply_email ) {
 			$automatic_reply_email   = $this->Data->get_post_value_by_key( $automatic_reply_email );
-			$Validation_Rules        = MW_WP_Form_Validation_Rules::instantiation();
+			$Validation_Rules        = MW_WP_Form_Validation_Rules::instantiation( $form_key );
 			$validation_rules        = $Validation_Rules->get_validation_rules();
 			$is_invalid_mail_address = $validation_rules['mail']->rule(
 				$automatic_reply_email
@@ -276,7 +267,7 @@ class MW_WP_Form_Main_Controller {
 			$upload_files = array();
 		}
 		foreach ( $upload_files as $key => $file ) {
-			if ( $this->Validation->single_check( $key ) ) {
+			if ( $this->Validation->is_valid_field( $key ) ) {
 				$files[ $key ] = $file;
 			} elseif ( isset( $files[ $key ] ) ) {
 				unset( $files[ $key ] );

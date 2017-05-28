@@ -317,6 +317,8 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * バリデーション
 	 */
 	public function _validation_rule() {
+		global $post;
+
 		$validation = $this->_get_option( 'validation' );
 		if ( ! $validation ) {
 			$validation = array();
@@ -326,7 +328,8 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			'target' => '',
 		);
 
-		$Validation_Rules = MW_WP_Form_Validation_Rules::instantiation();
+		$form_key = MWF_Functions::get_form_key_from_form_id( $post->ID );
+		$Validation_Rules = MW_WP_Form_Validation_Rules::instantiation( $form_key );
 
 		foreach ( $Validation_Rules->get_validation_rules() as $validation_rule => $instance ) {
 			$validation_keys[ $instance->getName() ] = '';

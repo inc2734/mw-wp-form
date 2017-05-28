@@ -7,6 +7,11 @@ class MW_WP_Form_Validation_Rules {
 	protected static $Instance;
 
 	/**
+	 * @var string
+	 */
+	protected static $form_key;
+
+	/**
 	 * バリデーションルールの配列。順番を固定するために定義が必要
 	 * @var array
 	 */
@@ -31,6 +36,8 @@ class MW_WP_Form_Validation_Rules {
 		'minlength'     => '',
 		'filetype'      => '',
 		'filesize'      => '',
+		'maxfilesize'   => '',
+		'minfilesize'   => '',
 	);
 
 	private function __construct() {
@@ -42,15 +49,11 @@ class MW_WP_Form_Validation_Rules {
 
 			new $class_name();
 		}
-
-		self::$validation_rules = apply_filters(
-			'mwform_validation_rules',
-			self::$validation_rules,
-			null // backward compatibility
-		);
 	}
 
-	public static function instantiation() {
+	public static function instantiation( $form_key ) {
+		self::$form_key = $form_key;
+
 		if ( isset( self::$Instance ) ) {
 			return self::$Instance;
 		}
@@ -66,6 +69,18 @@ class MW_WP_Form_Validation_Rules {
 	 * @return $validation_rules バリデーションルールオブジェクトの配列
 	 */
 	public function get_validation_rules() {
+		self::$validation_rules = apply_filters(
+			'mwform_validation_rules',
+			self::$validation_rules,
+			null // backward compatibility
+		);
+
+		foreach ( self::$validation_rules as $validation_rule => $validation_rule_object ) {
+			if ( method_exists( $validation_rule_object, 'set_Data' ) ) {
+				$validation_rule_object->set_Data( MW_WP_Form_Data::connect( self::$form_key ) );
+			}
+		}
+
 		return self::$validation_rules;
 	}
 

@@ -28,7 +28,7 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 			exit( 'MW_WP_Form_Abstract_Validation_Rule::$name must override.' );
 		}
 
-		add_filter( 'mwform_validation_rules'  , array( $this, '_mwform_validation_rules' ) );
+		add_filter( 'mwform_validation_rules', array( $this, '_mwform_validation_rules' ) );
 	}
 
 	/**
@@ -36,7 +36,8 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	 * @return array $validation_rules
 	 */
 	public function _mwform_validation_rules( array $validation_rules ) {
-		return array_merge( $validation_rules, array( $this->getName() => $this ) );
+		$validation_rules[ $this->getName() ] = $this;
+		return $validation_rules;
 	}
 
 	/**

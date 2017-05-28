@@ -67,8 +67,8 @@ class MW_WP_Form {
 	 * 各管理画面の初期化、もしくはフロント画面の初期化
 	 */
 	public function _after_setup_theme() {
+		// @todo validation_rules と同じように、必要な箇所で呼び出すようにする
 		MW_WP_Form_Form_Fields::instantiation();
-		MW_WP_Form_Validation_Rules::instantiation();
 
 		if ( current_user_can( MWF_Config::CAPABILITY ) && is_admin() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue_scripts' ) );
