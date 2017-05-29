@@ -147,7 +147,7 @@ class MW_WP_Form_Mail_Service {
 	public function send_reply_mail() {
 		$Mail_auto = $this->_get_parsed_mail_object( $this->Mail_auto_raw );
 		$Mail_auto->set_reply_mail_reaquire_params();
-		$Mail_auto = $this->apply_filters_mwform_auto_mail( $Mail_auto );
+		$Mail_auto = $this->_apply_filters_mwform_auto_mail( $Mail_auto );
 		do_action(
 			'mwform_before_send_reply_mail_' . $this->form_key,
 			clone $Mail_auto,

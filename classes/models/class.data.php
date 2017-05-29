@@ -34,6 +34,13 @@ class MW_WP_Form_Data {
 	protected $FILES = array();
 
 	/**
+	 * @var array
+	 */
+	protected $variables         = array();
+	protected $meta              = array();
+	protected $validation_errors = array();
+
+	/**
 	 * @param string $form_key
 	 * @param array $POST $_POST
 	 * @param array $FILES $_FILES
@@ -43,12 +50,29 @@ class MW_WP_Form_Data {
 		$this->Session_meta             = new MW_WP_Form_Session( $form_key . '-meta' );
 		$this->Session_validation_error = new MW_WP_Form_Session( $form_key . '-validation-error' );
 
+		$this->variables         = $this->Session->gets();
+		$this->meta              = $this->Session_meta->gets();
+		$this->validation_errors = $this->Session_validation_error->gets();
+
 		$this->POST  = $POST;
 		$this->FILES = $FILES;
 
 		$this->_set_form_key( $form_key );
 		$this->_set_request_valiables();
 		$this->_set_files_valiables();
+
+		add_action( 'shutdown', array( $this, '_save_to_session' ) );
+	}
+
+	public function _save_to_session() {
+		$this->Session->clear_values();
+		$this->Session->save( $this->variables );
+
+		$this->Session_meta->clear_values();
+		$this->Session_meta->save( $this->meta );
+
+		$this->Session_validation_error->clear_values();
+		$this->Session_validation_error->save( $this->validation_errors );
 	}
 
 	/**
@@ -91,14 +115,16 @@ class MW_WP_Form_Data {
 	 * @return string
 	 */
 	public function get_form_key() {
-		return $this->Session_meta->get( 'form_key' );
+		if ( isset( $this->meta['form_key'] ) ) {
+			return $this->meta['form_key'];
+		}
 	}
 
 	/**
 	 * @param string $form_key
 	 */
 	protected function _set_form_key( $form_key ) {
-		$this->Session_meta->set( 'form_key', $form_key );
+		$this->meta['form_key'] = $form_key;
 	}
 
 	/**
@@ -162,13 +188,7 @@ class MW_WP_Form_Data {
 	 * @return array
 	 */
 	public function gets() {
-		$variables = $this->Session->gets();
-
-		if ( is_null ( $variables ) ) {
-			$variables = array();
-		}
-
-		return $variables;
+		return $this->variables;
 	}
 
 	/**
@@ -178,7 +198,7 @@ class MW_WP_Form_Data {
 	 * @param string $value
 	 */
 	public function set( $key, $value ){
-		$this->Session->set( $key, $value );
+		$this->variables[ $key ] = $value;
 	}
 
 	/**
@@ -188,7 +208,7 @@ class MW_WP_Form_Data {
 	 */
 	public function sets( array $array ) {
 		foreach ( $array as $key => $value ) {
-			$this->Session->set( $key, $value );
+			$this->set( $key, $value );
 		}
 	}
 
@@ -198,16 +218,18 @@ class MW_WP_Form_Data {
 	 * @param string $key データのキー
 	 */
 	public function clear_value( $key ) {
-		$this->Session->clear_value( $key );
+		if ( isset( $this->variables[ $key ] ) ) {
+			unset( $this->variables[ $key ] );
+		}
 	}
 
 	/**
 	 * Clear all values
 	 */
 	public function clear_values() {
-		$this->Session->clear_values();
-		$this->Session_meta->clear_values();
-		$this->Session_validation_error->clear_values();
+		$this->variables         = array();
+		$this->meta              = array();
+		$this->validation_errors = array();
 	}
 
 	/**
@@ -217,7 +239,16 @@ class MW_WP_Form_Data {
 	 * @param string $value 値
 	 */
 	public function push( $key, $value ) {
-		$this->Session->push( $key, $value );
+		if ( ! isset( $this->variables[ $key ] ) ) {
+			$this->variables[ $key ] = array( $value );
+		} else {
+			if ( is_array( $this->variables[ $key ] ) ) {
+				$this->variables[ $key ][] = $value;
+			} else {
+				$this->variables[ $key ] = array( $this->variables[ $key ] );
+				$this->variables[ $key ][] = $value;
+			}
+		}
 	}
 
 	/**
@@ -329,8 +360,8 @@ class MW_WP_Form_Data {
 	 * @return mixed
 	 */
 	public function get_post_value_by_key( $key ) {
-		if ( ! is_null( $this->Session->get( $key ) ) ) {
-			return $this->Session->get( $key );
+		if ( isset( $this->variables[ $key ] ) ) {
+			return $this->variables[ $key ];
 		}
 	}
 
@@ -564,7 +595,7 @@ class MW_WP_Form_Data {
 	 * @param string null|input|confirm|complete
 	 */
 	public function set_view_flg( $view_flg ) {
-		$this->Session_meta->set( 'view_flg', $view_flg );
+		$this->meta['view_flg'] = $view_flg;
 	}
 
 	/**
@@ -573,14 +604,16 @@ class MW_WP_Form_Data {
 	 * @param string null|input|confirm|complete
 	 */
 	public function get_view_flg() {
-		return $this->Session_meta->get( 'view_flg' );
+		if ( isset( $this->meta['view_flg'] ) ) {
+			return $this->meta['view_flg'];
+		}
 	}
 
 	/**
 	 * 送信エラーを示すフラグをセット
 	 */
 	public function set_send_error() {
-		$this->Session_meta->set( MWF_Config::SEND_ERROR, true );
+		$this->meta[ MWF_Config::SEND_ERROR ] = true;
 	}
 
 	/**
@@ -589,7 +622,9 @@ class MW_WP_Form_Data {
 	 * @return boolean
 	 */
 	public function get_send_error() {
-		return $this->Session_meta->get( MWF_Config::SEND_ERROR );
+		if ( isset( $this->meta[ MWF_Config::SEND_ERROR ] ) ) {
+			return $this->meta[ MWF_Config::SEND_ERROR ];
+		}
 	}
 
 	/**
@@ -617,7 +652,7 @@ class MW_WP_Form_Data {
 		}
 		$errors = $this->get_validation_error( $key );
 		$errors[ $rule ] = $message;
-		$this->Session_validation_error->set( $key, $errors );
+		$this->validation_errors[ $key ] = $errors;
 	}
 
 	/**
@@ -627,7 +662,11 @@ class MW_WP_Form_Data {
 	 * @return array
 	 */
 	public function get_validation_error( $key ) {
-		$errors = $this->Session_validation_error->get( $key );
+		if ( isset( $this->validation_errors[ $key ] ) ) {
+			$errors = $this->validation_errors[ $key ];
+		} else {
+			$errors = array();
+		}
 		if ( is_null( $errors ) || ! is_array( $errors ) ) {
 			return array();
 		}
@@ -640,10 +679,6 @@ class MW_WP_Form_Data {
 	 * @return array
 	 */
 	public function get_validation_errors() {
-		$errors = $this->Session_validation_error->gets();
-		if ( ! is_array( $errors ) ) {
-			return array();
-		}
-		return $errors;
+		return $this->validation_errors;
 	}
 }
