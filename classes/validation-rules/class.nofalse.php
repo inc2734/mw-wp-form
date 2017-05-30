@@ -28,7 +28,7 @@ class MW_WP_Form_Validation_Rule_noFalse extends MW_WP_Form_Abstract_Validation_
 	public function rule( $key, array $options = array() ) {
 		$value = $this->Data->get( $key );
 
-		if ( is_null( $value ) || empty( $value ) ) {
+		if ( is_null( $value ) || ! empty( $value ) ) {
 			return;
 		}
 
