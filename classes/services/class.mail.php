@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Mail Service
- * Version    : 1.4.1
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : January 1, 2015
- * Modified   : May 4, 2017
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -32,7 +32,6 @@ class MW_WP_Form_Mail_Service {
 	protected $Data;
 
 	/**
-	 * フォーム識別子
 	 * @var string
 	 */
 	protected $form_key;
@@ -48,8 +47,6 @@ class MW_WP_Form_Mail_Service {
 	protected $Setting;
 
 	/**
-	 * __construct
-	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @param strign $form_key
 	 * @param MW_WP_Form_Setting $Setting
@@ -66,7 +63,7 @@ class MW_WP_Form_Mail_Service {
 
 		if ( $this->Setting->get( 'post_id' ) ) {
 			$this->_set_admin_mail_raw_params();
-			// 管理者宛メールにだけ添付ファイルを添付
+			// Attach attachment only to e-mail addressed to administrator
 			$this->_set_attachments( $this->Mail_admin_raw );
 			$this->Mail_admin_raw = $this->_apply_filters_mwform_admin_mail_raw( $this->Mail_admin_raw );
 
@@ -78,7 +75,7 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * 管理者メールの送信とデータベースへの保存
+	 * Send admin mail and save to database
 	 *
 	 * @return boolean
 	 */
@@ -108,7 +105,7 @@ class MW_WP_Form_Mail_Service {
 			$saved_mail_id = $this->_save( $Mail_admin_for_save );
 		}
 
-		// DB非保存時は管理者メール送信後、ファイルを削除
+		// If not usedb, remove files after sending admin mail
 		if ( ! $this->Setting->get( 'usedb' ) ) {
 			$File = new MW_WP_Form_File();
 			$File->delete_files( $this->attachments );
@@ -118,7 +115,7 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * パースしたMailオブジェクトの取得とデータベースへの保存
+	 * Return parsed Mail object and save to database
 	 *
 	 * @param MW_WP_Form_Mail $_Mail
 	 * @return MW_WP_Form_Mail
@@ -130,17 +127,17 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * メールをデータベースに保存し、保存されたメール（投稿）の ID を返す
+	 * Save to database and return saved mail ID
 	 *
 	 * @param MW_WP_Form_Mail $Mail
-	 * @return int 保存されたメール（投稿）の ID
+	 * @return int
 	 */
 	protected function _save( MW_WP_Form_Mail $Mail ) {
 		return $Mail->save( $this->Setting );
 	}
 
 	/**
-	 * 自動返信メールの送信
+	 * Send reply mail
 	 *
 	 * @return boolean
 	 */
@@ -158,29 +155,36 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * メールオブジェクトに添付ファイルを添付
+	 * Set attachment files to Mail object
 	 *
 	 * @param MW_WP_Form_Mail $Mail
+	 * @return void
 	 */
 	protected function _set_attachments( MW_WP_Form_Mail $Mail ) {
 		$Mail->attachments = $this->attachments;
 	}
 
 	/**
-	 * 管理者メールに項目を設定
+	 * Set admin mail params
+	 *
+	 * @return void
 	 */
 	protected function _set_admin_mail_raw_params() {
 		$this->Mail_admin_raw->set_admin_mail_raw_params( $this->Setting );
 	}
 
 	/**
-	 * 自動返信メールに項目を設定
+	 * Set reply mail params
+	 *
+	 * @return void
 	 */
 	private function _set_reply_mail_raw_params() {
 		$this->Mail_auto_raw->set_reply_mail_raw_params( $this->Setting );
 	}
 
 	/**
+	 * Apply mwform_admin_mail_raw filter hook
+	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
@@ -194,6 +198,8 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
+	 * Apply mwform_mail filter hook
+	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
@@ -207,6 +213,8 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
+	 * Apply mwform_admin_mail filter hook
+	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
@@ -220,6 +228,8 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
+	 * Apply mwform_auto_mail_raw filter hook
+	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
@@ -233,6 +243,8 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
+	 * Apply mwform_auto_mail filter hook
+	 *
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return MW_WP_Form_Mail $Mail
 	 */
@@ -246,7 +258,9 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * 問い合わせ番号を更新
+	 * Update tracking number
+	 *
+	 * @return void
 	 */
 	public function update_tracking_number() {
 		if ( preg_match( '{' . MWF_Config::TRACKINGNUMBER . '}', $this->Mail_admin_raw->body ) ) {
