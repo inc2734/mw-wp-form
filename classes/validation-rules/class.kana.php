@@ -1,32 +1,31 @@
 <?php
 /**
  * Name       : MW WP Form Validation Rule Kana
- * Description: 値がひらがな or カタカナ
- * Version    : 1.0.1
+ * Version    : 2.0.0
  * Author     : Key Nomura, Takashi Kitajima
  * Author URI : http://mypacecreator.net/
  * Created    : September 1, 2015
- * Modified   : September 1, 2015
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Validation_Rule_Kana extends MW_WP_Form_Abstract_Validation_Rule {
 
 	/**
-	 * バリデーションルール名を指定
+	 * Validation rule name
 	 * @var string
 	 */
 	protected $name = 'kana';
 
 	/**
-	 * バリデーションチェック
+	 * Validation process
 	 *
-	 * @param string $key name属性
+	 * @param string $name
 	 * @param array $option
-	 * @return string エラーメッセージ
+	 * @return string Error message
 	 */
-	public function rule( $key, array $options = array() ) {
-		$value = $this->Data->get( $key );
+	public function rule( $name, array $options = array() ) {
+		$value = $this->Data->get( $name );
 
 		if ( MWF_Functions::is_empty( $value ) ) {
 			return;
@@ -44,10 +43,11 @@ class MW_WP_Form_Validation_Rule_Kana extends MW_WP_Form_Abstract_Validation_Rul
 	}
 
 	/**
-	 * 設定パネルに追加
+	 * Add setting field to validation rule setting panel
 	 *
-	 * @param numeric $key バリデーションルールセットの識別番号
-	 * @param array $value バリデーションルールセットの内容
+	 * @param numeric $key ID of validation rule
+	 * @param array $value Content of validation rule
+	 * @return void
 	 */
 	public function admin( $key, $value ) {
 		?>

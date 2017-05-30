@@ -1,31 +1,29 @@
 <?php
 /**
  * Name       : MW WP Form Abstract Form Field
- * Description: フォームフィールドの抽象クラス
- * Version    : 1.7.6
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : December 14, 2012
- * Modified   : December 26, 2016
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 abstract class MW_WP_Form_Abstract_Form_Field {
 
 	/**
-	 * $shortcode_name
+	 * Shortcode name
 	 * @var string
 	 */
 	protected $shortcode_name;
 
 	/**
-	 * $display_name
+	 * Display name
 	 * @var string
 	 */
 	protected $display_name;
 
 	/**
-	 * $Form
 	 * @var MW_WP_Form_Form
 	 */
 	protected $Form;
@@ -36,47 +34,32 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	protected $Data;
 
 	/**
-	 * $defaults
-	 * 属性値等初期値
+	 * Default attributes
 	 * @var array
 	 */
 	protected $defaults = array();
 
 	/**
-	 * $atts
-	 * 属性値
+	 * Attirbutes of shortcode
 	 * @var array
 	 */
 	protected $atts = array();
 
 	/**
-	 * $form_key
-	 * フォーム識別子
+	 * Form key
 	 * @var string
 	 */
 	protected $form_key;
 
 	/**
-	 * $type
-	 * フォームタグの種類 input|select|button|input_button|error|other
+	 * Types of form type.
+	 * input|select|button|input_button|error|other
 	 * @var string
 	 */
 	protected $type = 'other';
 
 	/**
-	 * $qtags
-	 * qtagsの引数
-	 * @var array
-	 */
-	protected $qtags = array(
-		'id'      => '',
-		'display' => '',
-		'arg1'    => '',
-		'arg2'    => '',
-	);
-
-	/**
-	 * 囲み型ショートコードのコンテンツ
+	 * Content of shortcode
 	 * @var string
 	 */
 	protected $element_content = null;
@@ -93,10 +76,11 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 * @param MW_WP_Form_Form $Form
 	 * @param string $form_key
 	 * @param string $view_flg
+	 * @return bool
 	 */
 	public function initialize( MW_WP_Form_Form $Form, $form_key, $view_flg ) {
 		if ( empty( $this->shortcode_name ) ) {
-			return;
+			return false;
 		}
 
 		$this->Form     = $Form;
@@ -120,9 +104,10 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * shortcode_name、display_nameを定義。各子クラスで上書きする。
+	 * Set shortcode_name and display_name
+	 * Overwrite required for each child class
 	 *
-	 * @return array shortcode_name, display_name
+	 * @return array(shortcode_name, display_name)
 	 */
 	abstract protected function set_names();
 	private function _set_names() {
@@ -137,7 +122,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * $this->defaultsを設定し返す
+	 * Set default attributes
 	 *
 	 * @return array defaults
 	 */
@@ -147,23 +132,25 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * @param  string $key name属性
-	 * @return string エラーHTML
+	 * Return HTML of error message
+	 *
+	 * @param  string $name
+	 * @return string HTML of error message
 	 */
-	protected function get_error( $key ) {
-		if ( ! is_array( $this->Data->get_validation_error( $key ) ) ) {
+	protected function get_error( $name ) {
+		if ( ! is_array( $this->Data->get_validation_error( $name ) ) ) {
 			return;
 		}
 
 		$error_html = '';
 		$start_tag  = '<span class="error">';
 		$end_tag    = '</span>';
-		foreach ( $this->Data->get_validation_error( $key ) as $rule => $error ) {
+		foreach ( $this->Data->get_validation_error( $name ) as $rule => $error ) {
 			$rule = strtolower( $rule );
 			$error = apply_filters(
 				'mwform_error_message_' . $this->form_key,
 				$error,
-				$key,
+				$name,
 				$rule
 			);
 
@@ -173,7 +160,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 				$start_tag,
 				$end_tag,
 				$this->form_key,
-				$key,
+				$name,
 				$rule
 			);
 		}
@@ -184,7 +171,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * 入力ページでのフォーム項目を返す
+	 * Callback of add shortcode for input page
 	 *
 	 * @param array $atts
 	 * @param string $element_content
@@ -193,7 +180,8 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	abstract protected function input_page();
 	public function _input_page( $atts, $element_content = null ) {
 		$this->element_content = $element_content;
-		if ( array_key_exists( 'value', $this->defaults ) && isset( $atts['name'] ) && ! isset( $atts['value'] ) ) {
+
+		if ( isset( $this->defaults['value'] ) && isset( $atts['name'] ) && ! isset( $atts['value'] ) ) {
 			$atts['value'] = apply_filters(
 				'mwform_value_' . $this->form_key,
 				$this->defaults['value'],
@@ -201,11 +189,12 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 			);
 		}
 		$this->atts = shortcode_atts( $this->defaults, $atts );
+
 		return $this->input_page();
 	}
 
 	/**
-	 * 確認ページでのフォーム項目を返す
+	 * Callback of add shortcode for confirm page
 	 *
 	 * @param array $atts
 	 * @param string $element_content
@@ -215,14 +204,16 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	public function _confirm_page( $atts, $element_content = null ) {
 		$this->element_content = $element_content;
 		$this->atts = shortcode_atts( $this->defaults, $atts );
+
 		return $this->confirm_page();
 	}
 
 	/**
-	 * 選択肢の配列を返す（:が含まれている場合は分割して前をキーに、後ろを表示名にする）
+	 * Return array for children of select, checkbox and radio
+	 * If including ":", Split and use the before as the name and the after as the label
 	 *
-	 * @param string $_children
-	 * @return array $children
+	 * @param string|array $_children
+	 * @return array
 	 */
 	public function get_children( $_children ) {
 		$children = array();
@@ -259,20 +250,26 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * フォームタグジェネレータのタグ選択肢とダイアログを設定
+	 * Generate tag generator
+	 *
+	 * @return void
 	 */
 	public function add_tag_generator() {
 		add_action( 'mwform_tag_generator_dialog', array( $this, '_mwform_tag_generator_dialog' ) );
+
 		if ( 'other' !== $this->type ) {
 			$tag = 'mwform_tag_generator_' . $this->type . '_option';
 		} else {
 			$tag = 'mwform_tag_generator_option';
 		}
+
 		add_action( $tag, array( $this, '_mwform_tag_generator_option' ) );
 	}
 
 	/**
-	 * タグジェネレータのダイアログ枠を出力
+	 * Display tag generator wrapper
+	 *
+	 * @return void
 	 */
 	public function _mwform_tag_generator_dialog() {
 		?>
@@ -285,47 +282,59 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * タグジェネレータのダイアログを出力。各フォーム項目クラスでオーバーライド
+	 * Display tag generator dialog
+	 * Overwrite required for each child class
+	 *
+	 * @param array $options
+	 * @return void
 	 */
 	public function mwform_tag_generator_dialog( array $options = array() ) {}
 
 	/**
-	 * フォームタグ挿入ボタンのセレクトボックスに選択項目を追加
+	 * Display tag generator selectbox
+	 *
+	 * @return void
 	 */
 	public function _mwform_tag_generator_option() {
-		$display_name = $this->qtags['display'];
-		if ( $this->display_name ) {
-			$display_name = $this->display_name;
-		}
 		?>
-		<option value="<?php echo esc_attr( $this->shortcode_name ); ?>"><?php echo esc_html( $display_name ); ?></option>
+		<option value="<?php echo esc_attr( $this->shortcode_name ); ?>"><?php echo esc_html( $this->display_name ); ?></option>
 		<?php
 	}
 
 	/**
-	 * @param array $form_fields MW_WP_Form_Abstract_Form_Field を継承したオブジェクトの一覧
-	 * @return array $form_fields
+	 * Generate array of form fields
+	 *
+	 * @param array $form_fields array of MW_WP_Form_Abstract_Form_Field
+	 * @return array
 	 */
 	public function _mwform_form_fields( array $form_fields ) {
 		return array_merge( $form_fields, array( $this->shortcode_name => $this ) );
 	}
 
 	/**
-	 * @return string 表示名
+	 * Return display name
+	 *
+	 * @return string
 	 */
 	public function get_display_name() {
 		return $this->display_name;
 	}
 
 	/**
-	 * @return string ショートコード名
+	 * Return shortcode name
+	 *
+	 * @return string
 	 */
 	public function get_shortcode_name() {
 		return $this->shortcode_name;
 	}
 
 	/**
-	 * get_value_for_generator
+	 * Return value for setting field of Tag generator dialog
+	 *
+	 * @param string $key
+	 * @param array $options
+	 * @return string
 	 */
 	public function get_value_for_generator( $key, $options ) {
 		$attributes = array_keys( $this->defaults );

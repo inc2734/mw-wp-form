@@ -1,19 +1,18 @@
 <?php
 /**
  * Name       : MW WP Form Abstract Validation Rule
- * Description: バリデーションルールの抽象クラス
- * Version    : 1.1.1
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : July 19, 2014
- * Modified   : March 26, 2015
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 abstract class MW_WP_Form_Abstract_Validation_Rule {
 
 	/**
-	 * バリデーションルール名を指定
+	 * Validation rule name
 	 * @var string
 	 */
 	protected $name;
@@ -32,8 +31,10 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	}
 
 	/**
-	 * @param array $validation_rules MW_WP_Form_Abstract_Validation_Rule を継承したオブジェクトの一覧
-	 * @return array $validation_rules
+	 * Generate array of validation rules
+	 *
+	 * @param array $validation_rules rray of MW_WP_Form_Abstract_Validation_Rule
+	 * @return array
 	 */
 	public function _mwform_validation_rules( array $validation_rules ) {
 		$validation_rules[ $this->getName() ] = $this;
@@ -41,37 +42,40 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	}
 
 	/**
-	 * MW_WP_Form_Data を注入
+	 * Inject MW_WP_Form_Data
 	 *
+	 * @todo なくしてコンストラクターインジェクションにしたい
 	 * @param MW_WP_Form_Data $Data
+	 * @return void
 	 */
 	public function set_Data( MW_WP_Form_Data $Data ) {
 		$this->Data = $Data;
 	}
 
 	/**
-	 * バリデーションルール名を返す
+	 * Return validation rule name
 	 *
-	 * @return string $this->name バリデーションルール名
+	 * @return string Validation rule name
 	 */
 	public function getName() {
 		return $this->name;
 	}
 
 	/**
-	 * バリデーションチェック
+	 * Validation process
 	 *
-	 * @param string $key name属性
+	 * @param string $name
 	 * @param array $option
-	 * @return string エラーメッセージ
+	 * @return string Error message
 	 */
-	abstract public function rule( $key, array $options = array() );
+	abstract public function rule( $name, array $options = array() );
 
 	/**
-	 * 設定パネルに追加
+	 * Add setting field to validation rule setting panel
 	 *
-	 * @param numeric $key バリデーションルールセットの識別番号
-	 * @param array $value バリデーションルールセットの内容
+	 * @param numeric $key ID of validation rule
+	 * @param array $value Content of validation rule
+	 * @return void
 	 */
 	abstract public function admin( $key, $value );
 }
