@@ -115,6 +115,8 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 			default :
 				exit( '$view_flg is not right value. $view_flg is ' . $view_flg . ' now.' );
 		}
+
+		return true;
 	}
 
 	/**
