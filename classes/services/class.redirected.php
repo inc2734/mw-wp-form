@@ -35,14 +35,21 @@ class MW_WP_Form_Redirected {
 		$this->form_key = $form_key;
 		$this->Setting  = $Setting;
 
-		$input        = $this->_parse_url( $this->Setting->get( 'input_url' ) );
-		$confirm      = $this->_parse_url( $this->Setting->get( 'confirmation_url' ) );
-		$complete     = $this->_parse_url( $this->Setting->get( 'complete_url' ) );
-		$error        = $this->_parse_url( $this->Setting->get( 'validation_error_url' ) );
-		$REQUEST_URI  = $this->_parse_url( $this->get_request_uri() );
+		$input    = $this->_parse_url( $this->Setting->get( 'input_url' ) );
+		$confirm  = $this->_parse_url( $this->Setting->get( 'confirmation_url' ) );
+		$complete = $this->_parse_url( $this->Setting->get( 'complete_url' ) );
+		$error    = $this->_parse_url( $this->Setting->get( 'validation_error_url' ) );
 
 		if ( 'back' === $post_condition ) {
-			$this->url = $input;
+			if ( $is_valid ) {
+				$this->url      = $input;
+			} else {
+				if ( $error ) {
+					$this->url = $error;
+				} else {
+					$this->url = $input;
+				}
+			}
 			return;
 		}
 
@@ -101,20 +108,25 @@ class MW_WP_Form_Redirected {
 	 * @return string URL
 	 */
 	public function get_request_uri() {
-		$_REQUEST_URI = $_SERVER['REQUEST_URI'];
-		if ( !preg_match( '/^https?:\/\//', $_REQUEST_URI ) ) {
-			$REQUEST_URI = home_url() . $_REQUEST_URI;
-			$parse_url = parse_url( home_url() );
-			// サブディレクトリ型の場合
-			if ( !empty( $parse_url['path'] ) ) {
-				$pettern = preg_quote( $parse_url['path'], '/' );
-				if ( preg_match( '/^' . $pettern . '/', $_REQUEST_URI ) ) {
-					$REQUEST_URI = preg_replace( '/' . $pettern . '$/', $_REQUEST_URI, home_url() );
-				}
-			}
-		} else {
-			$REQUEST_URI = $_REQUEST_URI;
+		$REQUEST_URI = $_SERVER['REQUEST_URI'];
+
+		if ( ! $REQUEST_URI ) {
+			return;
 		}
+
+		if ( preg_match( '/^https?:\/\//', $REQUEST_URI ) ) {
+			return $REQUEST_URI;
+		}
+
+		$parse_url = parse_url( home_url() );
+
+		// For WP installed in subdirectory
+		if ( ! empty( $parse_url['path'] ) ) {
+			$pettern = preg_quote( $parse_url['path'], '/' );
+			return preg_replace( '/' . $pettern . '$/', $REQUEST_URI, home_url() );
+		}
+
+		return trailingslashit( home_url() ) . ltrim( $REQUEST_URI, '/' );
 		return $REQUEST_URI;
 	}
 
@@ -150,9 +162,10 @@ class MW_WP_Form_Redirected {
 			}
 		}
 
-		if ( !empty( $query_string ) ) {
-			$url = $url . '?' . http_build_query( $query_string, null, '&' );
+		if ( ! empty( $query_string ) ) {
+			return $url . '?' . http_build_query( $query_string, null, '&' );
 		}
+
 		return $url;
 	}
 
