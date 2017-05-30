@@ -48,6 +48,13 @@ class MW_WP_Form_Validation_Rule_Month_Test extends WP_UnitTestCase {
 	 * @group convert_jpdate_to_timestamp
 	 */
 	public function convert_jpdate_to_timestamp() {
+		$form_id  = $this->_create_form();
+		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
+		$Data     = MW_WP_Form_Data::connect( $form_key );
+
+		$Rule = new MW_WP_Form_Validation_Rule_Month();
+		$Rule->set_Data( $Data );
+
 		$this->assertEquals(
 			strtotime( '2015-01' ),
 			$Rule->convert_jpdate_to_timestamp( '2015年01月' )
