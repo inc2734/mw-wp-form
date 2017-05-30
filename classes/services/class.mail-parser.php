@@ -1,19 +1,18 @@
 <?php
 /**
  * Name       : MW WP Form Mail Parser
- * Description: メールパーサー
- * Version    : 1.3.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : April 14, 2015
- * Modified   : April 29, 2017
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Mail_Parser {
 
 	/**
-	 * 保存した問い合わせデータの Post ID
+	 * Saved mail ID
 	 * @var int
 	 */
 	protected $saved_mail_id;
@@ -46,7 +45,7 @@ class MW_WP_Form_Mail_Parser {
 	}
 
 	/**
-	 * パースした Mail オブジェクトの取得
+	 * Return parsed Mail object
 	 *
 	 * @return MW_WP_Form_Mail
 	 */
@@ -55,7 +54,7 @@ class MW_WP_Form_Mail_Parser {
 	}
 
 	/**
-	 * Getter : $this->saved_mail_id
+	 * Return saved mail ID
 	 *
 	 * @return int
 	 */
@@ -64,7 +63,7 @@ class MW_WP_Form_Mail_Parser {
 	}
 
 	/**
-	 * メールオブジェクトの各プロパティを変換
+	 * Convert each properties of Mail object
 	 *
 	 * @return MW_WP_Form_Mail $Mail
 	 */
@@ -75,7 +74,7 @@ class MW_WP_Form_Mail_Parser {
 				continue;
 			}
 
-			if ( $key == 'to' || $key == 'cc' || $key == 'bcc' ) {
+			if ( 'to' === $key || 'cc' === $key || 'bcc' === $key ) {
 				$this->Mail->$key = $this->_parse_mail_destination( $value );
 				continue;
 			}
@@ -85,7 +84,7 @@ class MW_WP_Form_Mail_Parser {
 	}
 
 	/**
-	 * メール送信先用に {name属性} を置換。Data からの取得は行わない
+	 * Replace {name} for mail content. It doesn't get from Data
 	 *
 	 * @param string $value
 	 * @return string
@@ -103,7 +102,7 @@ class MW_WP_Form_Mail_Parser {
 		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
 		$value    = $this->_apply_filters_mwform_custom_mail_tag( $form_key, null, $match );
 
-		// カスタムメールタグが利用されていない = null ときは送信先の初期値である空白を返す
+		// Return blank when custom mail tag isn't use(= null)
 		if ( ! is_null( $value ) ) {
 			return $value;
 		}
@@ -111,7 +110,7 @@ class MW_WP_Form_Mail_Parser {
 	}
 
 	/**
-	 * メール本文用に {name属性} を置換
+	 * Replace {name} for mail content
 	 *
 	 * @param string $value
 	 * @return string
@@ -129,7 +128,8 @@ class MW_WP_Form_Mail_Parser {
 	}
 
 	/**
-	 * メール本文・添付ファイルを保存、保存したメール（投稿）の ID をプロパティにセット
+	 * Save Mail content and attachment files
+	 * Set property of saved mail ID
 	 */
 	public function save() {
 		$form_id = $this->Setting->get( 'post_id' );
@@ -166,8 +166,8 @@ class MW_WP_Form_Mail_Parser {
 	}
 
 	/**
-	 * {キー}の部分を検索し、その値をデータベースに保存
-	 * 値が null でも保存（チェッボックス未チェックで直送信でも保存させるため）
+	 * Search {name} and save value to database
+	 * Save value even if it is null (e.g. posting which checkbox isn't check)
 	 *
 	 * @param string $value
 	 */
@@ -187,21 +187,21 @@ class MW_WP_Form_Mail_Parser {
 
 		$data = array();
 
-		foreach ( $matches[1] as $key ) {
-			$value = $this->_parse( $key );
+		foreach ( $matches[1] as $name ) {
+			$value = $this->_parse( $name );
 
 			$ignore_keys = apply_filters( 'mwform_no_save_keys_' . $form_key, array() );
-			if ( in_array( $key, $ignore_keys ) ) {
+			if ( in_array( $name, $ignore_keys ) ) {
 				continue;
 			}
 
 			// ファイルは MWF_Functions::save_attachments_in_media() で ID が保存されるため
 			// ここで送信された値（URL）は保存しない
-			if ( array_key_exists( $key, $this->Mail->attachments ) ) {
+			if ( array_key_exists( $name, $this->Mail->attachments ) ) {
 				continue;
 			}
 
-			$data[ $key ] = ( is_null( $value ) ) ? '' : $value;
+			$data[ $name ] = ( is_null( $value ) ) ? '' : $value;
 		}
 
 		$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $this->saved_mail_id );
@@ -212,26 +212,26 @@ class MW_WP_Form_Mail_Parser {
 	/**
 	 * そのキーについて送信された値を返す
 	 *
-	 * @param string $key
+	 * @param string $name
 	 * @return string
 	 */
-	protected function _parse( $key ) {
+	protected function _parse( $name ) {
 		$form_id = $this->Setting->get( 'post_id' );
 		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
 		// MWF_Config::TRACKINGNUMBER のときはお問い合せ番号を参照する
-		if ( $key === MWF_Config::TRACKINGNUMBER ) {
+		if ( $name === MWF_Config::TRACKINGNUMBER ) {
 			if ( $form_id ) {
 				$value = $this->Setting->get_tracking_number( $form_id );
 			}
 		} else {
-			$value = $this->Data->get( $key );
-			$value = $this->_apply_filters_mwform_custom_mail_tag( $form_key, $value, $key );
+			$value = $this->Data->get( $name );
+			$value = $this->_apply_filters_mwform_custom_mail_tag( $form_key, $value, $name );
 		}
 		return $value;
 	}
 
 	/**
-	 * フィルターフック mwform_custom_mail_tag を実行
+	 * Apply mwform_custom_mail_tag filter hook
 	 *
 	 * @param string $form_key
 	 * @param string|null $value
