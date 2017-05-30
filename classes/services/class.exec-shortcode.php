@@ -499,6 +499,8 @@ class MW_WP_Form_Exec_Shortcode {
 
 	/**
 	 * Enqueue MW WP Form assets
+	 *
+	 * @return void
 	 */
 	public function _enqueue_scripts() {
 		global $post;
@@ -519,6 +521,8 @@ class MW_WP_Form_Exec_Shortcode {
 
 	/**
 	 * Enqueue scroll to form script
+	 *
+	 * @return void
 	 */
 	public function _enqueue_scroll_script() {
 		$url = plugin_dir_url( __FILE__ );
