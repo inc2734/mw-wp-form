@@ -1,32 +1,28 @@
 <?php
 /**
  * Name       : MWF Functions
- * Description: 関数
- * Version    : 1.6.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : May 29, 2013
- * Modified   : January 30, 2017
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MWF_Functions {
 
 	/**
-	 * 引数で渡された変数が存在し、かつ数値であるなら true
+	 * Return true when the variable passed as an argument exists and the numeric value
 	 *
-	 * @param string $value 参照渡し
+	 * @param string $value Pass by reference
 	 * @return bool
 	 */
 	public static function is_numeric( &$value ) {
-		if ( isset( $value ) && preg_match( '/^\d+$/', $value ) ) {
-			return true;
-		}
-		return false;
+		return ( isset( $value ) && preg_match( '/^\d+$/', $value ) );
 	}
 
 	/**
-	 * 配列の空要素を削除
+	 * Delete empty element of array
 	 *
 	 * @param array $array
 	 * @return array
@@ -36,21 +32,17 @@ class MWF_Functions {
 	}
 
 	/**
-	 * 値が空（0は許可）
+	 * If the value is empty (0 is permitted)
 	 *
 	 * @param mixed
 	 * @return bool
 	 */
 	public static function is_empty( $value ) {
-		if ( $value === array() || $value === '' || $value === null || $value === false ) {
-			return true;
-		} else {
-			return false;
-		}
+		return ( $value === array() || $value === '' || $value === null || $value === false );
 	}
 
 	/**
-	 * ファイルURLをファイルパスに変換
+	 * Convert file URL to file path
 	 *
 	 * @param string $fileurl
 	 * @return string
@@ -70,7 +62,7 @@ class MWF_Functions {
 	}
 
 	/**
-	 * ファイルパスをURLに変換
+	 * Convert file path to file URL
 	 *
 	 * @param string $filepath
 	 * @return string
@@ -89,7 +81,7 @@ class MWF_Functions {
 	}
 
 	/**
-	 * 改行コードを \n に統一
+	 * Unify line feed code to \n
 	 *
 	 * @param sring $string
 	 * @return string $string
@@ -99,10 +91,10 @@ class MWF_Functions {
 	}
 
 	/**
-	 * 古いメソッドを使った場合にエラーを出力
+	 * Display deprecated error message
 	 *
-	 * @param string $function_name メソッド名
-	 * @param string $new_function 代替のメソッド名
+	 * @param string $function_name
+	 * @param string $new_function_name
 	 */
 	public static function deprecated_message( $function_name, $new_function = '' ) {
 		global $mwform_deprecated_message;
@@ -151,12 +143,12 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Tempディレクトリからuploadディレクトリにファイルを移動
+	 * Move files from Temp directory to upload directory
 	 *
-	 * @param string Temp ファイルのパス
-	 * @param string 新しい保存先ディレクトリ
-	 * @param string 新しいファイル名
-	 * @return string 新しいファイルパス
+	 * @param string $filepath Path of temp file
+	 * @param string $upload_dir Directory path of new file
+	 * @param string $filename new fine name
+	 * @return string New file path
 	 */
 	public static function move_temp_file_to_upload_dir( $filepath, $upload_dir = '', $filename = '' ) {
 		$wp_upload_dir = wp_upload_dir();
@@ -185,12 +177,12 @@ class MWF_Functions {
 			return $filepath;
 		}
 
-		// もし temp ファイルが存在しない場合、一応リネーム後のパスだけ返す
-		if ( !file_exists( $filepath ) ) {
+		// If the temp file doesn't exist, return only the path after the rename
+		if ( ! file_exists( $filepath ) ) {
 			return $new_filepath;
 		}
 
-		// 移動できれば移動、移動できなくてもリネーム後のパスだけ返す
+		// If it can move, even if it can not move, return only the path after rename
 		if ( rename( $filepath, $new_filepath ) ) {
 			return $new_filepath;
 		}
@@ -198,12 +190,11 @@ class MWF_Functions {
 	}
 
 	/**
-	 * 添付ファイルをメディアに保存、投稿データに添付ファイルのキー（配列）を保存
-	 * $this->settings が確定した後でのみ利用可能
+	 * Save attached file on media, save attachment key (array) in posting data
 	 *
-	 * @param int post_id
-	 * @param array ( ファイルのname属性値 => ファイルパス, … )
-	 * @param int 生成フォーム（usedb）の post_id
+	 * @param int $post_id
+	 * @param array $attachments (name => file path)
+	 * @param int $form_id
 	 */
 	public static function save_attachments_in_media( $post_id, $attachments, $form_id ) {
 		require_once( ABSPATH . 'wp-admin' . '/includes/media.php' );
@@ -241,14 +232,14 @@ class MWF_Functions {
 	}
 
 	/**
-	 * ファイルタイプのチェック
+	 * Return true when correct file type
 	 *
-	 * @param string $filepath アップロードされたファイルのパス
-	 * @param string $filename ファイル名（未アップロード時の$_FILEの検査の場合、temp_nameは乱数になっているため）
+	 * @param string $filepath Uploaded file path
+	 * @param string $filename File name
 	 * @return bool
 	 */
 	public static function check_file_type( $filepath, $filename = '' ) {
-		// WordPress( get_allowed_mime_types ) で許可されたファイルタイプ限定
+		// File type restricted by WordPress (get_allowed_mime_types)
 		if ( $filename ) {
 			$wp_check_filetype = wp_check_filetype( $filename );
 		} else {
@@ -258,7 +249,7 @@ class MWF_Functions {
 			return false;
 		}
 
-		// 1つの拡張子に対し複数のMIMEタイプを持つファイルの対応
+		// For files have multi mime types
 		switch ( $wp_check_filetype['ext'] ) {
 			case 'avi' :
 				$wp_check_filetype['type'] = array(
@@ -333,9 +324,9 @@ class MWF_Functions {
 	}
 
 	/**
-	 * 問い合わせ番号の表示名を取得
+	 * Return display name of the tracking number
 	 *
-	 * @param string $post_type　問い合わせデータの投稿タイプ名
+	 * @param string $post_type Post type of inquiry data
 	 * @return string
 	 */
 	public static function get_tracking_number_title( $post_type ) {
@@ -351,10 +342,10 @@ class MWF_Functions {
 	}
 
 	/**
-	 * 問い合わせデータの投稿タイプ名をフォーム識別子に変換
+	 * Return form key from inquiry data post type
 	 *
-	 * @param string $post_type 問い合わせデータの投稿タイプ名
-	 * @return string|null フォーム識別子
+	 * @param string $post_type Post type of inquiry data
+	 * @return string|null Form key
 	 */
 	public static function contact_data_post_type_to_form_key( $post_type ) {
 		if ( self::is_contact_data_post_type( $post_type ) ) {
@@ -366,10 +357,10 @@ class MWF_Functions {
 	}
 
 	/**
-	 * フォームの投稿 ID をフォーム識別子に変換
+	 * Return form key from form ID
 	 *
 	 * @param int $form_id
-	 * @return string フォーム識別子
+	 * @return string Form key
 	 */
 	public static function get_form_key_from_form_id( $form_id ) {
 		$form_key = MWF_Config::NAME . '-' . $form_id;
@@ -377,20 +368,20 @@ class MWF_Functions {
 	}
 
 	/**
-	 * フォーム識別子をフォームの投稿 ID に変換
+	 * Return form ID from form key
 	 *
 	 * @param string $form_key
-	 * @return int
+	 * @return int Form ID
 	 */
 	public static function get_form_id_from_form_key( $form_key ) {
 		return preg_replace( '/^' . MWF_Config::NAME . '-(\d+)$/', '$1', $form_key );
 	}
 
 	/**
-	 * フォームの投稿 ID を問い合わせデータの投稿タイプに変換
+ 	 * Return inquiry data post type from form ID
 	 *
 	 * @param int $form_id
-	 * @return string フォーム識別子
+	 * @return string Form key
 	 */
 	public static function get_contact_data_post_type_from_form_id( $form_id ) {
 		$contact_data_post_type = MWF_Config::DBDATA . $form_id;
@@ -398,20 +389,17 @@ class MWF_Functions {
 	}
 
 	/**
-	 * 問い合わせデータ投稿タイプかどうか
+	 * Whether the inquiry data post type
 	 *
 	 * @param string $post_type
 	 * @return bool
 	 */
 	public static function is_contact_data_post_type( $post_type ) {
-		if ( preg_match( '/^' . MWF_Config::DBDATA . '\d+$/', $post_type ) ) {
-			return true;
-		}
-		return false;
+		return ( preg_match( '/^' . MWF_Config::DBDATA . '\d+$/', $post_type ) );
 	}
 
 	/**
-	 * 添付データを適切なHTMLに変換して返す
+	 * Return converting attached data to appropriate HTML
 	 *
 	 * @param string $value
 	 * @return string
@@ -419,7 +407,7 @@ class MWF_Functions {
 	public static function get_multimedia_data( $value ) {
 		$mimetype = get_post_mime_type( $value );
 		if ( $mimetype ) {
-			// 画像だったら
+			// Image
 			if ( in_array( $mimetype, array( 'image/jpeg', 'image/gif', 'image/png', 'image/bmp' ) ) ) {
 				$src_thumbnail = wp_get_attachment_image_src( $value, 'thumbnail' );
 				$src_full      = wp_get_attachment_image_src( $value, 'full' );
@@ -429,7 +417,7 @@ class MWF_Functions {
 					esc_url( $src_thumbnail[0] )
 				);
 			}
-			// 画像以外
+			// Other
 			else {
 				$src = wp_mime_type_icon( $mimetype );
 				return sprintf(
@@ -439,14 +427,14 @@ class MWF_Functions {
 				);
 			}
 		}
-		// 添付されているけど、フック等でメタ情報が書き換えられて添付ファイルID以外になってしまった場合
+		// Attached, but $value is not file ID because changed meta data by hook
 		else {
 			return esc_html( $value );
 		}
 	}
 
 	/**
-	 * 添付データのIDを返す
+	 * Return attachment file ID
 	 * 過去バージョンでの不具合でアップロードファイルを示すメタデータが空になっていることがあるのでその場合の代替処理
 	 *
 	 * @param WP_Post $post
