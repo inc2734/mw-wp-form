@@ -38,7 +38,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 
 		add_filter( 'mwform_auto_mail_raw_' . $form_key,
 			function( $Mail, $values, $Data ) use( $self ) {
-				$this->through_hook_count ++;
+				$self->through_hook_count ++;
 				$self->assertEquals( 'info@example.com', $Data->get( 'email' ) );
 				$Data->set( 'email', 'dummy' );
 				return $Mail;
@@ -48,7 +48,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 
 		add_filter( 'mwform_auto_mail_' . $form_key,
 			function( $Mail, $values, $Data ) use( $self ) {
-				$this->through_hook_count ++;
+				$self->through_hook_count ++;
 				$self->assertEquals( 'info@example.com', $Data->get( 'email' ) );
 				return $Mail;
 			},
@@ -85,7 +85,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 
 		add_filter( 'mwform_admin_mail_raw_' . $form_key,
 			function( $Mail, $values, $Data ) use( $self ) {
-				$this->through_hook_count ++;
+				$self->through_hook_count ++;
 				$self->assertEquals( 'info@example.com', $Data->get( 'email' ) );
 				$Data->set( 'email', 'dummy' );
 				return $Mail;
@@ -95,7 +95,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 
 		add_filter( 'mwform_admin_mail_' . $form_key,
 			function( $Mail, $values, $Data ) use( $self ) {
-				$this->through_hook_count ++;
+				$self->through_hook_count ++;
 				$self->assertEquals( 'info@example.com', $Data->get( 'email' ) );
 				return $Mail;
 			},
@@ -133,7 +133,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter(
 			'mwform_admin_mail_raw_' . $form_key,
 			function( $Mail, $values ) use( $self ) {
-				$this->through_hook_count ++;
+				$self->through_hook_count ++;
 				$Mail->to = 'admin_mail_raw_to@example.com';
 				return $Mail;
 			},
@@ -142,7 +142,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 
 		add_filter( 'mwform_admin_mail_' . $form_key,
 			function( $Mail, $values ) use( $self ) {
-				$this->through_hook_count ++;
+				$self->through_hook_count ++;
 				$self->assertEquals( $Mail->to, 'admin_mail_raw_to@example.com' );
 				return $Mail;
 			},
@@ -181,7 +181,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter(
 			'mwform_auto_mail_raw_' . $form_key,
 			function( $Mail, $values ) use( $self ) {
-				$this->through_hook_count ++;
+				$self->through_hook_count ++;
 				$Mail->to = 'auto_mail_raw_to@example.com';
 				return $Mail;
 			},
@@ -190,7 +190,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 
 		add_filter( 'mwform_auto_mail_' . $form_key,
 			function( $Mail, $values ) use( $self ) {
-				$this->through_hook_count ++;
+				$self->through_hook_count ++;
 				$self->assertEquals( $Mail->to, 'auto_mail_raw_to@example.com' );
 				return $Mail;
 			},
@@ -232,7 +232,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter(
 			'mwform_admin_mail_raw_' . $form_key,
 			function( $Mail, $values ) use( $self ) {
-				$this->through_hook_count ++;
+				$self->through_hook_count ++;
 				$Mail->to   = '{to}';
 				$Mail->cc   = '{cc}';
 				$Mail->bcc  = '{bcc}';
@@ -244,7 +244,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 
 		add_filter( 'mwform_admin_mail_' . $form_key,
 			function( $Mail, $values ) use( $self ) {
-				$this->through_hook_count ++;
+				$self->through_hook_count ++;
 				$self->assertEquals( get_bloginfo( 'admin_email' ), $Mail->to );
 				$self->assertEquals( '', $Mail->cc );
 				$self->assertEquals( '', $Mail->bcc );
@@ -290,7 +290,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter(
 			'mwform_auto_mail_raw_' . $form_key,
 			function( $Mail, $values ) use( $self ) {
-				$this->through_hook_count ++;
+				$self->through_hook_count ++;
 				$Mail->to   = '{to}';
 				$Mail->cc   = '{cc}';
 				$Mail->bcc  = '{bcc}';
@@ -302,7 +302,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 
 		add_filter( 'mwform_auto_mail_' . $form_key,
 			function( $Mail, $values ) use( $self ) {
-				$this->through_hook_count ++;
+				$self->through_hook_count ++;
 				$self->assertEquals( '', $Mail->to );
 				$self->assertEquals( '', $Mail->cc );
 				$self->assertEquals( '', $Mail->bcc );
