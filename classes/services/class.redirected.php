@@ -85,7 +85,7 @@ class MW_WP_Form_Redirected {
 	}
 
 	/**
-	 * リダイレクト先の URL を返す
+	 * Return URL of redirect destination
 	 *
 	 * @return string
 	 */
@@ -94,7 +94,7 @@ class MW_WP_Form_Redirected {
 	}
 
 	/**
-	 * 表示すべき画面を示すフラグを返す
+	 * Returns a flg indicating the screen to be displayed
 	 *
 	 * @return string $this->view_flg
 	 */
@@ -103,7 +103,7 @@ class MW_WP_Form_Redirected {
 	}
 
 	/**
-	 * $_SERVER['REQUEST_URI'] を http:// からはじまるURLに変換する
+	 * Return $_SERVER['REQUEST_URI'] that converted https?://...
 	 *
 	 * @return string URL
 	 */
@@ -131,7 +131,7 @@ class MW_WP_Form_Redirected {
 	}
 
 	/**
-	 * http:// からはじまるURLに変換する
+	 * Convert URL to https?://...
 	 *
 	 * @param string URL
 	 * @return string URL
@@ -170,7 +170,10 @@ class MW_WP_Form_Redirected {
 	}
 
 	/**
-	 * 現在のURLと引数で渡されたリダイレクトURLが同じであればリダイレクトしない
+	 * Redirect
+	 * Don't redirect if the current URL and the redirect URL are the same
+	 *
+	 * @return void
 	 */
 	public function redirect() {
 		$Data        = MW_WP_Form_Data::connect( $this->form_key );
