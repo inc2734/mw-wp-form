@@ -51,7 +51,7 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 	public function _add_meta_boxes() {
 		$post_type = get_post_type();
 		add_meta_box(
-			substr( MWF_Config::CONTACT_DATA_NAME, 1 ) . '_custom_fields',
+			substr( MWF_Config::INQUIRY_DATA_NAME, 1 ) . '_custom_fields',
 			__( 'Custom Fields', 'mw-wp-form' ),
 			array( $this, '_detail' ),
 			$post_type
@@ -115,8 +115,8 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 		$permit_keys = $Contact_Data_Setting->get_permit_keys();
 		$data = array();
 		foreach ( $permit_keys as $key ) {
-			if ( isset( $_POST[ MWF_Config::CONTACT_DATA_NAME ][ $key ] ) ) {
-				$value = $_POST[ MWF_Config::CONTACT_DATA_NAME ][ $key ];
+			if ( isset( $_POST[ MWF_Config::INQUIRY_DATA_NAME ][ $key ] ) ) {
+				$value = $_POST[ MWF_Config::INQUIRY_DATA_NAME ][ $key ];
 				if ( 'response_status' === $key ) {
 					if ( ! array_key_exists( $value, $Contact_Data_Setting->get_response_statuses() ) ) {
 						continue;

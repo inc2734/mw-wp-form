@@ -370,7 +370,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		) );
 		$this->assertEquals( 1, count( $posts ) );
 
-		$meta = get_post_meta( $posts[0]->ID, MWF_config::CONTACT_DATA_NAME, true );
+		$meta = get_post_meta( $posts[0]->ID, MWF_config::INQUIRY_DATA_NAME, true );
 		$this->assertNotEmpty( $meta );
 	}
 

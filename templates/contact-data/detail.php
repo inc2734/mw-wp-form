@@ -49,7 +49,7 @@
 	<tr>
 		<th><?php esc_html_e( 'Response Status', 'mw-wp-form' ); ?></th>
 		<td>
-			<select name="<?php echo esc_attr( MWF_Config::CONTACT_DATA_NAME ); ?>[response_status]">
+			<select name="<?php echo esc_attr( MWF_Config::INQUIRY_DATA_NAME ); ?>[response_status]">
 				<?php foreach ( $Contact_Data_Setting->get_response_statuses() as $key => $value ) : ?>
 				<option value="<?php echo esc_attr( $key ); ?>" <?php selected( $key, $Contact_Data_Setting->get( 'response_status' ) ); ?>>
 					<?php echo esc_html( $value ); ?>
@@ -60,6 +60,6 @@
 	</tr>
 	<tr>
 		<th><?php esc_html_e( 'Memo', 'mw-wp-form' ); ?></th>
-		<td><textarea name="<?php echo esc_attr( MWF_Config::CONTACT_DATA_NAME ); ?>[memo]" cols="50" rows="5"><?php echo $Contact_Data_Setting->get( 'memo' ); ?></textarea></td>
+		<td><textarea name="<?php echo esc_attr( MWF_Config::INQUIRY_DATA_NAME ); ?>[memo]" cols="50" rows="5"><?php echo $Contact_Data_Setting->get( 'memo' ); ?></textarea></td>
 	</tr>
 </table>

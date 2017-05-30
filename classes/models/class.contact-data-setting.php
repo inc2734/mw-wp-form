@@ -55,7 +55,7 @@ class MW_WP_Form_Contact_Data_Setting {
 			$post_meta[ $key ] = $value[0];
 		}
 
-		$permit_values = get_post_meta( $this->post_id, MWF_config::CONTACT_DATA_NAME, true );
+		$permit_values = get_post_meta( $this->post_id, MWF_config::INQUIRY_DATA_NAME, true );
 		if ( ! $permit_values ) {
 			$permit_values = array();
 		}
@@ -171,7 +171,7 @@ class MW_WP_Form_Contact_Data_Setting {
 		foreach ( $permit_keys as $key ) {
 			$permit_values[ $key ] = $this->$key;
 		}
-		update_post_meta( $this->post_id, MWF_config::CONTACT_DATA_NAME, $permit_values );
+		update_post_meta( $this->post_id, MWF_config::INQUIRY_DATA_NAME, $permit_values );
 
 		foreach ( $this->options as $key => $value ) {
 			if ( is_null( $value ) ) {
