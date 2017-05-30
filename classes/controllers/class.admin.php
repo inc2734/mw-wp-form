@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Admin Controller
- * Version    : 1.2.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : December 31, 2014
- * Modified   : August 22, 2016
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -33,86 +33,88 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * カスタムフィールドを出力
+	 * Add meta boxes
+	 *
+	 * @return void
 	 */
 	public function _add_meta_boxes() {
-		// 完了画面内容
 		add_meta_box(
 			MWF_Config::NAME . '_complete_message_metabox',
 			__( 'Complete Message', 'mw-wp-form' ),
 			array( $this, '_complete_message' ),
-			MWF_Config::NAME, 'normal'
+			MWF_Config::NAME,
+			'normal'
 		);
 
-		// URL設定
 		add_meta_box(
 			MWF_Config::NAME . '_url',
 			__( 'URL Options', 'mw-wp-form' ),
 			array( $this, '_url' ),
-			MWF_Config::NAME, 'normal'
+			MWF_Config::NAME,
+			'normal'
 		);
 
-		// バリデーション
 		add_meta_box(
 			MWF_Config::NAME . '_validation',
 			__( 'Validation Rule', 'mw-wp-form' ),
 			array( $this, '_validation_rule' ),
-			MWF_Config::NAME, 'normal'
+			MWF_Config::NAME,
+			'normal'
 		);
 
-		// アドオン
 		add_meta_box(
 			MWF_Config::NAME . '_addon',
 			__( 'Add-ons', 'mw-wp-form' ),
 			array( $this, '_add_ons' ),
-			MWF_Config::NAME, 'side'
+			MWF_Config::NAME,
+			'side'
 		);
 
-		// フォーム識別子
 		add_meta_box(
 			MWF_Config::NAME . '_formkey',
 			__( 'Form Key', 'mw-wp-form' ),
 			array( $this, '_form_key' ),
-			MWF_Config::NAME, 'side'
+			MWF_Config::NAME,
+			'side'
 		);
 
-		// 自動返信メール設定
 		add_meta_box(
 			MWF_Config::NAME . '_mail',
 			__( 'Automatic Reply Email Options', 'mw-wp-form' ),
 			array( $this, '_mail_options' ),
-			MWF_Config::NAME, 'side'
+			MWF_Config::NAME,
+			'side'
 		);
 
-		// 管理者メール設定
 		add_meta_box(
 			MWF_Config::NAME . '_admin_mail',
 			__( 'Admin Email Options', 'mw-wp-form' ),
 			array( $this, '_admin_mail_options' ),
-			MWF_Config::NAME, 'side'
+			MWF_Config::NAME,
+			'side'
 		);
 
-		// 設定
 		add_meta_box(
 			MWF_Config::NAME . '_settings',
 			__( 'settings', 'mw-wp-form' ),
 			array( $this, '_settings' ),
-			MWF_Config::NAME, 'side'
+			MWF_Config::NAME,
+			'side'
 		);
 
-		// スタイル
 		if ( $this->styles ) {
 			add_meta_box(
 				MWF_Config::NAME . '_styles',
 				__( 'Style setting', 'mw-wp-form' ),
 				array( $this, '_style' ),
-				MWF_Config::NAME, 'side'
+				MWF_Config::NAME,
+				'side'
 			);
 		}
 	}
 
 	/**
-	 * 本文の初期値を設定
+	 * Set default form html
 	 *
 	 * @param string $content
 	 * @return string
@@ -122,9 +124,10 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * タグジェネレータを出力
+	 * Render tag generator
 	 *
 	 * @param string $editor_id
+	 * @return void
 	 */
 	public function _tag_generator( $editor_id ) {
 		$post_type = get_post_type();
@@ -140,7 +143,9 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * admin_enqueue_scripts
+	 * Enqueue assets
+	 *
+	 * @return void
 	 */
 	public function _admin_enqueue_scripts() {
 		$url = plugins_url( MWF_Config::NAME );
@@ -180,10 +185,13 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
+	 * Save
+	 *
 	 * @param int $post_id
+	 * @return void
 	 */
 	public function _save_post( $post_id ) {
-		if ( ! isset( $_POST['post_type'] ) || $_POST['post_type'] !== MWF_Config::NAME ) {
+		if ( ! isset( $_POST['post_type'] ) || MWF_Config::NAME !== $_POST['post_type'] ) {
 			return;
 		}
 
@@ -229,7 +237,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 				}
 
 				foreach ( $_validation as $key => $value ) {
-					if ( $key == 'between' ) {
+					if ( 'between' === $key ) {
 						if ( ! MWF_Functions::is_numeric( $value['min'] ) ) {
 							unset( $_validation[ $key ]['min'] );
 						}
@@ -238,15 +246,15 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 						}
 					}
 
-					if ( $key == 'minlength' && ! MWF_Functions::is_numeric( $value['min'] ) ) {
+					if ( 'minlength' === $key  && ! MWF_Functions::is_numeric( $value['min'] ) ) {
 						unset( $_validation[ $key ] );
 					}
 
-					if ( $key == 'fileType' && isset( $value['types'] ) && ! preg_match( '/^[0-9A-Za-z,]+$/', $value['types'] ) ) {
+					if ( 'fileType' === $key && isset( $value['types'] ) && ! preg_match( '/^[0-9A-Za-z,]+$/', $value['types'] ) ) {
 						unset( $_validation[ $key ] );
 					}
 
-					if ( $key == 'fileSize' && !MWF_Functions::is_numeric( $value['bytes'] ) ) {
+					if ( 'fileSize' === $key && ! MWF_Functions::is_numeric( $value['bytes'] ) ) {
 						unset( $_validation[ $key ] );
 					}
 
@@ -289,7 +297,9 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * 完了画面内容
+	 * Render complete message meta box
+	 *
+	 * @return void
 	 */
 	public function _complete_message() {
 		wp_editor(
@@ -303,7 +313,9 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * URL設定
+	 * Render URL setting meta box
+	 *
+	 * @return void
 	 */
 	public function _url() {
 		$this->_render( 'admin/url', array(
@@ -315,7 +327,9 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * バリデーション
+	 * Render validation meta box
+	 *
+	 * @return void
 	 */
 	public function _validation_rule() {
 		global $post;
@@ -346,14 +360,18 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * アドオン
+	 * Render add-on meta box
+	 *
+	 * @return void
 	 */
 	public function _add_ons() {
 		$this->_render( 'admin/add-ons' );
 	}
 
 	/**
-	 * フォーム識別子
+	 * Render form key meta box
+	 *
+	 * @return void
 	 */
 	public function _form_key() {
 		$this->_render( 'admin/form-key', array(
@@ -362,7 +380,9 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * 自動返信メール設定
+	 * Render reply mail meta box
+	 *
+	 * @return void
 	 */
 	public function _mail_options() {
 		$this->_render( 'admin/mail-options', array(
@@ -375,7 +395,9 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * 管理者メール設定
+	 * Render admin mail meta box
+	 *
+	 * @return void
 	 */
 	public function _admin_mail_options() {
 		$this->_render( 'admin/admin-mail-options', array(
@@ -391,7 +413,9 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * 設定
+	 * Render settings meta box
+	 *
+	 * @return void
 	 */
 	public function _settings() {
 		$this->_render( 'admin/settings', array(
@@ -406,7 +430,9 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * スタイル
+	 * Render styles meta box
+	 *
+	 * @return void
 	 */
 	public function _style() {
 		$this->_render( 'admin/style', array(
@@ -416,10 +442,10 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * フォームの設定データを返す
+	 * Get form option
 	 *
-	 * @param string $key 設定データのキー
-	 * @return mixed 設定データ
+	 * @param string $key Key of option
+	 * @return mixed
 	 */
 	protected function _get_option( $key ) {
 		global $post;

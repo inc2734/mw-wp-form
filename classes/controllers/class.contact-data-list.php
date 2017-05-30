@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Contact Data List Controller
- * Version    : 1.2.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : January 1, 2015
- * Modified   : March 26, 2016
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -33,7 +33,6 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 		}
 
 		add_action( 'pre_get_posts'        , array( $this, '_pre_get_posts' ) );
-		add_action( 'admin_head'           , array( $this, '_add_columns' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue_scripts' ) );
 		add_action( 'admin_print_styles'   , array( $this, '_admin_print_styles' ) );
 		add_action( 'in_admin_footer'      , array( $this, '_add_csv_download_button' ) );
@@ -53,9 +52,10 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * フックで表示するレコードに変更があれば変更
+	 * Change if there is a necessity of change in the inquiry data displayed by hook
 	 *
 	 * @param WP_Query $wp_query
+	 * @return void
 	 */
 	public function _pre_get_posts( $wp_query ) {
 		if ( ! $wp_query->is_main_query() ) {
@@ -78,13 +78,9 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * DB登録使用時に問い合わせデータ一覧にカラムを追加
-	 */
-	public function _add_columns() {
-	}
-
-	/**
-	 * CSS と JS の読み込み
+	 * Enqueue assets
+	 *
+	 * @return void
 	 */
 	public function _admin_enqueue_scripts() {
 		$url = plugins_url( MWF_Config::NAME );
@@ -93,21 +89,25 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * DB登録データの一覧で新規追加のリンクを消す
+	 * Delete add new link
+	 *
+	 * @return void
 	 */
 	public function _admin_print_styles() {
 		$this->_render( 'contact-data-list/admin-print-styles' );
 	}
 
 	/**
-	 * CSVダウンロードボタンを表示
+	 * Render csv download button
+	 *
+	 * @return void
 	 */
 	public function _add_csv_download_button() {
 		if ( true !== apply_filters( 'mwform_csv_button_' . $this->post_type, true ) ) {
 			return;
 		}
 		$page = ( basename( $_SERVER['PHP_SELF'] ) );
-		if ( $page !== 'edit.php' ) {
+		if ( 'edit.php' !== $page  ) {
 			return;
 		}
 		$action = $_SERVER['REQUEST_URI'];
@@ -117,10 +117,10 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * 件数をカスタマイズ
+	 * Edit wp count posts
 	 *
 	 * @param object $counts
-	 * @param string $type 投稿タイプ名
+	 * @param string $type Post type
 	 * @return object
 	 */
 	public function _wp_count_posts( $counts, $type ) {
@@ -144,10 +144,10 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * カラム名を取得
+	 * Set displayed columns name
 	 *
 	 * @param array $columns
-	 * @return array $columns
+	 * @return array
 	 */
 	public function _add_form_columns_name( $columns ) {
 		global $posts;
@@ -184,10 +184,10 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * 各カラムのデータを出力
+	 * Render each columns
 	 *
-	 * @param string $column カラム名
-	 * @param int $post_id
+	 * @param string $column Column name
+	 * @param int void
 	 */
 	public function _add_form_columns( $column, $post_id ) {
 		$post                 = get_post( $post_id );

@@ -1,12 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Main Controller
- * Description: フロントエンドにおいて、適切な画面にリダイレクトさせる
- * Version    : 1.5.1
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : December 23, 2014
- * Modified   : April 28, 2017
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -34,10 +33,13 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * WordPressへのリクエストに含まれている、$_POSTの値を削除
+	 * Delete the value of $_POST included in the request to WordPress
+	 *
+	 * @param WP_Query $wp_query
+	 * @return void
 	 */
 	public function _remove_query_vars_from_post( $wp_query ) {
-		if ( isset( $_POST[MWF_Config::TOKEN_NAME] ) ) {
+		if ( isset( $_POST[ MWF_Config::TOKEN_NAME ] ) ) {
 			$request_token = $_POST[ MWF_Config::TOKEN_NAME ];
 		}
 
@@ -50,17 +52,17 @@ class MW_WP_Form_Main_Controller {
 				continue;
 			}
 
-			if ( isset( $wp_query->query_vars[$key] )
-				&& $wp_query->query_vars[$key] === $value
+			if ( isset( $wp_query->query_vars[ $key ] )
+				&& $wp_query->query_vars[ $key ] === $value
 				&& ! empty( $value ) ) {
 
-				$wp_query->query_vars[$key] = '';
+				$wp_query->query_vars[ $key ] = '';
 			}
 		}
 	}
 
 	/**
-	 * Nginx Cache Controller 用に header をカスタマイズ
+	 * Customize request header for Nginx Cache Controller
 	 *
 	 * @param array $headers
 	 * @return array $headers
@@ -71,7 +73,7 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * 表示画面でのプラグインの処理等
+	 * Main process for form displaying
 	 *
 	 * @param string $template
 	 * @return string $template
@@ -115,7 +117,7 @@ class MW_WP_Form_Main_Controller {
 			$view_flg   = $Redirected->get_view_flg();
 			$this->Data->set_view_flg( $view_flg );
 
-			if ( $view_flg === 'complete' ) {
+			if ( 'complete' === $view_flg ) {
 				$is_mail_sended = $this->_send();
 			}
 
@@ -158,7 +160,7 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * メール送信
+	 * Send mail
 	 *
 	 * @return boolean
 	 */
@@ -175,13 +177,14 @@ class MW_WP_Form_Main_Controller {
 			}
 		}
 
+		// Send admin mail
 		$is_admin_mail_sended = $Mail_Service->send_admin_mail();
 
 		if ( ! $is_admin_mail_sended ) {
 			return false;
 		}
 
-		// 自動返信メールの送信
+		// Send reply mail
 		$automatic_reply_email = $this->Setting->get( 'automatic_reply_email' );
 		if ( $automatic_reply_email ) {
 			$automatic_reply_email   = $this->Data->get_post_value_by_key( $automatic_reply_email );
@@ -191,19 +194,18 @@ class MW_WP_Form_Main_Controller {
 				$automatic_reply_email
 			);
 
-			if ( $automatic_reply_email && !$is_invalid_mail_address ) {
+			if ( $automatic_reply_email && ! $is_invalid_mail_address ) {
 				$is_reply_mail_sended = $Mail_Service->send_reply_mail();
 			}
 		}
 
-		// 問い合わせ番号を加算
 		$Mail_Service->update_tracking_number();
 
 		return true;
 	}
 
 	/**
-	 * 送信されたデータをもとに添付ファイル用の配列を生成して返す
+	 * Return that generate an array for the attached file based on the transmitted data
 	 *
 	 * @return array $attachments pathの配列
 	 */
@@ -257,7 +259,8 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * ファイルアップロード処理。実際のアップロード状況に合わせてフォームデータも再生成する。
+	 * File upload processing.
+	 * Regenerate form data according to the actual upload situation.
 	 */
 	protected function _file_upload() {
 		$File  = new MW_WP_Form_File();

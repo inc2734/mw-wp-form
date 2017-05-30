@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Contact Data Controller
- * Version    : 1.1.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : December 31, 2014
- * Modified   : March 27, 2015
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -46,7 +46,9 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * メタボックスを追加
+	 * Add meta boxes
+	 *
+	 * @return void
 	 */
 	public function _add_meta_boxes() {
 		$post_type = get_post_type();
@@ -59,7 +61,9 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * CSSの読み込み
+	 * Enqueue assets
+	 *
+	 * @return void
 	 */
 	public function _admin_enqueue_scripts() {
 		$url = plugins_url( MWF_Config::NAME );
@@ -67,16 +71,19 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * 詳細画面で新規追加のリンクを消す
+	 * Delete add new link
+	 *
+	 * @return void
 	 */
 	public function _admin_print_styles() {
 		$this->_render( 'contact-data/admin-print-styles' );
 	}
 
 	/**
-	 * 問い合わせデータ詳細画面で一覧に戻るリンクを表示
+	 * Render back to list link
 	 *
 	 * @param object $post
+	 * @return void
 	 */
 	public function _edit_form_top( $post ) {
 		$post_type = get_post_type();
@@ -87,7 +94,10 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
+	 * Save
+	 *
 	 * @param int $post_id
+	 * @return void
 	 */
 	public function save_post( $post_id ) {
 		if ( ! isset( $_POST['post_type'] ) ) {
@@ -130,7 +140,10 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * 詳細
+	 * Render detail meta box
+	 *
+	 * @param WP_Post $post
+	 * @return void
 	 */
 	public function _detail( $post ) {
 		$this->_render( 'contact-data/detail', array(

@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Admin List Controller
- * Version    : 1.1.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : January 1, 2015
- * Modified   : March 27, 2015
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -19,7 +19,7 @@ class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * 寄付リンクを出力
+	 * Return Donate link html
 	 *
 	 * @param array $views
 	 * @return array
@@ -37,7 +37,9 @@ class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * add_columns
+	 * Hooked for adding columns
+	 *
+	 * @return void
 	 */
 	public function _add_columns() {
 		add_filter( 'manage_posts_columns'      , array( $this, '_manage_posts_columns' ) );
@@ -45,7 +47,9 @@ class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * admin_enqueue_scripts
+	 * Enqueue assets
+	 *
+	 * @return void
 	 */
 	public function _admin_enqueue_scripts() {
 		$url = plugins_url( MWF_Config::NAME );
@@ -53,9 +57,10 @@ class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * manage_posts_columns
+	 * Add columns
+	 *
 	 * @param array $columns
-	 * @return array $columns
+	 * @return array
 	 */
 	public function _manage_posts_columns( $columns ) {
 		$date = $columns['date'];
@@ -66,12 +71,13 @@ class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * manage_posts_custom_column
+	 * Render column for form key
+	 *
 	 * @param string $column_name
 	 * @param int $post_id
 	 */
 	public function _manage_posts_custom_column( $column_name, $post_id ) {
-		if ( $column_name === 'mwform_form_key' ) {
+		if ( 'mwform_form_key' === $column_name ) {
 			$this->_render( 'admin-list/form-key', array(
 				'post_id' => get_the_ID(),
 			) );

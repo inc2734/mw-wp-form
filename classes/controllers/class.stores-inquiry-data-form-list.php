@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Stores Inquiry Data Form List Controller
- * Version    : 1.0.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : March 27, 2015
- * Modified   :
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -16,6 +16,9 @@ class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Con
 		add_action( $screen->id , array( $this, '_index' ) );
 	}
 
+	/**
+	 * Render the page
+	 */
 	public function _index() {
 		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_form_post_types();
 		$form_list = array();
@@ -35,10 +38,10 @@ class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Con
 	}
 
 	/**
-	 * データ件数を取得
+	 * Return data count
 	 *
-	 * @param string $post_type 投稿タイプ名
-	 * @return numeric 投稿数
+	 * @param string $post_type
+	 * @return int
 	 */
 	protected function _get_count( $post_type ) {
 		$args = apply_filters( 'mwform_get_inquiry_data_args-' . $post_type, array() );
@@ -55,10 +58,10 @@ class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Con
 	}
 
 	/**
-	 * 問い合わせデータの最新保存日を取得
+	 * Return the latest saved date of saved inquiry data
 	 *
-	 * @param string $post_type 投稿タイプ名
-	 * @return string 問い合わせデータの最新保存日
+	 * @param string $post_type
+	 * @return string
 	 */
 	protected function _get_modified_datetime( $post_type ) {
 		global $post;
@@ -79,10 +82,10 @@ class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Con
 	}
 
 	/**
-	 * フォームの作成日時を取得
+	 * Return date of creating form
 	 *
-	 * @param string $post_type 投稿タイプ名
-	 * @return string 作成日
+	 * @param string $post_type
+	 * @return string
 	 */
 	protected function _get_created_datetime( $post_type ) {
 		$post_id   = preg_replace( '/^mwf_(.+?)$/', '$1', $post_type );

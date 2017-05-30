@@ -1,24 +1,24 @@
 <?php
 /**
  * Name       : MW WP Form Chart Controller
- * Version    : 1.1.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : January 1, 2015
- * Modified   : March 27, 2015
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 
 	/**
-	 * URL引数で渡される、そのグラフに使う投稿タイプ名
+	 * Post type of saved inquiry data to display in this chart
 	 * @var string
 	 */
 	protected $formkey;
 
 	/**
-	 * フォームの設定データ
+	 * Settings of the form
 	 * @var array
 	 */
 	protected $postdata = array();
@@ -40,7 +40,9 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * CSS、JSの読み込み
+	 * Enqueue assets
+	 *
+	 * @return void
 	 */
 	public function _admin_enqueue_scripts() {
 		global $wp_scripts;
@@ -92,6 +94,11 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 		);
 	}
 
+	/**
+	 * Save
+	 *
+	 * @return void
+	 */
 	public function _save() {
 		if ( ! isset( $_POST[ MWF_Config::NAME . '-chart-nonce-field' ] ) ) {
 			return;
@@ -121,7 +128,9 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * グラフページを表示
+	 * Display chart page
+	 *
+	 * @return void
 	 */
 	public function _index() {
 		$post_type = $this->formkey;
@@ -175,9 +184,9 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * 設定データのサニタイズ
+	 * Sanitize for settings
 	 *
-	 * @param array $input フォームから送信されたデータ
+	 * @param array $input Posted data from chart settings page
 	 * @return array
 	 */
 	public function _sanitize( $input ) {
