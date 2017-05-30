@@ -4,7 +4,7 @@
  * Description: 管理画面クラス
  * Version    : 1.0.4
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : January 1, 2015
  * Modified   : February 2, 2017
  * License    : GPLv2 or later

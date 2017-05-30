@@ -4,7 +4,7 @@
  * Description: 関数
  * Version    : 1.6.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : May 29, 2013
  * Modified   : January 30, 2017
  * License    : GPLv2 or later

@@ -4,7 +4,7 @@
  * Description: Akismetクラス
  * Version    : 1.0.1
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : April 30, 2014
  * Modified   : July 24, 2014
  * License    : GPLv2 or later

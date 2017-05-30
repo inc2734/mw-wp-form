@@ -3,7 +3,7 @@
  * Name       : MW WP Form Chart Controller
  * Version    : 1.1.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : January 1, 2015
  * Modified   : March 27, 2015
  * License    : GPLv2 or later
@@ -166,11 +166,12 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 		// 空の隠れフィールド（コピー元）を挿入
 		array_unshift( $postdata, $default_keys );
 
-		$this->_assign( 'post_type'   , $post_type );
-		$this->_assign( 'form_posts'  , $form_posts );
-		$this->_assign( 'custom_keys' , $custom_keys );
-		$this->_assign( 'postdata'    , $postdata );
-		$this->_render( 'chart/index' );
+		$this->_render( 'chart/index', array(
+			'post_type'   => $post_type,
+			'form_posts'  => $form_posts,
+			'custom_keys' => $custom_keys,
+			'postdata'    => $postdata,
+		) );
 	}
 
 	/**

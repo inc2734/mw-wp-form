@@ -3,7 +3,7 @@
  * Name       : MW WP Form Contact Data Controller
  * Version    : 1.1.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : December 31, 2014
  * Modified   : March 27, 2015
  * License    : GPLv2 or later
@@ -81,8 +81,9 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 	public function _edit_form_top( $post ) {
 		$post_type = get_post_type();
 		$link = admin_url( '/edit.php?post_type=' . $post_type );
-		$this->_assign( 'link', $link );
-		$this->_render( 'contact-data/returning-link' );
+		$this->_render( 'contact-data/returning-link', array(
+			'link' => $link,
+		) );
 	}
 
 	/**
@@ -132,9 +133,10 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 	 * 詳細
 	 */
 	public function _detail( $post ) {
-		$this->_assign( 'post', $post );
-		$this->_assign( 'post_type', $post->post_type );
-		$this->_assign( 'Contact_Data_Setting', new MW_WP_Form_Contact_Data_Setting( get_the_ID() ) );
-		$this->_render( 'contact-data/detail' );
+		$this->_render( 'contact-data/detail', array(
+			'post'                 => $post,
+			'post_type'            => $post->post_type,
+			'Contact_Data_Setting' => new MW_WP_Form_Contact_Data_Setting( get_the_ID() ),
+		) );
 	}
 }

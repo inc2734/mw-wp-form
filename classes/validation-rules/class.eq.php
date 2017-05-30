@@ -4,7 +4,7 @@
  * Description: 値が一致している
  * Version    : 1.1.2
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : July 21, 2014
  * Modified   : December 3, 2015
  * License    : GPLv2 or later

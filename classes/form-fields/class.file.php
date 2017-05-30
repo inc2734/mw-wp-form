@@ -4,7 +4,7 @@
  * Description: 画像アップロードフィールドを出力
  * Version    : 1.6.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : May 17, 2013
  * Modified   : November 14, 2015
  * License    : GPLv2 or later

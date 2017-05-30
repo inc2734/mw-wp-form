@@ -4,7 +4,7 @@
  * Description: 戻るボタン（button）を出力
  * Version    : 1.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : December 26, 2016
  * Modified   :
  * License    : GPLv2 or later

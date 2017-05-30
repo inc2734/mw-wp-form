@@ -4,7 +4,7 @@
  * Description: メールクラス
  * Version    : 2.2.1
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : July 20, 2012
  * Modified   : May 4, 2017
  * License    : GPLv2 or later

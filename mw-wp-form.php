@@ -2,18 +2,17 @@
 /**
  * Plugin Name: MW WP Form
  * Plugin URI: http://plugins.2inc.org/mw-wp-form/
- * Description: MW WP Form is shortcode base contact form plugin. This plugin have many feature. For example you can use many validation rules, contact data saving, and chart aggregation using saved contact data.
- * Version: 3.2.1
+ * Description: MW WP Form is shortcode base contact form plugin. This plugin have many features. For example you can use many validation rules, inquiry data saving, and chart aggregation using saved inquiry data.
+ * Version: 4.0.0
  * Author: Takashi Kitajima
- * Author URI: http://2inc.org
+ * Author URI: https://2inc.org
  * Created : September 25, 2012
- * Modified: May 4, 2017
+ * Modified: May 30, 2017
  * Text Domain: mw-wp-form
  * Domain Path: /languages/
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  *
- * @todo テストの更新
  * @todo standard coding
  * @todo 日本語 > English
  * @todo メール設定が空のときによしなにするのはやめて、新規作成時（もしくはメール設定が保存されていない時）は初期値が入力された状態にしたい
@@ -29,12 +28,13 @@ class MW_WP_Form {
 		add_action( 'plugins_loaded', array( $this, '_load_initialize_files' ), 9 );
 		add_action( 'plugins_loaded', array( $this, '_initialize' ), 11 );
 
-		register_activation_hook( __FILE__, array( __CLASS__, '_activation' ) );
 		register_uninstall_hook( __FILE__ , array( __CLASS__, '_uninstall' ) );
 	}
 
 	/**
-	 * initialize に必要なファイルをロード
+	 * Load classes
+	 *
+	 * @return void
 	 */
 	public function _load_initialize_files() {
 		$plugin_dir_path = plugin_dir_path( __FILE__ );
@@ -54,7 +54,9 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * initialize
+	 * Load text domain, The starting point of the process
+	 *
+	 * @return void
 	 */
 	public function _initialize() {
 		load_plugin_textdomain( 'mw-wp-form', false, basename( dirname( __FILE__ ) ) . '/languages' );
@@ -64,13 +66,15 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * 各管理画面の初期化、もしくはフロント画面の初期化
+	 * Initialize each screens
+	 *
+	 * @return void
 	 */
 	public function _after_setup_theme() {
 		if ( current_user_can( MWF_Config::CAPABILITY ) && is_admin() ) {
 			add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue_scripts' ) );
 			add_action( 'admin_menu'           , array( $this, '_admin_menu_for_chart' ) );
-			add_action( 'admin_menu'           , array( $this, '_admin_menu_for_contact_data_list' ) );
+			add_action( 'admin_menu'           , array( $this, '_admin_menu_for_inquiry_data_list' ) );
 			add_action( 'current_screen'       , array( $this, '_current_screen' ) );
 		} elseif ( ! is_admin() ) {
 			$Controller = new MW_WP_Form_Main_Controller();
@@ -78,7 +82,9 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * 共通CSSの読み込み
+	 * Enqueue assets
+	 *
+	 * @return void
 	 */
 	public function _admin_enqueue_scripts() {
 		$url = plugins_url( MWF_Config::NAME );
@@ -86,7 +92,9 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * グラフページのメニューを追加
+	 * Add admin menu for chart
+	 *
+	 * @return void
 	 */
 	public function _admin_menu_for_chart() {
 		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_form_post_types();
@@ -105,9 +113,11 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * 問い合わせデータ閲覧ページのメニューを追加
+	 * Add admin menu for saved inquiry data
+	 *
+	 * @return void
 	 */
-	public function _admin_menu_for_contact_data_list() {
+	public function _admin_menu_for_inquiry_data_list() {
 		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_form_post_types();
 		if ( empty( $contact_data_post_types ) ) {
 			return;
@@ -124,9 +134,10 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * 各画面のコントローラーの呼び出し
+	 * Front controller
 	 *
 	 * @param WP_Screen $screen
+	 * @return void
 	 */
 	public function _current_screen( $screen ) {
 		if ( $screen->id === MWF_Config::NAME ) {
@@ -150,7 +161,9 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * 管理画面（カスタム投稿タイプ）の設定
+	 * Register post types for MW WP Form and inquiry data
+	 *
+	 * @return void
 	 */
 	public function _register_post_type() {
 		if ( ! current_user_can( MWF_Config::CAPABILITY ) && is_admin() ) {
@@ -176,7 +189,6 @@ class MW_WP_Form {
 			'show_ui'         => true,
 		) );
 
-		// MW WP Form のデータベースに保存される問い合わせデータを管理する投稿タイプ
 		$Admin = new MW_WP_Form_Admin();
 		$forms = $Admin->get_forms_using_database();
 		foreach ( $forms as $form ) {
@@ -202,13 +214,9 @@ class MW_WP_Form {
 	}
 
 	/**
-	 * 有効化した時の処理
-	 */
-	public static function _activation() {
-	}
-
-	/**
-	 * アンインストールした時の処理
+	 * Uninstall processes
+	 *
+	 * @return void
 	 */
 	public static function _uninstall() {
 		$plugin_dir_path = plugin_dir_path( __FILE__ );

@@ -914,5 +914,5 @@ msgid "Takashi Kitajima"
 msgstr ""
 
 #. Author URI of the plugin/theme
-msgid "http://2inc.org"
+msgid "https://2inc.org"
 msgstr ""

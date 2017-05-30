@@ -3,7 +3,7 @@
  * Name       : MW WP Form Contact Data List Controller
  * Version    : 1.2.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : January 1, 2015
  * Modified   : March 26, 2016
  * License    : GPLv2 or later
@@ -111,8 +111,9 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 			return;
 		}
 		$action = $_SERVER['REQUEST_URI'];
-		$this->_assign( 'action', $action );
-		$this->_render( 'contact-data-list/csv-button' );
+		$this->_render( 'contact-data-list/csv-button', array(
+			'action' => $action
+		) );
 	}
 
 	/**
@@ -216,7 +217,8 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 			$value = '&nbsp;';
 		}
 
-		$this->_assign( 'column', $value );
-		$this->_render( 'contact-data-list/column' );
+		$this->_render( 'contact-data-list/column', array(
+			'column' => $value,
+		) );
 	}
 }

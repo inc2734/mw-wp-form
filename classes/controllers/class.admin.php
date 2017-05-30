@@ -3,7 +3,7 @@
  * Name       : MW WP Form Admin Controller
  * Version    : 1.2.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : December 31, 2014
  * Modified   : August 22, 2016
  * License    : GPLv2 or later
@@ -306,11 +306,12 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * URL設定
 	 */
 	public function _url() {
-		$this->_assign( 'input_url'           , $this->_get_option( 'input_url' ) );
-		$this->_assign( 'confirmation_url'    , $this->_get_option( 'confirmation_url' ) );
-		$this->_assign( 'complete_url'        , $this->_get_option( 'complete_url' ) );
-		$this->_assign( 'validation_error_url', $this->_get_option( 'validation_error_url' ) );
-		$this->_render( 'admin/url' );
+		$this->_render( 'admin/url', array(
+			'input_url'            => $this->_get_option( 'input_url' ),
+			'confirmation_url'     => $this->_get_option( 'confirmation_url' ),
+			'complete_url'         => $this->_get_option( 'complete_url' ),
+			'validation_error_url' => $this->_get_option( 'validation_error_url' ),
+		) );
 	}
 
 	/**
@@ -337,10 +338,11 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 
 		// 空の隠れバリデーションフィールド（コピー元）を挿入
 		array_unshift( $validation, $validation_keys );
-		$this->_assign( 'validation'      , $validation );
-		$this->_assign( 'validation_rules', $Validation_Rules->get_validation_rules() );
-		$this->_assign( 'validation_keys' , $validation_keys );
-		$this->_render( 'admin/validation-rule' );
+		$this->_render( 'admin/validation-rule', array(
+			'validation'       => $validation,
+			'validation_rules' => $Validation_Rules->get_validation_rules(),
+			'validation_keys'  => $validation_keys,
+		) );
 	}
 
 	/**
@@ -354,58 +356,63 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * フォーム識別子
 	 */
 	public function _form_key() {
-		$this->_assign( 'post_id', get_the_ID() );
-		$this->_render( 'admin/form-key' );
+		$this->_render( 'admin/form-key', array(
+			'post_id' => get_the_ID(),
+		) );
 	}
 
 	/**
 	 * 自動返信メール設定
 	 */
 	public function _mail_options() {
-		$this->_assign( 'mail_subject'         , $this->_get_option( 'mail_subject' ) );
-		$this->_assign( 'mail_sender'          , $this->_get_option( 'mail_sender' ) );
-		$this->_assign( 'mail_from'            , $this->_get_option( 'mail_from' ) );
-		$this->_assign( 'mail_content'         , $this->_get_option( 'mail_content' ) );
-		$this->_assign( 'automatic_reply_email', $this->_get_option( 'automatic_reply_email' ) );
-		$this->_render( 'admin/mail-options' );
+		$this->_render( 'admin/mail-options', array(
+			'mail_subject'          => $this->_get_option( 'mail_subject' ),
+			'mail_sender'           => $this->_get_option( 'mail_sender' ),
+			'mail_from'             => $this->_get_option( 'mail_from' ),
+			'mail_content'          => $this->_get_option( 'mail_content' ),
+			'automatic_reply_email' => $this->_get_option( 'automatic_reply_email' ),
+		) );
 	}
 
 	/**
 	 * 管理者メール設定
 	 */
 	public function _admin_mail_options() {
-		$this->_assign( 'mail_to'               , $this->_get_option( 'mail_to' ) );
-		$this->_assign( 'mail_cc'               , $this->_get_option( 'mail_cc' ) );
-		$this->_assign( 'mail_bcc'              , $this->_get_option( 'mail_bcc' ) );
-		$this->_assign( 'admin_mail_subject'    , $this->_get_option( 'admin_mail_subject' ) );
-		$this->_assign( 'admin_mail_sender'     , $this->_get_option( 'admin_mail_sender' ) );
-		$this->_assign( 'mail_return_path'      , $this->_get_option( 'mail_return_path' ) );
-		$this->_assign( 'admin_mail_from'       , $this->_get_option( 'admin_mail_from' ) );
-		$this->_assign( 'admin_mail_content'    , $this->_get_option( 'admin_mail_content' ) );
-		$this->_render( 'admin/admin-mail-options' );
+		$this->_render( 'admin/admin-mail-options', array(
+			'mail_to'            => $this->_get_option( 'mail_to' ),
+			'mail_cc'            => $this->_get_option( 'mail_cc' ),
+			'mail_bcc'           => $this->_get_option( 'mail_bcc' ),
+			'admin_mail_subject' => $this->_get_option( 'admin_mail_subject' ),
+			'admin_mail_sender'  => $this->_get_option( 'admin_mail_sender' ),
+			'mail_return_path'   => $this->_get_option( 'mail_return_path' ),
+			'admin_mail_from'    => $this->_get_option( 'admin_mail_from' ),
+			'admin_mail_content' => $this->_get_option( 'admin_mail_content' ),
+		) );
 	}
 
 	/**
 	 * 設定
 	 */
 	public function _settings() {
-		$this->_assign( 'querystring'         , $this->_get_option( 'querystring' ) );
-		$this->_assign( 'usedb'               , $this->_get_option( 'usedb' ) );
-		$this->_assign( 'scroll'              , $this->_get_option( 'scroll' ) );
-		$this->_assign( 'akismet_author'      , $this->_get_option( 'akismet_author' ) );
-		$this->_assign( 'akismet_author_email', $this->_get_option( 'akismet_author_email' ) );
-		$this->_assign( 'akismet_author_url'  , $this->_get_option( 'akismet_author_url' ) );
-		$this->_assign( 'tracking_number'     , $this->_get_option( MWF_Config::TRACKINGNUMBER ) );
-		$this->_render( 'admin/settings' );
+		$this->_render( 'admin/settings', array(
+			'querystring'          => $this->_get_option( 'querystring' ),
+			'usedb'                => $this->_get_option( 'usedb' ),
+			'scroll'               => $this->_get_option( 'scroll' ),
+			'akismet_author'       => $this->_get_option( 'akismet_author' ),
+			'akismet_author_email' => $this->_get_option( 'akismet_author_email' ),
+			'akismet_author_url'   => $this->_get_option( 'akismet_author_url' ),
+			'tracking_number'      => $this->_get_option( MWF_Config::TRACKINGNUMBER ),
+		) );
 	}
 
 	/**
 	 * スタイル
 	 */
 	public function _style() {
-		$this->_assign( 'styles', $this->styles );
-		$this->_assign( 'style' , $this->_get_option( 'style' ) );
-		$this->_render( 'admin/style' );
+		$this->_render( 'admin/style', array(
+			'styles' => $this->styles,
+			'style'  => $this->_get_option( 'style' ),
+		) );
 	}
 
 	/**

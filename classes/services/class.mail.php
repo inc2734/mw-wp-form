@@ -3,7 +3,7 @@
  * Name       : MW WP Form Mail Service
  * Version    : 1.4.1
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : January 1, 2015
  * Modified   : May 4, 2017
  * License    : GPLv2 or later

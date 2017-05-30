@@ -4,7 +4,7 @@
  * Description: 設定ファイル
  * Version    : 1.3.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : May 29, 2013
  * Modified   : January 2, 2015
  * License    : GPLv2 or later

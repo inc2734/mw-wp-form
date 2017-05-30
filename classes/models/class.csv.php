@@ -3,7 +3,7 @@
  * Name       : MW WP Form CSV
  * Version    : 1.1.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : April 3, 2015
  * Modified   : March 26, 2016
  * License    : GPLv2 or later

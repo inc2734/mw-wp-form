@@ -4,7 +4,7 @@
  * Description: フロントエンドにおいて、適切な画面にリダイレクトさせる
  * Version    : 1.5.1
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : December 23, 2014
  * Modified   : April 28, 2017
  * License    : GPLv2 or later

@@ -4,7 +4,7 @@
  * Description: 値が、配列で指定された中に含まれている
  * Version    : 1.1.2
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : July 21, 2014
  * Modified   : April 1, 2015
  * License    : GPLv2 or later

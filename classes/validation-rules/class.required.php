@@ -4,7 +4,7 @@
  * Description: 値が存在する
  * Version    : 1.1.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : July 21, 2014
  * Modified   : December 31, 2014
  * License    : GPLv2 or later

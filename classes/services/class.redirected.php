@@ -3,7 +3,7 @@
  * Name       : MW WP Form Redirected
  * Version    : 2.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : December 31, 2014
  * Modified   : May 21, 2017
  * License    : GPLv2 or later

@@ -3,7 +3,7 @@
  * Name       : MW WP Form Controller
  * Version    : 1.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : March 28, 2015
  * Modified   :
  * License    : GPLv2 or later
@@ -12,28 +12,14 @@
 class MW_WP_Form_Controller {
 
 	/**
-	 * assign したデータを保持する配列
-	 * @var array
-	 */
-	protected $assign_data = array();
-
-	/**
-	 * 任意のデータを assign
+	 * Rendering template
 	 *
-	 * @param string $key
-	 * @param mixed $value
+	 * @param string $template {directory name}/{file name (no need extension)}
+	 * @param array Array of data you want to assign
+	 * @return void
 	 */
-	protected function _assign( $key, $value ) {
-		$this->assign_data[ $key ] = $value;
-	}
-
-	/**
-	 * テンプレートを読み込んで表示
-	 *
-	 * @param string $template ディレクトリ名/ファイル名（拡張子無し）
-	 */
-	protected function _render( $template ) {
-		extract( $this->assign_data );
+	protected function _render( $template, array $args = array() ) {
+		extract( $args );
 		$template_dir  = plugin_dir_path( __FILE__ ) . '../../templates/';
 		$template_path = $template_dir . $template . '.php';
 
@@ -42,6 +28,5 @@ class MW_WP_Form_Controller {
 		}
 
 		include( $template_path );
-		$this->assign_data = array();
 	}
 }

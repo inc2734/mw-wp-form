@@ -4,7 +4,7 @@
  * Description: 画像サイズが指定したサイズ以内
  * Version    : 1.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : April 4, 2016
  * Modified   :
  * License    : GPLv2 or later

@@ -4,7 +4,7 @@
  * Description: mwform_custom_mail_tag_mw-wp-form-xxx で指定されたデータを出力
  * Version    : 1.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : April 3, 2016
  * Modified   :
  * License    : GPLv2 or later

@@ -3,7 +3,7 @@
  * Name       : MW WP Form Admin List Controller
  * Version    : 1.1.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : January 1, 2015
  * Modified   : March 27, 2015
  * License    : GPLv2 or later
@@ -71,9 +71,10 @@ class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 	 * @param int $post_id
 	 */
 	public function _manage_posts_custom_column( $column_name, $post_id ) {
-		$this->_assign( 'post_id', get_the_ID() );
 		if ( $column_name === 'mwform_form_key' ) {
-			$this->_render( 'admin-list/form-key' );
+			$this->_render( 'admin-list/form-key', array(
+				'post_id' => get_the_ID(),
+			) );
 		}
 	}
 }

@@ -4,7 +4,7 @@
  * Description: 日付（年月）が正しいかどうか
  * Version    : 1.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : March 25, 2017
  * Modified   :
  * License    : GPLv2 or later

@@ -4,7 +4,7 @@
  * Description: email フィールドを出力
  * Version    : 1.1.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : July 20, 2015
  * Modified   : November 14, 2015
  * License    : GPLv2 or later

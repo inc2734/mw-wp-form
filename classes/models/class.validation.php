@@ -4,7 +4,7 @@
  * Description: 与えられたデータに対してバリデーションエラーがあるかチェックする
  * Version    : 1.8.5
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : July 20, 2012
  * Modified   : April 15, 2015
  * License    : GPLv2 or later

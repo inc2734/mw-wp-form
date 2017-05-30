@@ -4,7 +4,7 @@
  * Description: ファイル名が指定した拡張子を含む。types は , 区切り
  * Version    : 1.1.1
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : July 21, 2014
  * Modified   : April 1, 2015
  * License    : GPLv2 or later

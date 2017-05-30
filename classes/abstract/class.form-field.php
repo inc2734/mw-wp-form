@@ -4,7 +4,7 @@
  * Description: フォームフィールドの抽象クラス
  * Version    : 1.7.6
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : December 14, 2012
  * Modified   : December 26, 2016
  * License    : GPLv2 or later

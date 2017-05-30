@@ -4,7 +4,7 @@
  * Description: バリデーションルールの抽象クラス
  * Version    : 1.1.1
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : July 19, 2014
  * Modified   : March 26, 2015
  * License    : GPLv2 or later

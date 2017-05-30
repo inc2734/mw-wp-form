@@ -4,7 +4,7 @@
  * Description: Akismetのエラー。常にtrue
  * Version    : 1.1.1
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : July 21, 2014
  * Modified   : April 3, 2014
  * License    : GPLv2 or later

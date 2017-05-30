@@ -4,7 +4,7 @@
  * Description: メールパーサー
  * Version    : 1.3.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : April 14, 2015
  * Modified   : April 29, 2017
  * License    : GPLv2 or later

@@ -4,7 +4,7 @@
  * Description: hiddenフィールドを出力
  * Version    : 1.6.3
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : December 14, 2012
  * Modified   : September 28, 2016
  * License    : GPLv2 or later

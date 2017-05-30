@@ -4,11 +4,11 @@ Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 4.0
 Tested up to: 4.7.4
-Stable tag: 3.2.1
+Stable tag: 4.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-MW WP Form is shortcode base contact form plugin. This plugin have many feature. For example you can use many validation rules, contact data saving, and chart aggregation using saved contact data.
+MW WP Form is shortcode base contact form plugin. This plugin have many features. For example you can use many validation rules, inquiry data saving, and chart aggregation using saved inquiry data.
 
 == Description ==
 
@@ -18,21 +18,12 @@ MW WP Form can create mail form with a confirmation screen using shortcode.
 * Using confirmation page is possible.
 * The page changes by the same URL or individual URL are possible.
 * Many validation rules
-* Saving contact data is possible.
-* Displaying Chart using saved contact data is possible.
-
-MW WP Form はショートコードを使って確認画面付きのメールフォームを作成することができるプラグインです。
-
-* ショートコードを使用したフォーム生成
-* 確認画面が表示可能
-* 同一URL・個別URLでの画面変遷が可能
-* 豊富なバリデーションルール
-* 問い合わせデータを保存可能
-* 保存した問い合わせデータをグラフ可能
+* Saving inquiry data is possible.
+* Displaying Chart using saved inquiry data is possible.
 
 = Official =
 
-http://plugins.2inc.org/mw-wp-form/
+https://plugins.2inc.org/mw-wp-form/
 
 = GitHub =
 
@@ -45,7 +36,7 @@ Source: https://developers.google.com/chart/
 
 = Contributors =
 
-* [Takashi Kitajima](http://2inc.org) ( [inc2734](http://profiles.wordpress.org/inc2734) )
+* [Takashi Kitajima](https://2inc.org) ( [inc2734](http://profiles.wordpress.org/inc2734) )
 * [Ryujiro Yamamoto](http://webcre-archive.com) ( [ryu263](http://profiles.wordpress.org/ryu263) )
 * [Tsujimoto Tomoyuki](http://kee-non.com) ( [tomothumb](http://profiles.wordpress.org/tomothumb) )
 * [Naoyuki Ohata] ( [nanniku](http://profiles.wordpress.org/nanniku) )

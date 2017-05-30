@@ -3,7 +3,7 @@
  * Name       : MW WP Form Setting
  * Version    : 1.3.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : December 31, 2014
  * Modified   : January 30, 2017
  * License    : GPLv2 or later

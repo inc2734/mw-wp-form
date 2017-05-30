@@ -4,7 +4,7 @@
  * Description: Tempディレクトリ、ファイルアップロードの処理を行うクラス
  * Version    : 1.0.9
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : October 10, 2013
  * Modified   : September 28, 2016
  * License    : GPLv2 or later
