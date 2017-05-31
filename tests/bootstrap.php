@@ -28,15 +28,18 @@ if ( ! function_exists( '_delete_all_data' ) ) {
 	function _delete_all_data() {
 		global $wpdb;
 
-		foreach ( array(
-			$wpdb->posts,
-			$wpdb->postmeta,
-			$wpdb->comments,
-			$wpdb->commentmeta,
-			$wpdb->term_relationships,
-			$wpdb->termmeta
-		) as $table ) {
-				$wpdb->query( "DELETE FROM {$table}" );
+		$tables = array(
+			'posts', 'postmeta', 'comments', 'commentmeta', 'term_relationships', 'termmeta',
+		);
+		$wptables = array();
+		foreach ( $tables as $table ) {
+			if ( isset( $wpdb->$table ) ) {
+				$wptables[] = $wpdb->$table;
+			}
+		}
+
+		foreach ( $wptables as $table ) {
+			$wpdb->query( "DELETE FROM {$table}" );
 		}
 
 		foreach ( array(
