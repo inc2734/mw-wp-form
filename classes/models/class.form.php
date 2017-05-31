@@ -231,7 +231,7 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'text', array(
 				'name'       => $name,
 				'attributes' => $attributes,
@@ -259,7 +259,7 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'email', array(
 				'name'       => $name,
 				'attributes' => $attributes,
@@ -287,7 +287,7 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'url', array(
 				'name'       => $name,
 				'attributes' => $attributes,
@@ -314,7 +314,7 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'range', array(
 				'name'       => $name,
 				'attributes' => $attributes,
@@ -342,7 +342,7 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'number', array(
 				'name'       => $name,
 				'attributes' => $attributes,
@@ -358,7 +358,7 @@ class MW_WP_Form_Form {
 	 * @return string HTML
 	 */
 	public function hidden( $name, $value ) {
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'hidden', array(
 				'name'  => $name,
 				'value' => $value,
@@ -385,7 +385,7 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'password', array(
 				'name'       => $name,
 				'attributes' => $attributes,
@@ -424,7 +424,7 @@ class MW_WP_Form_Form {
 			}
 		}
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'zip', array(
 				'name'      => $name,
 				'separator' => $separator,
@@ -493,7 +493,7 @@ class MW_WP_Form_Form {
 			}
 		}
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'tel', array(
 				'name'      => $name,
 				'separator' => $separator,
@@ -552,7 +552,7 @@ class MW_WP_Form_Form {
 		unset( $options['value'] );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'textarea', array(
 				'name'       => $name,
 				'attributes' => $attributes,
@@ -581,7 +581,7 @@ class MW_WP_Form_Form {
 		unset( $options['value'] );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'select', array(
 				'name'       => $name,
 				'value'      => $value,
@@ -623,7 +623,7 @@ class MW_WP_Form_Form {
 			);
 		}
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'radio', array(
 				'name'       => $name,
 				'vertically' => ( 'true' === $options['vertically'] ) ? 'vertical-item' : 'horizontal-item',
@@ -672,7 +672,7 @@ class MW_WP_Form_Form {
 			);
 		}
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'checkbox', array(
 				'name'       => $name,
 				'vertically' => ( 'true' === $options['vertically'] ) ? 'vertical-item' : 'horizontal-item',
@@ -698,7 +698,7 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'submit', array(
 				'name'       => $name,
 				'value'      => $value,
@@ -723,7 +723,7 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'button_submit', array(
 				'name'            => $name,
 				'value'           => $value,
@@ -748,7 +748,7 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'button', array(
 				'name'       => $name,
 				'value'      => $value,
@@ -773,7 +773,7 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'button_button', array(
 				'name'            => $name,
 				'value'           => $value,
@@ -804,7 +804,7 @@ class MW_WP_Form_Form {
 		unset( $options['js'] );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'datepicker', array(
 				'name'       => $name,
 				'attributes' => $attributes,
@@ -834,7 +834,7 @@ class MW_WP_Form_Form {
 		unset( $options['js'] );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'monthpicker', array(
 				'name'       => $name,
 				'attributes' => $attributes,
@@ -858,7 +858,7 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 		$attributes = $this->generate_attributes( $options );
 
-		return $this->remove_linefeed_space(
+		return $this->remove_newline_space(
 			$this->_render( 'file', array(
 				'name'       => $name,
 				'attributes' => $attributes,
@@ -914,11 +914,19 @@ class MW_WP_Form_Form {
 	 * @param string $string
 	 * @return string
 	 */
-	public function remove_linefeed_space( $string ) {
+	public function remove_newline_space( $string ) {
 		$string = str_replace( array( "\r\n", "\r", "\n", "\t" ), '', $string );
 		$string = preg_replace( '/\s+\/>/', ' />', $string );
 		$string = preg_replace( '/"\s+?([^"\s])/', '" $1', $string );
 		$string = preg_replace( '/>[\t\s]*?</', '><', $string );
 		return $string;
+	}
+	public static function remove_linefeed_space( $string ) {
+		MWF_Functions::deprecated_message(
+			'MW_WP_Form_Form::remove_linefeed_space()',
+			'MW_WP_Form_Form::remove_newline_space()'
+		);
+		$Form = new MW_WP_Form_Form();
+		return $Form->remove_newline_space( $string );
 	}
 }

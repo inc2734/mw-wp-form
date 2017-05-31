@@ -67,13 +67,13 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 
 	/**
 	 * @test
-	 * @group remove_linefeed_space
+	 * @group remove_newline_space
 	 */
-	public function remove_linefeed_space() {
+	public function remove_newline_space() {
 		$Form = new MW_WP_Form_Form();
 		$this->assertEquals(
 			'<input type="text" name="name-1" /><input type="text" name="name-1" />',
-			$Form->remove_linefeed_space(
+			$Form->remove_newline_space(
 			'
 				<input type="text"      name="name-1" />
 				     <input type="text" name="name-1"      />

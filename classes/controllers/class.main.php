@@ -89,23 +89,29 @@ class MW_WP_Form_Main_Controller {
 		if ( ! empty( $_POST ) && ! empty( $_POST[ MWF_Config::NAME . '-form-id' ] ) ) {
 			nocache_headers();
 
-			$form_id           = $_POST[ MWF_Config::NAME . '-form-id' ];
-			$form_verify_token = $_POST[ MWF_Config::NAME . '-form-verify-token' ];
-			$this->Setting     = new MW_WP_Form_Setting( (int) $form_id );
-
+			$form_id = $_POST[ MWF_Config::NAME . '-form-id' ];
 			if ( MWF_Config::NAME !== get_post_type( $form_id ) ) {
 				wp_safe_redirect( home_url() );
 				exit;
 			}
 
+			$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
+
+			/**
+			 * @deprecated since v4.0.0
+			 * Because refactoring changed the timing to execute the shortcode
+			 */
+			do_action( 'mwform_after_exec_shortcode', $form_key );
+			do_action( 'mwform_start_main_process', $form_key );
+
+			$form_verify_token = $_POST[ MWF_Config::NAME . '-form-verify-token' ];
+			$this->Setting     = new MW_WP_Form_Setting( (int) $form_id );
 			if ( $this->Setting->generate_form_verify_token() !== $form_verify_token ) {
 				wp_safe_redirect( home_url() );
 				exit;
 			}
 
-			$form_key   = MWF_Functions::get_form_key_from_form_id( $form_id );
-			$this->Data = MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
-
+			$this->Data       = MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
 			$post_condition   = $this->Data->get_post_condition();
 			$this->Validation = new MW_WP_Form_Validation( $form_key );
 			if ( in_array( $post_condition, array( 'confirm', 'complete' ) ) ) {

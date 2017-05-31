@@ -105,45 +105,49 @@ class MWF_Functions {
 	 * @param string $new_function_name
 	 */
 	public static function deprecated_message( $function_name, $new_function = '' ) {
+		if ( ! defined( 'WP_DEBUG' ) || empty( WP_DEBUG ) ) {
+			return;
+		}
+
 		global $mwform_deprecated_message;
 		$mwform_deprecated_message .= '<div class="error ' . esc_attr( MWF_Config::NAME ) . '-deprecated-message">';
 		$mwform_deprecated_message .= sprintf(
-			'MW WP Form dosen\'t support "%s" already. This method will be removed in the next version. ',
+			'MW WP Form dosen\'t support "<b>%s</b>" already. This will be removed in the next version. ',
 			$function_name
 		);
 		if ( $new_function ) {
-			$mwform_deprecated_message .= sprintf( 'You should use "%s". ', $new_function );
+			$mwform_deprecated_message .= sprintf( 'You should use "<b>%s</b>". ', $new_function );
 		}
 		$debug_backtrace = debug_backtrace();
 		array_shift( $debug_backtrace );
 		foreach ( $debug_backtrace as $value ) {
 			if ( isset( $value['file'], $value['line'] ) ) {
-				$mwform_deprecated_message .= sprintf( '%s line %d', $value['file'], $value['line'] );
+				$mwform_deprecated_message .= sprintf( '<b>%s line %d</b>', $value['file'], $value['line'] );
 			}
 			break;
 		}
 		$mwform_deprecated_message .= '</div>';
 		if ( is_admin() ) {
 			if ( 'admin_notices' === current_filter() ) {
-				self::display_deprecated_message();
+				self::_display_deprecated_message();
 			} else {
-				add_action( 'admin_notices', 'MWF_Functions::display_deprecated_message' );
+				add_action( 'admin_notices', 'MWF_Functions::_display_deprecated_message' );
 			}
 		} else {
 			if ( 'the_content' === current_filter() ) {
-				self::display_deprecated_message();
+				self::_display_deprecated_message();
 			} else {
-				add_filter( 'the_content', 'MWF_Functions::return_deprecated_message' );
+				add_filter( 'the_content', 'MWF_Functions::_return_deprecated_message' );
 			}
 		}
 	}
-	public static function display_deprecated_message() {
+	protected static function _display_deprecated_message() {
 		global $mwform_deprecated_message;
 		$content = $mwform_deprecated_message;
 		unset( $mwform_deprecated_message );
 		echo $content;
 	}
-	public static function return_deprecated_message( $content ) {
+	protected static function _return_deprecated_message( $content ) {
 		global $mwform_deprecated_message;
 		$content = $mwform_deprecated_message . $content;
 		unset( $mwform_deprecated_message );

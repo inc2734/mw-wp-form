@@ -42,7 +42,7 @@ class MW_WP_Form_Redirected {
 
 		if ( 'back' === $post_condition ) {
 			if ( $is_valid ) {
-				$this->url      = $input;
+				$this->url = $input;
 			} else {
 				if ( $error ) {
 					$this->url = $error;
@@ -81,7 +81,7 @@ class MW_WP_Form_Redirected {
 			return;
 		}
 
-		$this->url = ( $input ) ? $input : home_url();
+		$this->url = ( $input ) ? $input : $this->get_request_uri();
 	}
 
 	/**
@@ -90,7 +90,8 @@ class MW_WP_Form_Redirected {
 	 * @return string
 	 */
 	public function get_url() {
-		return $this->url;
+		$Data = MW_WP_Form_Data::connect( $this->form_key );
+		return apply_filters( 'mwform_redirect_url_' . $this->form_key, $this->url, $Data );
 	}
 
 	/**
@@ -176,9 +177,7 @@ class MW_WP_Form_Redirected {
 	 * @return void
 	 */
 	public function redirect() {
-		$Data        = MW_WP_Form_Data::connect( $this->form_key );
-		$url         = ( $this->get_url() ) ? $this->get_url() : $this->get_request_uri();
-		$redirect    = apply_filters( 'mwform_redirect_url_' . $this->form_key, $url, $Data );
+		$redirect    = ( $this->get_url() ) ? $this->get_url() : $this->get_request_uri();
 		$REQUEST_URI = $this->get_request_uri();
 
 		if ( empty( $_POST ) && $redirect === $REQUEST_URI ) {

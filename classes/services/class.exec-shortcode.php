@@ -55,9 +55,18 @@ class MW_WP_Form_Exec_Shortcode {
 	public function initialize( $attributes ) {
 		$this->form_id  = $this->_get_form_id_by_mwform_formkey( $attributes );
 		$this->form_key = MWF_Functions::get_form_key_from_form_id( $this->form_id );
+
+		/**
+		 * @deprecated since v4.0.0
+		 * Because refactoring changed the timing to execute the shortcode
+		 */
+		do_action( 'mwform_after_exec_shortcode', $this->form_key );
+		do_action( 'mwform_start_main_process', $this->form_key );
+
 		$this->Data     = MW_WP_Form_Data::connect( $this->form_key );
 		$this->view_flg = ( $this->Data->get_view_flg() ) ? $this->Data->get_view_flg() : 'input';
 		$this->Setting  = new MW_WP_Form_Setting( $this->form_id );
+
 		add_action( 'wp_footer', array( $this->Data, 'clear_values' ) );
 
 		do_action( 'mwform_before_load_content_' . $this->form_key );
