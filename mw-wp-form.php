@@ -13,8 +13,6 @@
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  *
- * @todo standard coding
- * @todo 日本語 > English
  * @todo メール設定が空のときによしなにするのはやめて、新規作成時（もしくはメール設定が保存されていない時）は初期値が入力された状態にしたい
  * @todo mwform_get_inquiry_data_args が一覧、詳細、グラフ、CSV で矛盾なく動作するかテスト
  * @todo mwform_after_exec_shortcode がなくなっている
