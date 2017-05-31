@@ -106,12 +106,11 @@ class MW_WP_Form_Main_Controller {
 			$form_key   = MWF_Functions::get_form_key_from_form_id( $form_id );
 			$this->Data = MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
 
-			$post_condition = $this->Data->get_post_condition();
+			$post_condition   = $this->Data->get_post_condition();
+			$this->Validation = new MW_WP_Form_Validation( $form_key );
 			if ( in_array( $post_condition, array( 'confirm', 'complete' ) ) ) {
 				$this->_file_upload();
 			}
-
-			$this->Validation = new MW_WP_Form_Validation( $form_key );
 
 			$Redirected = new MW_WP_Form_Redirected( $form_key, $this->Setting, $this->Validation->is_valid(), $post_condition );
 			$view_flg   = $Redirected->get_view_flg();

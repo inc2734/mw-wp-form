@@ -14,7 +14,7 @@ class MWF_Functions {
 	/**
 	 * Return true when the variable passed as an argument exists and the numeric value
 	 *
-	 * @param string $value Pass by reference
+	 * @param variable $value Pass by reference
 	 * @return bool
 	 */
 	public static function is_numeric( &$value ) {
@@ -28,7 +28,7 @@ class MWF_Functions {
 	 * @return array
 	 */
 	public static function array_clean( $array ) {
-		return array_merge( array_diff( $array, array( '' ) ) );
+		return array_filter( $array );
 	}
 
 	/**
@@ -38,7 +38,7 @@ class MWF_Functions {
 	 * @return bool
 	 */
 	public static function is_empty( $value ) {
-		return ( $value === array() || $value === '' || $value === null || $value === false );
+		return ( array() === $value || '' === $value || is_null( $value ) || false === $value );
 	}
 
 	/**
@@ -48,17 +48,20 @@ class MWF_Functions {
 	 * @return string
 	 */
 	public static function fileurl_to_path( $fileurl ) {
-		$wp_upload_dir = wp_upload_dir();
-		if ( preg_match( '/^https?:\/\//', $fileurl ) ) {
-			$baseurl = preg_replace( '/^https?:\/\/(.+)$/', '$1', $wp_upload_dir['baseurl'] );
-			$fileurl = preg_replace( '/^https?:\/\/(.+)$/', '$1', $fileurl );
-			$filepath = str_replace(
-				$baseurl,
-				$wp_upload_dir['basedir'],
-				$fileurl
-			);
-			return $filepath;
+		if ( ! preg_match( '/^https?:\/\//', $fileurl ) ) {
+			return;
 		}
+
+		$wp_upload_dir = wp_upload_dir();
+		$baseurl = preg_replace( '/^https?:\/\/(.+)$/', '$1', $wp_upload_dir['baseurl'] );
+		$fileurl = preg_replace( '/^https?:\/\/(.+)$/', '$1', $fileurl );
+		$filepath = str_replace(
+			$baseurl,
+			$wp_upload_dir['basedir'],
+			$fileurl
+		);
+
+		return $filepath;
 	}
 
 	/**
@@ -68,6 +71,10 @@ class MWF_Functions {
 	 * @return string
 	 */
 	public static function filepath_to_url( $filepath ) {
+		if ( preg_match( '/^https?:\/\//', $filepath ) ) {
+			return;
+		}
+
 		$wp_upload_dir = wp_upload_dir();
 		$fileurl = str_replace(
 			$wp_upload_dir['basedir'],
@@ -77,6 +84,7 @@ class MWF_Functions {
 		if ( is_ssl() ) {
 			$fileurl = preg_replace( '/^https?:\/\//', 'https://', $fileurl );
 		}
+
 		return $fileurl;
 	}
 
@@ -153,18 +161,18 @@ class MWF_Functions {
 	public static function move_temp_file_to_upload_dir( $filepath, $upload_dir = '', $filename = '' ) {
 		$wp_upload_dir = wp_upload_dir();
 
-		if ( !$upload_dir ) {
+		if ( ! $upload_dir ) {
 			$upload_dir = $wp_upload_dir['path'];
 		} else {
 			$upload_dir = trailingslashit( $wp_upload_dir['basedir'] ) . ltrim( $upload_dir, '/\\' );
 			$bool = wp_mkdir_p( $upload_dir );
 		}
 
-		if ( !$filename ) {
+		if ( ! $filename ) {
 			$filename = basename( $filepath );
 		}
 
-		if ( !preg_match( '/(\..+?)$/', $filename ) ) {
+		if ( ! preg_match( '/(\..+?)$/', $filename ) ) {
 			$extension = pathinfo( $filepath, PATHINFO_EXTENSION );
 			$filename = $filename . '.' . $extension;
 		}
@@ -192,20 +200,22 @@ class MWF_Functions {
 	/**
 	 * Save attached file on media, save attachment key (array) in posting data
 	 *
-	 * @param int $post_id
+	 * @param int $saved_mail_id
 	 * @param array $attachments (name => file path)
 	 * @param int $form_id
+	 * @return void
 	 */
-	public static function save_attachments_in_media( $post_id, $attachments, $form_id ) {
+	public static function save_attachments_in_media( $saved_mail_id, $attachments, $form_id ) {
 		require_once( ABSPATH . 'wp-admin' . '/includes/media.php' );
 		require_once( ABSPATH . 'wp-admin' . '/includes/image.php' );
 		$save_attached_key = array();
 		foreach ( $attachments as $key => $filepath ) {
-			if ( !self::check_file_type( $filepath ) ) {
+			if ( ! self::check_file_type( $filepath ) ) {
 				continue;
 			}
 
 			$wp_check_filetype = wp_check_filetype( $filepath );
+			global $wp_post_types;
 			$post_type = get_post_type_object( self::get_contact_data_post_type_from_form_id( $form_id ) );
 			if ( empty( $post_type->label ) ) {
 				continue;
@@ -216,18 +226,18 @@ class MWF_Functions {
 				'post_status'    => 'inherit',
 				'post_content'   => __( 'Uploaded from ', 'mw-wp-form' ) . $post_type->label,
 			);
-			$attach_id   = wp_insert_attachment( $attachment, $filepath, $post_id );
+			$attach_id   = wp_insert_attachment( $attachment, $filepath, $saved_mail_id );
 			$attach_data = wp_generate_attachment_metadata( $attach_id, $filepath );
 			$update_attachment_flg = wp_update_attachment_metadata( $attach_id, $attach_data );
 			if ( $attach_id ) {
 				// 代わりにここで attachment_id を保存
-				update_post_meta( $post_id, $key, $attach_id );
+				update_post_meta( $saved_mail_id, $key, $attach_id );
 				// $key が 添付ファイルのキーであるとわかるように隠し設定を保存
 				$save_attached_key[] = $key;
 			}
 		}
 		if ( $save_attached_key ) {
-			update_post_meta( $post_id, '_' . MWF_Config::UPLOAD_FILE_KEYS, $save_attached_key );
+			update_post_meta( $saved_mail_id, '_' . MWF_Config::UPLOAD_FILE_KEYS, $save_attached_key );
 		}
 	}
 
@@ -239,6 +249,10 @@ class MWF_Functions {
 	 * @return bool
 	 */
 	public static function check_file_type( $filepath, $filename = '' ) {
+		if ( ! file_exists( $filepath ) ) {
+			return false;
+		}
+
 		// File type restricted by WordPress (get_allowed_mime_types)
 		if ( $filename ) {
 			$wp_check_filetype = wp_check_filetype( $filename );
@@ -249,69 +263,67 @@ class MWF_Functions {
 			return false;
 		}
 
-		// For files have multi mime types
-		switch ( $wp_check_filetype['ext'] ) {
-			case 'avi' :
-				$wp_check_filetype['type'] = array(
-					'application/x-troff-msvideo',
-					'video/avi',
-					'video/msvideo',
-					'video/x-msvideo',
-				);
-				break;
-			case 'mp3' :
-				$wp_check_filetype['type'] = array(
-					'audio/mpeg3',
-					'audio/x-mpeg3',
-					'video/mpeg',
-					'video/x-mpeg',
-					'audio/mpeg',
-				);
-				break;
-			case 'mpg' :
-				$wp_check_filetype['type'] = array(
-					'audio/mpeg',
-					'video/mpeg',
-				);
-				break;
-			case 'docx' :
-				$wp_check_filetype['type'] = array(
-					$wp_check_filetype['type'],
-					'application/zip',
-					'application/msword',
-				);
-				break;
-			case 'xlsx' :
-				$wp_check_filetype['type'] = array(
-					$wp_check_filetype['type'],
-					'application/zip',
-					'application/excel',
-					'application/msexcel',
-					'application/vnd.ms-excel',
-				);
-				break;
-			case 'pptx' :
-				$wp_check_filetype['type'] = array(
-					$wp_check_filetype['type'],
-					'application/zip',
-					'application/mspowerpoint',
-					'application/powerpoint',
-					'application/ppt',
-				);
-				break;
-		}
-
-		if ( version_compare( phpversion(), '5.3.0' ) >= 0 && defined( 'FILEINFO_MIME_TYPE ' ) ) {
-			if ( !file_exists( $filepath ) ) {
-				return false;
-			}
+		if ( version_compare( phpversion(), '5.3.0' ) >= 0 && defined( 'FILEINFO_MIME_TYPE' ) ) {
 			$finfo = new finfo( FILEINFO_MIME_TYPE );
-			$type = $finfo->file( $filepath );
-			if ( $finfo === false ) {
+			if ( false === $finfo ) {
 				return false;
 			}
+
+			// For files have multi mime types
+			switch ( $wp_check_filetype['ext'] ) {
+				case 'avi' :
+					$wp_check_filetype['type'] = array(
+						'application/x-troff-msvideo',
+						'video/avi',
+						'video/msvideo',
+						'video/x-msvideo',
+					);
+					break;
+				case 'mp3' :
+					$wp_check_filetype['type'] = array(
+						'audio/mpeg3',
+						'audio/x-mpeg3',
+						'video/mpeg',
+						'video/x-mpeg',
+						'audio/mpeg',
+					);
+					break;
+				case 'mpg' :
+					$wp_check_filetype['type'] = array(
+						'audio/mpeg',
+						'video/mpeg',
+					);
+					break;
+				case 'docx' :
+					$wp_check_filetype['type'] = array(
+						$wp_check_filetype['type'],
+						'application/zip',
+						'application/msword',
+					);
+					break;
+				case 'xlsx' :
+					$wp_check_filetype['type'] = array(
+						$wp_check_filetype['type'],
+						'application/zip',
+						'application/excel',
+						'application/msexcel',
+						'application/vnd.ms-excel',
+					);
+					break;
+				case 'pptx' :
+					$wp_check_filetype['type'] = array(
+						$wp_check_filetype['type'],
+						'application/zip',
+						'application/mspowerpoint',
+						'application/powerpoint',
+						'application/ppt',
+					);
+					break;
+			}
+
+			$type = $finfo->file( $filepath );
 			if ( is_array( $wp_check_filetype['type'] ) ) {
-				if ( !in_array( $type, $wp_check_filetype['type'] ) ) {
+				if ( ! in_array( $type, $wp_check_filetype['type'] ) ) {
 					return false;
 				}
 			} else {
@@ -320,6 +332,7 @@ class MWF_Functions {
 				}
 			}
 		}
+
 		return true;
 	}
 
@@ -363,8 +376,9 @@ class MWF_Functions {
 	 * @return string Form key
 	 */
 	public static function get_form_key_from_form_id( $form_id ) {
-		$form_key = MWF_Config::NAME . '-' . $form_id;
-		return $form_key;
+		if ( MWF_Functions::is_numeric( $form_id ) ) {
+			return MWF_Config::NAME . '-' . $form_id;
+		}
 	}
 
 	/**
@@ -374,7 +388,9 @@ class MWF_Functions {
 	 * @return int Form ID
 	 */
 	public static function get_form_id_from_form_key( $form_key ) {
-		return preg_replace( '/^' . MWF_Config::NAME . '-(\d+)$/', '$1', $form_key );
+		if ( preg_match( '/^' . MWF_Config::NAME . '-(\d+)$/', $form_key, $reg ) ) {
+			return $reg[1];
+		}
 	}
 
 	/**
@@ -384,8 +400,10 @@ class MWF_Functions {
 	 * @return string Form key
 	 */
 	public static function get_contact_data_post_type_from_form_id( $form_id ) {
-		$contact_data_post_type = MWF_Config::DBDATA . $form_id;
-		return $contact_data_post_type;
+		if ( MWF_Functions::is_numeric( $form_id ) ) {
+			$contact_data_post_type = MWF_Config::DBDATA . $form_id;
+			return $contact_data_post_type;
+		}
 	}
 
 	/**
@@ -395,7 +413,7 @@ class MWF_Functions {
 	 * @return bool
 	 */
 	public static function is_contact_data_post_type( $post_type ) {
-		return ( preg_match( '/^' . MWF_Config::DBDATA . '\d+$/', $post_type ) );
+		return (bool) ( preg_match( '/^' . MWF_Config::DBDATA . '\d+$/', $post_type ) );
 	}
 
 	/**
