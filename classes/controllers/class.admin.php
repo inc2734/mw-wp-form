@@ -385,10 +385,20 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * @return void
 	 */
 	public function _mail_options() {
+		$mail_sender = $this->_get_option( 'mail_sender' );
+		if ( is_null( $mail_sender ) ) {
+			$mail_sender = get_bloginfo( 'name' );
+		}
+
+		$mail_from = $this->_get_option( 'mail_from' );
+		if ( is_null( $mail_from ) ) {
+			$mail_from = get_bloginfo( 'admin_email' );
+		}
+
 		$this->_render( 'admin/mail-options', array(
 			'mail_subject'          => $this->_get_option( 'mail_subject' ),
-			'mail_sender'           => $this->_get_option( 'mail_sender' ),
-			'mail_from'             => $this->_get_option( 'mail_from' ),
+			'mail_sender'           => $mail_sender,
+			'mail_from'             => $mail_from,
 			'mail_content'          => $this->_get_option( 'mail_content' ),
 			'automatic_reply_email' => $this->_get_option( 'automatic_reply_email' ),
 		) );
@@ -400,14 +410,29 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * @return void
 	 */
 	public function _admin_mail_options() {
+		$mail_to = $this->_get_option( 'mail_to' );
+		if ( is_null( $mail_to ) ) {
+			$mail_to = get_bloginfo( 'admin_email' );
+		}
+
+		$admin_mail_sender = $this->_get_option( 'admin_mail_sender' );
+		if ( is_null( $admin_mail_sender ) ) {
+			$admin_mail_sender = get_bloginfo( 'name' );
+		}
+
+		$admin_mail_from = $this->_get_option( 'admin_mail_from' );
+		if ( is_null( $admin_mail_from ) ) {
+			$admin_mail_from = get_bloginfo( 'admin_email' );
+		}
+
 		$this->_render( 'admin/admin-mail-options', array(
-			'mail_to'            => $this->_get_option( 'mail_to' ),
+			'mail_to'            => $mail_to,
 			'mail_cc'            => $this->_get_option( 'mail_cc' ),
 			'mail_bcc'           => $this->_get_option( 'mail_bcc' ),
 			'admin_mail_subject' => $this->_get_option( 'admin_mail_subject' ),
-			'admin_mail_sender'  => $this->_get_option( 'admin_mail_sender' ),
+			'admin_mail_sender'  => $admin_mail_sender,
 			'mail_return_path'   => $this->_get_option( 'mail_return_path' ),
-			'admin_mail_from'    => $this->_get_option( 'admin_mail_from' ),
+			'admin_mail_from'    => $admin_mail_from,
 			'admin_mail_content' => $this->_get_option( 'admin_mail_content' ),
 		) );
 	}
@@ -461,10 +486,9 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			return $value;
 		}
 
-		$date     = $post->post_date;
-		$modified = $post->post_modified;
-		if ( $date === $modified ){
-			return apply_filters( 'mwform_default_settings', '', $key );
+		if ( 'auto-draft' === $post->post_status ) {
+			return apply_filters( 'mwform_default_settings', null, $key );
 		}
+		return '';
 	}
 }

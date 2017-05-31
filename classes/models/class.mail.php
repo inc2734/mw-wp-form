@@ -2,66 +2,57 @@
 /**
  * Name       : MW WP Form Mail
  * Description: メールクラス
- * Version    : 2.2.1
+ * Version    : 3.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : July 20, 2012
- * Modified   : May 4, 2017
+ * Modified   : May 31, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Mail {
 
 	/**
-	 * 宛先
 	 * @var string
 	 */
 	public $to;
 
 	/**
-	 * CC
 	 * @var string
 	 */
 	public $cc;
 
 	/**
-	 * BCC
 	 * @var string
 	 */
 	public $bcc;
 
 	/**
-	 * 送信元
 	 * @var string
 	 */
 	public $from;
 
 	/**
-	 * Return-Path
 	 * @var string
 	 */
 	public $return_path;
 
 	/**
-	 * 送信者
 	 * @var string
 	 */
 	public $sender;
 
 	/**
-	 * 件名
 	 * @var string
 	 */
 	public $subject;
 
 	/**
-	 * 本文
 	 * @var string
 	 */
 	public $body;
 
 	/**
-	 * 添付
 	 * @var array
 	 */
 	public $attachments = array();
@@ -72,7 +63,7 @@ class MW_WP_Form_Mail {
 	protected $Mail_Parser;
 
 	/**
-	 * メール送信
+	 * Send mail
 	 *
 	 * @return boolean
 	 */
@@ -95,11 +86,11 @@ class MW_WP_Form_Mail {
 		$headers = array();
 
 		if ( $this->cc ) {
-			$headers[] = 'Cc: ' . $this->cc;
+			$headers[] = 'Cc: ' . trim( $this->cc );
 		}
 
 		if ( $this->bcc ) {
-			$headers[] = 'Bcc: ' . $this->bcc;
+			$headers[] = 'Bcc: ' . trim( $this->bcc );
 		}
 
 		if ( defined( 'MWFORM_DEBUG' ) && true === MWFORM_DEBUG ) {
@@ -135,43 +126,53 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * 送信元を設定
+	 * Set mail from
 	 *
-	 * @param string $email fromメールアドレス
+	 * @param string $email
 	 * @return string
 	 */
 	public function _set_mail_from( $email ) {
 		if ( filter_var( $this->from, FILTER_VALIDATE_EMAIL ) ) {
 			return $this->from;
 		}
+		$this->from = $email;
 		return $email;
 	}
 
 	/**
-	 * 送信者名を設定
+	 * Set sender (from name)
 	 *
-	 * @param string $sender 送信者名
+	 * @param string $sender
 	 * @return string
 	 */
 	public function _set_mail_from_name( $sender ) {
-		return $this->sender;
+		if ( $this->sender ) {
+			return $this->sender;
+		}
+		$this->sender = $sender;
+		return $sender;
 	}
 
 	/**
-	 * Return-Path を設定
+	 * Set Return-Path
 	 *
 	 * @param phpmailer $phpmailer
+	 * @return void
 	 */
 	public function _set_return_path( $phpmailer ) {
-		$phpmailer->Sender = $this->return_path;
+		if ( $this->return_path ) {
+			if ( filter_var( $this->return_path, FILTER_VALIDATE_EMAIL ) ) {
+				$phpmailer->Sender = $this->return_path;
+			}
+		}
 	}
 
 	/**
-	 * 配列からbodyを生成
+	 * Create mail content from array
 	 *
-	 * @param array ( 見出し => 内容, … )
-	 * @param array ( 'exclude' => array( 除外したいキー1, … ) )
-	 * @return string メール本文
+	 * @param array
+	 * @param array
+	 * @return string
 	 */
 	public function createBody( array $array, array $options = array() ) {
 		$_ret = '';
@@ -204,78 +205,27 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * 管理者メール用に初期値を設定
+	 * Set defaults setting for admin mail
 	 *
 	 * @param MW_WP_Form_Setting $Setting
+	 * @return void
 	 */
 	public function set_admin_mail_raw_params( MW_WP_Form_Setting $Setting ) {
-		// タイトルを指定
-		$admin_mail_subject = $Setting->get( 'mail_subject' );
-		if ( $Setting->get( 'admin_mail_subject' ) ) {
-			$admin_mail_subject = $Setting->get( 'admin_mail_subject' );
-		}
-		$this->subject = $admin_mail_subject;
-
-		// 本文を指定
-		$admin_mail_content = $Setting->get( 'mail_content' );
-		if ( $Setting->get( 'admin_mail_content' ) ) {
-			$admin_mail_content = $Setting->get( 'admin_mail_content' );
-		}
-		$this->body = $admin_mail_content;
-
-		// 送信先を指定
-		$admin_mail_to = get_bloginfo( 'admin_email' );
-		if ( $Setting->get( 'mail_to' ) ) {
-			$admin_mail_to = $Setting->get( 'mail_to' );
-		}
-		$this->to = $admin_mail_to;
-
-		// CCを指定
-		$admin_mail_cc = '';
-		if ( $Setting->get( 'mail_cc' ) ) {
-			$admin_mail_cc = $Setting->get( 'mail_cc' );
-		}
-		$this->cc = $admin_mail_cc;
-
-		// BCCを指定
-		$admin_mail_bcc = '';
-		if ( $Setting->get( 'mail_bcc' ) ) {
-			$admin_mail_bcc = $Setting->get( 'mail_bcc' );
-		}
-		$this->bcc = $admin_mail_bcc;
-
-		// 送信元を指定
-		$admin_mail_from = get_bloginfo( 'admin_email' );
-		if ( $Setting->get( 'mail_from' ) ) {
-			$admin_mail_from = $Setting->get( 'mail_from' );
-		}
-		if ( $Setting->get( 'admin_mail_from' ) ) {
-			$admin_mail_from = $Setting->get( 'admin_mail_from' );
-		}
-		$this->from = $admin_mail_from;
-
-		// Return-Path を指定
-		$mail_return_path = get_bloginfo( 'admin_email' );
-		if ( $Setting->get( 'mail_return_path' ) ) {
-			$mail_return_path = $Setting->get( 'mail_return_path' );
-		}
-		$this->return_path = $mail_return_path;
-
-		// 送信者を指定
-		$admin_mail_sender = get_bloginfo( 'name' );
-		if ( $Setting->get( 'mail_sender' ) ) {
-			$admin_mail_sender = $Setting->get( 'mail_sender' );
-		}
-		if ( $Setting->get( 'admin_mail_sender' ) ) {
-			$admin_mail_sender = $Setting->get( 'admin_mail_sender' );
-		}
-		$this->sender = $admin_mail_sender;
+		$this->subject     = $Setting->get( 'admin_mail_subject' );
+		$this->body        = $Setting->get( 'admin_mail_content' );
+		$this->to          = $Setting->get( 'mail_to' );
+		$this->cc          = $Setting->get( 'mail_cc' );
+		$this->bcc         = $Setting->get( 'mail_bcc' );
+		$this->from        = $Setting->get( 'admin_mail_from' );
+		$this->return_path = $Setting->get( 'mail_return_path' );
+		$this->sender      = $Setting->get( 'admin_mail_sender' );
 	}
 
 	/**
-	 * 自動返信メール用に初期値を設定
+ 	 * Set defaults setting for reply mail
 	 *
 	 * @param MW_WP_Form_Setting $Setting
+	 * @return void
 	 */
 	public function set_reply_mail_raw_params( MW_WP_Form_Setting $Setting ) {
 		$this->to          = '';
@@ -283,9 +233,9 @@ class MW_WP_Form_Mail {
 		$this->bcc         = '';
 		$this->attachments = array();
 
-		$form_id = $Setting->get( 'post_id' );
+		$form_id  = $Setting->get( 'post_id' );
 		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
-		$Data = MW_WP_Form_Data::connect( $form_key );
+		$Data     = MW_WP_Form_Data::connect( $form_key );
 		$automatic_reply_email = $Setting->get( 'automatic_reply_email' );
 
 		if ( ! $form_id ) {
@@ -298,80 +248,22 @@ class MW_WP_Form_Mail {
 			$automatic_reply_email
 		);
 
-		// 送信先を指定
 		if ( $automatic_reply_email && !$is_invalid_mail_address ) {
 			$this->to = $Data->get_post_value_by_key( $automatic_reply_email );
 		}
 
-		// Return-Path を指定
-		$mail_return_path = get_bloginfo( 'admin_email' );
-		if ( $Setting->get( 'mail_return_path' ) ) {
-			$mail_return_path = $Setting->get( 'mail_return_path' );
-		}
-		$this->return_path = $mail_return_path;
-
-		// 送信元を指定
-		$reply_mail_from = get_bloginfo( 'admin_email' );
-		if ( $Setting->get( 'mail_from' ) ) {
-			$reply_mail_from = $Setting->get( 'mail_from' );
-		}
-		$this->from = $reply_mail_from;
-
-		// 送信者を指定
-		$reply_mail_sender = get_bloginfo( 'name' );
-		if ( $Setting->get( 'mail_sender' ) ) {
-			$reply_mail_sender = $Setting->get( 'mail_sender' );
-		}
-		$this->sender = $reply_mail_sender;
-
-		// タイトルを指定
-		$this->subject = $Setting->get( 'mail_subject' );
-
-		// 本文を指定
-		$this->body = $Setting->get( 'mail_content' );
+		$this->return_path = $Setting->get( 'mail_return_path' );
+		$this->from        = $Setting->get( 'mail_from' );
+		$this->sender      = $Setting->get( 'mail_sender' );
+		$this->subject     = $Setting->get( 'mail_subject' );
+		$this->body        = $Setting->get( 'mail_content' );
 	}
 
 	/**
-	 * 管理者メールに必須の項目を設定
-	 */
-	public function set_admin_mail_reaquire_params() {
-		$admin_mail_to     = get_bloginfo( 'admin_email' );
-		$admin_mail_from   = get_bloginfo( 'admin_email' );
-		$admin_mail_sender = get_bloginfo( 'name' );
-
-		if ( ! $this->to ) {
-			$this->to = $admin_mail_to;
-		}
-
-		if ( ! $this->from ) {
-			$this->from = $admin_mail_from;
-		}
-
-		if ( ! $this->sender ) {
-			$this->sender = $admin_mail_sender;
-		}
-	}
-
-	/**
-	 * 自動返信メールに必須の項目を設定
-	 */
-	public function set_reply_mail_reaquire_params() {
-		$reply_mail_from   = get_bloginfo( 'admin_email' );
-		$reply_mail_sender = get_bloginfo( 'name' );
-
-		if ( ! $this->from ) {
-			$this->from = $reply_mail_from;;
-		}
-
-		if ( ! $this->sender ) {
-			$this->sender = $reply_mail_sender;;
-		}
-	}
-
-	/**
-	 * メールを送信内容に置換
+	 * Replace {name} to content in mail content
 	 *
 	 * @param MW_WP_Form_Setting $Setting
+	 * @return void
 	 */
 	public function parse( $Setting ) {
 		$this->Mail_Parser = new MW_WP_Form_Mail_Parser( $this, $Setting );
@@ -382,7 +274,7 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * メールをデータベースに保存
+	 * Save to database
 	 *
 	 * @param MW_WP_Form_Setting $Setting
 	 * @return int
@@ -394,7 +286,7 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * 保存した問い合わせデータの Post IDを取得する
+	 * Return saved mail ID
 	 *
 	 * @return int
 	 */

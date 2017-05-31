@@ -85,7 +85,6 @@ class MW_WP_Form_Mail_Service {
 			$Mail_admin_for_save = clone $this->Mail_admin_raw;
 		}
 
-		$Mail_admin->set_admin_mail_reaquire_params();
 		$Mail_admin = $this->_apply_filters_mwform_mail( $Mail_admin );
 		$Mail_admin = $this->_apply_filters_mwform_admin_mail( $Mail_admin );
 		do_action(
@@ -97,7 +96,7 @@ class MW_WP_Form_Mail_Service {
 
 		// to が false の場合は意図的に送信していない（例えばDB保存だけおこないたい等）ということなので
 		// 送信エラー画面が表示されるのはおかしい。そのためここでは true を返す
-		if ( ! $Mail_admin->to ) {
+		if ( ! $Mail_admin->to && $this->Setting->get( 'usedb' ) ) {
 			$is_admin_mail_sended = true;
 		}
 
@@ -143,7 +142,6 @@ class MW_WP_Form_Mail_Service {
 	 */
 	public function send_reply_mail() {
 		$Mail_auto = $this->_get_parsed_mail_object( $this->Mail_auto_raw );
-		$Mail_auto->set_reply_mail_reaquire_params();
 		$Mail_auto = $this->_apply_filters_mwform_auto_mail( $Mail_auto );
 		do_action(
 			'mwform_before_send_reply_mail_' . $this->form_key,

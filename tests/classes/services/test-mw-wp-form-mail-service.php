@@ -245,7 +245,7 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 		add_filter( 'mwform_admin_mail_' . $form_key,
 			function( $Mail, $values ) use( $self ) {
 				$self->through_hook_count ++;
-				$self->assertEquals( get_bloginfo( 'admin_email' ), $Mail->to );
+				$self->assertEquals( '', $Mail->to );
 				$self->assertEquals( '', $Mail->cc );
 				$self->assertEquals( '', $Mail->bcc );
 				$self->assertEquals( 'value-1', $Mail->body );
@@ -437,6 +437,12 @@ class MW_WP_Form_Mail_Service_Test extends WP_UnitTestCase {
 			return $Mail;
 		}, 10, 3 );
 
+		$this->assertFalse( $Mail_Service->send_admin_mail() );
+
+		$Setting->set( 'usedb', 1 );
+		$Mail_Service = new MW_WP_Form_Mail_Service(
+			$Mail, $form_key, $Setting
+		);
 		$this->assertTrue( $Mail_Service->send_admin_mail() );
 	}
 

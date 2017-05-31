@@ -12,9 +12,6 @@
  * Domain Path: /languages/
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
- *
- * @todo メール設定が空のときによしなにするのはやめて、新規作成時（もしくはメール設定が保存されていない時）は初期値が入力された状態にしたい
- * @todo mwform_get_inquiry_data_args が一覧、詳細、グラフ、CSV で矛盾なく動作するかテスト
  */
 include_once( plugin_dir_path( __FILE__ ) . 'classes/functions.php' );
 include_once( plugin_dir_path( __FILE__ ) . 'classes/config.php' );

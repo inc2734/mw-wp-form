@@ -23,12 +23,12 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Mail->set_admin_mail_raw_params( $this->_instantiation_Setting() );
 		$this->assertEquals( '', $Mail->subject );
 		$this->assertEquals( '', $Mail->body );
-		$this->assertEquals( get_bloginfo( 'admin_email' ), $Mail->to );
+		$this->assertEquals( '', $Mail->to );
 		$this->assertEquals( '', $Mail->cc );
 		$this->assertEquals( '', $Mail->bcc );
-		$this->assertEquals( get_bloginfo( 'admin_email' ), $Mail->return_path );
-		$this->assertEquals( get_bloginfo( 'admin_email' ), $Mail->from );
-		$this->assertEquals( get_bloginfo( 'name' ), $Mail->sender );
+		$this->assertEquals( '', $Mail->return_path );
+		$this->assertEquals( '', $Mail->from );
+		$this->assertEquals( '', $Mail->sender );
 
 		// Pattern: has settings
 		$Mail = new MW_WP_Form_Mail();
@@ -63,14 +63,14 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 			'mail_content' => 'body',
 		) );
 		$Mail->set_admin_mail_raw_params( $Setting );
-		$this->assertEquals( 'subject', $Mail->subject );
-		$this->assertEquals( 'body', $Mail->body );
-		$this->assertEquals( get_bloginfo( 'admin_email' ), $Mail->to );
+		$this->assertEquals( '', $Mail->subject );
+		$this->assertEquals( '', $Mail->body );
+		$this->assertEquals( '', $Mail->to );
 		$this->assertEquals( '', $Mail->cc );
 		$this->assertEquals( '', $Mail->bcc );
-		$this->assertEquals( get_bloginfo( 'admin_email' ), $Mail->return_path );
-		$this->assertEquals( 'from@example.com', $Mail->from );
-		$this->assertEquals( 'sender', $Mail->sender );
+		$this->assertEquals( '', $Mail->return_path );
+		$this->assertEquals( '', $Mail->from );
+		$this->assertEquals( '', $Mail->sender );
 	}
 
 	/**
@@ -82,9 +82,9 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Mail = new MW_WP_Form_Mail();
 		$Mail->set_reply_mail_raw_params( $this->_instantiation_Setting() );
 		$this->assertEquals( '', $Mail->to );
-		$this->assertEquals( get_bloginfo( 'admin_email' ), $Mail->return_path );
-		$this->assertEquals( get_bloginfo( 'admin_email' ), $Mail->from );
-		$this->assertEquals( get_bloginfo( 'name' ), $Mail->sender );
+		$this->assertEquals( '', $Mail->return_path );
+		$this->assertEquals( '', $Mail->from );
+		$this->assertEquals( '', $Mail->sender );
 		$this->assertEquals( '', $Mail->subject );
 		$this->assertEquals( '', $Mail->body );
 
@@ -102,54 +102,11 @@ class MW_WP_Form_Mail_Test extends WP_UnitTestCase {
 		$Data->set( 'メールアドレス', 'to@example.com' );
 		$Mail->set_reply_mail_raw_params( $Setting );
 		$this->assertEquals( 'to@example.com', $Mail->to );
-		$this->assertEquals( get_bloginfo( 'admin_email' ), $Mail->return_path );
+		$this->assertEquals( '', $Mail->return_path );
 		$this->assertEquals( 'from@example.com', $Mail->from );
 		$this->assertEquals( 'sender', $Mail->sender );
 		$this->assertEquals( 'subject', $Mail->subject );
 		$this->assertEquals( 'body', $Mail->body );
-	}
-
-	/**
-	 * @test
-	 * @group set_admin_mail_reaquire_params
-	 */
-	public function set_admin_mail_reaquire_params() {
-		// Pattern: overwrite when to, from and sender are blank
-		$Mail = new MW_WP_Form_Mail();
-		$Mail->set_admin_mail_reaquire_params();
-		$this->assertEquals( get_bloginfo( 'admin_email' ), $Mail->to );
-		$this->assertEquals( get_bloginfo( 'admin_email' ), $Mail->from );
-		$this->assertEquals( get_bloginfo( 'name' ), $Mail->sender );
-
-		// Pattern: to, from and sender aren't blank
-		$Mail         = new MW_WP_Form_Mail();
-		$Mail->to     = 'to@example.com';
-		$Mail->from   = 'from@example.com';
-		$Mail->sender = 'Sender';
-		$Mail->set_admin_mail_reaquire_params();
-		$this->assertEquals( 'to@example.com', $Mail->to );
-		$this->assertEquals( 'from@example.com', $Mail->from );
-		$this->assertEquals( 'Sender', $Mail->sender );
-	}
-
-	/**
-	 * @test
-	 * @group set_reply_mail_reaquire_params
-	 */
-	public function set_reply_mail_reaquire_params() {
-		// Pattern: overwrite when from and sender are blank
-		$Mail = new MW_WP_Form_Mail();
-		$Mail->set_reply_mail_reaquire_params();
-		$this->assertEquals( get_bloginfo( 'admin_email' ), $Mail->from );
-		$this->assertEquals( get_bloginfo( 'name' ), $Mail->sender );
-
-		// Pattern: to, from and sender aren't blank
-		$Mail = new MW_WP_Form_Mail();
-		$Mail->from   = 'from@example.com';
-		$Mail->sender = 'Sender';
-		$Mail->set_reply_mail_reaquire_params();
-		$this->assertEquals( 'from@example.com', $Mail->from );
-		$this->assertEquals( 'Sender', $Mail->sender );
 	}
 
 	/**
