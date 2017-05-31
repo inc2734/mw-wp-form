@@ -147,6 +147,12 @@ class MW_WP_Form_Main_Controller {
 			 */
 			add_shortcode( 'mwform_formkey', array( $this, '_mwform_formkey' ) );
 
+			/**
+			 * If [mwform_formkey] in $post, enqueue assets here.
+			 * If not in, enqueue in footer.
+			 */
+			$this->_mwform_enqueue_scripts();
+
 		}
 
 		return $template;
@@ -162,6 +168,38 @@ class MW_WP_Form_Main_Controller {
 	public function _mwform_formkey( $attributes ) {
 		$Exec_Shortcode = new MW_WP_Form_Exec_Shortcode();
 		return $Exec_Shortcode->initialize( $attributes );
+	}
+
+	/**
+	 * If [mwform_formkey] in $post, enqueue assets.
+	 *
+	 * @return boid
+	 */
+	protected function _mwform_enqueue_scripts() {
+		global $post;
+
+		if ( ! is_a( $post, 'WP_Post' ) || ! has_shortcode( $post->post_content, 'mwform_formkey' ) ) {
+			return;
+		}
+
+		preg_match_all( '/' . get_shortcode_regex() . '/s', $post->post_content, $matches, PREG_SET_ORDER );
+		if ( ! is_array( $matches ) || empty( $matches ) ) {
+			return;
+		}
+
+		foreach ( $matches as $match ) {
+			if ( ! isset( $match[2] ) || 'mwform_formkey' !==  $match[2] ) {
+				continue;
+			}
+
+			if ( ! preg_match( '/key=["\']?(\d+)["\']?/', $match[0], $reg ) ) {
+				continue;
+			}
+
+			if ( is_array( $reg ) ) {
+				MWF_Functions::mwform_enqueue_scripts( $reg[1] );
+			}
+		}
 	}
 
 	/**

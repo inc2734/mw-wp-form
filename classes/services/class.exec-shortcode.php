@@ -517,20 +517,11 @@ class MW_WP_Form_Exec_Shortcode {
 	 * @return void
 	 */
 	public function _enqueue_scripts() {
-		global $post;
-
-		$url = plugin_dir_url( __FILE__ );
-		wp_enqueue_style( MWF_Config::NAME, $url . '../../css/style.css' );
-
-		$style  = $this->Setting->get( 'style' );
-		$styles = apply_filters( 'mwform_styles', array() );
-		if ( is_array( $styles ) && isset( $styles[ $style ] ) ) {
-			$css = $styles[ $style ];
-			wp_enqueue_style( MWF_Config::NAME . '_style', $css );
+		if ( wp_style_is( MWF_Config::NAME ) ) {
+			return;
 		}
 
-		do_action( 'mwform_enqueue_scripts_' . $this->form_key );
-		wp_enqueue_script( MWF_Config::NAME, $url . '../../js/form.js', array( 'jquery' ), false, true );
+		MWF_Functions::mwform_enqueue_scripts( $this->form_id );
 	}
 
 	/**

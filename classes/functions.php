@@ -482,4 +482,27 @@ class MWF_Functions {
 			return $attachments[0]->ID;
 		}
 	}
+
+	/**
+	 * Enqueue MW WP Form assets
+	 *
+	 * @param int $form_id
+	 * @return void
+	 */
+	public static function mwform_enqueue_scripts( $form_id ) {
+		$Setting  = new MW_WP_Form_Setting( $form_id );
+		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
+		$url      = plugins_url( MWF_Config::NAME );
+		wp_enqueue_style( MWF_Config::NAME, $url . '/css/style.css' );
+
+		$style  = $Setting->get( 'style' );
+		$styles = apply_filters( 'mwform_styles', array() );
+		if ( is_array( $styles ) && isset( $styles[ $style ] ) ) {
+			$css = $styles[ $style ];
+			wp_enqueue_style( MWF_Config::NAME . '_style_' . $form_key, $css );
+		}
+
+		wp_enqueue_script( MWF_Config::NAME, $url . '/js/form.js', array( 'jquery' ), false, true );
+		do_action( 'mwform_enqueue_scripts_' . $form_key );
+	}
 }
