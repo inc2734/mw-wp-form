@@ -105,7 +105,7 @@ class MWF_Functions {
 	 * @param string $new_function_name
 	 */
 	public static function deprecated_message( $function_name, $new_function = '' ) {
-		if ( ! defined( 'WP_DEBUG' ) || empty( WP_DEBUG ) ) {
+		if ( ! defined( 'WP_DEBUG' ) || true !== WP_DEBUG ) {
 			return;
 		}
 
