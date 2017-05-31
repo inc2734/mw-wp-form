@@ -69,6 +69,11 @@ class MW_WP_Form_Exec_Shortcode {
 
 		add_action( 'wp_footer', array( $this->Data, 'clear_values' ) );
 
+		$Redirected = new MW_WP_Form_Redirected( $this->form_key, $this->Setting, true, $this->Data->get_post_condition() );
+		if ( $Redirected->get_request_uri() !== $Redirected->get_url() ) {
+			$Redirected->redirect_js();
+		}
+
 		do_action( 'mwform_before_load_content_' . $this->form_key );
 
 		if ( $this->_is_direct_access() ) {

@@ -177,10 +177,8 @@ class MW_WP_Form_Redirected {
 	 * @return void
 	 */
 	public function redirect() {
-		$redirect    = ( $this->get_url() ) ? $this->get_url() : $this->get_request_uri();
-		$REQUEST_URI = $this->get_request_uri();
-
-		if ( empty( $_POST ) && $redirect === $REQUEST_URI ) {
+		$redirect = $this->_get_real_redirect_url();
+		if ( ! $redirect ) {
 			return;
 		}
 
@@ -190,5 +188,44 @@ class MW_WP_Form_Redirected {
 		$redirect = wp_validate_redirect( $redirect, home_url() );
 		wp_safe_redirect( $redirect );
 		exit();
+	}
+
+	/**
+	 * Redirect using JavaScript
+	 * Don't redirect if the current URL and the redirect URL are the same
+	 *
+	 * @return void
+	 */
+	public function redirect_js() {
+		$redirect = $this->_get_real_redirect_url();
+		if ( ! $redirect ) {
+			return;
+		}
+
+		do_action( 'mwform_before_redirect_' . $this->form_key );
+		?>
+		<script type="text/javascript">
+		window.location = "<?php echo esc_js( $redirect ); ?>";
+		</script>
+		<?php
+	}
+
+	/**
+	 * Return redirect url that sanitize and validate
+	 *
+	 * @return string
+	 */
+	protected function _get_real_redirect_url() {
+		$redirect    = ( $this->get_url() ) ? $this->get_url() : $this->get_request_uri();
+		$REQUEST_URI = $this->get_request_uri();
+
+		if ( empty( $_POST ) && $redirect === $REQUEST_URI ) {
+			return;
+		}
+
+		$redirect = wp_sanitize_redirect( $redirect );
+		$redirect = wp_validate_redirect( $redirect, home_url() );
+
+		return $redirect;
 	}
 }
