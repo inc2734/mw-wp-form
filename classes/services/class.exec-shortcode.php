@@ -66,11 +66,11 @@ class MW_WP_Form_Exec_Shortcode {
 			$content = $this->_get_direct_access_error_page_content();
 		} elseif ( $this->Data->get_send_error() ) {
 			$content = $this->_get_send_error_page_content();
-		} elseif ( $this->view_flg === 'input' ) {
+		} elseif ( 'input' === $this->view_flg ) {
 			$content = $this->_get_input_page_content();
-		} elseif ( $this->view_flg == 'confirm' ) {
+		} elseif ( 'confirm' === $this->view_flg ) {
 			$content = $this->_get_confirm_page_content();
-		} elseif ( $this->view_flg === 'complete' ) {
+		} elseif ( 'complete' === $this->view_flg ) {
 			$content = $this->_get_complete_page_content();
 		} else {
 			$content = '';

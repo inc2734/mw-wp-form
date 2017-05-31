@@ -124,13 +124,13 @@ class MWF_Functions {
 		}
 		$mwform_deprecated_message .= '</div>';
 		if ( is_admin() ) {
-			if ( current_filter() === 'admin_notices' ) {
+			if ( 'admin_notices' === current_filter() ) {
 				self::display_deprecated_message();
 			} else {
 				add_action( 'admin_notices', 'MWF_Functions::display_deprecated_message' );
 			}
 		} else {
-			if ( current_filter() === 'the_content' ) {
+			if ( 'the_content' === current_filter() ) {
 				self::display_deprecated_message();
 			} else {
 				add_filter( 'the_content', 'MWF_Functions::return_deprecated_message' );

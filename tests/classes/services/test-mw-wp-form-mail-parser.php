@@ -185,7 +185,7 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 		add_filter(
 			'mwform_custom_mail_tag_' . $form_key,
 			function( $value, $key, $insert_id ) use( $self ) {
-				if ( $key === 'custom_tag' ) {
+				if ( 'custom_tag' === $key ) {
 					return 'hoge';
 				}
 				return $value;
@@ -219,11 +219,11 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 		add_filter(
 			'mwform_custom_mail_tag_' . $form_key,
 			function( $value, $key, $insert_id ) use( $self ) {
-				if ( $key === 'to' ) {
+				if ( 'to' === $key ) {
 					return 'to@example.com';
-				} elseif ( $key === 'cc' ) {
+				} elseif ( 'cc' === $key ) {
 					return 'cc@example.com';
-				} elseif ( $key === 'bcc' ) {
+				} elseif ( 'bcc' === $key ) {
 					return 'bcc@example.com';
 				}
 				return $value;

@@ -53,7 +53,7 @@ class MW_WP_Form_Field_Submit_Button extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function input_page() {
-		if ( !empty( $this->atts['confirm_value'] ) ) {
+		if ( ! empty( $this->atts['confirm_value'] ) ) {
 			return $this->Form->submit( MWF_Config::CONFIRM_BUTTON, $this->atts['confirm_value'], array(
 				'class' => $this->atts['class'],
 			) );

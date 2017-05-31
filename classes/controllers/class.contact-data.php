@@ -117,7 +117,7 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 			return;
 		}
 
-		if ( !current_user_can( MWF_Config::CAPABILITY ) ) {
+		if ( ! current_user_can( MWF_Config::CAPABILITY ) ) {
 			return;
 		}
 

@@ -89,7 +89,7 @@ class MW_WP_Form_Field_Monthpicker extends MW_WP_Form_Abstract_Form_Field {
 		) );
 
 		$translate_monthpicker = apply_filters( 'mwform_translate_monthpicker_' . $this->form_key, true );
-		if ( $translate_monthpicker && get_locale() == 'ja' ) {
+		if ( 'ja' === $translate_monthpicker && get_locale() ) {
 			$js = array_merge( array(
 				'i18n' => array(
 					'year'   => '',
@@ -115,7 +115,7 @@ class MW_WP_Form_Field_Monthpicker extends MW_WP_Form_Abstract_Form_Field {
 			'value'       => $value,
 			'placeholder' => $this->atts['placeholder'],
 		) );
-		if ( $this->atts['show_error'] !== 'false' ) {
+		if ( 'false' !== $this->atts['show_error'] ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
 		}
 		return $_ret;

@@ -62,7 +62,7 @@ class MW_WP_Form_Field_Zip extends MW_WP_Form_Abstract_Form_Field {
 			$value = $this->atts['value'];
 		}
 		$conv_half_alphanumeric = 'true';
-		if ( $this->atts['conv_half_alphanumeric'] !== 'true' ) {
+		if ( 'true' !== $this->atts['conv_half_alphanumeric'] ) {
 			$conv_half_alphanumeric = null;
 		}
 		$_ret = $this->Form->zip( $this->atts['name'], array(
@@ -70,7 +70,7 @@ class MW_WP_Form_Field_Zip extends MW_WP_Form_Abstract_Form_Field {
 			'conv-half-alphanumeric' => $conv_half_alphanumeric,
 			'value' => $value,
 		) );
-		if ( $this->atts['show_error'] !== 'false' ) {
+		if ( 'false' !== $this->atts['show_error'] ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
 		}
 		return $_ret;

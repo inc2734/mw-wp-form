@@ -159,7 +159,7 @@ class MW_WP_Form_Mail_Parser {
 				continue;
 			}
 
-			if ( $key == 'body' ) {
+			if ( 'body' === $key ) {
 				$this->_save( $value );
 			}
 		}

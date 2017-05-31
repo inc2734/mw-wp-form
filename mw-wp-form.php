@@ -144,7 +144,7 @@ class MW_WP_Form {
 		if ( $screen->id === MWF_Config::NAME ) {
 			$Controller = new MW_WP_Form_Admin_Controller();
 		}
-		elseif ( $screen->id === 'edit-' . MWF_Config::NAME ) {
+		elseif ( 'edit-' . MWF_Config::NAME === $screen->id ) {
 			$Controller = new MW_WP_Form_Admin_List_Controller();
 		}
 		elseif ( MWF_Functions::is_contact_data_post_type( $screen->id ) ) {

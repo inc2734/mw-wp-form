@@ -80,10 +80,10 @@ class MW_WP_Form_Json_Parser {
 	 * @param string $character
 	 */
 	public function push_character( $character ) {
-		if ( !isset( $this->temp[$this->index][$this->key] ) ) {
-			$this->temp[$this->index][$this->key] = '';
+		if ( ! isset( $this->temp[ $this->index ][ $this->key ] ) ) {
+			$this->temp[ $this->index ][ $this->key ] = '';
 		}
-		$this->temp[$this->index][$this->key] .= $character;
+		$this->temp[ $this->index ][ $this->key ] .= $character;
 	}
 
 	/**
@@ -183,19 +183,19 @@ class MW_WP_Form_Json_Parser {
 
 		foreach ( $_js as $character ) {
 			// シングルクォーテーション
-			if ( $character === "'" ) {
+			if ( "'" === $character ) {
 				$this->proccess_single_quote();
 			}
 			// ダブルクォーテーション
-			elseif ( $character === '"' ) {
+			elseif ( '"' === $character ) {
 				$this->proccess_double_quote();
 			}
 			// カンマ
-			elseif ( $character === ',' ) {
+			elseif ( ',' === $character ) {
 				$this->proccess_comma();
 			}
 			// コロン
-			elseif ( $character === ':' ) {
+			elseif ( ':' === $character ) {
 				$this->proccess_colon();
 			}
 			// その他の文字

@@ -110,6 +110,6 @@ class MW_WP_Form_Akismet {
 			);
 		}
 		$response = apply_filters( 'mwform_akismet_responce', $response );
-		return ( $response[1] == 'true' ) ? true : false;
+		return ( 'true' === $response[1] ) ? true : false;
 	}
 }

@@ -72,7 +72,7 @@ class MW_WP_Form_Field_Number extends MW_WP_Form_Abstract_Form_Field {
 			'step'        => $this->atts['step'],
 			'placeholder' => $this->atts['placeholder'],
 		) );
-		if ( $this->atts['show_error'] !== 'false' ) {
+		if ( 'false' !== $this->atts['show_error'] ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
 		}
 		return $_ret;

@@ -59,7 +59,7 @@ class MW_WP_Form_Field_Url extends MW_WP_Form_Abstract_Form_Field {
 	 */
 	protected function input_page() {
 		$conv_half_alphanumeric = 'true';
-		if ( $this->atts['conv_half_alphanumeric'] !== 'true' ) {
+		if ( 'true' !== $this->atts['conv_half_alphanumeric'] ) {
 			$conv_half_alphanumeric = null;
 		}
 		$value = $this->Data->get_raw( $this->atts['name'] );
@@ -76,7 +76,7 @@ class MW_WP_Form_Field_Url extends MW_WP_Form_Abstract_Form_Field {
 			'placeholder' => $this->atts['placeholder'],
 			'conv-half-alphanumeric' => $conv_half_alphanumeric,
 		) );
-		if ( $this->atts['show_error'] !== 'false' ) {
+		if ( 'false' !== $this->atts['show_error'] ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
 		}
 		return $_ret;

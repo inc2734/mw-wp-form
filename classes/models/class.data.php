@@ -530,7 +530,7 @@ class MW_WP_Form_Data {
 		}
 
 		foreach ( $value['data'] as $child ) {
-			if ( $child !== '' && ! is_null( $child ) ) {
+			if ( '' !== $child && ! is_null( $child ) ) {
 				return implode( $separator, $value['data'] );
 			}
 		}

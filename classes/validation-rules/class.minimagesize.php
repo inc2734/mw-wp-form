@@ -59,7 +59,7 @@ class MW_WP_Form_Validation_Rule_MinImageSize extends MW_WP_Form_Abstract_Valida
 		if ( file_exists( $file_path ) && exif_imagetype( $file_path ) ) {
 			$imagesize = getimagesize( $file_path );
 		} else {
-			if ( !in_array( $name, $upload_file_keys ) ) {
+			if ( ! in_array( $name, $upload_file_keys ) ) {
 				$is_error = true;
 			}
 		}

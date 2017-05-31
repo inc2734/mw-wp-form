@@ -186,7 +186,7 @@ class MW_WP_Form_Mail {
 				$_value = '';
 				if ( is_array( $value['data'] ) ) {
 					foreach ( $value['data'] as $_val ) {
-						if ( !( $_val === '' || $_val === null ) ) {
+						if ( '' !== $_val && ! is_null ( $_val ) ) {
 							$_value = implode( $value['separator'], $value['data'] );
 							break;
 						}

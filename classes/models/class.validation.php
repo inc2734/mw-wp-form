@@ -53,7 +53,7 @@ class MW_WP_Form_Validation {
 		if ( $validations ) {
 			foreach ( $validations as $validation ) {
 				foreach ( $validation as $rule => $options ) {
-					if ( $rule == 'target' ) {
+					if ( 'target' === $rule ) {
 						continue;
 					}
 					if ( ! is_array( $options ) ) {

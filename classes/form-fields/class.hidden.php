@@ -51,7 +51,7 @@ class MW_WP_Form_Field_Hidden extends MW_WP_Form_Abstract_Form_Field {
 		}
 
 		$echo = '';
-		if ( $this->atts['echo'] === 'true' ) {
+		if ( 'true' === $this->atts['echo'] ) {
 			$echo = $value;
 		}
 		return esc_html( $echo ) . $this->Form->hidden( $this->atts['name'], $value );
@@ -67,7 +67,7 @@ class MW_WP_Form_Field_Hidden extends MW_WP_Form_Abstract_Form_Field {
 	protected function confirm_page() {
 		$value = $this->Data->get_raw( $this->atts['name'] );
 		$echo = '';
-		if ( $this->atts['echo'] === 'true' ) {
+		if ( 'true' === $this->atts['echo'] ) {
 			$echo = $value;
 		}
 		return esc_html( $echo ) . $this->Form->hidden( $this->atts['name'], $value );

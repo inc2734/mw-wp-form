@@ -76,7 +76,7 @@ class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
 		}
 
 		$translate_datepicker = apply_filters( 'mwform_translate_datepicker_' . $this->form_key, true );
-		if ( $translate_datepicker && get_locale() == 'ja' ) {
+		if ( $translate_datepicker && 'ja' === get_locale() ) {
 			$js = array_merge( array(
 				'yearSuffix'      => '年',
 				'dateFormat'      => 'yy年mm月dd日',
@@ -104,7 +104,7 @@ class MW_WP_Form_Field_Datepicker extends MW_WP_Form_Abstract_Form_Field {
 			'value'       => $value,
 			'placeholder' => $this->atts['placeholder'],
 		) );
-		if ( $this->atts['show_error'] !== 'false' ) {
+		if ( 'false' !== $this->atts['show_error'] ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
 		}
 		return $_ret;

@@ -169,7 +169,7 @@ class MW_WP_Form_CSV {
 
 				if ( 'response_status' === $key ) {
 					$response_status = $Contact_Data_Setting->get( 'response_status' );
-					$column = $response_statuses[$response_status];
+					$column = $response_statuses[ $response_status ];
 				} elseif ( 'memo' === $key ) {
 					$column = $Contact_Data_Setting->get( 'memo' );
 				} elseif ( MWF_Config::TRACKINGNUMBER === $key) {

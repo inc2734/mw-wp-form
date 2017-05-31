@@ -54,7 +54,7 @@ class MW_WP_Form_Field_Button_Submit extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function input_page() {
-		if ( $this->atts['display_input'] === 'false' ) {
+		if ( 'false' === $this->atts['display_input'] ) {
 			return;
 		}
 

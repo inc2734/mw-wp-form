@@ -71,10 +71,10 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 			'value'      => $value,
 			'vertically' => $this->atts['vertically'],
 		), $separator );
-		if ( $this->atts['post_raw'] === 'false' ) {
+		if ( 'false' === $this->atts['post_raw'] ) {
 			$_ret .= $this->Form->children( $this->atts['name'], $children );
 		}
-		if ( $this->atts['show_error'] !== 'false' ) {
+		if ( 'false' !== $this->atts['show_error'] ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
 		}
 		return $_ret;
@@ -93,11 +93,11 @@ class MW_WP_Form_Field_Checkbox extends MW_WP_Form_Abstract_Form_Field {
 		$posted_value = $this->Data->get_raw( $this->atts['name'] );
 		$separator    = $this->Data->get_separator_value( $this->atts['name'] );
 		$_ret         = esc_html( $value );
-		if ( !is_null( $value ) ) {
+		if ( ! is_null( $value ) ) {
 			$_ret .= $this->Form->hidden( $this->atts['name'] . '[data]', $posted_value );
 			$_ret .= $this->Form->separator( $this->atts['name'], $separator );
 		}
-		if ( $this->atts['post_raw'] === 'false' ) {
+		if ( 'false' === $this->atts['post_raw'] ) {
 			$_ret .= $this->Form->children( $this->atts['name'], $children );
 		}
 		return $_ret;

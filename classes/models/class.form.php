@@ -420,7 +420,7 @@ class MW_WP_Form_Form {
 		$values = array( '', '' );
 		foreach ( $children as $key => $val ) {
 			if ( $key === 0 || $key === 1 ) {
-				$values[$key] = $val;
+				$values[ $key ] = $val;
 			}
 		}
 
@@ -489,7 +489,7 @@ class MW_WP_Form_Form {
 		$values = array( '', '', '' );
 		foreach ( $children as $key => $val ) {
 			if ( $key === 0 || $key === 1 || $key === 2 ) {
-				$values[$key] = $val;
+				$values[ $key ] = $val;
 			}
 		}
 
@@ -626,7 +626,7 @@ class MW_WP_Form_Form {
 		return $this->remove_linefeed_space(
 			$this->_render( 'radio', array(
 				'name'       => $name,
-				'vertically' => ( $options['vertically'] === 'true' ) ? 'vertical-item' : 'horizontal-item',
+				'vertically' => ( 'true' === $options['vertically'] ) ? 'vertical-item' : 'horizontal-item',
 				'value'      => $options['value'],
 				'fields'     => $fields,
 			) )
@@ -652,7 +652,7 @@ class MW_WP_Form_Form {
 		$options = array_merge( $defaults, $options );
 
 		$value = $options['value'];
-		if ( !is_array( $options['value'] ) ) {
+		if ( ! is_array( $options['value'] ) ) {
 			$value = explode( $separator, $options['value'] );
 		}
 
@@ -675,7 +675,7 @@ class MW_WP_Form_Form {
 		return $this->remove_linefeed_space(
 			$this->_render( 'checkbox', array(
 				'name'       => $name,
-				'vertically' => ( $options['vertically'] === 'true' ) ? 'vertical-item' : 'horizontal-item',
+				'vertically' => ( 'true' === $options['vertically'] ) ? 'vertical-item' : 'horizontal-item',
 				'value'      => $value,
 				'fields'     => $fields,
 			) )
@@ -879,7 +879,7 @@ class MW_WP_Form_Form {
 			if ( is_null( $value ) ) {
 				continue;
 			}
-			if ( $key === 'conv-half-alphanumeric' ) {
+			if ( 'conv-half-alphanumeric' === $key ) {
 				$key = 'data-conv-half-alphanumeric';
 			}
 			$attributes[] = sprintf( '%s="%s"', $key, esc_attr( $value ) );

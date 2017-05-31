@@ -143,11 +143,11 @@ class MW_WP_Form_Redirected {
 
 		$query_string = array();
 		preg_match( '/\?(.*)$/', $url, $reg );
-		if ( !empty( $reg[1] ) ) {
+		if ( ! empty( $reg[1] ) ) {
 			$url = str_replace( '?' . $reg[1], '', $url );
 			parse_str( $reg[1], $query_string );
 		}
-		if ( !preg_match( '/^https?:\/\//', $url ) ) {
+		if ( ! preg_match( '/^https?:\/\//', $url ) ) {
 			$home_url = home_url();
 			$url = $home_url . $url;
 		}
