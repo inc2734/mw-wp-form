@@ -1,28 +1,24 @@
 <?php
 /**
  * Name       : MW WP Form File
- * Description: Tempディレクトリ、ファイルアップロードの処理を行うクラス
- * Version    : 1.0.9
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : October 10, 2013
- * Modified   : September 28, 2016
+ * Modified   : June 1, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_File {
 
-	/**
-	 * __construct
-	 */
 	public function __construct() {
 		add_filter( 'upload_mimes', array( $this, '_upload_mimes' ) );
 	}
 
 	/**
-	 * 独自の mimes を追加
+	 * Add mimes
 	 *
-	 * @param array $t MIMEタイプの配列
+	 * @param array $t array of MIME types
 	 */
 	public function _upload_mimes( $t ) {
 		$t['psd'] = 'image/vnd.adobe.photoshop';
@@ -32,21 +28,21 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * 全てのファイルをアップロード
+	 * Upload all files
 	 *
-	 * @param array $files アップロードするファイルの配列
-	 * @return array ( name属性値 => アップロードできたファイルのURL, … )
+	 * @param array $files array of upload files
+	 * @return array (name => uploaded file url)
 	 */
 	public function upload( array $files = array() ) {
 		$this->_clean_temp_dir();
 
 		$uploaded_files = array();
-		foreach ( $files as $key => $file ) {
-			$uploaded_file = $this->_single_file_upload( $key );
+		foreach ( $files as $name => $file ) {
+			$uploaded_file = $this->_single_file_upload( $name );
 			if ( ! $uploaded_file ) {
 				continue;
 			}
-			$uploaded_files[ $key ] = $uploaded_file;
+			$uploaded_files[ $name ] = $uploaded_file;
 		}
 
 		return $uploaded_files;
@@ -55,25 +51,25 @@ class MW_WP_Form_File {
 	/**
 	 * 指定したファイルをアップロード
 	 *
-	 * @param string $key アップロードしたいファイルの name 属性
-	 * @return string アップロードできたファイルのURL
+	 * @param string $name
+	 * @return string Uploaded file URL
 	 */
-	protected function _single_file_upload( $key ) {
+	protected function _single_file_upload( $name ) {
 		$this->create_temp_dir();
 
-		if ( ! is_array( $_FILES ) || ! isset( $_FILES[ $key ] ) ) {
+		if ( ! is_array( $_FILES ) || ! isset( $_FILES[ $name ] ) ) {
 			return;
 		}
 
-		$file = $_FILES[ $key ];
+		$file = $_FILES[ $name ];
 		return $this->_file_upload( $file );
 	}
 
 	/**
-	 * ファイルアップロードの実処理
+	 * Upload process
 	 *
-	 * @param arary $file $_FILES['hoge'] の配列
-	 * @return string アップロードしたファイルの URL
+	 * @param arary $file $_FILES['name']
+	 * @return string Uploaded file URL
 	 */
 	protected function _file_upload( $file ) {
 		if ( empty( $file['tmp_name'] ) ) {
@@ -98,10 +94,11 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * 一時ファイル名を生成。Tempディレクトリの生成に失敗していた場合はUploadディレクトリを使用
+	 * Generate temp file name
+	 * If doesn't generate temp directory, using upload directory
 	 *
-	 * @param string 拡張子 ( ex: jpg )
-	 * @return array ( file =>, url => )
+	 * @param string ext
+	 * @return array (file =>, url =>)
 	 */
 	protected function _set_upload_file_name( $extension ) {
 		$count      = 0;
@@ -116,14 +113,7 @@ class MW_WP_Form_File {
 			$upload_url    = $wp_upload_dir['url'];
 		}
 
-		$filename_no_exension = $basename;
-		$filepath_no_exension = trailingslashit( $upload_dir ) . $filename_no_exension;
-		while ( glob( $filepath_no_exension . '.*' ) ) {
-			$count ++;
-			$filename_no_exension = $basename . '-' . $count;
-			$filepath_no_exension = trailingslashit( $upload_dir ) . $filename_no_exension;
-		}
-		$filename = $filename_no_exension . '.' . $extension;
+		$filename = wp_unique_filename( trailingslashit( $upload_dir ), $basename . '.' . $extension );
 		$uploadfile['file'] = trailingslashit( $upload_dir ) . $filename;
 		$uploadfile['url']  = trailingslashit( $upload_url ) . $filename;
 
@@ -131,9 +121,9 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * Temp ディレクトリ名（パス、URL）を返す。ディレクトリの存在可否は関係なし
+	 * Return array of temp directory. Return directory even if it does not exist
 	 *
-	 * @return array ( dir => Tempディレクトリのパス, url => Tempディレクトリのurl )
+	 * @return array (dir => temp directory path, url => temp directory url)
 	 */
 	public function get_temp_dir() {
 		$wp_upload_dir = wp_upload_dir();
@@ -144,7 +134,7 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * Temp ディレクトリを作成
+	 * Create temp directory
 	 *
 	 * @return bool
 	 */
@@ -163,9 +153,9 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * Temp ディレクトリを削除
+	 * Delete temp directory
 	 *
-	 * @param string $sub_dir サブディレクトリ名
+	 * @param string $sub_dir
 	 */
 	public function remove_temp_dir( $sub_dir = '' ) {
 		$temp_dir = $this->get_temp_dir();
@@ -200,7 +190,9 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * Tempディレクトリ内のファイルを削除
+	 * Delete files in temp directory
+	 *
+	 * @return void
 	 */
 	protected function _clean_temp_dir() {
 		$temp_dir = $this->get_temp_dir();
@@ -211,7 +203,7 @@ class MW_WP_Form_File {
 		}
 
 		$handle = opendir( $temp_dir );
-		if ( $handle === false ) {
+		if ( false === $handle ) {
 			return;
 		}
 
@@ -227,19 +219,5 @@ class MW_WP_Form_File {
 		}
 
 		closedir( $handle );
-	}
-
-	/**
-	 * 指定したパスのファイルを削除
-	 *
-	 * @todo 消すファイルの条件を指定したほうが良い
-	 * @param array $attachments 消去するファイルパスの配列
-	 */
-	public function delete_files( array $files ) {
-		foreach ( $files as $file ) {
-			if ( file_exists( $file ) ) {
-				unlink( $file );
-			}
-		}
 	}
 }

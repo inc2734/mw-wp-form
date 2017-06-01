@@ -1,4 +1,14 @@
 <?php
+/**
+ * Name       : MW WP Form Validation Rules
+ * Version    : 1.0.0
+ * Author     : Takashi Kitajima
+ * Author URI : https://2inc.org
+ * Created    : June 1, 2017
+ * Modified   :
+ * License    : GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ */
 class MW_WP_Form_Validation_Rules {
 
 	/**
@@ -12,7 +22,7 @@ class MW_WP_Form_Validation_Rules {
 	protected static $form_key;
 
 	/**
-	 * バリデーションルールの配列。順番を固定するために定義が必要
+	 * Array of validation rules. Definition is necessary to fix the order
 	 * @var array
 	 */
 	protected static $validation_rules = array(
@@ -63,10 +73,9 @@ class MW_WP_Form_Validation_Rules {
 	}
 
 	/**
-	 * バリデーションルールのインスタンス化。配列にはフックを通して格納する。
+	 * Instantiation of validation rules. Set in the array through the hook.
 	 *
-	 * @param string $key フォーム識別子
-	 * @return $validation_rules バリデーションルールオブジェクトの配列
+	 * @return $validation_rules Array of MW_WP_Form_Abstract_Validation_Rule
 	 */
 	public function get_validation_rules() {
 		self::$validation_rules = apply_filters(
@@ -85,10 +94,10 @@ class MW_WP_Form_Validation_Rules {
 	}
 
 	/**
-	 * バリデーションルールクラスのファイル名からクラス名を取得
+	 * Return class name from filename of validation rule
 	 *
-	 * @param string $filename ファイル名
-	 * @return string クラス名
+	 * @param string $filename
+	 * @return string
 	 */
 	protected static function _get_class_name_from_validation_rule_filename( $filename ) {
 		$class_name = preg_replace( '/^class\./', '', basename( $filename, '.php' ) );

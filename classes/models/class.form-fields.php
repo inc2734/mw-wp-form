@@ -1,4 +1,14 @@
 <?php
+/**
+ * Name       : MW WP Form Form Fields
+ * Version    : 1.0.0
+ * Author     : Takashi Kitajima
+ * Author URI : https://2inc.org
+ * Created    : June 1, 2017
+ * Modified   :
+ * License    : GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ */
 class MW_WP_Form_Form_Fields {
 
 	/**
@@ -43,10 +53,10 @@ class MW_WP_Form_Form_Fields {
 	}
 
 	/**
-	 * フォーム項目クラスのファイル名からクラス名を取得
+	 * Return class name from filename of input form field
 	 *
-	 * @param string $filename ファイル名
-	 * @return string クラス名
+	 * @param string $filename
+	 * @return string
 	 */
 	protected static function _get_class_name_from_form_field_filename( $filename ) {
 		$class_name = preg_replace( '/^class\./', '', basename( $filename, '.php' ) );

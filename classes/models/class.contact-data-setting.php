@@ -1,37 +1,36 @@
 <?php
 /**
  * Name       : MW WP Form Contact Data Setting
- * Description: 管理画面クラス
- * Version    : 1.0.4
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : January 1, 2015
- * Modified   : February 2, 2017
+ * Modified   : June 1, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Contact_Data_Setting {
 
 	/**
-	 * 保存された問い合わせデータの Post ID
+	 * Inquiry data ID
 	 * @var int
 	 */
 	protected $post_id;
 
 	/**
-	 * 各フォーム項目から送信された値を格納
+	 * Array of posted data
 	 * @var array
 	 */
 	protected $options = array();
 
 	/**
-	 * 問い合わせデータのステータス
+	 * Status of inquiry data
 	 * @var string not-supported|reservation|supported
 	 */
 	protected $response_status = 'not-supported';
 
 	/**
-	 * メモ
+	 * Memo
 	 * @var string
 	 */
 	protected $memo = '';
@@ -67,7 +66,7 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * 問い合わせステータスの種類を取得
+	 * Return statuses
 	 *
 	 * @return array
 	 */
@@ -80,7 +79,7 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * 更新可能なキーを返す
+	 * Return updatable keys
 	 *
 	 * @return array
 	 */
@@ -92,7 +91,9 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * 全てのメタデータを取得
+	 * Return all data
+	 *
+	 * @return array
 	 */
 	public function gets() {
 		$options = $this->options;
@@ -104,7 +105,7 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * メタデータの取得
+	 * Return specify data
 	 *
 	 * @param string $key
 	 * @return mixed|null
@@ -128,10 +129,11 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * 属性をセット
+	 * Set a option
 	 *
 	 * @param string $key
-	 * @param mixed $value
+	 * @param mixed
+	 * @return void
 	 */
 	public function set( $key, $value ) {
 		$permit_keys = $this->get_permit_keys();
@@ -152,9 +154,10 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * 属性をセット
+	 * Set options
 	 *
 	 * @param array $values
+	 * @return void
 	 */
 	public function sets( array $values ) {
 		foreach ( $values as $key => $value ) {
@@ -164,6 +167,8 @@ class MW_WP_Form_Contact_Data_Setting {
 
 	/**
 	 * Save values of permit keys and options
+	 *
+	 * @return void
 	 */
 	public function save() {
 		$permit_keys   = $this->get_permit_keys();
@@ -185,7 +190,7 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * データベースに保存に設定されているフォーム（投稿）を取得
+	 * Return post types of inquiry data
 	 *
 	 * @return array
 	 */
@@ -225,7 +230,7 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * $meta_key が $post の upload_file_key かどうか
+	 * Return true if $meta_key is upload_file_key
 	 *
 	 * @param string $meta_key
 	 * @return bool
@@ -236,7 +241,7 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * $meta_key が upload_file_key に含まれている場合に添字を返す
+	 * Return index when $meta_key is included in upload_file_key
 	 *
 	 * @param string $meta_key
 	 * @return int|false
@@ -250,7 +255,7 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * その投稿がもつ upload_file_key を取得
+	 * Return the upload_file_key that the post has
 	 *
 	 * @return array $upload_file_keys
 	 */

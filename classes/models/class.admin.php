@@ -1,32 +1,32 @@
 <?php
 /**
  * Name       : MW WP Form Admin
- * Description: 管理画面クラス
- * Version    : 2.1.1
+ * Version    : 3.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : February 21, 2013
- * Modified   : March 25, 2017
+ * Modified   : June 1, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Admin {
 
 	/**
-	 * get_forms
-	 * @return array フォーム（WP_Post）の配列
+	 * Return all forms
+	 *
+	 * @return array Array of WP_Post
 	 */
 	public function get_forms() {
-		$forms = get_posts( array(
+		return get_posts( array(
 			'post_type'      => MWF_Config::NAME,
 			'posts_per_page' => -1,
 		) );
-		return $forms;
 	}
 
 	/**
-	 * get_forms_using_database
-	 * @return array データベースに保存が有効なフォーム（WP_Post）の配列
+	 * Return forms that using database
+	 *
+	 * @return array Array of WP_Post
 	 */
 	public function get_forms_using_database() {
 		$forms_using_database = array();

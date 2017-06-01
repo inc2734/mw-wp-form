@@ -1,12 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Validation
- * Description: 与えられたデータに対してバリデーションエラーがあるかチェックする
- * Version    : 1.8.5
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : July 20, 2012
- * Modified   : April 15, 2015
+ * Modified   : June 1, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -28,7 +27,7 @@ class MW_WP_Form_Validation {
 	protected $Setting;
 
 	/**
-	 * バリデートをかける項目（name属性）と、それにかけるバリデーションの配列
+	 * Array of name of validated and array of validation rules for it pairs
 	 * @var array
 	 */
 	protected $validate = array();
@@ -47,6 +46,8 @@ class MW_WP_Form_Validation {
 
 	/**
 	 * Set validation rules of this form
+	 *
+	 * @return void
 	 */
 	protected function _set_rules() {
 		$validations = $this->Setting->get( 'validation' );

@@ -64,7 +64,7 @@ class MW_WP_Form_Mail_Service {
 		if ( $this->Setting->get( 'post_id' ) ) {
 			$this->_set_admin_mail_raw_params();
 			// Attach attachment only to e-mail addressed to administrator
-			$this->_set_attachments( $this->Mail_admin_raw );
+			$this->_set_attachments_to( $this->Mail_admin_raw );
 			$this->Mail_admin_raw = $this->_apply_filters_mwform_admin_mail_raw( $this->Mail_admin_raw );
 
 			$this->_set_reply_mail_raw_params();
@@ -106,8 +106,7 @@ class MW_WP_Form_Mail_Service {
 
 		// If not usedb, remove files after sending admin mail
 		if ( ! $this->Setting->get( 'usedb' ) ) {
-			$File = new MW_WP_Form_File();
-			$File->delete_files( $this->attachments );
+			$this->_delete_files();
 		}
 
 		return $is_admin_mail_sended;
@@ -158,7 +157,7 @@ class MW_WP_Form_Mail_Service {
 	 * @param MW_WP_Form_Mail $Mail
 	 * @return void
 	 */
-	protected function _set_attachments( MW_WP_Form_Mail $Mail ) {
+	protected function _set_attachments_to( MW_WP_Form_Mail $Mail ) {
 		$Mail->attachments = $this->attachments;
 	}
 
@@ -253,6 +252,19 @@ class MW_WP_Form_Mail_Service {
 			$this->Data->gets(),
 			clone $this->Data
 		);
+	}
+
+	/**
+	 * Delete attachment files
+	 *
+	 * @return void
+	 */
+	protected function _delete_files() {
+		foreach ( $this->attachments as $file ) {
+			if ( file_exists( $file ) ) {
+				unlink( $file );
+			}
+		}
 	}
 
 	/**

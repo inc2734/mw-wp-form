@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form CSV
- * Version    : 1.1.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : April 3, 2015
- * Modified   : March 26, 2016
+ * Modified   : June 1, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -21,7 +21,9 @@ class MW_WP_Form_CSV {
 	}
 
 	/**
-	 * CSVを生成、出力
+	 * Download CSV
+	 *
+	 * @return void
 	 */
 	public function download() {
 		$key_of_csv_download = MWF_Config::NAME . '-csv-download';
@@ -30,6 +32,21 @@ class MW_WP_Form_CSV {
 			return;
 		}
 
+		$csv = $this->_generate_csv();
+
+		$file_name = 'mw_wp_form_' . date( 'YmdHis' ) . '.csv';
+		header( 'Content-Type: application/octet-stream' );
+		header( 'Content-Disposition: attachment; filename=' . $file_name );
+		echo $csv;
+		exit;
+	}
+
+	/**
+	 * Generate CSV
+	 *
+	 * @return string CSV
+	 */
+	protected function _generate_csv() {
 		$posts_per_page = $this->_get_posts_per_page();
 		$paged          = $this->_get_paged();
 
@@ -63,17 +80,12 @@ class MW_WP_Form_CSV {
 			$csv .= implode( ',', $row ) . "\r\n";
 		}
 		$to_encoding = apply_filters( 'mwform_csv_encoding-' . $this->post_type, 'sjis-win' );
-		$csv = mb_convert_encoding( $csv, $to_encoding, get_option( 'blog_charset' ) );
 
-		$file_name = 'mw_wp_form_' . date( 'YmdHis' ) . '.csv';
-		header( 'Content-Type: application/octet-stream' );
-		header( 'Content-Disposition: attachment; filename=' . $file_name );
-		echo $csv;
-		exit;
+		return mb_convert_encoding( $csv, $to_encoding, get_option( 'blog_charset' ) );
 	}
 
 	/**
-	 * CSVで出力する件数を取得
+	 * Return number of CSV output
 	 *
 	 * @return int
 	 */
@@ -92,7 +104,7 @@ class MW_WP_Form_CSV {
 	}
 
 	/**
-	 * CSVで出力するページ番号を取得
+	 * Return page number of CSV output
 	 *
 	 * @return int
 	 */
@@ -107,7 +119,7 @@ class MW_WP_Form_CSV {
 	}
 
 	/**
-	 * CSVの見出しを生成
+	 * Genrate headings of CSV
 	 *
 	 * @param array $posts
 	 * @return array
@@ -149,7 +161,7 @@ class MW_WP_Form_CSV {
 	}
 
 	/**
-	 * CSVの各行を生成
+	 * Generate rows of CSV
 	 *
 	 * @param array $posts
 	 * @param array $headings
@@ -196,7 +208,7 @@ class MW_WP_Form_CSV {
 	}
 
 	/**
-	 * CSVのダブルクオートのエスケープ
+	 * Escape double quotes
 	 *
 	 * @param string $value
 	 * @return string

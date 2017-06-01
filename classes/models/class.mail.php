@@ -1,7 +1,6 @@
 <?php
 /**
  * Name       : MW WP Form Mail
- * Description: メールクラス
  * Version    : 3.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org

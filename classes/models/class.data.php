@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Data
- * Version    : 2.0.0
+ * Version    : 3.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : October 10, 2013
- * Modified   : May 17, 2017
+ * Modified   : June 1, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -64,6 +64,11 @@ class MW_WP_Form_Data {
 		add_action( 'shutdown', array( $this, '_save_to_session' ) );
 	}
 
+	/**
+	 * Save posted data to session
+	 *
+	 * @return void
+	 */
 	public function _save_to_session() {
 		$this->Session->clear_values();
 		$this->Session->save( $this->variables );
@@ -121,7 +126,10 @@ class MW_WP_Form_Data {
 	}
 
 	/**
+	 * Set form key
+	 *
 	 * @param string $form_key
+	 * @return void
 	 */
 	protected function _set_form_key( $form_key ) {
 		$this->meta['form_key'] = $form_key;
@@ -129,6 +137,8 @@ class MW_WP_Form_Data {
 
 	/**
 	 * Set $_POST variables
+	 *
+	 * @return void
 	 */
 	protected function _set_request_valiables() {
 		if ( ! empty( $this->POST ) ) {
@@ -138,19 +148,21 @@ class MW_WP_Form_Data {
 
 	/**
 	 * Set $_FILES variables
+	 *
+	 * @return void
 	 */
 	protected function _set_files_valiables() {
 		$files = array();
-		foreach ( $this->FILES as $key => $file ) {
-			if ( ! isset( $this->POST[ $key ] ) || ! empty( $file['name'] ) ) {
+		foreach ( $this->FILES as $name => $file ) {
+			if ( ! isset( $this->POST[ $name ] ) || ! empty( $file['name'] ) ) {
 				if ( $file['error'] == UPLOAD_ERR_OK && is_uploaded_file( $file['tmp_name'] ) ) {
-					$this->set( $key, $file['name'] );
+					$this->set( $name, $file['name'] );
 				} else {
-					$this->set( $key, '' );
+					$this->set( $name, '' );
 				}
 
 				if ( ! empty( $file['name'] ) ) {
-					$files[ $key ] = $file;
+					$files[ $name ] = $file;
 				}
 			}
 		}
@@ -163,7 +175,8 @@ class MW_WP_Form_Data {
 
 	/**
 	 * 送信データからどのページを表示すべきかの状態を判定して返す
-	 * ただし実際に表示するページと同じとは限らない（バリデーション通らないとかあるので）
+	 * Return post condition based on posted data
+	 * But this post condition is not the page to actually display (e.g. validation error)
 	 *
 	 * @return string back|confirm|complete|input
 	 */
@@ -194,37 +207,42 @@ class MW_WP_Form_Data {
 	/**
 	 * Set the value
 	 *
-	 * @param string $key
+	 * @param string $name
 	 * @param string $value
+	 * @return void
 	 */
-	public function set( $key, $value ){
-		$this->variables[ $key ] = $value;
+	public function set( $name, $value ){
+		$this->variables[ $name ] = $value;
 	}
 
 	/**
 	 * Set values
 	 *
-	 * @param array 値
+	 * @param array $array
+	 * @return void
 	 */
 	public function sets( array $array ) {
-		foreach ( $array as $key => $value ) {
-			$this->set( $key, $value );
+		foreach ( $array as $name => $value ) {
+			$this->set( $name, $value );
 		}
 	}
 
 	/**
 	 * Clear the value
 	 *
-	 * @param string $key データのキー
+	 * @param string $name
+	 * @return void
 	 */
-	public function clear_value( $key ) {
-		if ( isset( $this->variables[ $key ] ) ) {
-			unset( $this->variables[ $key ] );
+	public function clear_value( $name ) {
+		if ( isset( $this->variables[ $name ] ) ) {
+			unset( $this->variables[ $name ] );
 		}
 	}
 
 	/**
 	 * Clear all values
+	 *
+	 * @return void
 	 */
 	public function clear_values() {
 		$this->variables         = array();
@@ -235,31 +253,32 @@ class MW_WP_Form_Data {
 	/**
 	 * Push the value
 	 *
-	 * @param string $key データのキー
-	 * @param string $value 値
+	 * @param string $name
+	 * @param string $value
+	 * @return void
 	 */
-	public function push( $key, $value ) {
-		if ( ! isset( $this->variables[ $key ] ) ) {
-			$this->variables[ $key ] = array( $value );
+	public function push( $name, $value ) {
+		if ( ! isset( $this->variables[ $name ] ) ) {
+			$this->variables[ $name ] = array( $value );
 		} else {
-			if ( is_array( $this->variables[ $key ] ) ) {
-				$this->variables[ $key ][] = $value;
+			if ( is_array( $this->variables[ $name ] ) ) {
+				$this->variables[ $name ][] = $value;
 			} else {
-				$this->variables[ $key ] = array( $this->variables[ $key ] );
-				$this->variables[ $key ][] = $value;
+				$this->variables[ $name ] = array( $this->variables[ $name ] );
+				$this->variables[ $name ][] = $value;
 			}
 		}
 	}
 
 	/**
-	 * 整形済み（メール送信可能な）データを取得。送信値、表示値を自動判別
+	 * Return Formatted (transmittable) data. Auto discrimination name value or label
 	 *
-	 * @param string $key
+	 * @param string $name
 	 * @param array $children
 	 * @return string|null
 	 */
-	public function get( $key, array $children = array() ) {
-		$post_value = $this->get_post_value_by_key( $key );
+	public function get( $name, array $children = array() ) {
+		$post_value = $this->get_post_value_by_key( $name );
 
 		if ( is_null( $post_value ) ) {
 			return;
@@ -271,9 +290,9 @@ class MW_WP_Form_Data {
 
 		$__children = $this->get_post_value_by_key( '__children' );
 
-		if ( empty( $children ) && isset( $__children[ $key ] ) ) {
-			if ( is_array( $__children[ $key ] ) ) {
-				$_children = $__children[ $key ];
+		if ( empty( $children ) && isset( $__children[ $name ] ) ) {
+			if ( is_array( $__children[ $name ] ) ) {
+				$_children = $__children[ $name ];
 				foreach ( $_children as $_child ) {
 					if ( is_array( $_child ) ) {
 						continue;
@@ -291,25 +310,25 @@ class MW_WP_Form_Data {
 
 		if ( is_array( $post_value ) ) {
 			if ( $children ) {
-				return $this->get_separated_value( $key, $children );
+				return $this->get_separated_value( $name, $children );
 			}
-			return $this->get_separated_value_not_children_set( $key );
+			return $this->get_separated_value_not_children_set( $name );
 		} else {
 			if ( $children ) {
-				return $this->get_in_children( $key, $children );
+				return $this->get_in_children( $name, $children );
 			}
-			return $this->get_raw( $key );
+			return $this->get_raw( $name );
 		}
 	}
 
 	/**
 	 * Get the raw value
 	 *
-	 * @param string $key
+	 * @param string $name
 	 * @return string|null
 	 */
-	public function get_raw( $key ) {
-		$post_value = $this->get_post_value_by_key( $key );
+	public function get_raw( $name ) {
+		$post_value = $this->get_post_value_by_key( $name );
 
 		if ( is_null( $post_value ) ) {
 			return;
@@ -322,8 +341,8 @@ class MW_WP_Form_Data {
 		$__children = $this->get_post_value_by_key( '__children' );
 
 		$children = array();
-		if ( isset( $__children[ $key ] ) && is_array( $__children[ $key ] ) ) {
-			$_children = $__children[ $key ];
+		if ( isset( $__children[ $name ] ) && is_array( $__children[ $name ] ) ) {
+			$_children = $__children[ $name ];
 			if ( is_array( $_children ) ) {
 				foreach ( $_children as $_child ) {
 					if ( is_array( $_child ) ) {
@@ -342,38 +361,38 @@ class MW_WP_Form_Data {
 
 		if ( is_array( $post_value ) ) {
 			if ( $children ) {
-				return $this->get_separated_raw_value( $key, $children );
+				return $this->get_separated_raw_value( $name, $children );
 			}
-			return $this->get_separated_value_not_children_set( $key );
+			return $this->get_separated_value_not_children_set( $name );
 		} else {
 			if ( $children ) {
-				return $this->get_raw_in_children( $key, $children );
+				return $this->get_raw_in_children( $name, $children );
 			}
-			return $this->get_post_value_by_key( $key );
+			return $this->get_post_value_by_key( $name );
 		}
 	}
 
 	/**
-	 * そのキーに紐づく送信データを取得（通常の value 以外に separator や data などが紐づく）
+	 * Return posted data specify the name (In addition to value, separator and data etc are linked)
 	 *
-	 * @param string $key name attribute
+	 * @param string $name
 	 * @return mixed
 	 */
-	public function get_post_value_by_key( $key ) {
-		if ( isset( $this->variables[ $key ] ) ) {
-			return $this->variables[ $key ];
+	public function get_post_value_by_key( $name ) {
+		if ( isset( $this->variables[ $name ] ) ) {
+			return $this->variables[ $name ];
 		}
 	}
 
 	/**
-	 * $children の中に値が含まれているときだけ返す
+	 * Return value when only in $children
 	 *
-	 * @param string $key name attribute
+	 * @param string $name
 	 * @param array $children
 	 * @return string
 	 */
-	public function get_in_children( $key, array $children ) {
-		$value = $this->get_post_value_by_key( $key );
+	public function get_in_children( $name, array $children ) {
+		$value = $this->get_post_value_by_key( $name );
 		if ( is_null( $value ) || is_array( $value ) ) {
 			return;
 		}
@@ -386,14 +405,14 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * $children の中に値が含まれているときだけ返す
+	 * Return raw value when only in $children
 	 *
-	 * @param string $key name attribute
+	 * @param string $name
 	 * @param array $children
 	 * @return string
 	 */
-	public function get_raw_in_children( $key, array $children ) {
-		$value = $this->get_post_value_by_key( $key );
+	public function get_raw_in_children( $name, array $children ) {
+		$value = $this->get_post_value_by_key( $name );
 		if ( is_null( $value ) || is_array( $value ) ) {
 			return;
 		}
@@ -406,28 +425,28 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * 送られてきたseparatorを返す
+	 * Return posted separator value
 	 *
-	 * @param string $key name attribute
+	 * @param string $name
 	 * @return string
 	 */
-	public function get_separator_value( $key ) {
-		$value = $this->get_post_value_by_key( $key );
+	public function get_separator_value( $name ) {
+		$value = $this->get_post_value_by_key( $name );
 		if ( is_array( $value ) && isset( $value['separator'] ) ) {
 			return $value['separator'];
 		}
 	}
 
 	/**
-	 * 配列データを整形して表示値を返す。separator が送信されていない場合は null
+	 * Return formatted label from array. If doesn't have separator, return null
 	 *
-	 * @param string $key name attribute
-	 * @param array $children 選択肢
+	 * @param string $name
+	 * @param array $children
 	 * @return string|null
 	 */
-	public function get_separated_value( $key, array $children ) {
-		$separator = $this->get_separator_value( $key );
-		$value     = $this->get_post_value_by_key( $key );
+	public function get_separated_value( $name, array $children ) {
+		$separator = $this->get_separator_value( $name );
+		$value     = $this->get_post_value_by_key( $name );
 
 		if ( ! $children ) {
 			return;
@@ -461,16 +480,15 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * 配列データを整形して送信値を返す。separator が送信されていない場合は null
-	 * 本当は protected 後方互換
+	 * Return formatted name value from array. If doesn't have separator, return null
 	 *
-	 * @param string $key name attribute
+	 * @param string $name
 	 * @param array $children 選択肢
 	 * @return string|null
 	 */
-	public function get_separated_raw_value( $key, array $children ) {
-		$separator = $this->get_separator_value( $key );
-		$value     = $this->get_post_value_by_key( $key );
+	public function get_separated_raw_value( $name, array $children ) {
+		$separator = $this->get_separator_value( $name );
+		$value     = $this->get_post_value_by_key( $name );
 
 		if ( ! $children ) {
 			return;
@@ -503,15 +521,16 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * すべて空のからのときはimplodeしないように（---がいってしまうため）= 一個でも値ありがあれば返す
+	 * Return formatted label from array. If doesn't have separator, return null
+	 * If it is all empty don't implode, even if there is even one value return
 	 *
-	 * @param array $data
+	 * @param string $name
 	 * @param string $separator
 	 * @return string|null
 	 */
-	protected function get_separated_value_not_children_set( $key ) {
-		$separator = $this->get_separator_value( $key );
-		$value     = $this->get_post_value_by_key( $key );
+	protected function get_separated_value_not_children_set( $name ) {
+		$separator = $this->get_separator_value( $name );
+		$value     = $this->get_post_value_by_key( $name );
 
 		if ( ! is_array( $value ) ) {
 			return;
@@ -539,7 +558,9 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * アップロードに失敗、もしくはファイルが削除されている key を UPLOAD_FILE_KEYS から削除
+	 * Delete name of upload failed file or name of deleted file from UPLOAD_FILE_KEYS
+	 *
+	 * @return void
 	 */
 	public function regenerate_upload_file_keys() {
 		$upload_file_keys = $this->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
@@ -570,9 +591,9 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * アップロードに成功したファイルを UPLOAD_FILE_KEYS に格納
+	 * Store uploaded files in UPLOAD_FILE_KEYS
 	 *
-	 * @param array $uploaded_files アップロード済みファイルのパスの配列
+	 * @param array $uploaded_files Array of uploaded file url
 	 */
 	public function push_uploaded_file_keys( array $uploaded_files = array() ) {
 		$upload_file_keys = $this->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
@@ -590,18 +611,19 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * 表示すべき画面を示すフラグを設定
+	 * Set view flg that is shows the screen to be displayed
 	 *
 	 * @param string null|input|confirm|complete
+	 * @return void
 	 */
 	public function set_view_flg( $view_flg ) {
 		$this->meta['view_flg'] = $view_flg;
 	}
 
 	/**
-	 * 表示すべき画面を示すフラグを返す
+	 * Return view flg that is shows the screen to be displayed
 	 *
-	 * @param string null|input|confirm|complete
+	 * @return string null|input|confirm|complete
 	 */
 	public function get_view_flg() {
 		if ( isset( $this->meta['view_flg'] ) ) {
@@ -610,14 +632,16 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * 送信エラーを示すフラグをセット
+	 * Set send error flg
+	 *
+	 * @return void
 	 */
 	public function set_send_error() {
 		$this->meta[ MWF_Config::SEND_ERROR ] = true;
 	}
 
 	/**
-	 * 送信エラーを示すフラグを返す
+	 * Return send error flg
 	 *
 	 * @return boolean
 	 */
@@ -642,28 +666,28 @@ class MW_WP_Form_Data {
 	/**
 	 * Set the error message
 	 *
-	 * @param string $key name attribute
+	 * @param string $name
 	 * @param string $rule
 	 * @param string $message
 	 */
-	public function set_validation_error( $key, $rule, $message ) {
+	public function set_validation_error( $name, $rule, $message ) {
 		if ( ! is_string( $message ) ) {
 			exit( 'The Validate error message must be string!' );
 		}
-		$errors = $this->get_validation_error( $key );
+		$errors = $this->get_validation_error( $name );
 		$errors[ $rule ] = $message;
-		$this->validation_errors[ $key ] = $errors;
+		$this->validation_errors[ $name ] = $errors;
 	}
 
 	/**
 	 * Return error messages the one form field
 	 *
-	 * @param string $key name attribute
+	 * @param string $name
 	 * @return array
 	 */
-	public function get_validation_error( $key ) {
-		if ( isset( $this->validation_errors[ $key ] ) ) {
-			$errors = $this->validation_errors[ $key ];
+	public function get_validation_error( $name ) {
+		if ( isset( $this->validation_errors[ $name ] ) ) {
+			$errors = $this->validation_errors[ $name ];
 		} else {
 			$errors = array();
 		}

@@ -1,24 +1,23 @@
 <?php
 /**
  * Name       : MW WP Form Form
- * Description: フォームヘルパー
- * Version    : 1.11.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : September 25, 2012
- * Modified   : March 9, 2017
+ * Modified   : June 1, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Form {
 
 	/**
-	 * データを返す
+	 * Return raw value
 	 *
-	 * @param string $key name属性値
+	 * @param string $name
 	 * @return mixed
 	 */
-	public function get_raw( $key ) {
+	public function get_raw( $name ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_raw()',
 			'MW_WP_Form_Data::get_raw()'
@@ -26,13 +25,13 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * $children の中に値が含まれているときだけ返す
+	 * Return raw value if it is in $children
 	 *
-	 * @param string $key name属性
+	 * @param string $name
 	 * @param array $children
 	 * @return string
 	 */
-	public function get_raw_in_children( $key, array $children ) {
+	public function get_raw_in_children( $name, array $children ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_raw_in_children()',
 			'MW_WP_Form_Data::get_raw_in_children()'
@@ -40,12 +39,12 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * データを返す ( 郵便番号用 )
+	 * Return value for zip
 	 *
-	 * @param string $key name属性
-	 * @return string データ
+	 * @param string $name
+	 * @return string
 	 */
-	public function get_zip_value( $key ) {
+	public function get_zip_value( $name ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_zip_value()',
 			'MW_WP_Form_Data::get_separated_value()'
@@ -53,12 +52,12 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * データを返す ( 電話番号用 )
+	 * Return value for tel
 	 *
-	 * @param string $key name属性
-	 * @return string データ
+	 * @param string $name
+	 * @return string
 	 */
-	public function get_tel_value( $key ) {
+	public function get_tel_value( $name ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_tel_value()',
 			'MW_WP_Form_Data::get_separated_value()'
@@ -66,13 +65,13 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * データを返す（ checkbox用 ）。$dataに含まれる値のみ返す
+	 * Return value for checkbox
 	 *
-	 * @param string $key name属性
+	 * @param string $name
 	 * @param array $data
-	 * @return string データ
+	 * @return string
 	 */
-	public function get_checked_value( $key, array $data ) {
+	public function get_checked_value( $name, array $data ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_checked_value()',
 			'MW_WP_Form_Data::get_separated_value()'
@@ -80,13 +79,13 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * データを返す（ radio用 ）。$dataに含まれる値のみ返す
+	 * Return value for radio
 	 *
-	 * @param string name属性値
-	 * @param array $data データ
+	 * @param string $name
+	 * @param array $data
 	 * @return string
 	 */
-	public function get_radio_value( $key, array $data ) {
+	public function get_radio_value( $name, array $data ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_radio_value()',
 			'MW_WP_Form_Data::get_in_children()'
@@ -94,13 +93,13 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * データを返す（ selectbox用 ）。$dataに含まれる値のみ返す
+ 	 * Return value for selectbox
 	 *
-	 * @param string $key name属性
-	 * @param array $data データ
-	 * @return string データ
+	 * @param string $name
+	 * @param array $data
+	 * @return string
 	 */
-	public function get_selected_value( $key, array $data ) {
+	public function get_selected_value( $name, array $data ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_selected_value()',
 			'MW_WP_Form_Data::get_in_children()'
@@ -108,13 +107,13 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * 配列データを整形して返す ( チェックボックス等用 )。配列の場合はpost値を連結して返す
+	 * Return formatted raw value (e.g. for checkbox)
 	 *
-	 * @param string $key name属性
-	 * @param array $children 選択肢
-	 * @return string データ
+	 * @param string $name
+	 * @param array $children
+	 * @return string
 	 */
-	public function get_separated_raw_value( $key, array $children = array() ) {
+	public function get_separated_raw_value( $name, array $children = array() ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_separated_raw_value()',
 			'MW_WP_Form_Data::get_separated_raw_value()'
@@ -122,48 +121,48 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * separator を設定するためのhiddenを返す
+	 * Return hidden field for separator
 	 *
-	 * @param string $key name属性
-	 * @param string $separator 区切り文字
-	 * @return string HTML
+	 * @param string $name
+	 * @param string $separator
+	 * @return string
 	 */
-	public function separator( $key, $separator ) {
+	public function separator( $name, $separator ) {
 		if ( $separator ) {
-			return $this->hidden( $key . '[separator]', $separator );
+			return $this->hidden( $name . '[separator]', $separator );
 		}
 	}
 
 	/**
-	 * 送られてきた separator を返す
+	 * Return separator value
 	 *
-	 * @param string $key name属性
+	 * @param string $name
 	 * @return string
 	 */
-	public function get_separator_value( $key ) {
+	public function get_separator_value( $name ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_separator_value()',
 			'MW_WP_Form_Data::get_separator_value()'
 		);
-		return $Data->get_separator_value( $key );
 	}
 
 	/**
-	 * children を設定するための hidden を返す
+	 * Return hidden field for setting children
 	 *
-	 * @param string $key name属性
-	 * @param array $children 選択肢の配列（必ず MW_WP_Form_Abstract_Form_Field::get_children の値 ）
-	 * @return string HTML
+	 * @param string $name
+	 * @param array $children
+	 * @return string
 	 */
-	public function children( $key, array $children ) {
-		$name = sprintf( '__children[%s][]', $key );
+	public function children( $name, array $children ) {
+		$name = sprintf( '__children[%s][]', $name );
 		return $this->hidden( $name, json_encode( $children ) );
 	}
 
 	/**
-	 * テンプレートを読み込んで表示
+	 * Render template
 	 *
-	 * @param string $template ディレクトリ名/ファイル名（拡張子無し）
+	 * @param string $template directory/filename (no extension)
+	 * @return string
 	 */
 	protected function _render( $template, array $args = array() ) {
 		$template_path = locate_template( 'mw-wp-form/form-fields/' . $template );
@@ -181,10 +180,10 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * フォームタグ生成
+	 * Return form staring tag
 	 *
 	 * @param array $options
-	 * @return string form開始タグ
+	 * @return string
 	 */
 	public function start( $options = array() ) {
 		$options = array_merge( array(
@@ -200,9 +199,9 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * トークンタグ、閉じタグ生成
+	 * Return form ending tag
 	 *
-	 * @return string input[type=hidden]
+	 * @return string
 	 */
 	public function end() {
 		$html = '';
@@ -212,11 +211,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * input[type=text]タグ生成
+	 * Return input[type=text]
 	 *
-	 * @param string $name name属性
-	 * @param array
-	 * @return string html
+	 * @param string $name
+	 * @param array $options
+	 * @return string
 	 */
 	public function text( $name, $options = array() ) {
 		$defaults = array(
@@ -240,11 +239,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * input[type=email]タグ生成
+	 * Return input[type=email]
 	 *
-	 * @param string $name name属性
-	 * @param array
-	 * @return string html
+	 * @param string $name
+	 * @param array $options
+	 * @return string
 	 */
 	public function email( $name, $options = array() ) {
 		$defaults = array(
@@ -268,11 +267,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * input[type=url]タグ生成
+	 * Return input[type=url]
 	 *
-	 * @param string $name name属性
-	 * @param array
-	 * @return string html
+	 * @param string $name
+	 * @param array $options
+	 * @return string
 	 */
 	public function url( $name, $options = array() ) {
 		$defaults = array(
@@ -296,11 +295,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * input[type=range]タグ生成
+	 * Return input[type=range]
 	 *
-	 * @param string $name name属性
-	 * @param array
-	 * @return string html
+	 * @param string $name
+	 * @param array $options
+	 * @return string
 	 */
 	public function range( $name, $options = array() ) {
 		$defaults = array(
@@ -323,11 +322,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * input[type=number]タグ生成
+	 * Return input[type=number]
 	 *
-	 * @param string $name name属性
-	 * @param array
-	 * @return string html
+	 * @param string $name
+	 * @param array $options
+	 * @return string
 	 */
 	public function number( $name, $options = array() ) {
 		$defaults = array(
@@ -351,11 +350,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * input[type=hidden]タグ生成
+	 * Return input[type=hidden]
 	 *
-	 * @param string $name name属性
-	 * @param string $value 値
-	 * @return string HTML
+	 * @param string $name
+	 * @param string $value
+	 * @return string
 	 */
 	public function hidden( $name, $value ) {
 		return $this->remove_newline_space(
@@ -367,11 +366,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * input[type=password]タグ生成
+	 * Return input[type=password]
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param array $options
-	 * @return string HTML
+	 * @return string
 	 */
 	public function password( $name, $options = array() ) {
 		$defaults = array(
@@ -394,11 +393,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * 郵便番号フィールド生成
+	 * Return zip field
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param array $options
-	 * @return string HTML
+	 * @return string
 	 */
 	public function zip( $name, $options = array() ) {
 		$defaults = array(
@@ -463,11 +462,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * 電話番号フィールド生成
+	 * Return tel field
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param array $options
-	 * @return string HTML
+	 * @return string
 	 */
 	public function tel( $name, $options = array() ) {
 		$defaults = array(
@@ -532,11 +531,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * textareaタグ生成
+	 * Return textarea
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param array $options
-	 * @return string html
+	 * @return string
 	 */
 	public function textarea( $name, $options = array() ) {
 		$defaults = array(
@@ -562,12 +561,12 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * selectタグ生成
+	 * Return selectbox
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param array $children
 	 * @param array $options
-	 * @return string HTML
+	 * @return string
 	 */
 	public function select( $name, $children = array(), $options = array() ) {
 		$defaults = array(
@@ -592,12 +591,12 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * radioタグ生成
+	 * Return input[type=radio]
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param array $children
 	 * @param array $options
-	 * @return string HTML
+	 * @return string
 	 */
 	public function radio( $name, $children = array(), $options = array() ) {
 		$defaults = array(
@@ -634,13 +633,13 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * checkboxタグ生成
+	 * Return input[checkbox]
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param array $children
 	 * @param array $options
-	 * @param string $separator 区切り文字
-	 * @return string HTML
+	 * @param string $separator
+	 * @return string
 	 */
 	public function checkbox( $name, $children = array(), $options = array(), $separator = ',' ) {
 		$defaults = array(
@@ -684,12 +683,12 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * submitボタン生成
+	 * Return input[type=submit]
 	 *
-	 * @param string $name name属性
-	 * @param string $value value属性
+	 * @param string $name
+	 * @param string $value
 	 * @param array $options
-	 * @return string submitボタン
+	 * @return string
 	 */
 	public function submit( $name, $value, $options = array() ) {
 		$defaults = array(
@@ -708,13 +707,13 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * submitボタン(button)生成
+	 * Return button[type=submit]
 	 *
-	 * @param string $name name属性
-	 * @param string $value value属性
+	 * @param string $name
+	 * @param string $value
 	 * @param array $options
 	 * @param string $element_content
-	 * @return string submitボタン(button)
+	 * @return string
 	 */
 	public function button_submit( $name, $value, $options = array(), $element_content = '' ) {
 		$defaults = array(
@@ -734,12 +733,12 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * ボタン生成
+	 * Return input[type=button]
 	 *
-	 * @param string $name name属性
-	 * @param string $value value属性
+	 * @param string $name
+	 * @param string $value
 	 * @param array $options
-	 * @return string ボタン
+	 * @return string
 	 */
 	public function button( $name, $value, $options = array() ) {
 		$defaults = array(
@@ -758,13 +757,13 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * ボタン(button)生成
+	 * Return button
 	 *
-	 * @param string $name name属性
-	 * @param string $value value属性
+	 * @param string $name
+	 * @param string $value
 	 * @param array $options
 	 * @param string $element_content
-	 * @return string ボタン(button)
+	 * @return string
 	 */
 	public function button_button( $name, $value, $options = array(), $element_content = '' ) {
 		$defaults = array(
@@ -784,11 +783,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * datepicker生成
+	 * Return datepicker
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param string $options
-	 * @return string HTML
+	 * @return string
 	 */
 	public function datepicker( $name, $options = array() ) {
 		$defaults = array(
@@ -814,11 +813,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * monthpicker生成
+	 * Return monthpicker
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param string $options
-	 * @return string HTML
+	 * @return string
 	 */
 	public function monthpicker( $name, $options = array() ) {
 		$defaults = array(
@@ -844,11 +843,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * input[type=file]タグ生成
+	 * Return input[type=file]
 	 *
-	 * @param string $name name属性
-	 * @param $options array
-	 * @return string HTML
+	 * @param string $name
+	 * @param array $options
+	 * @return string
 	 */
 	public function file( $name, $options = array() ) {
 		$defaults = array(
@@ -891,7 +890,7 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * id属性を返す
+	 * Return ID attribute
 	 *
 	 * @param string $id
 	 * @param string $suffix

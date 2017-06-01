@@ -1,12 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Akismet
- * Description: Akismetクラス
- * Version    : 1.0.1
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : April 30, 2014
- * Modified   : July 24, 2014
+ * Modified   : June 1, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -15,7 +14,7 @@ class MW_WP_Form_Akismet {
 	/**
 	 * Return akismet api key when akismet is active
 	 *
-	 * @return string APIキー
+	 * @return string API Key
 	 */
 	private function _is_enable() {
 		if ( is_callable( array( 'Akismet', 'get_api_key' ) ) ) {
