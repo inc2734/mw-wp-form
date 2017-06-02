@@ -67,16 +67,13 @@ class MW_WP_Form_Mail {
 	 * @return boolean
 	 */
 	public function send() {
+		$this->to  = trim( $this->to );
+		$this->cc  = trim( $this->cc );
+		$this->bcc = trim( $this->bcc );
+
 		if ( ! $this->to ) {
 			return apply_filters( 'mwform_is_mail_sended', false );
 		}
-
-		$to          = trim( $this->to );
-		$sender      = $this->sender;
-		$from        = $this->from;
-		$return_path = $this->return_path;
-		$subject     = $this->subject;
-		$body        = $this->body;
 
 		add_action( 'phpmailer_init'   , array( $this, '_set_return_path' ) );
 		add_filter( 'wp_mail_from'     , array( $this, '_set_mail_from' ) );
@@ -85,36 +82,17 @@ class MW_WP_Form_Mail {
 		$headers = array();
 
 		if ( $this->cc ) {
-			$headers[] = 'Cc: ' . trim( $this->cc );
+			$headers[] = 'Cc: ' . $this->cc;
 		}
 
 		if ( $this->bcc ) {
-			$headers[] = 'Bcc: ' . trim( $this->bcc );
+			$headers[] = 'Bcc: ' . $this->bcc;
 		}
 
 		if ( defined( 'MWFORM_DEBUG' ) && true === MWFORM_DEBUG ) {
-			$File = new MW_WP_Form_File();
-			$File->create_temp_dir();
-
-			$temp_dir = $File->get_temp_dir();
-			$temp_dir = trailingslashit( $temp_dir['dir'] );
-			$temp_dir = apply_filters( 'mwform_log_directory', $temp_dir );
-
-			$contents = sprintf(
-				"====================\n\nSend Date: %s\nTo: %s\nSender: %s\nFrom: %s\nReturn-Path: %s\nSubject: %s\nheaders:%s\n-----\n%s\n-----\nattachments:\n%s\n\n",
-				date( 'M j Y, H:i:s' ),
-				$to,
-				$sender,
-				$from,
-				$return_path,
-				$subject,
-				implode( "\n", $headers ),
-				$body,
-				implode( "\n", $this->attachments )
-			);
-			$is_mail_sended = file_put_contents( $temp_dir . '/mw-wp-form-debug.log', $contents, FILE_APPEND );
+			$is_mail_sended = $this->_put_mail_log( $headers );
 		} else {
-			$is_mail_sended = wp_mail( $to, $subject, $body, $headers, $this->attachments );
+			$is_mail_sended = wp_mail( $this->to, $this->subject, $this->body, $headers, $this->attachments );
 		}
 
 		remove_action( 'phpmailer_init'   , array( $this, '_set_return_path' ) );
@@ -293,5 +271,70 @@ class MW_WP_Form_Mail {
 		if ( $this->Mail_Parser ) {
 			return $this->Mail_Parser->get_saved_mail_id();
 		}
+	}
+
+	/**
+	 * Logging that MW WP Form sending mail
+	 *
+	 * @return bool
+	 */
+	protected function _put_mail_log( $headers ) {
+		// Update properties
+		wp_mail( '', $this->subject, '', $headers, array() );
+
+		$File = new MW_WP_Form_File();
+		$File->create_temp_dir();
+
+		$temp_dir = $File->get_temp_dir();
+		$temp_dir = trailingslashit( $temp_dir['dir'] );
+		$temp_dir = apply_filters( 'mwform_log_directory', $temp_dir );
+
+		$contents  = "====================";
+		$contents .= "\n\n";
+		$contents .= 'Send Date: %1$s';
+		$contents .= "\n";
+		$contents .= 'To: %2$s';
+		$contents .= "\n";
+		$contents .= 'Sender: %3$s';
+		$contents .= "\n";
+		$contents .= 'From: %4$s';
+		$contents .= "\n";
+		$contents .= 'Return-Path: %5$s';
+		$contents .= "\n";
+		$contents .= 'Subject: %6$s';
+		$contents .= "\n";
+		$contents .= 'headers:%7$s';
+		$contents .= "\n";
+		$contents .= '-----';
+		$contents .= "\n";
+		$contents .= '%8$s';
+		$contents .= "\n";
+		$contents .= '-----';
+		$contents .= "\n";
+		$contents .= 'attachments:';
+		$contents .= "\n";
+		$contents .= '%9$s';
+		$contents .= "\n\n";
+
+		$contents = sprintf(
+			$contents,
+			date( 'M j Y, H:i:s' ),
+			$this->to,
+			$this->sender,
+			$this->from,
+			$this->return_path,
+			$this->subject,
+			implode( "\n", $headers ),
+			$this->body,
+			implode( "\n", $this->attachments )
+		);
+
+		$is_mail_sended = file_put_contents( $temp_dir . '/mw-wp-form-debug.log', $contents, FILE_APPEND );
+
+		if ( false === $is_mail_sended) {
+			return false;
+		}
+
+		return true;
 	}
 }

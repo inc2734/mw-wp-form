@@ -622,7 +622,11 @@ class MW_WP_Form_Form {
 		$options = shortcode_atts( $defaults, $options );
 
 		if ( ! is_array( $options['value'] ) ) {
-			$options['value'] = explode( $separator, $options['value'] );
+			if ( MWF_Functions::is_empty( $options['value'] ) ) {
+				$options['value'] = array();
+			} else {
+				$options['value'] = explode( $separator, $options['value'] );
+			}
 		}
 
 		$i = 0;
@@ -868,7 +872,7 @@ class MW_WP_Form_Form {
 	}
 	protected function _remove_newline_space_callback( $matches ) {
 		$matches[0] = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $matches[0] );
-		$matches[0] = preg_replace( '/\s+/', ' ', $matches[0] );
+		$matches[0] = preg_replace( '/[\t ]+/', ' ', $matches[0] );
 		return $matches[0];
 	}
 	public static function remove_linefeed_space( $string ) {

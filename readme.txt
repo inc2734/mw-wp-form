@@ -71,6 +71,20 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 == Changelog ==
 
+= 4.0.0 =
+* Refactoring
+* Update redirect process.
+* Changed that admin and reply Mail settings are required.
+* Changed to be able to set the form besides $post and main template.
+* Each input fields can overwrite from themes.
+* Deprecated action hook `mwform_exec_shortcode`. Please use this instead `mwform_start_main_process`
+* The hook to `mwform_validation_rules` is no longer needed to add your own validation rule.
+* Deprecated `MW_WP_Form_Contact_Data_Setting::get_posts()`. Please use this instead `MW_WP_Form_Contact_Data_Setting::get_form_post_types()`
+* Deprecated `MW_WP_Form_Data::getInstance()`. Please use this instead `MW_WP_Form_Data::connect()`
+* Deprecated `MW_WP_Form_Form::remove_linefeed_space()`. Please use this instead `MW_WP_Form_Form::remove_newline_space()`
+* Deprecated `MW_WP_Form_Validation::check()`. Please use this instead `MW_WP_Form_Validation::is_valid()`
+* Deprecated `MW_WP_Form_Validation::single_check()`. Please use this instead `MW_WP_Form_Validation::is_valid_field()`
+
 = 3.2.1 =
 * Bugfix  : Fixed a bug that displayed send error page when admin mail address is `false`.
 
