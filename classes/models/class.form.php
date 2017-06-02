@@ -165,7 +165,7 @@ class MW_WP_Form_Form {
 	 * @return string
 	 */
 	protected function _render( $template, array $args = array() ) {
-		$template_path = locate_template( 'mw-wp-form/form-fields/' . $template );
+		$template_path = locate_template( 'mw-wp-form/form-fields/' . $template . '.php' );
 		if ( ! $template_path ) {
 			$template_path  = plugin_dir_path( __FILE__ ) . '../../templates/form-fields/' . $template . '.php';
 			if ( ! file_exists( $template_path ) ) {
