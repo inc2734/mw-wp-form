@@ -505,4 +505,23 @@ class MWF_Functions {
 		wp_enqueue_script( MWF_Config::NAME, $url . '/js/form.js', array( 'jquery' ), false, true );
 		do_action( 'mwform_enqueue_scripts_' . $form_key );
 	}
+
+	/**
+	 * Generate input field's attribute and attribute value pair
+	 *
+	 * @param string $attribute_name
+	 * @param string $attribute_value
+	 * @return string
+	 */
+	public static function generate_input_attribute( $attribute_name, $attribute_value ) {
+		if ( is_null( $attribute_value ) ) {
+			return;
+		}
+
+		return sprintf(
+			'%1$s="%2$s"',
+			esc_html( $attribute_name ),
+			esc_attr( $attribute_value )
+		);
+	}
 }

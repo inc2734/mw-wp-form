@@ -182,4 +182,16 @@ class MWF_Functions_Test extends WP_UnitTestCase {
 	}
 
 	public function get_multimedia_data() {}
+
+	public function mwform_enqueue_scripts() {}
+
+	/**
+	 * @test
+	 * @group generate_input_attribute
+	 */
+	public function generate_input_attribute() {
+		$this->assertEquals( 'name-1="value-1"', MWF_Functions::generate_input_attribute( 'name-1', 'value-1' ) );
+		$this->assertEquals( 'name-1=""', MWF_Functions::generate_input_attribute( 'name-1', '' ) );
+		$this->assertNull( MWF_Functions::generate_input_attribute( 'name-1', null ) );
+	}
 }

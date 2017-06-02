@@ -72,12 +72,10 @@ class MW_WP_Form_Form_Test extends WP_UnitTestCase {
 	public function remove_newline_space() {
 		$Form = new MW_WP_Form_Form();
 		$this->assertEquals(
-			'<input type="text" name="name-1" /><input type="text" name="name-1" />',
+			'<input type="text" name="name-1" />' . "\n" . '     <input type="text" name="name-1" />',
 			$Form->remove_newline_space(
-			'
-				<input type="text"      name="name-1" />
-				     <input type="text" name="name-1"      />
-			' )
+				'<input type="text"      name="name-1" />' . "\n" . '     <input type="text" name="name-1"      />'
+			)
 		);
 	}
 }

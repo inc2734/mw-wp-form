@@ -173,6 +173,11 @@ class MW_WP_Form_Form {
 			}
 		}
 
+		foreach ( $args as $key => $val) {
+			unset( $args[ $key ] );
+			$args[ str_replace( '-', '_', $key ) ] = $val;
+		}
+
 		extract( $args );
 		ob_start();
 		include( $template_path );
@@ -227,14 +232,14 @@ class MW_WP_Form_Form {
 			'placeholder' => null,
 			'conv-half-alphanumeric' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
+
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'text', array(
-				'name'       => $name,
-				'attributes' => $attributes,
-			) )
+			$this->_render( 'text', $options )
 		);
 	}
 
@@ -255,14 +260,13 @@ class MW_WP_Form_Form {
 			'placeholder' => null,
 			'conv-half-alphanumeric' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'email', array(
-				'name'       => $name,
-				'attributes' => $attributes,
-			) )
+			$this->_render( 'email', $options )
 		);
 	}
 
@@ -283,14 +287,13 @@ class MW_WP_Form_Form {
 			'placeholder' => null,
 			'conv-half-alphanumeric' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'url', array(
-				'name'       => $name,
-				'attributes' => $attributes,
-			) )
+			$this->_render( 'url', $options )
 		);
 	}
 
@@ -310,14 +313,13 @@ class MW_WP_Form_Form {
 			'max'   => 100,
 			'step'  => 1,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'range', array(
-				'name'       => $name,
-				'attributes' => $attributes,
-			) )
+			$this->_render( 'range', $options )
 		);
 	}
 
@@ -338,14 +340,13 @@ class MW_WP_Form_Form {
 			'step'        => 1,
 			'placeholder' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'number', array(
-				'name'       => $name,
-				'attributes' => $attributes,
-			) )
+			$this->_render( 'number', $options )
 		);
 	}
 
@@ -381,14 +382,13 @@ class MW_WP_Form_Form {
 			'value'       => '',
 			'placeholder' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'password', array(
-				'name'       => $name,
-				'attributes' => $attributes,
-			) )
+			$this->_render( 'password', $options )
 		);
 	}
 
@@ -405,7 +405,7 @@ class MW_WP_Form_Form {
 			'conv-half-alphanumeric' => null,
 			'value' => '',
 		);
-		$options = array_merge( $defaults, $options );
+		$options = shortcode_atts( $defaults, $options );
 
 		$children  = array();
 		$separator = '-';
@@ -418,42 +418,30 @@ class MW_WP_Form_Form {
 
 		$values = array( '', '' );
 		foreach ( $children as $key => $val ) {
-			if ( $key === 0 || $key === 1 ) {
+			if ( 0 === $key || 1 === $key ) {
 				$values[ $key ] = $val;
 			}
 		}
 
 		return $this->remove_newline_space(
 			$this->_render( 'zip', array(
-				'name'      => $name,
 				'separator' => $separator,
 				'fields'    => array(
 					array(
-						'attributes' => $this->generate_attributes( array(
-							'class'     => $options['class'],
-							'size'      => 4,
-							'maxlength' => 3,
-							'value'     => $values[0],
-							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-						) ),
+						'name'      => $name . '[data][0]',
+						'class'     => $options['class'],
+						'size'      => 4,
+						'maxlength' => 3,
+						'value'     => $values[0],
+						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
 					),
 					array(
-						'attributes' => $this->generate_attributes( array(
-							'class'     => $options['class'],
-							'size'      => 5,
-							'maxlength' => 4,
-							'value'     => $values[1],
-							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-						) ),
-					),
-					array(
-						'attributes' => $this->generate_attributes( array(
-							'class'     => $options['class'],
-							'size'      => 5,
-							'maxlength' => 4,
-							'value'     => $values[1],
-							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-						) ),
+						'name'      => $name . '[data][1]',
+						'class'     => $options['class'],
+						'size'      => 5,
+						'maxlength' => 4,
+						'value'     => $values[1],
+						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
 					),
 				),
 			) )
@@ -474,7 +462,7 @@ class MW_WP_Form_Form {
 			'conv-half-alphanumeric' => null,
 			'value' => '',
 		);
-		$options = array_merge( $defaults, $options );
+		$options = shortcode_atts( $defaults, $options );
 
 		$children  = array();
 		$separator = '-';
@@ -494,35 +482,31 @@ class MW_WP_Form_Form {
 
 		return $this->remove_newline_space(
 			$this->_render( 'tel', array(
-				'name'      => $name,
 				'separator' => $separator,
 				'fields'    => array(
 					array(
-						'attributes' => $this->generate_attributes( array(
-							'class'     => $options['class'],
-							'size'      => 6,
-							'maxlength' => 5,
-							'value'     => $values[0],
-							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-						) ),
+						'name'      => $name . '[data][0]',
+						'class'     => $options['class'],
+						'size'      => 6,
+						'maxlength' => 5,
+						'value'     => $values[0],
+						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
 					),
 					array(
-						'attributes' => $this->generate_attributes( array(
-							'class'     => $options['class'],
-							'size'      => 5,
-							'maxlength' => 4,
-							'value'     => $values[1],
-							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-						) ),
+						'name'      => $name . '[data][1]',
+						'class'     => $options['class'],
+						'size'      => 5,
+						'maxlength' => 4,
+						'value'     => $values[1],
+						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
 					),
 					array(
-						'attributes' => $this->generate_attributes( array(
-							'class'     => $options['class'],
-							'size'      => 5,
-							'maxlength' => 4,
-							'value'     => $values[2],
-							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-						) ),
+						'name'      => $name . '[data][2]',
+						'class'     => $options['class'],
+						'size'      => 5,
+						'maxlength' => 4,
+						'value'     => $values[2],
+						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
 					),
 				),
 			) )
@@ -546,17 +530,13 @@ class MW_WP_Form_Form {
 			'value'       => '',
 			'placeholder' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$value   = $options['value'];
-		unset( $options['value'] );
-		$attributes = $this->generate_attributes( $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'textarea', array(
-				'name'       => $name,
-				'attributes' => $attributes,
-				'value'      => $value,
-			) )
+			$this->_render( 'textarea', $options )
 		);
 	}
 
@@ -574,19 +554,14 @@ class MW_WP_Form_Form {
 			'id'    => null,
 			'value' => '',
 		);
-		$options = array_merge( $defaults, $options );
-		$value   = $options['value'];
-
-		unset( $options['value'] );
-		$attributes = $this->generate_attributes( $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name'     => $name,
+			'children' => $children,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'select', array(
-				'name'       => $name,
-				'value'      => $value,
-				'attributes' => $attributes,
-				'children'   => $children,
-			) )
+			$this->_render( 'select', $options )
 		);
 	}
 
@@ -605,30 +580,26 @@ class MW_WP_Form_Form {
 			'value'      => '',
 			'vertically' => null,
 		);
-		$options = array_merge( $defaults, $options );
+		$options = shortcode_atts( $defaults, $options );
 
 		$i = 0;
 		$fields = array();
 		foreach ( $children as $key => $label ) {
 			$i ++;
 			$fields[ $key ] = array(
+				'name'  => $name,
 				'label' => $label,
-				'attributes_for_label' => $this->generate_attributes( array(
-					'for' => $this->_get_attr_id( $options['id'], $i ),
-				) ),
-				'attributes' => $this->generate_attributes( array(
-					'for' => $this->_get_attr_id( $options['id'], $i ),
-				) )
+				'id'    => $this->_get_attr_id( $options['id'], $i ),
+				'class' => $options['class'],
 			);
 		}
 
+		$options = array_merge( $options, array(
+			'fields' => $fields,
+		) );
+
 		return $this->remove_newline_space(
-			$this->_render( 'radio', array(
-				'name'       => $name,
-				'vertically' => ( 'true' === $options['vertically'] ) ? 'vertical-item' : 'horizontal-item',
-				'value'      => $options['value'],
-				'fields'     => $fields,
-			) )
+			$this->_render( 'radio', $options )
 		);
 	}
 
@@ -648,11 +619,10 @@ class MW_WP_Form_Form {
 			'value'      => '',
 			'vertically' => null,
 		);
-		$options = array_merge( $defaults, $options );
+		$options = shortcode_atts( $defaults, $options );
 
-		$value = $options['value'];
 		if ( ! is_array( $options['value'] ) ) {
-			$value = explode( $separator, $options['value'] );
+			$options['value'] = explode( $separator, $options['value'] );
 		}
 
 		$i = 0;
@@ -660,25 +630,19 @@ class MW_WP_Form_Form {
 		foreach ( $children as $key => $label ) {
 			$i ++;
 			$fields[ $key ] = array(
+				'name'  => $name . '[data][]',
 				'label' => $label,
-				'attributes_for_label' => $this->generate_attributes( array(
-					'for' => $this->_get_attr_id( $options['id'], $i ),
-				) ),
-				'attributes' => $this->generate_attributes( array(
-					'id'    => $this->_get_attr_id( $options['id'], $i ),
-					'class' => $options['class'],
-				) )
+				'id'    => $this->_get_attr_id( $options['id'], $i ),
+				'class' => $options['class'],
 			);
 		}
 
+		$options = array_merge( $options, array(
+			'fields' => $fields,
+		) );
+
 		return $this->remove_newline_space(
-			$this->_render( 'checkbox', array(
-				'name'       => $name,
-				'vertically' => ( 'true' === $options['vertically'] ) ? 'vertical-item' : 'horizontal-item',
-				'value'      => $value,
-				'fields'     => $fields,
-			) )
-			. $this->separator( $name, $separator )
+			$this->_render( 'checkbox', $options ) . $this->separator( $name, $separator )
 		);
 	}
 
@@ -694,15 +658,14 @@ class MW_WP_Form_Form {
 		$defaults = array(
 			'class' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name'  => $name,
+			'value' => $value,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'submit', array(
-				'name'       => $name,
-				'value'      => $value,
-				'attributes' => $attributes,
-			) )
+			$this->_render( 'submit', $options )
 		);
 	}
 
@@ -719,16 +682,15 @@ class MW_WP_Form_Form {
 		$defaults = array(
 			'class' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name'            => $name,
+			'value'           => $value,
+			'element_content' => $element_content,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'button_submit', array(
-				'name'            => $name,
-				'value'           => $value,
-				'attributes'      => $attributes,
-				'element_content' => $element_content,
-			) )
+			$this->_render( 'button_submit', $options )
 		);
 	}
 
@@ -744,15 +706,14 @@ class MW_WP_Form_Form {
 		$defaults = array(
 			'class' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name'  => $name,
+			'value' => $value,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'button', array(
-				'name'       => $name,
-				'value'      => $value,
-				'attributes' => $attributes,
-			) )
+			$this->_render( 'button', $options )
 		);
 	}
 
@@ -769,16 +730,15 @@ class MW_WP_Form_Form {
 		$defaults = array(
 			'class' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name'            => $name,
+			'value'           => $value,
+			'element_content' => $element_content,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'button_button', array(
-				'name'            => $name,
-				'value'           => $value,
-				'attributes'      => $attributes,
-				'element_content' => $element_content,
-			) )
+			$this->_render( 'button_button', $options )
 		);
 	}
 
@@ -798,17 +758,13 @@ class MW_WP_Form_Form {
 			'value'       => '',
 			'placeholder' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$js = $options['js'];
-		unset( $options['js'] );
-		$attributes = $this->generate_attributes( $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'datepicker', array(
-				'name'       => $name,
-				'attributes' => $attributes,
-				'js'         => $js,
-			) )
+			$this->_render( 'datepicker', $options )
 		);
 	}
 
@@ -828,17 +784,13 @@ class MW_WP_Form_Form {
 			'value'       => '',
 			'placeholder' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$js = $options['js'];
-		unset( $options['js'] );
-		$attributes = $this->generate_attributes( $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'monthpicker', array(
-				'name'       => $name,
-				'attributes' => $attributes,
-				'js'         => $js,
-			) )
+			$this->_render( 'monthpicker', $options )
 		);
 	}
 
@@ -854,22 +806,20 @@ class MW_WP_Form_Form {
 			'id'    => null,
 			'class' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
+		) );
 
 		return $this->remove_newline_space(
-			$this->_render( 'file', array(
-				'name'       => $name,
-				'attributes' => $attributes,
-			) )
+			$this->_render( 'file', $options )
 		);
 	}
 
 	/**
 	 * タグの属性を最適化して生成する
-	 * ※テストしやすいようにアクセス修飾子を public に
 	 *
-	 * @todo このメソッドはなくしてテンプレート内で組み立てるようにする
+	 * @deprecated
 	 * @param array $_attributes キーが属性名、要素が属性値の配列。要素が null のときは無視する
 	 */
 	public function generate_attributes( array $_attributes ) {
@@ -914,11 +864,12 @@ class MW_WP_Form_Form {
 	 * @return string
 	 */
 	public function remove_newline_space( $string ) {
-		$string = str_replace( array( "\r\n", "\r", "\n", "\t" ), '', $string );
-		$string = preg_replace( '/\s+\/>/', ' />', $string );
-		$string = preg_replace( '/"\s+?([^"\s])/', '" $1', $string );
-		$string = preg_replace( '/>[\t\s]*?</', '><', $string );
-		return $string;
+		return preg_replace_callback('/<([^<>]+?)>/', array( $this, '_remove_newline_space_callback' ), $string );
+	}
+	protected function _remove_newline_space_callback( $matches ) {
+		$matches[0] = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $matches[0] );
+		$matches[0] = preg_replace( '/\s+/', ' ', $matches[0] );
+		return $matches[0];
 	}
 	public static function remove_linefeed_space( $string ) {
 		MWF_Functions::deprecated_message(
