@@ -30,9 +30,8 @@ class MW_WP_Form_Validation_Rule_MaxImageSize_Test extends WP_UnitTestCase {
 		$form_id  = $this->_create_form();
 		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
 		$Data     = MW_WP_Form_Data::connect( $form_key );
+		$Rule     = new MW_WP_Form_Validation_Rule_MaxImageSize( $Data );
 
-		$Rule = new MW_WP_Form_Validation_Rule_MaxImageSize();
-		$Rule->set_Data( $Data );
 		$Data->set( MWF_Config::UPLOAD_FILE_KEYS, array( 'image' ) );
 		$Data->set( 'image', MWF_Functions::filepath_to_url( $this->filepath ) );
 

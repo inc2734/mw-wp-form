@@ -219,8 +219,7 @@ class MW_WP_Form_Mail {
 			return;
 		}
 
-		$Validation = new MW_WP_Form_Validation_Rule_Mail();
-		$Validation->set_Data( $Data );
+		$Validation = new MW_WP_Form_Validation_Rule_Mail( $Data );
 		$is_invalid_mail_address = $Validation->rule(
 			$automatic_reply_email
 		);

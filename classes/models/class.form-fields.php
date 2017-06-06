@@ -12,9 +12,9 @@
 class MW_WP_Form_Form_Fields {
 
 	/**
-	 * @var MW_WP_Form_Form_Fields
+	 * @var array Array of MW_WP_Form_Form_Fields
 	 */
-	protected static $Instance;
+	protected static $Instances;
 
 	/**
 	 * @var array
@@ -34,13 +34,13 @@ class MW_WP_Form_Form_Fields {
 		self::$form_fields = apply_filters( 'mwform_form_fields', self::$form_fields );
 	}
 
-	public static function instantiation() {
-		if ( isset( self::$Instance ) ) {
-			return self::$Instance;
+	public static function instantiation( $form_key ) {
+		if ( isset( self::$Instances[ $form_key ] ) ) {
+			return self::$Instances[ $form_key ];
 		}
 
-		self::$Instance = new self();
-		return self::$Instance;
+		self::$Instances[ $form_key ] = new self();
+		return self::$Instances[ $form_key ];
 	}
 
 	/**

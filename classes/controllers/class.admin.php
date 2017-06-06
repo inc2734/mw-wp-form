@@ -17,14 +17,6 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	protected $styles = array();
 
 	public function __construct() {
-		$this->styles = apply_filters( 'mwform_styles', $this->styles );
-
-		$Form_Fields = MW_WP_Form_Form_Fields::instantiation();
-		$form_fields = $Form_Fields->get_form_fields();
-		foreach ( $form_fields as $form_field ) {
-			$form_field->add_tag_generator();
-		}
-
 		add_action( 'add_meta_boxes'       , array( $this, '_add_meta_boxes' ) );
 		add_filter( 'default_content'      , array( $this, '_default_content' ) );
 		add_action( 'media_buttons'        , array( $this, '_tag_generator' ) );
@@ -38,6 +30,16 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * @return void
 	 */
 	public function _add_meta_boxes() {
+		global $post;
+
+		$this->styles = apply_filters( 'mwform_styles', $this->styles );
+		$form_key     = MWF_Functions::get_form_key_from_form_id( $post->ID );
+		$Form_Fields  = MW_WP_Form_Form_Fields::instantiation( $form_key );
+		$form_fields  = $Form_Fields->get_form_fields();
+		foreach ( $form_fields as $form_field ) {
+			$form_field->add_tag_generator();
+		}
+
 		add_meta_box(
 			MWF_Config::NAME . '_complete_message_metabox',
 			__( 'Complete Message', 'mw-wp-form' ),

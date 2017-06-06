@@ -99,7 +99,7 @@ class MW_WP_Form_Exec_Shortcode {
 			}
 		}
 
-		$Form_Fields = MW_WP_Form_Form_Fields::instantiation();
+		$Form_Fields = MW_WP_Form_Form_Fields::instantiation( $this->form_key );
 		foreach ( $Form_Fields->get_form_fields() as $form_field ) {
 			$form_field->initialize( new MW_WP_Form_Form(), $this->form_key, $this->view_flg );
 		}

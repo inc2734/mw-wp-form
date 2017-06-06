@@ -12,7 +12,7 @@
 class MW_WP_Form_Data {
 
 	/**
-	 * @var array of MW_WP_Form_Data
+	 * @var array Array of MW_WP_Form_Data
 	 */
 	protected static $Instances;
 

@@ -22,9 +22,7 @@ class MW_WP_Form_Validation_Rule_noEmpty_Test extends WP_UnitTestCase {
 		$form_id  = $this->_create_form();
 		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
 		$Data     = MW_WP_Form_Data::connect( $form_key );
-
-		$Rule = new MW_WP_Form_Validation_Rule_noEmpty();
-		$Rule->set_Data( $Data );
+		$Rule     = new MW_WP_Form_Validation_Rule_noEmpty( $Data );
 
 		$Data->set( 'noempty', null );
 		$this->assertNull( $Rule->rule( 'noempty' ) );

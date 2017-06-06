@@ -12,14 +12,14 @@
 class MW_WP_Form_Validation_Rules {
 
 	/**
-	 * @var MW_WP_Form_Validation_Rules
+	 * @var array Array of MW_WP_Form_Validation_Rules
 	 */
-	protected static $Instance;
+	protected static $Instances;
 
 	/**
 	 * @var string
 	 */
-	protected static $form_key;
+	protected $form_key;
 
 	/**
 	 * Array of validation rules. Definition is necessary to fix the order
@@ -50,26 +50,29 @@ class MW_WP_Form_Validation_Rules {
 		'minfilesize'   => '',
 	);
 
-	private function __construct() {
+	/**
+	 * @param string $form_key
+	 */
+	private function __construct( $form_key ) {
+		$this->form_key = $form_key;
+
 		foreach ( glob( plugin_dir_path( __FILE__ ) . '../validation-rules/*.php' ) as $filename ) {
 			$class_name = self::_get_class_name_from_validation_rule_filename( $filename );
 			if ( ! class_exists( $class_name ) ) {
 				continue;
 			}
 
-			new $class_name();
+			new $class_name( MW_WP_Form_Data::connect( $this->form_key ) );
 		}
 	}
 
 	public static function instantiation( $form_key ) {
-		self::$form_key = $form_key;
-
-		if ( isset( self::$Instance ) ) {
-			return self::$Instance;
+		if ( isset( self::$Instances[ $form_key ] ) ) {
+			return self::$Instances[ $form_key ];
 		}
 
-		self::$Instance = new self();
-		return self::$Instance;
+		self::$Instances[ $form_key ] = new self( $form_key );
+		return self::$Instances[ $form_key ];
 	}
 
 	/**
@@ -85,8 +88,13 @@ class MW_WP_Form_Validation_Rules {
 		);
 
 		foreach ( self::$validation_rules as $validation_rule => $validation_rule_object ) {
-			if ( method_exists( $validation_rule_object, 'set_Data' ) ) {
-				$validation_rule_object->set_Data( MW_WP_Form_Data::connect( self::$form_key ) );
+			if ( is_a( $validation_rule_object, 'MW_WP_Form_Abstract_Validation_Rule' ) ) {
+				// For backward compatibility (< 4.0.0)
+				if ( method_exists( $validation_rule_object, 'set_Data' ) && ! $validation_rule_object->is_set_Data() ) {
+					$validation_rule_object->set_Data( MW_WP_Form_Data::connect( $this->form_key ) );
+				}
+			} else {
+				unset( self::$validation_rules[ $validation_rule ] );
 			}
 		}
 

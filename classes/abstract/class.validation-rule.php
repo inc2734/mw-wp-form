@@ -22,9 +22,13 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	 */
 	protected $Data;
 
-	public function __construct() {
-		if ( ! $this->getName() ) {
+	public function __construct( MW_WP_Form_Data $Data = null ) {
+		if ( ! $this->get_name() ) {
 			exit( 'MW_WP_Form_Abstract_Validation_Rule::$name must override.' );
+		}
+
+		if ( ! is_null( $Data ) ) {
+			$this->Data = $Data;
 		}
 
 		add_filter( 'mwform_validation_rules', array( $this, '_mwform_validation_rules' ) );
@@ -37,14 +41,14 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	 * @return array
 	 */
 	public function _mwform_validation_rules( array $validation_rules ) {
-		$validation_rules[ $this->getName() ] = $this;
+		$validation_rules[ $this->get_name() ] = $this;
 		return $validation_rules;
 	}
 
 	/**
 	 * Inject MW_WP_Form_Data
 	 *
-	 * @todo なくしてコンストラクターインジェクションにしたい
+	 * @deprecated
 	 * @param MW_WP_Form_Data $Data
 	 * @return void
 	 */
@@ -53,12 +57,28 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	}
 
 	/**
+	 * Return true when set $this->Data
+	 *
+	 * @return bool
+	 */
+	public function is_set_Data() {
+		return ( is_a( $this->Data, 'MW_WP_Form_Data' ) );
+	}
+
+	/**
 	 * Return validation rule name
 	 *
 	 * @return string Validation rule name
 	 */
-	public function getName() {
+	public function get_name() {
 		return $this->name;
+	}
+	public function getName() {
+		MWF_Functions::deprecated_message(
+			get_class() . '::getName()',
+			get_class() . '::get_name()'
+		);
+		return $this->get_name();
 	}
 
 	/**

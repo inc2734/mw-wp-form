@@ -22,9 +22,7 @@ class MW_WP_Form_Validation_Rule_Mail_Test extends WP_UnitTestCase {
 		$form_id  = $this->_create_form();
 		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
 		$Data     = MW_WP_Form_Data::connect( $form_key );
-
-		$Rule = new MW_WP_Form_Validation_Rule_Mail();
-		$Rule->set_Data( $Data );
+		$Rule     = new MW_WP_Form_Validation_Rule_Mail( $Data );
 
 		$Data->set( 'mail', '' );
 		$this->assertNull( $Rule->rule( 'mail' ) );
