@@ -99,7 +99,7 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 	 * @param int $post_id
 	 * @return void
 	 */
-	public function save_post( $post_id ) {
+	public function _save_post( $post_id ) {
 		if ( ! isset( $_POST['post_type'] ) ) {
 			return;
 		}
