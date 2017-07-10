@@ -80,6 +80,8 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Deprecated action hook `mwform_exec_shortcode`. Please use this instead `mwform_start_main_process`
 * The hook to `mwform_validation_rules` is no longer needed to add your own validation rule.
 * Deprecated `MW_WP_Form_Contact_Data_Setting::get_posts()`. Please use this instead `MW_WP_Form_Contact_Data_Setting::get_form_post_types()`
+* Added method MW_WP_Form_Data::get_saved_mail_id();
+* Added method MW_WP_Form_Data::set_saved_mail_id();
 * Deprecated `MW_WP_Form_Data::getInstance()`. Please use this instead `MW_WP_Form_Data::connect()`
 * Deprecated `MW_WP_Form_Form::remove_linefeed_space()`. Please use this instead `MW_WP_Form_Form::remove_newline_space()`
 * Deprecated `MW_WP_Form_Validation::check()`. Please use this instead `MW_WP_Form_Validation::is_valid()`

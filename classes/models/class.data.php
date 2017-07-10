@@ -632,6 +632,27 @@ class MW_WP_Form_Data {
 	}
 
 	/**
+	 * Set saved mail id
+	 *
+	 * @param int $saved_mail_id
+	 * @return void
+	 */
+	public function set_saved_mail_id( $saved_mail_id ) {
+		$this->meta['saved_mail_id'] = $saved_mail_id;
+	}
+
+	/**
+	 * Return saved mail id
+	 *
+	 * @return int|null
+	 */
+	public function get_saved_mail_id() {
+		if ( isset( $this->meta['saved_mail_id'] ) ) {
+			return $this->meta['saved_mail_id'];
+		}
+	}
+
+	/**
 	 * Set send error flg
 	 *
 	 * @return void

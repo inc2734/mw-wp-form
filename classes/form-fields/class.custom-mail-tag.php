@@ -123,24 +123,7 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 			'<span class="mwform-custom-mail-tag-field %s" %s>%s</span>',
 			esc_attr( $class ),
 			$attributes,
-			esc_html( $this->apply_filters_mwform_custom_mail_tag( $this->form_key, '', $name ) )
-		);
-	}
-
-	/**
-	 * フィルターフック mwform_custom_mail_tag を実行
-	 *
-	 * @param string $form_key
-	 * @param string|null $value
-	 * @param string $name
-	 * @return string
-	 */
-	protected function apply_filters_mwform_custom_mail_tag( $form_key, $value, $name ) {
-		return apply_filters(
-			'mwform_custom_mail_tag_' . $form_key,
-			$value,
-			$name,
-			null
+			esc_html( MW_WP_Form_Parser::apply_filters_mwform_custom_mail_tag( $this->form_key, '', $name ) )
 		);
 	}
 }

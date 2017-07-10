@@ -12,12 +12,6 @@
 class MW_WP_Form_Mail_Parser {
 
 	/**
-	 * Saved mail ID
-	 * @var int
-	 */
-	protected $saved_mail_id;
-
-	/**
 	 * @var MW_WP_Form_Mail
 	 */
 	protected $Mail;
@@ -56,10 +50,10 @@ class MW_WP_Form_Mail_Parser {
 	/**
 	 * Return saved mail ID
 	 *
-	 * @return int
+	 * @return int|null
 	 */
 	public function get_saved_mail_id(){
-		return $this->saved_mail_id;
+		return $this->Data->get_saved_mail_id();
 	}
 
 	/**
@@ -75,56 +69,15 @@ class MW_WP_Form_Mail_Parser {
 			}
 
 			if ( 'to' === $key || 'cc' === $key || 'bcc' === $key ) {
-				$this->Mail->$key = $this->_parse_mail_destination( $value );
+				$Parser = new MW_WP_Form_Parser( $this->Setting );
+				$this->Mail->$key = $Parser->replace_for_mail_destination( $value );
 				continue;
 			}
-			$this->Mail->$key = $this->_parse_mail_content( $value );
+
+			$Parser = new MW_WP_Form_Parser( $this->Setting );
+			$this->Mail->$key = $Parser->replace_for_mail_content( $value );
 		}
 		return $this->Mail;
-	}
-
-	/**
-	 * Replace {name} for mail content. It doesn't get from Data
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	protected function _parse_mail_destination( $value ) {
-		return preg_replace_callback(
-			'/{(.+?)}/',
-			array( $this, '_parse_mail_destination_callback' ),
-			$value
-		);
-	}
-	protected function _parse_mail_destination_callback( $matches ) {
-		$match    = $matches[1];
-		$form_id  = $this->Setting->get( 'post_id' );
-		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
-		$value    = $this->_apply_filters_mwform_custom_mail_tag( $form_key, null, $match );
-
-		// Return blank when custom mail tag isn't use(= null)
-		if ( ! is_null( $value ) ) {
-			return $value;
-		}
-		return '';
-	}
-
-	/**
-	 * Replace {name} for mail content
-	 *
-	 * @param string $value
-	 * @return string
-	 */
-	protected function _parse_mail_content( $value ) {
-		return preg_replace_callback(
-			'/{(.+?)}/',
-			array( $this, '_parse_mail_content_callback' ),
-			$value
-		);
-	}
-	protected function _parse_mail_content_callback( $matches ) {
-		$match = $matches[1];
-		return $this->_parse( $match );
 	}
 
 	/**
@@ -133,25 +86,26 @@ class MW_WP_Form_Mail_Parser {
 	 */
 	public function save() {
 		$form_id = $this->Setting->get( 'post_id' );
+		$Parser  = new MW_WP_Form_Parser( $this->Setting );
 		$saved_mail_id = wp_insert_post( array(
-			'post_title'  => $this->_parse_mail_content( $this->Mail->subject ),
+			'post_title'  => $Parser->replace_for_mail_content( $this->Mail->subject ),
 			'post_status' => 'publish',
 			'post_type'   => MWF_Functions::get_contact_data_post_type_from_form_id( $form_id ),
 		) );
 
-		// 添付ファイルをメディアに保存
-		// save_mail_body 内のフックで添付ファイルの情報を使えるように、
-		// save_mail_body より前にこのブロックを実行する
-		// ここでポストメタとしてURLではなくファイルのIDを保存
 		if ( ! empty( $saved_mail_id ) ) {
+			$this->Data->set_saved_mail_id( $saved_mail_id );
+
+			// 添付ファイルをメディアに保存
+			// save_mail_body 内のフックで添付ファイルの情報を使えるように、
+			// save_mail_body より前にこのブロックを実行する
+			// ここでポストメタとしてURLではなくファイルのIDを保存
 			MWF_Functions::save_attachments_in_media(
 				$saved_mail_id,
 				$this->Mail->attachments,
 				$form_id
 			);
 		}
-
-		$this->saved_mail_id = $saved_mail_id;
 
 		$parsed_Mail_vars = get_object_vars( $this->Mail );
 		foreach ( $parsed_Mail_vars as $key => $value ) {
@@ -170,13 +124,11 @@ class MW_WP_Form_Mail_Parser {
 	 * Save value even if it is null (e.g. posting which checkbox isn't check)
 	 *
 	 * @param string $value
+	 * @return void
 	 */
 	protected function _save( $value ) {
-		preg_match_all(
-			'/{(.+?)}/',
-			$value,
-			$matches
-		);
+		$Parser  = new MW_WP_Form_Parser( $this->Setting );
+		$matches = MW_WP_Form_Parser::search( $value );
 
 		if ( ! isset( $matches[1] ) ) {
 			return;
@@ -188,8 +140,7 @@ class MW_WP_Form_Mail_Parser {
 		$data = array();
 
 		foreach ( $matches[1] as $name ) {
-			$value = $this->_parse( $name );
-
+			$value = $Parser->parse( $name );
 			$ignore_keys = apply_filters( 'mwform_no_save_keys_' . $form_key, array() );
 			if ( in_array( $name, $ignore_keys ) ) {
 				continue;
@@ -204,55 +155,8 @@ class MW_WP_Form_Mail_Parser {
 			$data[ $name ] = ( is_null( $value ) ) ? '' : $value;
 		}
 
-		$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $this->saved_mail_id );
+		$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $this->Data->get_saved_mail_id() );
 		$Contact_Data_Setting->sets( $data );
 		$Contact_Data_Setting->save();
-	}
-
-	/**
-	 * そのキーについて送信された値を返す
-	 *
-	 * @param string $name
-	 * @return string
-	 */
-	protected function _parse( $name ) {
-		$form_id = $this->Setting->get( 'post_id' );
-		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
-		// MWF_Config::TRACKINGNUMBER のときはお問い合せ番号を参照する
-		if ( $name === MWF_Config::TRACKINGNUMBER ) {
-			if ( $form_id ) {
-				$value = $this->Setting->get_tracking_number( $form_id );
-			}
-		} else {
-			$value = $this->Data->get( $name );
-			$value = $this->_apply_filters_mwform_custom_mail_tag( $form_key, $value, $name );
-		}
-		return $value;
-	}
-
-	/**
-	 * Apply mwform_custom_mail_tag filter hook
-	 *
-	 * @param string $form_key
-	 * @param string|null $value
-	 * @param string $match
-	 * @return string
-	 */
-	protected function _apply_filters_mwform_custom_mail_tag( $form_key, $value, $match ) {
-		$value = apply_filters(
-			'mwform_custom_mail_tag',
-			$value,
-			$match,
-			$this->saved_mail_id
-		);
-
-		$value = apply_filters(
-			'mwform_custom_mail_tag_' . $form_key,
-			$value,
-			$match,
-			$this->saved_mail_id
-		);
-
-		return $value;
 	}
 }

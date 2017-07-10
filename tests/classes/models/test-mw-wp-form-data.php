@@ -703,6 +703,26 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 
 	/**
 	 * @test
+	 * @group set_saved_mail_id
+	 */
+	public function set_saved_mail_id() {
+		$Data = $this->_instantiation_Data();
+		$Data->set_saved_mail_id( 1 );
+		$this->assertEquals( 1, $Data->get_saved_mail_id() );
+	}
+
+	/**
+	 * @test
+	 * @group get_saved_mail_id
+	 */
+	public function get_saved_mail_id() {
+		$Data = $this->_instantiation_Data();
+		$Data->set_saved_mail_id( 1 );
+		$this->assertEquals( 1, $Data->get_saved_mail_id() );
+	}
+
+	/**
+	 * @test
 	 * @group set_send_error
 	 */
 	public function set_send_error() {

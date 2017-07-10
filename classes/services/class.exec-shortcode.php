@@ -186,12 +186,17 @@ class MW_WP_Form_Exec_Shortcode {
 	 * @return string $content
 	 */
 	protected function _get_complete_page_content() {
+		$Parser = new MW_WP_Form_Parser(  $this->Setting );
+
 		$content = apply_filters(
 			'mwform_complete_content_raw_' . $this->form_key,
 			$this->Setting->get( 'complete_message' ),
 			$this->Data
 		);
+
 		$content = $this->_wpautop( $content );
+		$content = $Parser->replace_for_mail_content( $content );
+
 		$content = sprintf(
 			'[mwform_complete_message]%s[/mwform_complete_message]',
 			apply_filters( 'mwform_complete_content_' . $this->form_key, $content, $this->Data )
@@ -295,128 +300,9 @@ class MW_WP_Form_Exec_Shortcode {
 	 * @return string
 	 */
 	public function _get_the_content( $content ) {
-		$content = $this->_replace_user_property( $content );
-		$content = $this->_replace_post_property( $content );
+		$Parser  = new MW_WP_Form_Parser( $this->Setting );
+		$content = $Parser->replace_for_page( $content );
 		return $content;
-	}
-
-	/**
-	 * Replace {property of user} when logged in
-	 *
-	 * @param string $content
-	 * @return string
-	 */
-	protected function _replace_user_property( $content ) {
-		$user   = wp_get_current_user();
-		$search = array(
-			'{user_id}',
-			'{user_login}',
-			'{user_email}',
-			'{user_url}',
-			'{user_registered}',
-			'{display_name}',
-		);
-
-		if ( ! empty( $user ) ) {
-			$content = str_replace( $search, array(
-				$user->get( 'ID' ),
-				$user->get( 'user_login' ),
-				$user->get( 'user_email' ),
-				$user->get( 'user_url' ),
-				$user->get( 'user_registered' ),
-				$user->get( 'display_name' ),
-			), $content );
-		} else {
-			$content = str_replace( $search, '', $content );
-		}
-
-		return $content;
-	}
-
-	/**
-	 * Replace {foo} in the form. e.g. $post->foo
-	 *
-	 * @param string $content
-	 * @return string
-	 */
-	protected function _replace_post_property( $content ) {
-		if ( $this->Setting->get( 'querystring' ) ) {
-			$content = preg_replace_callback(
-				'/{(.+?)}/',
-				array( $this, '_get_post_property_from_querystring' ),
-				$content
-			);
-		} else {
-			$content = preg_replace_callback(
-				'/{(.+?)}/',
-				array( $this, '_get_post_property_from_this' ),
-				$content
-			);
-		}
-		return $content;
-	}
-
-	/**
-	 * Callback from preg_replace_callback when enabled querystring setting
-	 *
-	 * @param array $matches
-	 * @return string|null
-	 */
-	protected function _get_post_property_from_querystring( $matches ) {
-		if ( ! isset( $_GET['post_id'] ) || ! MWF_Functions::is_numeric( $_GET['post_id'] ) ) {
-			return;
-		}
-
-		$post = get_post( $_GET['post_id'] );
-		if ( empty( $post->ID ) ) {
-			return;
-		}
-
-		return $this->_get_post_property( $post, $matches[1] );
-	}
-
-	/**
-	 * Callback from preg_replace_callback when disabled querystring setting
-	 *
-	 * @param array $matches
-	 * @return string|null
-	 */
-	protected function _get_post_property_from_this( $matches ) {
-		global $post;
-
-		if ( ! is_singular() ) {
-			return;
-		}
-
-		if ( empty( $post->ID ) ) {
-			return;
-		}
-
-		return $this->_get_post_property( $post, $matches[1] );
-	}
-
-	/**
-	 * Get WP_Post property
-	 *
-	 * @param WP_Post|null $post
-	 * @param string $meta_key
-	 * @return string|null
-	 */
-	protected function _get_post_property( $post, $meta_key ) {
-		if ( ! is_a( $post, 'WP_Post' ) ) {
-			return;
-		}
-
-		if ( isset( $post->$meta_key ) ) {
-			return $post->$meta_key;
-		}
-
-		$post_meta = get_post_meta( $post->ID, $meta_key, true );
-		if ( is_array( $post_meta ) ) {
-			return;
-		}
-
-		return $post_meta;
 	}
 
 	/**
