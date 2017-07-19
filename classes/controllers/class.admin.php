@@ -306,14 +306,9 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * @return void
 	 */
 	public function _complete_message() {
-		wp_editor(
-			$this->_get_option( 'complete_message' ),
-			MWF_Config::NAME . '_complete_message',
-			array(
-				'textarea_name' => MWF_Config::NAME . '[complete_message]',
-				'textarea_rows' => 7,
-			)
-		);
+		$this->_render( 'admin/complete-message', array(
+			'content' => $this->_get_option( 'complete_message' ),
+		) );
 	}
 
 	/**

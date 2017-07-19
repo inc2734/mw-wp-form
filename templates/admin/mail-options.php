@@ -1,5 +1,5 @@
 <p>
-	<?php esc_html_e( '{key} is converted form data.', 'mw-wp-form' ); ?>
+	<?php esc_html_e( '{name of form tag} is converted to posted data.', 'mw-wp-form' ); ?>
 	<?php echo sprintf(
 		esc_html__( 'It is automatically converted to Tracking number when you input {%s}.', 'mw-wp-form' ),
 		MWF_Config::TRACKINGNUMBER
