@@ -102,24 +102,26 @@ class MW_WP_Form_Main_Controller {
 			 * Because refactoring changed the timing to execute the shortcode
 			 */
 			do_action( 'mwform_after_exec_shortcode', $form_key );
+
 			do_action( 'mwform_start_main_process', $form_key );
 
 			$form_verify_token = $_POST[ MWF_Config::NAME . '-form-verify-token' ];
 			$this->Setting     = new MW_WP_Form_Setting( (int) $form_id );
+			$this->Data        = MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
+			$post_condition    = $this->Data->get_post_condition();
+			$this->Validation  = new MW_WP_Form_Validation( $form_key );
+			$Redirected        = new MW_WP_Form_Redirected( $form_key, $this->Setting, $this->Validation->is_valid(), $post_condition );
+
 			if ( $this->Setting->generate_form_verify_token() !== $form_verify_token ) {
-				wp_safe_redirect( home_url() );
+				wp_safe_redirect( $Redirected->redirect() );
 				exit;
 			}
 
-			$this->Data       = MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
-			$post_condition   = $this->Data->get_post_condition();
-			$this->Validation = new MW_WP_Form_Validation( $form_key );
 			if ( in_array( $post_condition, array( 'confirm', 'complete' ) ) ) {
 				$this->_file_upload();
 			}
 
-			$Redirected = new MW_WP_Form_Redirected( $form_key, $this->Setting, $this->Validation->is_valid(), $post_condition );
-			$view_flg   = $Redirected->get_view_flg();
+			$view_flg = $Redirected->get_view_flg();
 			$this->Data->set_view_flg( $view_flg );
 
 			if ( 'complete' === $view_flg ) {
