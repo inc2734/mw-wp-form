@@ -222,6 +222,8 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			'mail_cc',
 			'mail_bcc',
 			'admin_mail_from',
+			'mail_reply_to',
+			'admin_mail_reply_to',
 		);
 		foreach ( $triminglists as $name ) {
 			if ( function_exists( 'mb_convert_kana' ) ) {
@@ -392,15 +394,16 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			$mail_sender = get_bloginfo( 'name' );
 		}
 
-		$mail_from = $this->_get_option( 'mail_from' );
-		if ( is_null( $mail_from ) ) {
-			$mail_from = get_bloginfo( 'admin_email' );
+		$mail_reply_to = $this->_get_option( 'mail_reply_to' );
+		if ( is_null( $mail_reply_to ) ) {
+			$mail_reply_to = get_bloginfo( 'admin_email' );
 		}
 
 		$this->_render( 'admin/mail-options', array(
 			'mail_subject'          => $this->_get_option( 'mail_subject' ),
 			'mail_sender'           => $mail_sender,
-			'mail_from'             => $mail_from,
+			'mail_reply_to'         => $mail_reply_to,
+			'mail_from'             => $this->_get_option( 'mail_from' ),
 			'mail_content'          => $this->_get_option( 'mail_content' ),
 			'automatic_reply_email' => $this->_get_option( 'automatic_reply_email' ),
 		) );
@@ -422,20 +425,21 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			$admin_mail_sender = get_bloginfo( 'name' );
 		}
 
-		$admin_mail_from = $this->_get_option( 'admin_mail_from' );
-		if ( is_null( $admin_mail_from ) ) {
-			$admin_mail_from = get_bloginfo( 'admin_email' );
+		$admin_mail_reply_to = $this->_get_option( 'admin_mail_reply_to' );
+		if ( is_null( $admin_mail_reply_to ) ) {
+			$admin_mail_reply_to = get_bloginfo( 'admin_email' );
 		}
 
 		$this->_render( 'admin/admin-mail-options', array(
-			'mail_to'            => $mail_to,
-			'mail_cc'            => $this->_get_option( 'mail_cc' ),
-			'mail_bcc'           => $this->_get_option( 'mail_bcc' ),
-			'admin_mail_subject' => $this->_get_option( 'admin_mail_subject' ),
-			'admin_mail_sender'  => $admin_mail_sender,
-			'mail_return_path'   => $this->_get_option( 'mail_return_path' ),
-			'admin_mail_from'    => $admin_mail_from,
-			'admin_mail_content' => $this->_get_option( 'admin_mail_content' ),
+			'mail_to'             => $mail_to,
+			'mail_cc'             => $this->_get_option( 'mail_cc' ),
+			'mail_bcc'            => $this->_get_option( 'mail_bcc' ),
+			'admin_mail_subject'  => $this->_get_option( 'admin_mail_subject' ),
+			'admin_mail_sender'   => $admin_mail_sender,
+			'admin_mail_reply_to' => $admin_mail_reply_to,
+			'mail_return_path'    => $this->_get_option( 'mail_return_path' ),
+			'admin_mail_from'     => $this->_get_option( 'admin_mail_from' ),
+			'admin_mail_content'  => $this->_get_option( 'admin_mail_content' ),
 		) );
 	}
 

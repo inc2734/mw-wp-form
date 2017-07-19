@@ -6,9 +6,6 @@
 	); ?>
 </p>
 <p>
-	<?php esc_html_e( 'If Admin Email Options is a blank, Automatic Replay Email Options is used as Admin Email Options.', 'mw-wp-form' ); ?>
-</p>
-<p>
 	<b><?php esc_html_e( 'To ( E-mail address )', 'mw-wp-form' ); ?></b><br />
 	<input class="widefat" type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_to]" value="<?php echo esc_attr( $mail_to ); ?>" />
 </p>
@@ -29,14 +26,20 @@
 	<input class="widefat" type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[admin_mail_sender]" value="<?php echo esc_attr( $admin_mail_sender ); ?>" />
 </p>
 <p>
-	<b><?php esc_html_e( 'Return-Path ( E-mail address )', 'mw-wp-form' ); ?></b><br />
-	<input class="widefat" type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_return_path]" value="<?php echo esc_attr( $mail_return_path ); ?>" />
-</p>
-<p>
-	<b><?php esc_html_e( 'From ( E-mail address )', 'mw-wp-form' ); ?></b><br />
-	<input class="widefat" type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[admin_mail_from]" value="<?php echo esc_attr( $admin_mail_from ); ?>" />
+	<b><?php esc_html_e( 'Reply-to ( E-mail address )', 'mw-wp-form' ); ?></b><br />
+	<input class="widefat" type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[admin_mail_reply_to]" value="<?php echo esc_attr( $admin_mail_reply_to ); ?>" />
 </p>
 <p>
 	<b><?php esc_html_e( 'Content', 'mw-wp-form' ); ?></b><br />
 	<textarea class="widefat" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[admin_mail_content]" cols="30" rows="10"><?php echo esc_attr( $admin_mail_content ); ?></textarea>
+</p>
+<p>
+	<b><?php esc_html_e( 'Return-Path ( E-mail address )', 'mw-wp-form' ); ?></b><br />
+	<input class="widefat" type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_return_path]" value="<?php echo esc_attr( $mail_return_path ); ?>" />
+	<span class="mwf_note"><?php esc_html_e( 'Optional. You should specify an email address in the same domain as your server.', 'mw-wp-form' ); ?></span>
+</p>
+<p>
+	<b><?php esc_html_e( 'From ( E-mail address )', 'mw-wp-form' ); ?></b><br />
+	<input class="widefat" type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[admin_mail_from]" value="<?php echo esc_attr( $admin_mail_from ); ?>" />
+	<span class="mwf_note"><?php esc_html_e( 'Optional. You should specify an email address in the same domain as your server.', 'mw-wp-form' ); ?></span>
 </p>

@@ -48,6 +48,12 @@ class MW_WP_Form_Setting {
 	protected $mail_sender = '';
 
 	/**
+	 * Reply mail Reply-to
+	 * @var string
+	 */
+	protected $mail_reply_to = '';
+
+	/**
 	 * Reply mail content
 	 * @var string
 	 */
@@ -76,6 +82,12 @@ class MW_WP_Form_Setting {
 	 * @var string
 	 */
 	protected $mail_bcc = '';
+
+	/**
+	 * Admin mail Reply-to
+	 * @var string
+	 */
+	protected $admin_mail_reply_to = '';
 
 	/**
 	 * Admin mail subject

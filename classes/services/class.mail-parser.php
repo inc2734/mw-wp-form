@@ -68,7 +68,8 @@ class MW_WP_Form_Mail_Parser {
 				continue;
 			}
 
-			if ( 'to' === $key || 'cc' === $key || 'bcc' === $key ) {
+			// To, CC, BCC, Return-Path can not use {name}. But they can use {custom_mail_tag}
+			if ( 'to' === $key || 'cc' === $key || 'bcc' === $key || 'return_path' === $key ) {
 				$Parser = new MW_WP_Form_Parser( $this->Setting );
 				$this->Mail->$key = $Parser->replace_for_mail_destination( $value );
 				continue;

@@ -29,6 +29,11 @@ class MW_WP_Form_Mail {
 	/**
 	 * @var string
 	 */
+	public $reply_to;
+
+	/**
+	 * @var string
+	 */
 	public $from;
 
 	/**
@@ -67,9 +72,10 @@ class MW_WP_Form_Mail {
 	 * @return boolean
 	 */
 	public function send() {
-		$this->to  = trim( $this->to );
-		$this->cc  = trim( $this->cc );
-		$this->bcc = trim( $this->bcc );
+		$this->to       = trim( $this->to );
+		$this->cc       = trim( $this->cc );
+		$this->bcc      = trim( $this->bcc );
+		$this->reply_to = trim( $this->reply_to );
 
 		if ( ! $this->to ) {
 			return apply_filters( 'mwform_is_mail_sended', false );
@@ -87,6 +93,10 @@ class MW_WP_Form_Mail {
 
 		if ( $this->bcc ) {
 			$headers[] = 'Bcc: ' . $this->bcc;
+		}
+
+		if ( $this->reply_to ) {
+			$headers[] = 'Reply-To: ' . $this->reply_to;
 		}
 
 		if ( defined( 'MWFORM_DEBUG' ) && true === MWFORM_DEBUG ) {
@@ -193,6 +203,7 @@ class MW_WP_Form_Mail {
 		$this->to          = $Setting->get( 'mail_to' );
 		$this->cc          = $Setting->get( 'mail_cc' );
 		$this->bcc         = $Setting->get( 'mail_bcc' );
+		$this->reply_to    = $Setting->get( 'admin_mail_reply_to' );
 		$this->from        = $Setting->get( 'admin_mail_from' );
 		$this->return_path = $Setting->get( 'mail_return_path' );
 		$this->sender      = $Setting->get( 'admin_mail_sender' );
@@ -224,10 +235,11 @@ class MW_WP_Form_Mail {
 			$automatic_reply_email
 		);
 
-		if ( $automatic_reply_email && !$is_invalid_mail_address ) {
+		if ( $automatic_reply_email && ! $is_invalid_mail_address ) {
 			$this->to = $Data->get_post_value_by_key( $automatic_reply_email );
 		}
 
+		$this->reply_to    = $Setting->get( 'mail_reply_to' );
 		$this->return_path = $Setting->get( 'mail_return_path' );
 		$this->from        = $Setting->get( 'mail_from' );
 		$this->sender      = $Setting->get( 'mail_sender' );
@@ -296,23 +308,25 @@ class MW_WP_Form_Mail {
 		$contents .= "\n";
 		$contents .= 'Sender: %3$s';
 		$contents .= "\n";
-		$contents .= 'From: %4$s';
+		$contents .= 'Reply-to: %4$s';
 		$contents .= "\n";
-		$contents .= 'Return-Path: %5$s';
+		$contents .= 'From: %5$s';
 		$contents .= "\n";
-		$contents .= 'Subject: %6$s';
+		$contents .= 'Return-Path: %6$s';
 		$contents .= "\n";
-		$contents .= 'headers:%7$s';
+		$contents .= 'Subject: %7$s';
+		$contents .= "\n";
+		$contents .= 'headers:%8$s';
 		$contents .= "\n";
 		$contents .= '-----';
 		$contents .= "\n";
-		$contents .= '%8$s';
+		$contents .= '%9$s';
 		$contents .= "\n";
 		$contents .= '-----';
 		$contents .= "\n";
 		$contents .= 'attachments:';
 		$contents .= "\n";
-		$contents .= '%9$s';
+		$contents .= '%10$s';
 		$contents .= "\n\n";
 
 		$contents = sprintf(
@@ -320,6 +334,7 @@ class MW_WP_Form_Mail {
 			date( 'M j Y, H:i:s' ),
 			$this->to,
 			$this->sender,
+			$this->reply_to,
 			$this->from,
 			$this->return_path,
 			$this->subject,

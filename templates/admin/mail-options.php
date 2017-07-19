@@ -14,8 +14,8 @@
 	<input class="widefat" type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_sender]" value="<?php echo esc_attr( $mail_sender ); ?>" />
 </p>
 <p>
-	<b><?php esc_html_e( 'From ( E-mail address )', 'mw-wp-form' ); ?></b><br />
-	<input class="widefat" type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_from]" value="<?php echo esc_attr( $mail_from ); ?>" />
+	<b><?php esc_html_e( 'Reply-to ( E-mail address )', 'mw-wp-form' ); ?></b><br />
+	<input class="widefat" type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_reply_to]" value="<?php echo esc_attr( $mail_reply_to ); ?>" />
 </p>
 <p>
 	<b><?php esc_html_e( 'Content', 'mw-wp-form' ); ?></b><br />
@@ -25,4 +25,9 @@
 	<b><?php esc_html_e( 'Automatic reply email', 'mw-wp-form' ); ?></b><br />
 	<input class="widefat" type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[automatic_reply_email]" value="<?php echo esc_attr( $automatic_reply_email ); ?>" /><br />
 	<span class="mwf_note"><?php esc_html_e( 'Input the key to use as transmission to automatic reply email. {} is unnecessary.', 'mw-wp-form' ); ?></span>
+</p>
+<p>
+	<b><?php esc_html_e( 'From ( E-mail address )', 'mw-wp-form' ); ?></b><br />
+	<input class="widefat" type="text" name="<?php echo esc_attr( MWF_Config::NAME ); ?>[mail_from]" value="<?php echo esc_attr( $mail_from ); ?>" />
+	<span class="mwf_note"><?php esc_html_e( 'Optional. You should specify an email address in the same domain as your server.', 'mw-wp-form' ); ?></span>
 </p>
