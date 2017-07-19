@@ -61,6 +61,7 @@ class MW_WP_Form_Exec_Shortcode {
 		 * Because refactoring changed the timing to execute the shortcode
 		 */
 		do_action( 'mwform_after_exec_shortcode', $this->form_key );
+
 		do_action( 'mwform_start_main_process', $this->form_key );
 
 		$this->Data     = MW_WP_Form_Data::connect( $this->form_key );

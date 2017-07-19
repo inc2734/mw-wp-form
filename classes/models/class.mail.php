@@ -99,6 +99,11 @@ class MW_WP_Form_Mail {
 			$headers[] = 'Reply-To: ' . $this->reply_to;
 		}
 
+		if ( ! $this->body ) {
+			// wp_mail do not send mail when message is empty.
+			$this->body = ' ';
+		}
+
 		if ( defined( 'MWFORM_DEBUG' ) && true === MWFORM_DEBUG ) {
 			$is_mail_sended = $this->_put_mail_log( $headers );
 		} else {
