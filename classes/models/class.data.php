@@ -105,13 +105,19 @@ class MW_WP_Form_Data {
 		return self::$Instances[ $form_key ];
 	}
 
-	public static function getInstance( $form_key, $POST = null, $FILES = null ) {
+	public static function getInstance( $form_key = null, $POST = null, $FILES = null ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Data::getInstance()',
 			'MW_WP_Form_Data::connect()'
 		);
 
-		self::connect( $form_key, $POST, $FILES );
+		if ( is_null( $form_key ) ) {
+			if ( 1 === count( self::$Instances ) ) {
+				$form_key = key( array_slice( self::$Instances, 0, 1 ) );
+			}
+		}
+
+		return self::connect( $form_key, $POST, $FILES );
 	}
 
 	/**
