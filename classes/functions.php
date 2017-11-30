@@ -105,7 +105,7 @@ class MWF_Functions {
 	 * @param string $new_function_name
 	 */
 	public static function deprecated_message( $function_name, $new_function = '' ) {
-		if ( ! defined( 'WP_DEBUG' ) || true !== WP_DEBUG ) {
+		if ( ! defined( 'WP_DEBUG' ) || true !== WP_DEBUG || ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
 
@@ -138,6 +138,7 @@ class MWF_Functions {
 				self::_display_deprecated_message();
 			} else {
 				add_filter( 'the_content', 'MWF_Functions::_return_deprecated_message' );
+				error_log( strip_tags( self::_return_deprecated_message() ) );
 			}
 		}
 	}
@@ -147,7 +148,7 @@ class MWF_Functions {
 		unset( $mwform_deprecated_message );
 		echo $content;
 	}
-	protected static function _return_deprecated_message( $content ) {
+	protected static function _return_deprecated_message( $content = '' ) {
 		global $mwform_deprecated_message;
 		$content = $mwform_deprecated_message . $content;
 		unset( $mwform_deprecated_message );
