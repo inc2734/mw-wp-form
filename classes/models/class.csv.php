@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form CSV
- * Version    : 2.0.0
+ * Version    : 2.0.1
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : April 3, 2015
- * Modified   : June 1, 2017
+ * Modified   : June 26, 2018
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -196,7 +196,7 @@ class MW_WP_Form_CSV {
 						}
 						$column = wp_get_attachment_url( $post_meta );
 					} else {
-						$column = ( $post_meta ) ? $post_meta : '';
+						$column = ( '' === $post_meta || null === $post_meta || false === $post_meta ) ?  '' : $post_meta;
 					}
 				}
 				$columns[ $key ] = $column;

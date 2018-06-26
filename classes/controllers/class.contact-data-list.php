@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Contact Data List Controller
- * Version    : 2.0.0
+ * Version    : 2.0.1
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : January 1, 2015
- * Modified   : May 30, 2017
+ * Modified   : June 26, 2018
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -208,10 +208,10 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 					$post_meta = MWF_Functions::get_multimedia_id__fallback( $post, $column );
 				}
 				$value = MWF_Functions::get_multimedia_data( $post_meta );
-			} elseif ( $post_meta ) {
-				$value = esc_html( $post_meta );
-			} else {
+			} elseif ( '' === $post_meta || null === $post_meta || false === $post_meta ) {
 				$value = '&nbsp;';
+			} else {
+				$value = esc_html( $post_meta );
 			}
 		} else {
 			$value = '&nbsp;';
