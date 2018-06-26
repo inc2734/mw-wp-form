@@ -70,7 +70,10 @@ class MW_WP_Form_Exec_Shortcode {
 
 		add_action( 'wp_footer', array( $this->Data, 'clear_values' ) );
 
-		$Redirected = new MW_WP_Form_Redirected( $this->form_key, $this->Setting, true, $this->Data->get_post_condition() );
+		$Validation  = new MW_WP_Form_Validation( $this->form_key );
+		$is_valid = $Validation->is_valid();
+
+		$Redirected = new MW_WP_Form_Redirected( $this->form_key, $this->Setting, $is_valid, $this->Data->get_post_condition() );
 		if ( $Redirected->get_request_uri() !== $Redirected->get_url() && $Redirected->get_url() ) {
 			$Redirected->redirect_js();
 		}
@@ -261,7 +264,10 @@ class MW_WP_Form_Exec_Shortcode {
 			return false;
 		}
 
-		$Redirected = new MW_WP_Form_Redirected( $this->form_key, $this->Setting, true, $this->Data->get_post_condition() );
+		$Validation  = new MW_WP_Form_Validation( $this->form_key );
+		$is_valid = $Validation->is_valid();
+
+		$Redirected = new MW_WP_Form_Redirected( $this->form_key, $this->Setting, $is_valid, $this->Data->get_post_condition() );
 		if ( $Redirected->get_request_uri() === $Redirected->get_url() ) {
 			return false;
 		}
