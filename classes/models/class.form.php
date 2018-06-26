@@ -358,12 +358,10 @@ class MW_WP_Form_Form {
 	 * @return string
 	 */
 	public function hidden( $name, $value ) {
-		return $this->remove_newline_space(
-			$this->_render( 'hidden', array(
-				'name'  => $name,
-				'value' => $value,
-			) )
-		);
+		return $this->_render( 'hidden', array(
+			'name'  => $name,
+			'value' => $value,
+		) );
 	}
 
 	/**
