@@ -57,6 +57,9 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 			'class' => $this->atts['class'],
 		) );
 		$_ret .= $this->Form->hidden( MWF_Config::CUSTOM_MAIL_TAG_KEYS . '[]', $this->atts['name'] );
+		if ( 'false' !== $this->atts['show_error'] ) {
+			$_ret .= $this->get_error( $this->atts['name'] );
+		}
 		return $_ret;
 	}
 
