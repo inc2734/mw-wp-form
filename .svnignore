@@ -7,3 +7,5 @@ _tests
 phpunit.xml.dist
 phpcs.ruleset.xml
 vendor
+composer.json
+composer.lock
