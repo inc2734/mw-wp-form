@@ -32,6 +32,11 @@ class MWF_Config {
 	const UPLOAD_FILE_KEYS = 'mwf_upload_files';
 
 	/**
+	 * The name of field that array of custom mail tag names
+	 */
+	const CUSTOM_MAIL_TAG_KEYS = 'mwf_custom_mail_tags';
+
+	/**
 	 * $_FILES
 	 */
 	const UPLOAD_FILES = 'mwf_files';

@@ -56,6 +56,7 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 			'id'    => $this->atts['id'],
 			'class' => $this->atts['class'],
 		) );
+		$_ret .= $this->Form->hidden( MWF_Config::CUSTOM_MAIL_TAG_KEYS . '[]', $this->atts['name'] );
 		return $_ret;
 	}
 
@@ -71,6 +72,7 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 			'id'    => $this->atts['id'],
 			'class' => $this->atts['class'],
 		) );
+		$_ret .= $this->Form->hidden( MWF_Config::CUSTOM_MAIL_TAG_KEYS . '[]', $this->atts['name'] );
 		return $_ret;
 	}
 

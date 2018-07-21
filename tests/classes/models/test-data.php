@@ -790,4 +790,23 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 			'name-2' => array( 'noempty' => 'message' ),
 		), $Data->get_validation_errors() );
 	}
+
+	/**
+	 * @test
+	 * @group custom_mail_tag
+	 */
+	public function custom_mail_tag() {
+		add_filter( 'mwform_custom_mail_tag', function( $value, $name ) {
+			if ( 'custom' === $name ) {
+				return 'custom';
+			}
+			return $value;
+		}, 10, 2 );
+
+		$Data = $this->_instantiation_Data( array(
+			MWF_Config::CUSTOM_MAIL_TAG_KEYS => array( 'custom' ),
+		) );
+
+		$this->assertSame( 'custom', $Data->get_raw( 'custom' ) );
+	}
 }
