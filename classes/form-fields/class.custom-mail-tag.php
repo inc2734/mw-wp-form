@@ -54,6 +54,10 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 			'id'    => $this->atts['id'],
 			'class' => $this->atts['class'],
 		) );
+		$_ret .= $this->Form->hidden( MWF_Config::CUSTOM_MAIL_TAG_KEYS . '[]', $this->atts['name'] );
+		if ( $this->atts['show_error'] !== 'false' ) {
+			$_ret .= $this->get_error( $this->atts['name'] );
+		}
 		return $_ret;
 	}
 
@@ -67,6 +71,7 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 			'id'    => $this->atts['id'],
 			'class' => $this->atts['class'],
 		) );
+		$_ret .= $this->Form->hidden( MWF_Config::CUSTOM_MAIL_TAG_KEYS . '[]', $this->atts['name'] );
 		return $_ret;
 	}
 
@@ -129,11 +134,20 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string
 	 */
 	protected function apply_filters_mwform_custom_mail_tag( $form_key, $value, $name ) {
-		return apply_filters(
+		$value = apply_filters(
+			'mwform_custom_mail_tag',
+			$value,
+			$name,
+			null
+		);
+
+		$value = apply_filters(
 			'mwform_custom_mail_tag_' . $form_key,
 			$value,
 			$name,
 			null
 		);
+
+		return $value;
 	}
 }

@@ -505,4 +505,24 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		$this->Data->push_uploaded_file_keys( array( 'file2' => 'http://exemple.com/dummy.txt' ) );
 		$this->assertSame( array( 'file1', 'file2' ), $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
 	}
+
+	/**
+	 * @group custom_mail_tag
+	 */
+	public function test_custom_mail_tag() {
+		$post_id = $this->factory->post->create( array(
+			'post_type' => MWF_Config::NAME,
+		) );
+		$form_key = MWF_Functions::get_form_key_from_form_id( $post_id );
+		add_filter( 'mwform_custom_mail_tag', function( $value, $name ) {
+			if ( 'custom' === $name ) {
+				return 'custom';
+			}
+			return $value;
+		}, 10, 2 );
+		$Data = MW_WP_Form_Data::getInstance( $form_key, array(
+			MWF_Config::CUSTOM_MAIL_TAG_KEYS => array( 'custom' ),
+		) );
+		$this->assertSame( 'custom', $Data->get_raw( 'custom' ) );
+	}
 }

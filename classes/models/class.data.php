@@ -64,6 +64,28 @@ class MW_WP_Form_Data {
 		$this->data     = $this->Session->gets();
 		$this->set_request_valiables( $this->POST );
 		$this->set_files_valiables( $this->POST, $this->FILES );
+
+		if ( isset( $POST[ MWF_Config::CUSTOM_MAIL_TAG_KEYS ] ) ) {
+			foreach ( $POST[ MWF_Config::CUSTOM_MAIL_TAG_KEYS ] as $custom_mail_tag_key ) {
+				$value = apply_filters(
+					'mwform_custom_mail_tag',
+					null,
+					$custom_mail_tag_key,
+					null
+				);
+
+				$value = apply_filters(
+					'mwform_custom_mail_tag_' . $form_key,
+					$value,
+					$custom_mail_tag_key,
+					null
+				);
+
+				if ( ! is_null( $value ) ) {
+					$this->set( $custom_mail_tag_key, $value );
+				}
+			}
+		}
 	}
 
 	/**

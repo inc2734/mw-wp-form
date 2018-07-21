@@ -33,6 +33,11 @@ class MWF_Config {
 	const UPLOAD_FILE_KEYS = 'mwf_upload_files';
 
 	/**
+	 * カスタムメールタグを示す name属性 を保存する配列、メタデータの名前
+	 */
+	const CUSTOM_MAIL_TAG_KEYS = 'mwf_custom_mail_tags';
+
+	/**
 	 * $_FILES
 	 */
 	const UPLOAD_FILES = 'mwf_files';
