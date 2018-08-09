@@ -71,11 +71,15 @@ class MW_WP_Form_Contact_Data_Setting {
 	 * @return array
 	 */
 	public function get_response_statuses() {
-		return array(
+		$contact_data_post_type = get_post_type( $this->post_id );
+
+		$response_statuses = array(
 			'not-supported' => esc_html__( 'Not supported', 'mw-wp-form' ),
 			'reservation'   => esc_html__( 'Reservation', 'mw-wp-form' ),
 			'supported'     => esc_html__( 'Supported', 'mw-wp-form' ),
 		);
+
+		return apply_filters( 'mwform_response_statuses_' . $contact_data_post_type, $response_statuses );
 	}
 
 	/**

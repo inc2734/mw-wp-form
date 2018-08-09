@@ -87,6 +87,9 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Deprecated `MW_WP_Form_Validation::check()`. Please use this instead `MW_WP_Form_Validation::is_valid()`
 * Deprecated `MW_WP_Form_Validation::single_check()`. Please use this instead `MW_WP_Form_Validation::is_valid_field()`
 
+= 3.2.3 =
+* Added   : Added filter hook mwform_response_statuses_mw-wp-form-xxx
+
 = 3.2.2 =
 * Bugfix  : Support validation check of custom mail tag fields.
 
