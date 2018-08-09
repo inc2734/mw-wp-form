@@ -89,7 +89,8 @@ class MW_WP_Form_Contact_Data_Setting {
 	 * @return array
 	 */
 	public function get_response_statuses() {
-		return $this->response_statuses;
+		$contact_data_post_type = get_post_type( $this->post_id );
+		return apply_filters( 'mwform_response_statuses_' . $contact_data_post_type, $this->response_statuses );
 	}
 
 	/**

@@ -154,7 +154,7 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 		} elseif ( $column === 'response_status' ) {
 			$response_statuses = $Contact_Data_Setting->get_response_statuses();
 			$response_status   = $Contact_Data_Setting->get( 'response_status' );
-			$value = $response_statuses[$response_status];
+			$value = isset( $response_statuses[ $response_status ] ) ? $response_statuses[ $response_status ] : $response_statuses[ key( $response_statuses ) ];
 		} elseif ( is_array( $post_custom_keys ) && in_array( $column, $post_custom_keys ) ) {
 			$post_meta = get_post_meta( $post_id, $column, true );
 			if ( $Contact_Data_Setting->is_upload_file_key( $post, $column ) ) {

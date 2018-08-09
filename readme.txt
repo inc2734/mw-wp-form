@@ -80,6 +80,9 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 == Changelog ==
 
+= 3.2.3 =
+* Added   : Added filter hook mwform_response_statuses_mw-wp-form-xxx
+
 = 3.2.2 =
 * Bugfix  : Support validation check of custom mail tag fields.
 
