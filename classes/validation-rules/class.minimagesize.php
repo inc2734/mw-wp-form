@@ -1,64 +1,57 @@
 <?php
 /**
  * Name       : MW WP Form Validation Rule MinImageSize
- * Description: 画像サイズが指定したサイズ以内
- * Version    : 1.0.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : April 4, 2016
- * Modified   :
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Validation_Rule_MinImageSize extends MW_WP_Form_Abstract_Validation_Rule {
 
 	/**
-	 * バリデーションルール名を指定
+	 * Validation rule name
 	 * @var string
 	 */
 	protected $name = 'minfilesize';
 
 	/**
-	 * バリデーションチェック
+	 * Validation process
 	 *
-	 * @param string $key name属性
+	 * @param string $name
 	 * @param array $option
-	 * @return string エラーメッセージ
+	 * @return string Error message
 	 */
-	public function rule( $key, array $options = array() ) {
-		$value = $this->Data->get( $key );
-		if ( !$value ) {
+	public function rule( $name, array $options = array() ) {
+		$value = $this->Data->get( $name );
+
+		if ( ! $value ) {
 			return;
 		}
 
-		if ( !MWF_Functions::is_numeric( $options['width'] ) || !MWF_Functions::is_numeric( $options['width'] ) ) {
+		if ( ! MWF_Functions::is_numeric( $options['width'] ) || ! MWF_Functions::is_numeric( $options['width'] ) ) {
 			return;
 		}
 
-		/**
-		 * 送信ボタンを押して次のページが表示されるまでの間、
-		 *   1.そのページに post されてチェック
-		 *   2.リダイレクト先でチェック
-		 * の2度チェックされる。画像サイズのチェックは画像が存在しないとできないが、1.でエラーだった場合
-		 * ファイルがアップロードされないので 2.でスルーされ画面表示時にはエラーも出ない。
-		 */
 		$upload_file_keys = $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
 		$upload_files     = $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILES );
 		$is_error = false;
 
-		if ( !is_array( $upload_file_keys ) ) {
+		if ( ! is_array( $upload_file_keys ) ) {
 			$upload_file_keys = array();
 		}
 
-		if ( !is_array( $upload_files ) ) {
+		if ( ! is_array( $upload_files ) ) {
 			$upload_files = array();
 		}
 
-		// アップロード直後のチェック
-		if ( !in_array( $key, $upload_file_keys ) && array_key_exists( $key, $upload_files ) ) {
-			$file_path = $upload_files[$key]['tmp_name'];
+		// Check after upload
+		if ( ! in_array( $name, $upload_file_keys ) && array_key_exists( $name, $upload_files ) ) {
+			$file_path = $upload_files[ $name ]['tmp_name'];
 		}
-		// アップロード済みの場合のチェック
+		// Check if uploaded
 		else {
 			$file_path = MWF_Functions::fileurl_to_path( $value );
 		}
@@ -66,7 +59,7 @@ class MW_WP_Form_Validation_Rule_MinImageSize extends MW_WP_Form_Abstract_Valida
 		if ( file_exists( $file_path ) && exif_imagetype( $file_path ) ) {
 			$imagesize = getimagesize( $file_path );
 		} else {
-			if ( !in_array( $key, $upload_file_keys ) ) {
+			if ( ! in_array( $name, $upload_file_keys ) ) {
 				$is_error = true;
 			}
 		}
@@ -83,20 +76,21 @@ class MW_WP_Form_Validation_Rule_MinImageSize extends MW_WP_Form_Abstract_Valida
 	}
 
 	/**
-	 * 設定パネルに追加
+	 * Add setting field to validation rule setting panel
 	 *
-	 * @param numeric $key バリデーションルールセットの識別番号
-	 * @param array $value バリデーションルールセットの内容
+	 * @param numeric $key ID of validation rule
+	 * @param array $value Content of validation rule
+	 * @return void
 	 */
 	public function admin( $key, $value ) {
 		$width  = '';
 		$height = '';
-		if ( is_array( $value[$this->getName()] ) ) {
-			if ( isset( $value[$this->getName()]['width'] ) ) {
-				$width = $value[$this->getName()]['width'];
+		if ( is_array( $value[ $this->getName() ] ) ) {
+			if ( isset( $value[ $this->getName() ]['width'] ) ) {
+				$width = $value[ $this->getName() ]['width'];
 			}
-			if ( isset( $value[$this->getName()]['height'] ) ) {
-				$height = $value[$this->getName()]['height'];
+			if ( isset( $value[ $this->getName() ]['height'] ) ) {
+				$height = $value[ $this->getName() ]['height'];
 			}
 		}
 		?>

@@ -1,120 +1,95 @@
 <?php
 /**
  * Name       : MW WP Form Validation
- * Description: 与えられたデータに対してバリデーションエラーがあるかチェックする
- * Version    : 1.8.5
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : July 20, 2012
- * Modified   : April 15, 2015
+ * Modified   : June 1, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Validation {
 
 	/**
-	 * @var MW_WP_Form_Error
+	 * @var string
 	 */
-	protected $Error;
+	protected $form_key;
 
 	/**
-	 * バリデートをかける項目（name属性）と、それにかけるバリデーションの配列
+	 * @var MW_WP_Form_Data
+	 */
+	protected $Data;
+
+	/**
+	 * @var MW_WP_Form_Setting
+	 */
+	protected $Setting;
+
+	/**
+	 * Array of name of validated and array of validation rules for it pairs
 	 * @var array
 	 */
 	protected $validate = array();
 
 	/**
-	 * バリデーションルールの配列
-	 * @var array
+	 * @param string $form_key
 	 */
-	protected $validation_rules = array();
+	public function __construct( $form_key ) {
+		$this->form_key = $form_key;
+		$this->Data     = MW_WP_Form_Data::connect( $form_key );
+		$form_id        = MWF_Functions::get_form_id_from_form_key( $form_key );
+		$this->Setting  = new MW_WP_Form_Setting( $form_id );
 
-	/**
-	 * __construct
-	 *
-	 * @param MW_WP_Form_Error $Error
-	 */
-	public function __construct( MW_WP_Form_Error $Error ) {
-		$this->Error = $Error;
+		$this->_set_rules();
 	}
 
 	/**
-	 * 各バリデーションルールクラスのインスタンスをセット
+	 * Set validation rules of this form
 	 *
-	 * @param array $validation_rules
+	 * @return void
 	 */
-	public function set_validation_rules( array $validation_rules ) {
-		foreach ( $validation_rules as $validation_name => $instance ) {
-			if ( is_callable( array( $instance, 'rule' ) ) ) {
-				$this->validation_rules[$instance->getName()] = $instance;
-			}
-		}
-	}
-
-	/**
-	 * セットされたバリデーションルールクラスを取得
-	 *
-	 * @return array
-	 */
-	public function get_validation_rules() {
-		return $this->validation_rules;
-	}
-
-	/**
-	 * バリデートが通っているかチェック
-	 *
-	 * @return bool
-	 */
-	protected function is_valid() {
-		$errors = $this->Error->get_errors();
-		if ( empty( $errors ) ) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * set_rules
-	 *
-	 * @param MW_WP_Form_Setting $Setting
-	 */
-	public function set_rules( MW_WP_Form_Setting $Setting ) {
-		$Data = MW_WP_Form_Data::getInstance();
-
-		$rules = array();
-		$validations = $Setting->get('validation' );
+	protected function _set_rules() {
+		$validations = $this->Setting->get( 'validation' );
 		if ( $validations ) {
 			foreach ( $validations as $validation ) {
 				foreach ( $validation as $rule => $options ) {
-					if ( $rule == 'target' ) {
+					if ( 'target' === $rule ) {
 						continue;
 					}
-					if ( !is_array( $options ) ) {
+					if ( ! is_array( $options ) ) {
 						$options = array();
 					}
 					$this->set_rule( $validation['target'], $rule, $options );
 				}
 			}
 		}
+
 		$Akismet = new MW_WP_Form_Akismet();
-		$akismet_check = $Akismet->check(
-			$Setting->get( 'akismet_author' ),
-			$Setting->get( 'akismet_author_email' ),
-			$Setting->get( 'akismet_author_url' ),
-			$Data
+		$akismet_check = $Akismet->is_valid(
+			$this->Setting->get( 'akismet_author' ),
+			$this->Setting->get( 'akismet_author_email' ),
+			$this->Setting->get( 'akismet_author_url' ),
+			$this->Data
 		);
 		if ( $akismet_check ) {
 			$this->set_rule( MWF_Config::AKISMET, 'akismet_check' );
 		}
+
+		$Validation = apply_filters(
+			'mwform_validation_' . $this->form_key,
+			$this,
+			$this->Data->gets(),
+			clone $this->Data
+		);
 	}
 
 	/**
-	 * set_rule
+	 * Set validation rule of the form field.
 	 *
-	 * @param string ターゲットのname属性
-	 * @param string バリデーションルール名
-	 * @param array オプション
+	 * @param string $key
+	 * @param string $rule
+	 * @param array $options
 	 * @return MW_WP_Form_Validation
 	 */
 	public function set_rule( $key, $rule, array $options = array() ) {
@@ -122,66 +97,128 @@ class MW_WP_Form_Validation {
 			'rule'    => strtolower( $rule ),
 			'options' => $options
 		);
-		$this->validate[$key][] = $rules;
+		$this->validate[ $key ][] = $rules;
 		return $this;
 	}
 
 	/**
-	 * validate実行
+	 * for unit tests
 	 *
-	 * @return bool エラーがなければ true
+	 * @return bool
 	 */
-	public function check() {
-		foreach ( $this->validate as $key => $rules ) {
-			$this->_check( $key, $rules );
-		}
-		return $this->is_valid();
-	}
-
-	/**
-	 * 特定の項目のvalidate実行
-	 *
-	 * @param string $key
-	 * @return bool エラーがなければ true
-	 */
-	public function single_check( $key ) {
-		$rules = array();
-		if ( is_array( $this->validate ) && isset( $this->validate[$key] ) ) {
-			$rules = $this->validate[$key];
-			$this->_check( $key, $rules );
-		}
-		if ( $this->Error->get_error( $key ) ) {
+	public function is_valid_validation_settings() {
+		if ( ! is_array( $this->validate ) ) {
 			return false;
 		}
+
+		foreach ( $this->validate as $validate ) {
+			if ( ! is_array( $validate ) ) {
+				return false;
+			}
+
+			foreach ( $validate as $key => $validation_rule ) {
+				if ( ! is_array( $validation_rule ) ) {
+					return false;
+				}
+
+				if ( ! isset( $validation_rule['rule'] ) ) {
+					return false;
+				}
+
+				if ( ! isset( $validation_rule['options'] ) ) {
+					return false;
+				}
+
+				if ( ! is_array( $validation_rule['options'] ) ) {
+					return false;
+				}
+			}
+		}
+
 		return true;
 	}
 
 	/**
-	 * validate実行の実体
+	 * Validation check form fields
+	 *
+	 * @return bool Return true when nothing errors
+	 */
+	public function is_valid() {
+		foreach ( $this->validate as $key => $rules ) {
+			$this->_is_valid( $key, $rules );
+		}
+
+		return (bool) ! $this->Data->get_validation_errors();
+	}
+
+	public function check() {
+		MWF_Functions::deprecated_message(
+			'MW_WP_Form_Validation::check()',
+			'MW_WP_Form_Validation::is_valid()'
+		);
+
+		return $this->is_valid();
+	}
+
+	/**
+	 * Validation check the one form field
+	 *
+	 * @param string $key
+	 * @return bool Return true when nothing errors
+	 */
+	public function is_valid_field( $key ) {
+		if ( isset( $this->validate[ $key ] ) ) {
+			$this->_is_valid( $key, $this->validate[ $key ] );
+		}
+
+		return (bool) ! $this->Data->get_validation_error( $key );
+	}
+
+	public function single_check( $key ) {
+		MWF_Functions::deprecated_message(
+			'MW_WP_Form_Validation::single_check()',
+			'MW_WP_Form_Validation::is_valid_field()'
+		);
+
+		return $this->is_valid_field();
+	}
+
+	/**
+	 * Set varidation errors into MW_WP_Form_Data
 	 *
 	 * @param string $key
 	 * @param array $rules
 	 */
-	protected function _check( $key, array $rules ) {
+	protected function _is_valid( $key, array $rules ) {
+		$Validation_Rules = MW_WP_Form_Validation_Rules::instantiation( $this->form_key );
+		$validation_rules = $Validation_Rules->get_validation_rules();
+
 		foreach ( $rules as $rule_set ) {
-			if ( !isset( $rule_set['rule'] ) ) {
+			if ( ! isset( $rule_set['rule'] ) ) {
 				continue;
 			}
-			$rule = $rule_set['rule'];
-			if ( !isset( $this->validation_rules[$rule] ) ) {
-				continue;
-			}
+
 			$options = array();
 			if ( isset( $rule_set['options'] ) ) {
 				$options = $rule_set['options'];
 			}
-			$validation_rule = $this->validation_rules[$rule];
-			if ( is_callable( array( $validation_rule, 'rule' ) ) ) {
-				$message = $validation_rule->rule( $key, $options );
-				if ( !empty( $message ) ) {
-					$this->Error->set_error( $key, $rule, $message );
-				}
+
+			$rule = $rule_set['rule'];
+			if ( ! isset( $validation_rules[ $rule ] ) ) {
+				continue;
 			}
+
+			$validation_rule = $validation_rules[ $rule ];
+			if ( ! is_callable( array( $validation_rule, 'rule' ) ) ) {
+				continue;
+			}
+
+			$message = $validation_rule->rule( $key, $options );
+			if ( empty( $message ) ) {
+				continue;
+			}
+
+			$this->Data->set_validation_error( $key, $rule, $message );
 		}
 	}
 }

@@ -1,39 +1,38 @@
 <?php
 /**
  * Name       : MWF Config
- * Description: 設定ファイル
- * Version    : 1.3.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : May 29, 2013
- * Modified   : January 2, 2015
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MWF_Config {
 
 	/**
-	 * プラグイン識別子
+	 * Plugin ID
 	 */
 	const NAME = 'mw-wp-form';
 
 	/**
-	 * ネームスペース
+	 * Text Domain
 	 */
 	const DOMAIN = 'mw-wp-form';
 
 	/**
-	 * DBに保存する問い合わせデータの post_type名 の接頭辞
+	 * Prefix of post type of saved inquiry data
 	 */
 	const DBDATA = 'mwf_';
 
 	/**
-	 * アップロードファイルを示す name属性 を保存する配列、メタデータの名前
+	 * The name of field that array of uploaded file names
 	 */
 	const UPLOAD_FILE_KEYS = 'mwf_upload_files';
 
 	/**
-	 * カスタムメールタグを示す name属性 を保存する配列、メタデータの名前
+	 * The name of field that array of custom mail tag names
 	 */
 	const CUSTOM_MAIL_TAG_KEYS = 'mwf_custom_mail_tags';
 
@@ -43,37 +42,43 @@ class MWF_Config {
 	const UPLOAD_FILES = 'mwf_files';
 
 	/**
-	 * akismetのエラーを格納するValidationのキー
+	 * Field name of Akismet
 	 */
 	const AKISMET = 'mwf_akismet';
 
 	/**
-	 * 権限
+	 * Capability
 	 */
 	const CAPABILITY = 'edit_pages';
 
 	/**
-	 * お問い合せ番号用のキー名
+	 * Name of tracking number
 	 */
 	const TRACKINGNUMBER = 'tracking_number';
 
 	/**
-	 * 確認ボタンの名前
+	 * Field name of confirm button
 	 */
 	const CONFIRM_BUTTON = 'submitConfirm';
 
 	/**
-	 * 戻るボタンの名前
+	 * Field name of back button
 	 */
 	const BACK_BUTTON = 'submitBack';
 
 	/**
-	 * CONTACT_DATA_NAME
+	 * Name of meta data of saved inquiry data
 	 */
 	const CONTACT_DATA_NAME = '_mw-wp-form_data';
+	const INQUIRY_DATA_NAME = self::CONTACT_DATA_NAME;
 
 	/**
-	 * 送信エラーかどうかを判定する MW_WP_Form_Data のキー
+	 * Name of sending error data
 	 */
 	const SEND_ERROR = 'mw-wp-form-send-error';
+
+	/**
+	 * Nonce field name
+	 */
+	const TOKEN_NAME = 'mw_wp_form_token';
 }

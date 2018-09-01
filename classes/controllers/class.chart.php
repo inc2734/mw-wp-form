@@ -1,60 +1,52 @@
 <?php
 /**
  * Name       : MW WP Form Chart Controller
- * Version    : 1.1.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : January 1, 2015
- * Modified   : March 27, 2015
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 
 	/**
-	 * URL引数で渡される、そのグラフに使う投稿タイプ名
+	 * Post type of saved inquiry data to display in this chart
 	 * @var string
 	 */
 	protected $formkey;
 
 	/**
-	 * フォームの設定データ
+	 * Settings of the form
 	 * @var array
 	 */
 	protected $postdata = array();
 
-	/**
-	 * Settings API グループ名
-	 * @var string
-	 */
-	protected $option_group;
-
-	/**
-	 * __construct
-	 */
 	public function __construct() {
-		$this->option_group = MWF_Config::NAME . '-' . 'chart-group';
-		if ( !empty( $_GET['formkey'] ) ) {
+		if ( ! empty( $_GET['formkey'] ) ) {
 			$this->formkey = $_GET['formkey'];
 		}
-	}
 
-	/**
-	 * initialize
-	 */
-	public function initialize() {
-		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
-		if ( !in_array( $this->formkey, $contact_data_post_types ) ) {
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_form_post_types();
+		if ( ! in_array( $this->formkey, $contact_data_post_types ) ) {
 			exit;
 		}
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts') );
+		add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue_scripts') );
+
+		$screen = get_current_screen();
+		add_action( 'load-' . $screen->id, array( $this, '_save' ) );
+		add_action( $screen->id          , array( $this, '_index' ) );
 	}
 
 	/**
-	 * CSS、JSの読み込み
+	 * Enqueue assets
+	 *
+	 * @return void
 	 */
-	public function admin_enqueue_scripts() {
+	public function _admin_enqueue_scripts() {
 		global $wp_scripts;
+
 		$ui = $wp_scripts->query( 'jquery-ui-core' );
 		wp_enqueue_style(
 			'jquery.ui',
@@ -62,11 +54,21 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 			array( 'jquery' ),
 			$ui->ver
 		);
+
 		wp_enqueue_script( 'jquery-ui-sortable' );
 
 		$url = plugins_url( MWF_Config::NAME );
-		wp_enqueue_style( MWF_Config::NAME . '-admin-repeatable', $url . '/css/admin-repeatable.css' );
-		wp_enqueue_script( 'jsapi', 'https://www.google.com/jsapi' );
+
+		wp_enqueue_style(
+			MWF_Config::NAME . '-admin-repeatable',
+			$url . '/css/admin-repeatable.css'
+		);
+
+		wp_enqueue_script(
+			'jsapi',
+			'https://www.google.com/jsapi'
+		);
+
 		wp_enqueue_script(
 			MWF_Config::NAME . '-repeatable',
 			$url . '/js/mw-wp-form-repeatable.js',
@@ -74,6 +76,7 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 			null,
 			true
 		);
+
 		wp_enqueue_script(
 			MWF_Config::NAME . '-google-chart',
 			$url . '/js/mw-wp-form-google-chart.js',
@@ -81,6 +84,7 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 			null,
 			true
 		);
+
 		wp_enqueue_script(
 			MWF_Config::NAME . '-admin-chart',
 			$url . '/js/admin-chart.js',
@@ -91,24 +95,55 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * グラフページを表示
+	 * Save
+	 *
+	 * @return void
 	 */
-	public function index() {
+	public function _save() {
+		if ( ! isset( $_POST[ MWF_Config::NAME . '-chart-nonce-field' ] ) ) {
+			return;
+		}
+
+		if ( empty( $_POST[ MWF_Config::NAME . '-chart-nonce-field' ] ) ) {
+			return;
+		}
+
+		if ( ! check_admin_referer( MWF_Config::NAME . '-chart-action', MWF_Config::NAME . '-chart-nonce-field' ) ) {
+			return;
+		}
+
+		if ( ! $this->formkey ) {
+			return;
+		}
+
+		$option_name = MWF_Config::NAME . '-chart-' . $this->formkey;
+		$sanitized_values = $this->_sanitize( $_POST[ $option_name ] );
+		update_option( $option_name, $sanitized_values );
+		wp_redirect(
+			admin_url(
+				'edit.php?post_type=' . MWF_Config::NAME . '&page=' . MWF_Config::NAME . '-chart&formkey=' . $this->formkey
+			)
+		);
+		exit;
+	}
+
+	/**
+	 * Display chart page
+	 *
+	 * @return void
+	 */
+	public function _index() {
 		$post_type = $this->formkey;
 
-		// form_posts
-		$default_args = array(
-			'posts_per_page' => -1,
-		);
-		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $post_type, $default_args );
-		$args = array(
-			'post_type' => $post_type,
-		);
-		if ( !empty( $_args ) && is_array( $_args ) ) {
-			$args = array_merge( $_args, $args );
-		} else {
-			$args = array_merge( $_args, $default_args );
+		$args = apply_filters( 'mwform_get_inquiry_data_args-' . $post_type, array() );
+		if ( empty( $args ) || ! is_array( $args ) ) {
+			$args = array();
 		}
+		$args = array_merge( $args, array(
+			'posts_per_page' => -1,
+			'post_type'      => $post_type,
+		) );
+
 		$form_posts = get_posts( $args );
 
 		// custom_keys
@@ -121,7 +156,7 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 						continue;
 					}
 					$post_meta = get_post_meta( $post->ID, $post_custom_key, true );
-					$custom_keys[$post_custom_key][$post_meta][] = $post->ID;
+					$custom_keys[ $post_custom_key ][ $post_meta ][] = $post->ID;
 				}
 			}
 		}
@@ -140,11 +175,35 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 		// 空の隠れフィールド（コピー元）を挿入
 		array_unshift( $postdata, $default_keys );
 
-		$this->assign( 'post_type'   , $post_type );
-		$this->assign( 'option_group', $this->option_group );
-		$this->assign( 'form_posts'  , $form_posts );
-		$this->assign( 'custom_keys' , $custom_keys );
-		$this->assign( 'postdata'    , $postdata );
-		$this->render( 'chart/index' );
+		$this->_render( 'chart/index', array(
+			'post_type'   => $post_type,
+			'form_posts'  => $form_posts,
+			'custom_keys' => $custom_keys,
+			'postdata'    => $postdata,
+		) );
+	}
+
+	/**
+	 * Sanitize for settings
+	 *
+	 * @param array $input Posted data from chart settings page
+	 * @return array
+	 */
+	public function _sanitize( $input ) {
+		if ( ! is_array( $input ) || ! isset( $input['chart'] ) || ! is_array( $input['chart'] ) ) {
+			return array();
+		}
+
+		$new_input = array();
+
+		foreach ( $input['chart'] as $key => $value ) {
+			if ( empty( $value['target'] ) ) {
+				continue;
+			}
+
+			$new_input['chart'][ $key ] = $value;
+		}
+
+		return $new_input;
 	}
 }

@@ -1,6 +1,7 @@
 .git
 bin
 tests
+_tests
 .gitignore
 .travis.yml
 phpunit.xml.dist

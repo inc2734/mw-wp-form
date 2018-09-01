@@ -1,28 +1,28 @@
 <?php
 /**
  * Name       : MW WP Form Field Select
- * Description: セレクトボックスを出力
- * Version    : 1.6.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : December 14, 2012
- * Modified   : Novemver 14, 2015
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 
 	/**
-	 * $type
-	 * フォームタグの種類 input|select|button|input_button|error|other
+	 * Types of form type.
+	 * input|select|button|input_button|error|other
 	 * @var string
 	 */
 	public $type = 'select';
 
 	/**
-	 * set_names
-	 * shortcode_name、display_nameを定義。各子クラスで上書きする。
-	 * @return array shortcode_name, display_name
+	 * Set shortcode_name and display_name
+	 * Overwrite required for each child class
+	 *
+	 * @return array(shortcode_name, display_name)
 	 */
 	protected function set_names() {
 		return array(
@@ -32,8 +32,8 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * set_defaults
-	 * $this->defaultsを設定し返す
+	 * Set default attributes
+	 *
 	 * @return array defaults
 	 */
 	protected function set_defaults() {
@@ -49,9 +49,11 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * input_page
-	 * 入力ページでのフォーム項目を返す
-	 * @return string html
+	 * Callback of add shortcode for input page
+	 *
+	 * @param array $atts
+	 * @param string $element_content
+	 * @return string HTML
 	 */
 	protected function input_page() {
 		$value = $this->Data->get_raw( $this->atts['name'] );
@@ -59,24 +61,26 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 			$value = $this->atts['value'];
 		}
 		$children = $this->get_children( $this->atts['children'] );
-		
+
 		$_ret = $this->Form->select( $this->atts['name'], $children, array(
 			'id'    => $this->atts['id'],
 			'class' => $this->atts['class'],
 			'value' => $value,
 		) );
-		if ( $this->atts['post_raw'] === 'false' ) {
+		if ( 'false' === $this->atts['post_raw'] ) {
 			$_ret .= $this->Form->children( $this->atts['name'], $children );
 		}
-		if ( $this->atts['show_error'] !== 'false' ) {
+		if ( 'false' !== $this->atts['show_error'] ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
 		}
 		return $_ret;
 	}
 
 	/**
-	 * confirm_page
-	 * 確認ページでのフォーム項目を返す
+	 * Callback of add shortcode for confirm page
+	 *
+	 * @param array $atts
+	 * @param string $element_content
 	 * @return string HTML
 	 */
 	protected function confirm_page() {
@@ -85,15 +89,18 @@ class MW_WP_Form_Field_Select extends MW_WP_Form_Abstract_Form_Field {
 		$posted_value = $this->Data->get_raw( $this->atts['name'] );
 		$_ret         = esc_html( $value );
 		$_ret        .= $this->Form->hidden( $this->atts['name'], $posted_value );
-		if ( $this->atts['post_raw'] === 'false' ) {
+		if ( 'false' === $this->atts['post_raw'] ) {
 			$_ret .= $this->Form->children( $this->atts['name'], $children );
 		}
 		return $_ret;
 	}
 
 	/**
-	 * add_mwform_tag_generator
-	 * フォームタグジェネレーター
+	 * Display tag generator dialog
+	 * Overwrite required for each child class
+	 *
+	 * @param array $options
+	 * @return void
 	 */
 	public function mwform_tag_generator_dialog( array $options = array() ) {
 		?>

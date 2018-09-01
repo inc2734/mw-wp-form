@@ -1,36 +1,36 @@
 <?php
 /**
  * Name       : MW WP Form Validation Rule Required
- * Description: 値が存在する
- * Version    : 1.1.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : July 21, 2014
- * Modified   : December 31, 2014
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Validation_Rule_Required extends MW_WP_Form_Abstract_Validation_Rule {
 
 	/**
-	 * バリデーションルール名を指定
+	 * Validation rule name
 	 * @var string
 	 */
 	protected $name = 'required';
 
 	/**
-	 * バリデーションチェック
+	 * Validation process
 	 *
-	 * @param string $key name属性
+	 * @param string $name
 	 * @param array $option
-	 * @return string エラーメッセージ
+	 * @return string Error message
 	 */
-	public function rule( $key, array $options = array() ) {
-		$value = $this->Data->get( $key );
-		// 値が存在するとき、もしくは存在しないけど他のデータもない（=フォーム送信自体されていない）ときはエラーではない
-		if ( !is_null( $value ) || is_null( $value ) && !$this->Data->gets() ) {
+	public function rule( $name, array $options = array() ) {
+		$value = $this->Data->get( $name );
+		// When value exist, or value not exist but other values also not exist(= Not posted)
+		if ( ! is_null( $value ) || is_null( $value ) && ! $this->Data->gets() ) {
 			return;
 		}
+
 		$defaults = array(
 			'message' => __( 'This is required.', 'mw-wp-form' )
 		);
@@ -39,14 +39,15 @@ class MW_WP_Form_Validation_Rule_Required extends MW_WP_Form_Abstract_Validation
 	}
 
 	/**
-	 * 設定パネルに追加
+	 * Add setting field to validation rule setting panel
 	 *
-	 * @param numeric $key バリデーションルールセットの識別番号
-	 * @param array $value バリデーションルールセットの内容
+	 * @param numeric $key ID of validation rule
+	 * @param array $value Content of validation rule
+	 * @return void
 	 */
 	public function admin( $key, $value ) {
 		?>
-		<label><input type="checkbox" <?php checked( $value[$this->getName()], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( 'No empty( with checkbox )', 'mw-wp-form' ); ?></label>
+		<label><input type="checkbox" <?php checked( $value[ $this->getName() ], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( 'No empty( with checkbox )', 'mw-wp-form' ); ?></label>
 		<?php
 	}
 }

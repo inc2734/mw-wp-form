@@ -1,84 +1,96 @@
 <?php
 /**
  * Name       : MW WP Form Setting
- * Version    : 1.3.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : December 31, 2014
- * Modified   : January 30, 2017
+ * Modified   : June 1, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Setting {
 
 	/**
-	 * フォームの Post ID
+	 * Form ID
 	 * @var int
 	 */
 	protected $post_id;
 
 	/**
-	 * URL引数を有効にするかどうか
+	 * Whether to enable URL querystring
 	 * @var false|1
 	 */
 	protected $querystring = false;
 
 	/**
-	 * 問い合わせデータを保存するかどうか
+	 * Whether to use database
 	 * @var false|1
 	 */
 	protected $usedb = false;
 
 	/**
-	 * 自動返信メールの題名
+	 * Reply mail subject
 	 * @var string
 	 */
 	protected $mail_subject = '';
 
 	/**
-	 * 自動返信メールの送信元
+	 * Reply mail from
 	 * @var string
 	 */
 	protected $mail_from = '';
 
 	/**
-	 * 自動返信メールの送信者
+	 * Reply mail sender
 	 * @var string
 	 */
 	protected $mail_sender = '';
 
 	/**
-	 * 自動返信メールの本文
+	 * Reply mail Reply-to
+	 * @var string
+	 */
+	protected $mail_reply_to = '';
+
+	/**
+	 * Reply mail content
 	 * @var string
 	 */
 	protected $mail_content = '';
 
 	/**
-	 * 自動返信メールの送信先を格納したフォームフィールドのname属性
+	 * The name of the form field storing the destination of the automatic reply e-mail
 	 * @var string
 	 */
 	protected $automatic_reply_email = '';
 
 	/**
-	 * 管理者メールの送信先
+	 * Admin mail To
 	 * @var string
 	 */
 	protected $mail_to = '';
 
 	/**
-	 * 管理者メールのCC
+	 * Admin mail CC
 	 * @var string
 	 */
 	protected $mail_cc = '';
 
 	/**
-	 * 管理者メールのBCC
+	 * Admin mail BCC
 	 * @var string
 	 */
 	protected $mail_bcc = '';
 
 	/**
-	 * 管理者メールの題名
+	 * Admin mail Reply-to
+	 * @var string
+	 */
+	protected $admin_mail_reply_to = '';
+
+	/**
+	 * Admin mail subject
 	 * @var string
 	 */
 	protected $admin_mail_subject = '';
@@ -90,106 +102,108 @@ class MW_WP_Form_Setting {
 	protected $mail_return_path = '';
 
 	/**
-	 * 管理者メールの送信元
+	 * Admin mail from
 	 * @var string
 	 */
 	protected $admin_mail_from = '';
 
 	/**
-	 * 管理者メールの送信者
+	 * Admin mail sender
 	 * @var string
 	 */
 	protected $admin_mail_sender = '';
 
 	/**
-	 * 管理者メールの本文
+	 * Admin mail content
 	 * @var string
 	 */
 	protected $admin_mail_content = '';
 
 	/**
-	 * akismet送信者の対象とするフォームフィールドのname属性
+	 * Input field name that targeted akismet author
 	 * @var string
 	 */
 	protected $akismet_author = '';
 
 	/**
-	 * akismetメールアドレスの対象とするフォームフィールドのname属性
+	 * Input field name that targeted akismet e-mail
 	 * @var string
 	 */
 	protected $akismet_author_email = '';
 
 	/**
-	 * akismet url の対象とするフォームフィールドのname属性
+	 * Input field name that targeted akismet URL
 	 * @var string
 	 */
 	protected $akismet_author_url = '';
 
 	/**
-	 * 完了画面メッセージ
+	 * Complete screen message
 	 * @var string
 	 */
 	protected $complete_message = '';
 
 	/**
-	 * 入力画面URL
+	 * Input screen URL
 	 * @var string
 	 */
 	protected $input_url = '';
 
 	/**
-	 * 確認画面URL
+	 * Confirm screen URL
 	 * @var string
 	 */
 	protected $confirmation_url = '';
 
 	/**
-	 * 完了画面URL
+	 * Complete screen URL
 	 * @var string
 	 */
 	protected $complete_url = '';
 
 	/**
-	 * バリデーションエラー画面URL
+	 * Validation error screen url
 	 * @var string
 	 */
 	protected $validation_error_url = '';
 
 	/**
-	 * フォームに設定されたバリデーションルールの配列
+	 * Array of validation rules set in the form
 	 * @var array
 	 */
 	protected $validation = array();
 
 	/**
-	 * フォームに設定されたスタイル
+	 * Style set in the form
 	 * @var string
 	 */
 	protected $style = '';
 
 	/**
-	 * 入力画面以外を表示したときにフォームの位置までスクロールするかどうか
+	 * Whether to scroll to the position of the form
 	 * @var false|1
 	 */
 	protected $scroll = false;
 
 	/**
-	 * __construct
-	 *
 	 * @param int $post_id
 	 */
 	public function __construct( $post_id ) {
-		if ( get_post_type( $post_id ) === MWF_Config::NAME ) {
-			$this->post_id = $post_id;
-			$values = get_post_meta( $post_id, MWF_Config::NAME, true );
-			if ( is_array( $values ) ) {
-				$this->sets( $values );
-			}
+		if ( MWF_Config::NAME !== get_post_type( $post_id ) ) {
+			return;
 		}
+
+		$this->post_id = $post_id;
+		$values = get_post_meta( $post_id, MWF_Config::NAME, true );
+		if ( ! is_array( $values ) ) {
+			return;
+		}
+
+		$this->sets( $values );
 	}
 
 	/**
-	 * 属性の取得
+	 * Return a attribute
 	 *
 	 * @param string $key
 	 * @return mixed|null
@@ -201,10 +215,11 @@ class MW_WP_Form_Setting {
 	}
 
 	/**
-	 * 属性をセット
+	 * Set a attribute
 	 *
 	 * @param string $key
 	 * @param mixed $value
+	 * @return void
 	 */
 	public function set( $key, $value ) {
 		if ( isset( $this->$key ) ) {
@@ -213,7 +228,7 @@ class MW_WP_Form_Setting {
 	}
 
 	/**
-	 * 属性をセット
+	 * Set attributes
 	 *
 	 * @param array $values
 	 */
@@ -224,16 +239,18 @@ class MW_WP_Form_Setting {
 	}
 
 	/**
-	 * 保持しているデータでアップデート
+	 * Update with retained data
+	 *
+	 * @return void
 	 */
 	public function save() {
 		$values = get_object_vars( $this );
 		$new_values = array();
 		foreach ( $values as $key => $value ) {
-			if ( $key === 'post_id' ) {
+			if ( 'post_id' == $key ) {
 				continue;
 			}
-			$new_values[$key] = $value;
+			$new_values[ $key ] = $value;
 		}
 		update_post_meta( $this->post_id, MWF_Config::NAME, $new_values );
 		$form_key = MWF_Functions::get_form_key_from_form_id( $this->post_id );
@@ -241,23 +258,17 @@ class MW_WP_Form_Setting {
 	}
 
 	/**
-	 * 全ての設定（投稿）を取得
+	 * Return all forms
 	 *
-	 * @return array フォーム（WP_Post）の配列
+	 * @return array Array of WP_Post
 	 */
 	public function get_posts() {
-		$forms = get_posts( array(
-			'post_type'      => MWF_Config::NAME,
-			'posts_per_page' => -1,
-		) );
-		if ( !is_array( $forms ) ) {
-			return array();
-		}
-		return $forms;
+		$Admin = new MW_WP_Form_Admin();
+		return $Admin->get_forms();
 	}
 
 	/**
-	 * 問い合わせ番号を取得
+	 * Return tracking number
 	 *
 	 * @return int $tracking_number
 	 */
@@ -270,9 +281,9 @@ class MW_WP_Form_Setting {
 	}
 
 	/**
-	 * 問い合わせ番号を更新
+	 * Update traking number
 	 *
-	 * @param null|int $count 指定があればそれに更新
+	 * @param null|int $count Update to it if specified
 	 */
 	public function update_tracking_number( $count = null ) {
 		$new_tracking_number = null;
@@ -282,8 +293,21 @@ class MW_WP_Form_Setting {
 		} elseif ( MWF_Functions::is_numeric( $count ) ) {
 			$new_tracking_number = $count;
 		}
-		if ( !is_null( $new_tracking_number ) ) {
+		if ( ! is_null( $new_tracking_number ) ) {
 			update_post_meta( $this->post_id, MWF_Config::TRACKINGNUMBER, $new_tracking_number );
 		}
+	}
+
+	/**
+	 * Generate verify token for form posts data correct checking
+	 *
+	 * @return string
+	 */
+	public function generate_form_verify_token() {
+		$vars  = get_object_vars( $this );
+		$token = serialize( $vars );
+		$token = base64_encode( $token );
+		$token = sha1( $token );
+		return $token;
 	}
 }

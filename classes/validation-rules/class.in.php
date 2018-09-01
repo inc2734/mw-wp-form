@@ -1,56 +1,60 @@
 <?php
 /**
  * Name       : MW WP Form Validation Rule In
- * Description: 値が、配列で指定された中に含まれている
- * Version    : 1.1.2
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : July 21, 2014
- * Modified   : April 1, 2015
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Validation_Rule_In extends MW_WP_Form_Abstract_Validation_Rule {
 
 	/**
-	 * バリデーションルール名を指定
+	 * Validation rule name
 	 * @var string
 	 */
 	protected $name = 'in';
 
 	/**
-	 * バリデーションチェック
+	 * Validation process
 	 *
-	 * @param string $key name属性
+	 * @param string $name
 	 * @param array $option
-	 * @return string エラーメッセージ
+	 * @return string Error message
 	 */
-	public function rule( $key, array $options = array() ) {
-		$value = $this->Data->get( $key );
+	public function rule( $name, array $options = array() ) {
+		$value = $this->Data->get( $name );
 		$value = ( string ) $value;
-		if ( !MWF_Functions::is_empty( $value ) ) {
-			$defaults = array(
-				'options' => array(),
-				'message' => __( 'This value is invalid.', 'mw-wp-form' )
-			);
-			$options = array_merge( $defaults, $options );
-			if ( is_array( $options['options'] ) ) {
-				foreach ( $options['options'] as $option ) {
-					$option = ( string ) $option;
-					if ( $value === $option ) {
-						return;
-					}
+
+		if ( MWF_Functions::is_empty( $value ) ) {
+			return;
+		}
+
+		$defaults = array(
+			'options' => array(),
+			'message' => __( 'This value is invalid.', 'mw-wp-form' )
+		);
+		$options = array_merge( $defaults, $options );
+		if ( is_array( $options['options'] ) ) {
+			foreach ( $options['options'] as $option ) {
+				$option = ( string ) $option;
+				if ( $value === $option ) {
+					return;
 				}
 			}
-			return $options['message'];
 		}
+
+		return $options['message'];
 	}
 
 	/**
-	 * 設定パネルに追加
+	 * Add setting field to validation rule setting panel
 	 *
-	 * @param numeric $key バリデーションルールセットの識別番号
-	 * @param array $value バリデーションルールセットの内容
+	 * @param numeric $key ID of validation rule
+	 * @param array $value Content of validation rule
+	 * @return void
 	 */
 	public function admin( $key, $value ) {
 	}

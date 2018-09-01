@@ -1,193 +1,201 @@
 <?php
 /**
  * Name       : MW WP Form Form
- * Description: フォームヘルパー
- * Version    : 1.11.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : September 25, 2012
- * Modified   : March 9, 2017
+ * Modified   : June 1, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Form {
 
 	/**
-	 * データを返す
+	 * Return raw value
 	 *
-	 * @param string $key name属性値
+	 * @param string $name
 	 * @return mixed
 	 */
-	public function get_raw( $key ) {
+	public function get_raw( $name ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_raw()',
 			'MW_WP_Form_Data::get_raw()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_raw( $key );
 	}
 
 	/**
-	 * $children の中に値が含まれているときだけ返す
+	 * Return raw value if it is in $children
 	 *
-	 * @param string $key name属性
+	 * @param string $name
 	 * @param array $children
 	 * @return string
 	 */
-	public function get_raw_in_children( $key, array $children ) {
+	public function get_raw_in_children( $name, array $children ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_raw_in_children()',
 			'MW_WP_Form_Data::get_raw_in_children()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_raw_in_children( $key, $children );
 	}
 
 	/**
-	 * データを返す ( 郵便番号用 )
+	 * Return value for zip
 	 *
-	 * @param string $key name属性
-	 * @return string データ
+	 * @param string $name
+	 * @return string
 	 */
-	public function get_zip_value( $key ) {
+	public function get_zip_value( $name ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_zip_value()',
 			'MW_WP_Form_Data::get_separated_value()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_separated_value( $key );
 	}
 
 	/**
-	 * データを返す ( 電話番号用 )
+	 * Return value for tel
 	 *
-	 * @param string $key name属性
-	 * @return string データ
+	 * @param string $name
+	 * @return string
 	 */
-	public function get_tel_value( $key ) {
+	public function get_tel_value( $name ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_tel_value()',
 			'MW_WP_Form_Data::get_separated_value()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_separated_value( $key );
 	}
 
 	/**
-	 * データを返す（ checkbox用 ）。$dataに含まれる値のみ返す
+	 * Return value for checkbox
 	 *
-	 * @param string $key name属性
+	 * @param string $name
 	 * @param array $data
-	 * @return string データ
+	 * @return string
 	 */
-	public function get_checked_value( $key, array $data ) {
+	public function get_checked_value( $name, array $data ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_checked_value()',
 			'MW_WP_Form_Data::get_separated_value()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_separated_value( $key, $data );
 	}
 
 	/**
-	 * データを返す（ radio用 ）。$dataに含まれる値のみ返す
+	 * Return value for radio
 	 *
-	 * @param string name属性値
-	 * @param array $data データ
+	 * @param string $name
+	 * @param array $data
 	 * @return string
 	 */
-	public function get_radio_value( $key, array $data ) {
+	public function get_radio_value( $name, array $data ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_radio_value()',
 			'MW_WP_Form_Data::get_in_children()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_in_children( $key, $data );
 	}
 
 	/**
-	 * データを返す（ selectbox用 ）。$dataに含まれる値のみ返す
+ 	 * Return value for selectbox
 	 *
-	 * @param string $key name属性
-	 * @param array $data データ
-	 * @return string データ
+	 * @param string $name
+	 * @param array $data
+	 * @return string
 	 */
-	public function get_selected_value( $key, array $data ) {
+	public function get_selected_value( $name, array $data ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_selected_value()',
 			'MW_WP_Form_Data::get_in_children()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_in_children( $key, $data );
 	}
 
 	/**
-	 * 配列データを整形して返す ( チェックボックス等用 )。配列の場合はpost値を連結して返す
+	 * Return formatted raw value (e.g. for checkbox)
 	 *
-	 * @param string $key name属性
-	 * @param array $children 選択肢
-	 * @return string データ
+	 * @param string $name
+	 * @param array $children
+	 * @return string
 	 */
-	public function get_separated_raw_value( $key, array $children = array() ) {
+	public function get_separated_raw_value( $name, array $children = array() ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_separated_raw_value()',
 			'MW_WP_Form_Data::get_separated_raw_value()'
 		);
-		$Data = MW_WP_Form_Data::getInstance();
-		return $Data->get_separated_raw_value( $key, $children );
 	}
 
 	/**
-	 * separator を設定するためのhiddenを返す
+	 * Return hidden field for separator
 	 *
-	 * @param string $key name属性
-	 * @param string $separator 区切り文字
-	 * @return string HTML
+	 * @param string $name
+	 * @param string $separator
+	 * @return string
 	 */
-	public function separator( $key, $separator ) {
+	public function separator( $name, $separator ) {
 		if ( $separator ) {
-			return $this->hidden( $key . '[separator]', $separator );
+			return $this->hidden( $name . '[separator]', $separator );
 		}
 	}
 
 	/**
-	 * 送られてきた separator を返す
+	 * Return separator value
 	 *
-	 * @param string $key name属性
+	 * @param string $name
 	 * @return string
 	 */
-	public function get_separator_value( $key ) {
+	public function get_separator_value( $name ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_separator_value()',
 			'MW_WP_Form_Data::get_separator_value()'
 		);
-		return $Data->get_separator_value( $key );
 	}
 
 	/**
-	 * children を設定するための hidden を返す
+	 * Return hidden field for setting children
 	 *
-	 * @param string $key name属性
-	 * @param array $children 選択肢の配列（必ず MW_WP_Form_Abstract_Form_Field::get_children の値 ）
-	 * @return string HTML
+	 * @param string $name
+	 * @param array $children
+	 * @return string
 	 */
-	public function children( $key, array $children ) {
-		$name = sprintf( '__children[%s][]', $key );
+	public function children( $name, array $children ) {
+		$name = sprintf( '__children[%s][]', $name );
 		return $this->hidden( $name, json_encode( $children ) );
 	}
 
 	/**
-	 * フォームタグ生成
+	 * Render template
+	 *
+	 * @param string $template directory/filename (no extension)
+	 * @return string
+	 */
+	protected function _render( $template, array $args = array() ) {
+		$template_path = locate_template( 'mw-wp-form/form-fields/' . $template . '.php' );
+		if ( ! $template_path ) {
+			$template_path  = plugin_dir_path( __FILE__ ) . '../../templates/form-fields/' . $template . '.php';
+			if ( ! file_exists( $template_path ) ) {
+				return;
+			}
+		}
+
+		foreach ( $args as $key => $val) {
+			unset( $args[ $key ] );
+			$args[ str_replace( '-', '_', $key ) ] = $val;
+		}
+
+		extract( $args );
+		ob_start();
+		include( $template_path );
+		return ob_get_clean();
+	}
+
+	/**
+	 * Return form staring tag
 	 *
 	 * @param array $options
-	 * @return string form開始タグ
+	 * @return string
 	 */
 	public function start( $options = array() ) {
-		$defaults = array(
+		$options = array_merge( array(
 			'action'  => '',
 			'enctype' => 'multipart/form-data',
-		);
-		$options = array_merge( $defaults, $options );
+		), $options );
+
 		return sprintf(
 			'<form method="post" action="%s" enctype="%s">',
 			esc_attr( $options['action'] ),
@@ -196,9 +204,9 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * トークンタグ、閉じタグ生成
+	 * Return form ending tag
 	 *
-	 * @return string input[type=hidden]
+	 * @return string
 	 */
 	public function end() {
 		$html = '';
@@ -208,11 +216,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * input[type=text]タグ生成
+	 * Return input[type=text]
 	 *
-	 * @param string $name name属性
-	 * @param array
-	 * @return string html
+	 * @param string $name
+	 * @param array $options
+	 * @return string
 	 */
 	public function text( $name, $options = array() ) {
 		$defaults = array(
@@ -224,22 +232,23 @@ class MW_WP_Form_Form {
 			'placeholder' => null,
 			'conv-half-alphanumeric' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
 
-		return self::remove_linefeed_space( sprintf(
-			'<input type="text" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
 		) );
+
+		return $this->remove_newline_space(
+			$this->_render( 'text', $options )
+		);
 	}
 
 	/**
-	 * input[type=email]タグ生成
+	 * Return input[type=email]
 	 *
-	 * @param string $name name属性
-	 * @param array
-	 * @return string html
+	 * @param string $name
+	 * @param array $options
+	 * @return string
 	 */
 	public function email( $name, $options = array() ) {
 		$defaults = array(
@@ -251,22 +260,22 @@ class MW_WP_Form_Form {
 			'placeholder' => null,
 			'conv-half-alphanumeric' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
-
-		return self::remove_linefeed_space( sprintf(
-			'<input type="email" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
 		) );
+
+		return $this->remove_newline_space(
+			$this->_render( 'email', $options )
+		);
 	}
 
 	/**
-	 * input[type=url]タグ生成
+	 * Return input[type=url]
 	 *
-	 * @param string $name name属性
-	 * @param array
-	 * @return string html
+	 * @param string $name
+	 * @param array $options
+	 * @return string
 	 */
 	public function url( $name, $options = array() ) {
 		$defaults = array(
@@ -278,22 +287,22 @@ class MW_WP_Form_Form {
 			'placeholder' => null,
 			'conv-half-alphanumeric' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
-
-		return self::remove_linefeed_space( sprintf(
-			'<input type="url" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
 		) );
+
+		return $this->remove_newline_space(
+			$this->_render( 'url', $options )
+		);
 	}
 
 	/**
-	 * input[type=range]タグ生成
+	 * Return input[type=range]
 	 *
-	 * @param string $name name属性
-	 * @param array
-	 * @return string html
+	 * @param string $name
+	 * @param array $options
+	 * @return string
 	 */
 	public function range( $name, $options = array() ) {
 		$defaults = array(
@@ -304,22 +313,22 @@ class MW_WP_Form_Form {
 			'max'   => 100,
 			'step'  => 1,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
-
-		return self::remove_linefeed_space( sprintf(
-			'<input type="range" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
 		) );
+
+		return $this->remove_newline_space(
+			$this->_render( 'range', $options )
+		);
 	}
 
 	/**
-	 * input[type=number]タグ生成
+	 * Return input[type=number]
 	 *
-	 * @param string $name name属性
-	 * @param array
-	 * @return string html
+	 * @param string $name
+	 * @param array $options
+	 * @return string
 	 */
 	public function number( $name, $options = array() ) {
 		$defaults = array(
@@ -331,37 +340,36 @@ class MW_WP_Form_Form {
 			'step'        => 1,
 			'placeholder' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
-
-		return self::remove_linefeed_space( sprintf(
-			'<input type="number" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
 		) );
+
+		return $this->remove_newline_space(
+			$this->_render( 'number', $options )
+		);
 	}
 
 	/**
-	 * input[type=hidden]タグ生成
+	 * Return input[type=hidden]
 	 *
-	 * @param string $name name属性
-	 * @param string $value 値
-	 * @return string HTML
+	 * @param string $name
+	 * @param string $value
+	 * @return string
 	 */
 	public function hidden( $name, $value ) {
-		return self::remove_linefeed_space( sprintf(
-			'<input type="hidden" name="%s" value="%s" />',
-			esc_attr( $name ),
-			esc_attr( $value )
+		return $this->_render( 'hidden', array(
+			'name'  => $name,
+			'value' => $value,
 		) );
 	}
 
 	/**
-	 * input[type=password]タグ生成
+	 * Return input[type=password]
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param array $options
-	 * @return string HTML
+	 * @return string
 	 */
 	public function password( $name, $options = array() ) {
 		$defaults = array(
@@ -372,22 +380,22 @@ class MW_WP_Form_Form {
 			'value'       => '',
 			'placeholder' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
-
-		return self::remove_linefeed_space( sprintf(
-			'<input type="password" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
 		) );
+
+		return $this->remove_newline_space(
+			$this->_render( 'password', $options )
+		);
 	}
 
 	/**
-	 * 郵便番号フィールド生成
+	 * Return zip field
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param array $options
-	 * @return string HTML
+	 * @return string
 	 */
 	public function zip( $name, $options = array() ) {
 		$defaults = array(
@@ -395,7 +403,7 @@ class MW_WP_Form_Form {
 			'conv-half-alphanumeric' => null,
 			'value' => '',
 		);
-		$options = array_merge( $defaults, $options );
+		$options = shortcode_atts( $defaults, $options );
 
 		$children  = array();
 		$separator = '-';
@@ -408,39 +416,43 @@ class MW_WP_Form_Form {
 
 		$values = array( '', '' );
 		foreach ( $children as $key => $val ) {
-			if ( $key === 0 || $key === 1 ) {
-				$values[$key] = $val;
+			if ( 0 === $key || 1 === $key ) {
+				$values[ $key ] = $val;
 			}
 		}
 
-		$_ret  = '<span class="mwform-zip-field">';
-		$_ret .= '〒';
-		$_ret .= $this->text( $name . '[data][0]', array(
-			'class'     => $options['class'],
-			'size'      => 4,
-			'maxlength' => 3,
-			'value'     => $values[0],
-			'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-		) );
-		$_ret .= ' ' . $separator . ' ';
-		$_ret .= $this->text( $name . '[data][1]', array(
-			'class'     => $options['class'],
-			'size'      => 5,
-			'maxlength' => 4,
-			'value'     => $values[1],
-			'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-		) );
-		$_ret .= $this->separator( $name, $separator );
-		$_ret .= '</span>';
-		return self::remove_linefeed_space( $_ret );
+		return $this->remove_newline_space(
+			$this->_render( 'zip', array(
+				'separator' => $separator,
+				'fields'    => array(
+					array(
+						'name'      => $name . '[data][0]',
+						'class'     => $options['class'],
+						'size'      => 4,
+						'maxlength' => 3,
+						'value'     => $values[0],
+						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+					),
+					array(
+						'name'      => $name . '[data][1]',
+						'class'     => $options['class'],
+						'size'      => 5,
+						'maxlength' => 4,
+						'value'     => $values[1],
+						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+					),
+				),
+			) )
+			. $this->separator( $name, $separator )
+		);
 	}
 
 	/**
-	 * 電話番号フィールド生成
+	 * Return tel field
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param array $options
-	 * @return string HTML
+	 * @return string
 	 */
 	public function tel( $name, $options = array() ) {
 		$defaults = array(
@@ -448,7 +460,7 @@ class MW_WP_Form_Form {
 			'conv-half-alphanumeric' => null,
 			'value' => '',
 		);
-		$options = array_merge( $defaults, $options );
+		$options = shortcode_atts( $defaults, $options );
 
 		$children  = array();
 		$separator = '-';
@@ -462,45 +474,50 @@ class MW_WP_Form_Form {
 		$values = array( '', '', '' );
 		foreach ( $children as $key => $val ) {
 			if ( $key === 0 || $key === 1 || $key === 2 ) {
-				$values[$key] = $val;
+				$values[ $key ] = $val;
 			}
 		}
 
-		$_ret  = '<span class="mwform-tel-field">';
-		$_ret .= $this->text( $name . '[data][0]', array(
-			'class'     => $options['class'],
-			'size'      => 6,
-			'maxlength' => 5,
-			'value'     => $values[0],
-			'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-		) );
-		$_ret .= ' ' . $separator . ' ';
-		$_ret .= $this->text( $name . '[data][1]', array(
-			'class'     => $options['class'],
-			'size'      => 5,
-			'maxlength' => 4,
-			'value'     => $values[1],
-			'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-		) );
-		$_ret .= ' ' . $separator . ' ';
-		$_ret .= $this->text( $name . '[data][2]', array(
-			'class'     => $options['class'],
-			'size'      => 5,
-			'maxlength' => 4,
-			'value'     => $values[2],
-			'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-		) );
-		$_ret .= $this->separator( $name, $separator );
-		$_ret .= '</span>';
-		return self::remove_linefeed_space( $_ret );
+		return $this->remove_newline_space(
+			$this->_render( 'tel', array(
+				'separator' => $separator,
+				'fields'    => array(
+					array(
+						'name'      => $name . '[data][0]',
+						'class'     => $options['class'],
+						'size'      => 6,
+						'maxlength' => 5,
+						'value'     => $values[0],
+						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+					),
+					array(
+						'name'      => $name . '[data][1]',
+						'class'     => $options['class'],
+						'size'      => 5,
+						'maxlength' => 4,
+						'value'     => $values[1],
+						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+					),
+					array(
+						'name'      => $name . '[data][2]',
+						'class'     => $options['class'],
+						'size'      => 5,
+						'maxlength' => 4,
+						'value'     => $values[2],
+						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+					),
+				),
+			) )
+			. $this->separator( $name, $separator )
+		);
 	}
 
 	/**
-	 * textareaタグ生成
+	 * Return textarea
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param array $options
-	 * @return string html
+	 * @return string
 	 */
 	public function textarea( $name, $options = array() ) {
 		$defaults = array(
@@ -511,26 +528,23 @@ class MW_WP_Form_Form {
 			'value'       => '',
 			'placeholder' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$_options = $options;
-		unset( $_options['value'] );
-		$attributes = $this->generate_attributes( $_options );
-
-		return self::remove_linefeed_space( sprintf(
-			'<textarea name="%s"%s>%s</textarea>',
-			esc_attr( $name ),
-			$attributes,
-			esc_html( $options['value'] )
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
 		) );
+
+		return $this->remove_newline_space(
+			$this->_render( 'textarea', $options )
+		);
 	}
 
 	/**
-	 * selectタグ生成
+	 * Return selectbox
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param array $children
 	 * @param array $options
-	 * @return string HTML
+	 * @return string
 	 */
 	public function select( $name, $children = array(), $options = array() ) {
 		$defaults = array(
@@ -538,36 +552,24 @@ class MW_WP_Form_Form {
 			'id'    => null,
 			'value' => '',
 		);
-		$options = array_merge( $defaults, $options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name'     => $name,
+			'children' => $children,
+		) );
 
-		$_options = $options;
-		unset( $_options['value'] );
-		$attributes = $this->generate_attributes( $_options );
-		$_ret = sprintf(
-			'<select name="%s"%s>',
-			esc_attr( $name ),
-			$attributes
+		return $this->remove_newline_space(
+			$this->_render( 'select', $options )
 		);
-
-		foreach ( $children as $key => $_value ) {
-			$_ret .= sprintf(
-				'<option value="%s" %s>%s</option>',
-				esc_attr( $key ),
-				selected( $key, $options['value'], false ),
-				esc_html( $_value )
-			);
-		}
-		$_ret .= '</select>';
-		return self::remove_linefeed_space( $_ret );
 	}
 
 	/**
-	 * radioタグ生成
+	 * Return input[type=radio]
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param array $children
 	 * @param array $options
-	 * @return string HTML
+	 * @return string
 	 */
 	public function radio( $name, $children = array(), $options = array() ) {
 		$defaults = array(
@@ -576,47 +578,37 @@ class MW_WP_Form_Form {
 			'value'      => '',
 			'vertically' => null,
 		);
-		$options = array_merge( $defaults, $options );
+		$options = shortcode_atts( $defaults, $options );
 
-		$i    = 0;
-		$_ret = '';
-		foreach ( $children as $key => $_value ) {
+		$i = 0;
+		$fields = array();
+		foreach ( $children as $key => $label ) {
 			$i ++;
-			$vertically = ( $options['vertically'] === 'true' ) ? 'vertical-item' : 'horizontal-item';
-			$attributes_for_label = $this->generate_attributes( array(
-				'for' => $this->get_attr_id( $options['id'], $i ),
-			) );
-			$attributes = $this->generate_attributes( array(
-				'id'    => $this->get_attr_id( $options['id'], $i ),
+			$fields[ $key ] = array(
+				'name'  => $name,
+				'label' => $label,
+				'id'    => $this->_get_attr_id( $options['id'], $i ),
 				'class' => $options['class'],
-			) );
-			$_ret .= sprintf(
-				'<span class="mwform-radio-field %s">
-					<label%s>
-						<input type="radio" name="%s" value="%s"%s %s />
-						<span class="mwform-radio-field-text">%s</span>
-					</label>
-				</span>',
-				$vertically,
-				$attributes_for_label,
-				esc_attr( $name ),
-				esc_attr( $key ),
-				checked( $key, $options['value'], false ),
-				$attributes,
-				esc_html( $_value )
 			);
 		}
-		return self::remove_linefeed_space( $_ret );
+
+		$options = array_merge( $options, array(
+			'fields' => $fields,
+		) );
+
+		return $this->remove_newline_space(
+			$this->_render( 'radio', $options )
+		);
 	}
 
 	/**
-	 * checkboxタグ生成
+	 * Return input[checkbox]
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param array $children
 	 * @param array $options
-	 * @param string $separator 区切り文字
-	 * @return string HTML
+	 * @param string $separator
+	 * @return string
 	 */
 	public function checkbox( $name, $children = array(), $options = array(), $separator = ',' ) {
 		$defaults = array(
@@ -625,143 +617,139 @@ class MW_WP_Form_Form {
 			'value'      => '',
 			'vertically' => null,
 		);
-		$options = array_merge( $defaults, $options );
+		$options = shortcode_atts( $defaults, $options );
 
-		$value = $options['value'];
-		if ( !is_array( $options['value'] ) ) {
-			$value = explode( $separator, $options['value'] );
+		if ( ! is_array( $options['value'] ) ) {
+			if ( MWF_Functions::is_empty( $options['value'] ) ) {
+				$options['value'] = array();
+			} else {
+				$options['value'] = explode( $separator, $options['value'] );
+			}
 		}
 
-		$i    = 0;
-		$_ret = '';
-		foreach ( $children as $key => $_value ) {
+		$i = 0;
+		$fields = array();
+		foreach ( $children as $key => $label ) {
 			$i ++;
-			$vertically = ( $options['vertically'] === 'true' ) ? 'vertical-item' : 'horizontal-item';
-			$attributes_for_label = $this->generate_attributes( array(
-				'for' => $this->get_attr_id( $options['id'], $i ),
-			) );
-			$attributes = $this->generate_attributes( array(
-				'id'    => $this->get_attr_id( $options['id'], $i ),
+			$fields[ $key ] = array(
+				'name'  => $name . '[data][]',
+				'label' => $label,
+				'id'    => $this->_get_attr_id( $options['id'], $i ),
 				'class' => $options['class'],
-			) );
-			$_ret .= sprintf(
-				'<span class="mwform-checkbox-field %s">
-					<label%s>
-						<input type="checkbox" name="%s" value="%s"%s %s />
-						<span class="mwform-checkbox-field-text">%s</span>
-					</label>
-				</span>',
-				$vertically,
-				$attributes_for_label,
-				esc_attr( $name . '[data][]' ),
-				esc_attr( $key ),
-				$attributes,
-				checked( ( is_array( $value ) && in_array( $key, $value ) ), true, false ),
-				esc_html( $_value )
 			);
 		}
-		$_ret .= $this->separator( $name, $separator );
-		return self::remove_linefeed_space( $_ret );
+
+		$options = array_merge( $options, array(
+			'fields' => $fields,
+		) );
+
+		return $this->remove_newline_space(
+			$this->_render( 'checkbox', $options ) . $this->separator( $name, $separator )
+		);
 	}
 
 	/**
-	 * submitボタン生成
+	 * Return input[type=submit]
 	 *
-	 * @param string $name name属性
-	 * @param string $value value属性
+	 * @param string $name
+	 * @param string $value
 	 * @param array $options
-	 * @return string submitボタン
+	 * @return string
 	 */
 	public function submit( $name, $value, $options = array() ) {
 		$defaults = array(
 			'class' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
-		return self::remove_linefeed_space( sprintf(
-			'<input type="submit" name="%s" value="%s"%s />',
-			esc_attr( $name ),
-			esc_attr( $value ),
-			$attributes
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name'  => $name,
+			'value' => $value,
 		) );
+
+		return $this->remove_newline_space(
+			$this->_render( 'submit', $options )
+		);
 	}
 
 	/**
-	 * submitボタン(button)生成
+	 * Return button[type=submit]
 	 *
-	 * @param string $name name属性
-	 * @param string $value value属性
+	 * @param string $name
+	 * @param string $value
 	 * @param array $options
 	 * @param string $element_content
-	 * @return string submitボタン(button)
+	 * @return string
 	 */
 	public function button_submit( $name, $value, $options = array(), $element_content = '' ) {
 		$defaults = array(
 			'class' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
-		return self::remove_linefeed_space( sprintf(
-			'<button type="submit" name="%1$s" value="%2$s"%3$s>%4$s</button>',
-			esc_attr( $name ),
-			esc_attr( $value ),
-			$attributes,
-			wp_kses_post( $element_content )
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name'            => $name,
+			'value'           => $value,
+			'element_content' => $element_content,
 		) );
+
+		return $this->remove_newline_space(
+			$this->_render( 'button_submit', $options )
+		);
 	}
 
 	/**
-	 * ボタン生成
+	 * Return input[type=button]
 	 *
-	 * @param string $name name属性
-	 * @param string $value value属性
+	 * @param string $name
+	 * @param string $value
 	 * @param array $options
-	 * @return string ボタン
+	 * @return string
 	 */
 	public function button( $name, $value, $options = array() ) {
 		$defaults = array(
 			'class' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
-		return self::remove_linefeed_space( sprintf(
-			'<input type="button" name="%s" value="%s"%s />',
-			esc_attr( $name ),
-			esc_attr( $value ),
-			$attributes
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name'  => $name,
+			'value' => $value,
 		) );
+
+		return $this->remove_newline_space(
+			$this->_render( 'button', $options )
+		);
 	}
 
 	/**
-	 * ボタン(button)生成
+	 * Return button
 	 *
-	 * @param string $name name属性
-	 * @param string $value value属性
+	 * @param string $name
+	 * @param string $value
 	 * @param array $options
 	 * @param string $element_content
-	 * @return string ボタン(button)
+	 * @return string
 	 */
 	public function button_button( $name, $value, $options = array(), $element_content = '' ) {
 		$defaults = array(
 			'class' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
-		return self::remove_linefeed_space( sprintf(
-			'<button type="button" name="%1$s" value="%2$s"%3$s>%4$s</button>',
-			esc_attr( $name ),
-			esc_attr( $value ),
-			$attributes,
-			wp_kses_post( $element_content )
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name'            => $name,
+			'value'           => $value,
+			'element_content' => $element_content,
 		) );
+
+		return $this->remove_newline_space(
+			$this->_render( 'button_button', $options )
+		);
 	}
 
 	/**
-	 * datepicker生成
+	 * Return datepicker
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param string $options
-	 * @return string HTML
+	 * @return string
 	 */
 	public function datepicker( $name, $options = array() ) {
 		$defaults = array(
@@ -772,30 +760,22 @@ class MW_WP_Form_Form {
 			'value'       => '',
 			'placeholder' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$_options = $options;
-		unset( $_options['js'] );
-		$attributes = $this->generate_attributes( $_options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
+		) );
 
-		$_ret = sprintf(
-			'<input type="text" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
+		return $this->remove_newline_space(
+			$this->_render( 'datepicker', $options )
 		);
-		$_ret .= sprintf(
-			'<script type="text/javascript">jQuery( function( $ ) { $("input[name=\'%s\']").datepicker( { %s } ); } );</script>',
-			esc_js( $name ),
-			trim( $options['js'], '{}' )
-		);
-		return self::remove_linefeed_space( $_ret );
 	}
 
 	/**
-	 * monthpicker生成
+	 * Return monthpicker
 	 *
-	 * @param string $name name属性
+	 * @param string $name
 	 * @param string $options
-	 * @return string HTML
+	 * @return string
 	 */
 	public function monthpicker( $name, $options = array() ) {
 		$defaults = array(
@@ -806,52 +786,42 @@ class MW_WP_Form_Form {
 			'value'       => '',
 			'placeholder' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$_options = $options;
-		unset( $_options['js'] );
-		$attributes = $this->generate_attributes( $_options );
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
+		) );
 
-		$_ret = sprintf(
-			'<input type="text" name="%s"%s />',
-			esc_attr( $name ),
-			$attributes
+		return $this->remove_newline_space(
+			$this->_render( 'monthpicker', $options )
 		);
-		if ( $name ) {
-			$_ret .= sprintf(
-				'<script type="text/javascript">jQuery( function( $ ) { $("input[name=\'%s\']").MonthPicker( { %s } ); } );</script>',
-				esc_js( $name ),
-				trim( $options['js'], '{}' )
-			);
-		}
-		return self::remove_linefeed_space( $_ret );
 	}
 
 	/**
-	 * input[type=file]タグ生成
+	 * Return input[type=file]
 	 *
-	 * @param string $name name属性
-	 * @param $options array
-	 * @return string HTML
+	 * @param string $name
+	 * @param array $options
+	 * @return string
 	 */
 	public function file( $name, $options = array() ) {
 		$defaults = array(
 			'id'    => null,
 			'class' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$attributes = $this->generate_attributes( $options );
-
-		return self::remove_linefeed_space( sprintf(
-			'<input type="file" name="%1$s"%2$s /><span data-mwform-file-delete="%1$s" class="mwform-file-delete">&times;</span>',
-			esc_attr( $name ),
-			$attributes
+		$options = shortcode_atts( $defaults, $options );
+		$options = array_merge( $options, array(
+			'name' => $name,
 		) );
+
+		return $this->remove_newline_space(
+			$this->_render( 'file', $options )
+		);
 	}
 
 	/**
 	 * タグの属性を最適化して生成する
-	 * ※テストしやすいようにアクセス修飾子を public に
 	 *
+	 * @deprecated
 	 * @param array $_attributes キーが属性名、要素が属性値の配列。要素が null のときは無視する
 	 */
 	public function generate_attributes( array $_attributes ) {
@@ -860,7 +830,7 @@ class MW_WP_Form_Form {
 			if ( is_null( $value ) ) {
 				continue;
 			}
-			if ( $key === 'conv-half-alphanumeric' ) {
+			if ( 'conv-half-alphanumeric' === $key ) {
 				$key = 'data-conv-half-alphanumeric';
 			}
 			$attributes[] = sprintf( '%s="%s"', $key, esc_attr( $value ) );
@@ -872,19 +842,21 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * id属性を返す
+	 * Return ID attribute
 	 *
 	 * @param string $id
 	 * @param string $suffix
 	 * @return string
 	 */
-	protected function get_attr_id( $id, $suffix = '' ) {
-		if ( !MWF_Functions::is_empty( $id ) ) {
-			if ( $suffix ) {
-				$id .= '-' . $suffix;
-			}
-			return $id;
+	protected function _get_attr_id( $id, $suffix = '' ) {
+		if ( MWF_Functions::is_empty( $id ) ) {
+			return;
 		}
+
+		if ( $suffix ) {
+			$id .= '-' . $suffix;
+		}
+		return $id;
 	}
 
 	/**
@@ -893,9 +865,20 @@ class MW_WP_Form_Form {
 	 * @param string $string
 	 * @return string
 	 */
+	public function remove_newline_space( $string ) {
+		return preg_replace_callback('/<([^<>]+?)>/', array( $this, '_remove_newline_space_callback' ), $string );
+	}
+	protected function _remove_newline_space_callback( $matches ) {
+		$matches[0] = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $matches[0] );
+		$matches[0] = preg_replace( '/[\t ]+/', ' ', $matches[0] );
+		return $matches[0];
+	}
 	public static function remove_linefeed_space( $string ) {
-		$string = preg_replace( '/\s+\/>/', ' />', $string );
-		$string = preg_replace( '/>\s*</ms', '><', $string );
-		return $string;
+		MWF_Functions::deprecated_message(
+			'MW_WP_Form_Form::remove_linefeed_space()',
+			'MW_WP_Form_Form::remove_newline_space()'
+		);
+		$Form = new MW_WP_Form_Form();
+		return $Form->remove_newline_space( $string );
 	}
 }

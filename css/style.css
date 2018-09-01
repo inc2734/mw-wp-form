@@ -59,13 +59,14 @@
  * deprecated message
  */
 .mw-wp-form-deprecated-message {
-	background: #F5A9A9;
-	border: #B40404 solid 2px;
+	background: #fdeeee;
+	border: 1px solid #f7bdb8;
 	border-radius: 5px;
-	font-size: 10px;
+	color: #af4040;
+	font-size: 13px;
 	line-height: 1.6;
-	margin: 0 0 5px;
-	padding: 5px;
+	margin: 0 0 10px;
+	padding: 1em;
 }
 
 /**

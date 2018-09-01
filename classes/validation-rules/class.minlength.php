@@ -1,56 +1,59 @@
 <?php
 /**
  * Name       : MW WP Form Validation Rule MinLength
- * Description: 値の文字数が範囲内
- * Version    : 1.1.1
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : July 21, 2014
- * Modified   : April 1, 2015
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Validation_Rule_MinLength extends MW_WP_Form_Abstract_Validation_Rule {
 
 	/**
-	 * バリデーションルール名を指定
+	 * Validation rule name
 	 * @var string
 	 */
 	protected $name = 'minlength';
 
 	/**
-	 * バリデーションチェック
+	 * Validation process
 	 *
-	 * @param string $key name属性
+	 * @param string $name
 	 * @param array $option
-	 * @return string エラーメッセージ
+	 * @return string Error message
 	 */
-	public function rule( $key, array $options = array() ) {
-		$value = $this->Data->get( $key );
+	public function rule( $name, array $options = array() ) {
+		$value = $this->Data->get( $name );
 		$value = MWF_Functions::convert_eol( $value );
-		if ( !MWF_Functions::is_empty( $value ) ) {
-			$defaults = array(
-				'min' => 0,
-				'message' => __( 'The number of characters is a few.', 'mw-wp-form' )
-			);
-			$options = array_merge( $defaults, $options );
-			$length = mb_strlen( $value, get_bloginfo( 'charset' ) );
-			if ( MWF_Functions::is_numeric( $options['min'] ) && $options['min'] > $length ) {
-				return $options['message'];
-			}
+
+		if ( MWF_Functions::is_empty( $value ) ) {
+			return;
+		}
+
+		$defaults = array(
+			'min' => 0,
+			'message' => __( 'The number of characters is a few.', 'mw-wp-form' )
+		);
+		$options = array_merge( $defaults, $options );
+		$length = mb_strlen( $value, get_bloginfo( 'charset' ) );
+		if ( MWF_Functions::is_numeric( $options['min'] ) && $options['min'] > $length ) {
+			return $options['message'];
 		}
 	}
 
 	/**
-	 * 設定パネルに追加
+	 * Add setting field to validation rule setting panel
 	 *
-	 * @param numeric $key バリデーションルールセットの識別番号
-	 * @param array $value バリデーションルールセットの内容
+	 * @param numeric $key ID of validation rule
+	 * @param array $value Content of validation rule
+	 * @return void
 	 */
 	public function admin( $key, $value ) {
 		$min = '';
-		if ( is_array( $value[$this->getName()] ) && isset( $value[$this->getName()]['min'] ) ) {
-			$min = $value[$this->getName()]['min'];
+		if ( is_array( $value[ $this->getName() ] ) && isset( $value[ $this->getName() ]['min'] ) ) {
+			$min = $value[ $this->getName() ]['min'];
 		}
 		?>
 		<table>

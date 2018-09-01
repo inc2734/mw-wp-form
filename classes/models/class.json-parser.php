@@ -1,61 +1,60 @@
 <?php
 /**
  * Name       : MW WP Form Json Parser
- * Description: ショートコードから渡される json を正しい形式に変換
- * Version    : 1.0.1
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : April 3, 2016
- * Modified   : April 5, 2016
+ * Modified   : June 1, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Json_Parser {
 
 	/**
-	 * ショートコードから渡される json
+	 * Json from shortcode
 	 * @var string
 	 */
 	protected $maybe_json;
 
 	/**
-	 * シングルクォーテーションの待ち状態
+	 * Waiting for single quotation
 	 * @var bool
 	 */
 	protected $s_quote_stay = false;
 
 	/**
-	 * ダブルクォーテーションの待ち状態
+	 * Waiting for double quotation
 	 * @var bool
 	 */
 	protected $d_quote_stay = false;
 
 	/**
-	 * コロンの待ち状態
+	 * Waiting for colon
 	 * @var bool
 	 */
 	protected $colon_stay = true;
 
 	/**
-	 * 正しい json を生成するための配列の添字
+	 * Array index to generate correct json
 	 * @var int
 	 */
 	protected $index = 0;
 
 	/**
-	 * セットする文字が json のキーにあたるのか値にあたるのかを識別するフラグ
+	 * A flag that identifies whether the character to be set is key or value
 	 * @var string key|value
 	 */
 	protected $key = 'key';
 
 	/**
-	 * json 生成用の配列
+	 * Array of generating json
 	 * @var array
 	 */
 	protected $temp = array();
 
 	/**
-	 * @param  string $maybe_json json
+	 * @param string $maybe_json json
 	 */
 	public function __construct( $maybe_json ) {
 		$this->maybe_json = $maybe_json;
@@ -63,7 +62,9 @@ class MW_WP_Form_Json_Parser {
 	}
 
 	/**
-	 * 各プロパティの初期値を設定
+	 * Set initial value of each property
+	 *
+	 * @return void
 	 */
 	protected function set_default_params() {
 		$this->s_quote_stay = false;
@@ -75,23 +76,26 @@ class MW_WP_Form_Json_Parser {
 	}
 
 	/**
-	 * 文字を json 生成用の配列に追加する
+	 * Add a character to an array for generating json
 	 *
 	 * @param string $character
+	 * @return void
 	 */
 	public function push_character( $character ) {
-		if ( !isset( $this->temp[$this->index][$this->key] ) ) {
-			$this->temp[$this->index][$this->key] = '';
+		if ( ! isset( $this->temp[ $this->index ][ $this->key ] ) ) {
+			$this->temp[ $this->index ][ $this->key ] = '';
 		}
-		$this->temp[$this->index][$this->key] .= $character;
+		$this->temp[ $this->index ][ $this->key ] .= $character;
 	}
 
 	/**
-	 * シングルクォーテーション用の処理
+	 * Proccess for single quotation
+	 *
+	 * @return void
 	 */
 	protected function proccess_single_quote() {
-		if ( !$this->d_quote_stay ) {
-			if ( !$this->s_quote_stay ) {
+		if ( ! $this->d_quote_stay ) {
+			if ( ! $this->s_quote_stay ) {
 				$this->s_quote_stay = true;
 			} else {
 				$this->s_quote_stay = false;
@@ -102,11 +106,13 @@ class MW_WP_Form_Json_Parser {
 	}
 
 	/**
-	 * ダブルクォーテーション用の処理
+	 * Proccess for double quotation
+	 *
+	 * @return void
 	 */
 	protected function proccess_double_quote() {
-		if ( !$this->s_quote_stay ) {
-			if ( !$this->d_quote_stay ) {
+		if ( ! $this->s_quote_stay ) {
+			if ( ! $this->d_quote_stay ) {
 				$this->d_quote_stay = true;
 			} else {
 				$this->d_quote_stay = false;
@@ -117,10 +123,12 @@ class MW_WP_Form_Json_Parser {
 	}
 
 	/**
-	 * カンマ用の処理
+ 	 * Proccess for connma
+	 *
+	 * @return void
 	 */
 	protected function proccess_comma() {
-		if ( !$this->s_quote_stay || !$this->d_quote_stay ) {
+		if ( ! $this->s_quote_stay || ! $this->d_quote_stay ) {
 			$this->index ++;
 			$this->colon_stay = true;
 			$this->key = 'key';
@@ -130,9 +138,9 @@ class MW_WP_Form_Json_Parser {
 	}
 
 	/**
-	 * コロン用の処理
+	 * Proccess for colon
 	 *
-	 * @param string $character
+	 * @return void
 	 */
 	protected function proccess_colon() {
 		if ( $this->colon_stay ) {
@@ -144,14 +152,14 @@ class MW_WP_Form_Json_Parser {
 	}
 
 	/**
-	 * json 生成用の配列を元に json を返す
+	 * Return json based on the array for generating json
 	 *
 	 * @return json
 	 */
 	public function json_encode() {
 		$js = array();
 		foreach ( $this->temp as $param ) {
-			if ( !isset( $param['key'] ) ) {
+			if ( ! isset( $param['key'] ) ) {
 				continue;
 			}
 			$key   = $param['key'];
@@ -175,6 +183,8 @@ class MW_WP_Form_Json_Parser {
 	}
 
 	/**
+	 * Return json based on the array for generating json
+	 *
 	 * @return json
 	 */
 	public function create_json() {
@@ -183,19 +193,19 @@ class MW_WP_Form_Json_Parser {
 
 		foreach ( $_js as $character ) {
 			// シングルクォーテーション
-			if ( $character === "'" ) {
+			if ( "'" === $character ) {
 				$this->proccess_single_quote();
 			}
 			// ダブルクォーテーション
-			elseif ( $character === '"' ) {
+			elseif ( '"' === $character ) {
 				$this->proccess_double_quote();
 			}
 			// カンマ
-			elseif ( $character === ',' ) {
+			elseif ( ',' === $character ) {
 				$this->proccess_comma();
 			}
 			// コロン
-			elseif ( $character === ':' ) {
+			elseif ( ':' === $character ) {
 				$this->proccess_colon();
 			}
 			// その他の文字

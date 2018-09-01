@@ -1,31 +1,30 @@
 <?php
 /**
  * Name       : MW WP Form Validation Rule Akismet
- * Description: Akismetのエラー。常にtrue
- * Version    : 1.1.1
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : July 21, 2014
- * Modified   : April 3, 2014
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Validation_Rule_Akismet extends MW_WP_Form_Abstract_Validation_Rule {
 
 	/**
-	 * バリデーションルール名を指定
+	 * Validation rule name
 	 * @var string
 	 */
 	protected $name = 'akismet_check';
 
 	/**
-	 * バリデーションチェック
+	 * Validation process
 	 *
-	 * @param string $key name属性
+	 * @param string $name
 	 * @param array $option
-	 * @return string エラーメッセージ
+	 * @return string Error message
 	 */
-	public function rule( $key, array $options = array() ) {
+	public function rule( $name, array $options = array() ) {
 		$defaults = array(
 			'message' => __( 'The contents which you input were judged with spam.', 'mw-wp-form' )
 		);
@@ -34,10 +33,11 @@ class MW_WP_Form_Validation_Rule_Akismet extends MW_WP_Form_Abstract_Validation_
 	}
 
 	/**
-	 * 設定パネルに追加
+	 * Add setting field to validation rule setting panel
 	 *
-	 * @param numeric $key バリデーションルールセットの識別番号
-	 * @param array $value バリデーションルールセットの内容
+	 * @param numeric $key ID of validation rule
+	 * @param array $value Content of validation rule
+	 * @return void
 	 */
 	public function admin( $key, $value ) {
 	}

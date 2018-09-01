@@ -1,70 +1,69 @@
 <?php
 /**
  * Name       : MW WP Form Stores Inquiry Data Form List Controller
- * Version    : 1.0.0
+ * Version    : 2.0.0
  * Author     : Takashi Kitajima
- * Author URI : http://2inc.org
+ * Author URI : https://2inc.org
  * Created    : March 27, 2015
- * Modified   : 
+ * Modified   : May 30, 2017
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
 class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Controller {
 
-	public function index() {
-		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_posts();
-		$form_list = array();
-		foreach ( $contact_data_post_types as $post_type ) {
-			$post_type_object = get_post_type_object( $post_type );
-			$form_list[$post_type] = array(
-				'title'             => $post_type_object->labels->singular_name,
-				'count'             => $this->get_count( $post_type ),
-				'modified_datetime' => $this->get_modified_datetime( $post_type ),
-				'created_datetime'  => $this->get_created_datetime( $post_type )
-			);
-		}
-		$this->assign( 'form_list', $form_list );
-		$this->render( 'stores-inquiry-data-form-list/index' );
+	public function __construct() {
+		$screen = get_current_screen();
+		add_action( $screen->id , array( $this, '_index' ) );
 	}
 
 	/**
-	 * データ件数を取得
-	 *
-	 * @param string $post_type 投稿タイプ名
-	 * @return numeric 投稿数
+	 * Render the page
 	 */
-	protected function get_count( $post_type ) {
-		$_args = apply_filters( 'mwform_get_inquiry_data_args-' . $post_type, array() );
-		$args  = array(
+	public function _index() {
+		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_form_post_types();
+		$form_list = array();
+		foreach ( $contact_data_post_types as $post_type ) {
+			$post_type_object = get_post_type_object( $post_type );
+			$form_list[ $post_type ] = array(
+				'title'             => $post_type_object->labels->singular_name,
+				'count'             => $this->_get_count( $post_type ),
+				'modified_datetime' => $this->_get_modified_datetime( $post_type ),
+				'created_datetime'  => $this->_get_created_datetime( $post_type )
+			);
+		}
+
+		$this->_render( 'stores-inquiry-data-form-list/index', array(
+			'form_list' => $form_list,
+		) );
+	}
+
+	/**
+	 * Return data count
+	 *
+	 * @param string $post_type
+	 * @return int
+	 */
+	protected function _get_count( $post_type ) {
+		$args = apply_filters( 'mwform_get_inquiry_data_args-' . $post_type, array() );
+		if ( empty( $args ) || ! is_array( $args ) ) {
+			$args = array();
+		}
+		$args = array_merge( $args, array(
 			'post_type'      => $post_type,
 			'posts_per_page' => 1,
-		);
-		if ( !empty( $_args ) && is_array( $_args ) ) {
-			$args = array_merge( $_args, $args );
-		}
+			'post_status'    => 'any',
+		) );
 		$query = new WP_Query( $args );
 		return $query->found_posts;
 	}
 
 	/**
-	 * フォームの作成日時を取得
+	 * Return the latest saved date of saved inquiry data
 	 *
-	 * @param string $post_type 投稿タイプ名
-	 * @return string 作成日
+	 * @param string $post_type
+	 * @return string
 	 */
-	protected function get_created_datetime( $post_type ) {
-		$post_id   = preg_replace( '/^mwf_(.+?)$/', '$1', $post_type );
-		$post_date = get_the_date( get_option( 'date_format' ), $post_id );
-		return $post_date;
-	}
-
-	/**
-	 * 問い合わせデータの最新保存日を取得
-	 *
-	 * @param string $post_type 投稿タイプ名
-	 * @return string 問い合わせデータの最新保存日
-	 */
-	protected function get_modified_datetime( $post_type ) {
+	protected function _get_modified_datetime( $post_type ) {
 		global $post;
 		$inquiry_posts = get_posts( array(
 			'post_type'      => $post_type,
@@ -80,5 +79,17 @@ class MW_WP_Form_Stores_Inquiry_Data_Form_List_Controller extends MW_WP_Form_Con
 		}
 		wp_reset_postdata();
 		return $modified_datetime;
+	}
+
+	/**
+	 * Return date of creating form
+	 *
+	 * @param string $post_type
+	 * @return string
+	 */
+	protected function _get_created_datetime( $post_type ) {
+		$post_id   = preg_replace( '/^mwf_(.+?)$/', '$1', $post_type );
+		$post_date = get_the_date( get_option( 'date_format' ), $post_id );
+		return $post_date;
 	}
 }
