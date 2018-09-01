@@ -9,7 +9,6 @@
  * Created : September 25, 2012
  * Modified: May 30, 2017
  * Text Domain: mw-wp-form
- * Domain Path: /languages/
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -54,7 +53,7 @@ class MW_WP_Form {
 	 * @return void
 	 */
 	public function _initialize() {
-		load_plugin_textdomain( 'mw-wp-form', false, basename( dirname( __FILE__ ) ) . '/languages' );
+		load_plugin_textdomain( 'mw-wp-form' );
 
 		add_action( 'after_setup_theme', array( $this, '_after_setup_theme' ), 11 );
 		add_action( 'init'             , array( $this, '_register_post_type' ) );
