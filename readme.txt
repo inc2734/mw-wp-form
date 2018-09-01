@@ -1,10 +1,10 @@
 === MW WP Form ===
 Contributors: inc2734, ryu263, tomothumb, nanniku, mt8.biz, NExt-Season, kuck1u, mypacecreator, mh35
-Donate link: http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
+Donate link: https://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 4.0
 Tested up to: 4.9.8
-Stable tag: 4.0.0
+Stable tag: 4.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,14 +36,14 @@ Source: https://developers.google.com/chart/
 
 = Contributors =
 
-* [Takashi Kitajima](https://2inc.org) ( [inc2734](http://profiles.wordpress.org/inc2734) )
-* [Ryujiro Yamamoto](http://webcre-archive.com) ( [ryu263](http://profiles.wordpress.org/ryu263) )
-* [Tsujimoto Tomoyuki](http://kee-non.com) ( [tomothumb](http://profiles.wordpress.org/tomothumb) )
-* [Naoyuki Ohata] ( [nanniku](http://profiles.wordpress.org/nanniku) )
-* [Kazuto Takeshita](http://mt8.biz/) ( [moto hachi](https://profiles.wordpress.org/mt8biz/) )
-* [Atsushi Ando](http://www.next-season.net/) ( [NExt-Season](https://profiles.wordpress.org/next-season/) )
-* [Kazuki Tomiyasu](http://visualive.jp/) ( [KUCKLU](https://profiles.wordpress.org/kuck1u/) )
-* [Kei Nomura](http://mypacecreator.net/) ( [mypacecreator](https://profiles.wordpress.org/mypacecreator/) )
+* [Takashi Kitajima](https://2inc.org) ( [inc2734](https://profiles.wordpress.org/inc2734) )
+* [Ryujiro Yamamoto](https://webcre-archive.com) ( [ryu263](https://profiles.wordpress.org/ryu263) )
+* [Tsujimoto Tomoyuki](http://kee-non.com) ( [tomothumb](https://profiles.wordpress.org/tomothumb) )
+* [Naoyuki Ohata] ( [nanniku](https://profiles.wordpress.org/nanniku) )
+* [Kazuto Takeshita](https://mt8.biz/) ( [moto hachi](https://profiles.wordpress.org/mt8biz/) )
+* [Atsushi Ando](https://www.next-season.net/) ( [NExt-Season](https://profiles.wordpress.org/next-season/) )
+* [Kazuki Tomiyasu](https://visualive.jp/) ( [KUCKLU](https://profiles.wordpress.org/kuck1u/) )
+* [Kei Nomura](https://mypacecreator.net/) ( [mypacecreator](https://profiles.wordpress.org/mypacecreator/) )
 * [mh35](https://profiles.wordpress.org/mh35)
 * [Takashi Nojima](https://github.com/nojimage)
 * [herikutu](https://github.com/herikutu)
@@ -58,8 +58,8 @@ Source: https://developers.google.com/chart/
 
 Do you have questions or issues with MW WP Form? Use these support channels appropriately.
 
-1. [Official](http://plugins.2inc.org/mw-wp-form/)
-1. [Support Forum](http://wordpress.org/support/plugin/mw-wp-form)
+1. [Official](https://plugins.2inc.org/mw-wp-form/)
+1. [Support Forum](https://wordpress.org/support/plugin/mw-wp-form)
 
 == Screenshots ==
 
@@ -70,6 +70,9 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 5. Supports chart display of saved inquiry data.
 
 == Changelog ==
+
+= 4.0.1 =
+* Fix bug that form layout broken when Gutenberg installed.
 
 = 4.0.0 =
 * Refactoring

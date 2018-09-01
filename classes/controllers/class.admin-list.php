@@ -29,7 +29,7 @@ class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 			'donation' =>
 				'<div class="donation"><p>' .
 				__( 'Your contribution is needed for making this plugin better.', 'mw-wp-form' ) .
-				' <a href="http://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40" class="button">' .
+				' <a href="https://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40" class="button">' .
 				__( 'Donate', 'mw-wp-form' ) . '</a></p></div>'
 		);
 		$views = array_merge( $donation, $views );

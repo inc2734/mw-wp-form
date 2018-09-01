@@ -283,7 +283,10 @@ class MW_WP_Form_Exec_Shortcode {
 	 */
 	protected function _wpautop( $content ) {
 		$has_wpautop = false;
-		if ( has_filter( 'the_content', 'wpautop' ) ) {
+
+		if ( function_exists( 'is_gutenberg_page' ) ) {
+			$has_wpautop = true;
+		} elseif ( has_filter( 'the_content', 'wpautop' ) ) {
 			$has_wpautop = true;
 		}
 
