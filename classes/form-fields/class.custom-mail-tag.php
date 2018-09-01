@@ -130,7 +130,5 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 			$attributes,
 			esc_html( MW_WP_Form_Parser::apply_filters_mwform_custom_mail_tag( $this->form_key, '', $name ) )
 		);
-
-		return $value;
 	}
 }
