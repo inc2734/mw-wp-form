@@ -62,14 +62,16 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 			return;
 		}
 
-		$post_type = $wp_query->get( 'post_type' );
+		$post_type   = $wp_query->get( 'post_type' );
+		$post_status = $wp_query->get( 'post_status' );
+
 		$args = apply_filters( 'mwform_get_inquiry_data_args-' . $post_type, array() );
 		if ( empty( $args ) || ! is_array( $args ) ) {
 			$args = array();
 		}
 		$args = array_merge( $args, array(
 			'post_type'   => $post_type,
-			'post_status' => 'any',
+			'post_status' => $post_status,
 		) );
 
 		foreach ( $args as $key => $value ) {
