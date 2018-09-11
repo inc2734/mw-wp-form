@@ -27,6 +27,13 @@ class MW_WP_Form_Main_Controller {
 	protected $Validation;
 
 	public function __construct() {
+
+	nocache_headers();
+	add_filter( 'nocache_headers' , function($headers) {
+			$headers['X-Accel-Expires'] = 0;
+			return $headers;
+	}, 1 );
+
 		add_action( 'parse_request'   , array( $this, '_remove_query_vars_from_post' ) );
 		add_filter( 'nocache_headers' , array( $this, '_nocache_headers' ) , 1 );
 		add_filter( 'template_include', array( $this, '_template_include' ), 10000 );
@@ -137,9 +144,15 @@ class MW_WP_Form_Main_Controller {
 				);
 			}
 
+			$this->_set_transient_for_nocache_headers();
+
 			$Redirected->redirect();
 
 		} else {
+			$transient = $this->_get_transient_for_nocache_headers();
+			if ( $transient ) {
+				nocache_headers();
+			}
 
 			/**
 			 * [mwform], [mwform_formkey] の登録
@@ -324,5 +337,41 @@ class MW_WP_Form_Main_Controller {
 		$uploaded_files = $File->upload( $files );
 		$this->Data->push_uploaded_file_keys( $uploaded_files );
 		$this->Data->regenerate_upload_file_keys();
+	}
+
+	/**
+	 * Return transient name of nocache headers
+	 *
+	 * @return string
+	 */
+	protected function _get_transient_name_for_nocache_headers() {
+		$url  = $_SERVER['REQUEST_URI'];
+		$hash = base64_encode( pack( 'H*', sha1( $url ) ) );
+		return 'mwform_keyurl_' . $hash;
+	}
+
+	/**
+	 * Set transient for nocache headers
+	 *
+	 * @return void
+	 */
+	protected function _set_transient_for_nocache_headers() {
+		$transient_name = $this->_get_transient_name_for_nocache_headers();
+		$transient = get_transient( $transient_name );
+		if ( ! $transient ) {
+			$transient = [];
+		}
+		$transient[] = $form_key;
+		set_transient( $transient_name, $transient, 1 );
+	}
+
+	/**
+	 * Return transient for nocache headers
+	 *
+	 * @return array
+	 */
+	protected function _get_transient_for_nocache_headers() {
+		$transient_name = $this->_get_transient_name_for_nocache_headers();
+		return get_transient( $transient_name );
 	}
 }
