@@ -462,7 +462,6 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Added   : X-Accel-Expires param in header.
 * Added   : Add CC setting in admin mail setting.
 * Added   : Add BCC setting in admin mail setting.
-* Added   : X-Accel-Expires param in header.
 * Changed : Data store has been changed to Transient API from PHP SESSION.
 * Changed : Nonce check system has been changed to WordPress nonce check system from original.
 * Changed : Accept space in katakana validation.

@@ -27,13 +27,6 @@ class MW_WP_Form_Main_Controller {
 	protected $Validation;
 
 	public function __construct() {
-
-	nocache_headers();
-	add_filter( 'nocache_headers' , function($headers) {
-			$headers['X-Accel-Expires'] = 0;
-			return $headers;
-	}, 1 );
-
 		add_action( 'parse_request'   , array( $this, '_remove_query_vars_from_post' ) );
 		add_filter( 'nocache_headers' , array( $this, '_nocache_headers' ) , 1 );
 		add_filter( 'template_include', array( $this, '_template_include' ), 10000 );
