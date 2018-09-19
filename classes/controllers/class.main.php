@@ -359,7 +359,7 @@ class MW_WP_Form_Main_Controller {
 		$transient_name = $this->_get_transient_name_for_nocache_headers();
 		$transient = get_transient( $transient_name );
 		if ( ! $transient ) {
-			$transient = [];
+			$transient = array();
 		}
 		$transient[] = $form_key;
 		set_transient( $transient_name, $transient, 1 );
