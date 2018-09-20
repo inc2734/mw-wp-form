@@ -27,9 +27,11 @@ class MW_WP_Form_Main_Controller {
 	protected $Validation;
 
 	public function __construct() {
-		add_filter( 'nocache_headers'  , array( $this, '_nocache_headers' ) , 1 );
+		add_filter( 'nocache_headers', array( $this, '_nocache_headers' ) );
+		add_filter( 'nginxchampuru_caching_headers', array( $this, '_nginxchampuru_caching_headers' ) );
+
 		add_action( 'parse_request'    , array( $this, '_remove_query_vars_from_post' ) );
-		add_action( 'send_headers'     , array( $this, '_send_headers' ) );
+		add_action( 'template_redirect', array( $this, '_send_headers' ), 10000 );
 		add_action( 'template_redirect', array( $this, '_template_redirect' ), 10000 );
 	}
 
@@ -82,6 +84,19 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
+	 * Cache control for Nginx Cache Controller plugin
+	 *
+	 * @todo NOT WORKING
+	 */
+	public function _nginxchampuru_caching_headers( $headers ) {
+		$transient = $this->_get_transient_for_nocache_headers();
+		if ( $transient ) {
+			$headers = $this->_nocache_headers( $headers );
+		}
+		return $headers;
+	}
+
+	/**
 	 * Customize request header for Nginx Cache Controller
 	 *
 	 * @param array $headers
@@ -89,6 +104,7 @@ class MW_WP_Form_Main_Controller {
 	 */
 	public function _nocache_headers( $headers ) {
 		$headers['X-Accel-Expires'] = 0;
+		$headers['Cache-Control']   = 'private, no-store, no-cache, must-revalidate';
 		return $headers;
 	}
 

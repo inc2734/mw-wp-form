@@ -184,7 +184,7 @@ class MW_WP_Form_Redirected {
 
 		do_action( 'mwform_before_redirect_' . $this->form_key );
 
-		wp_safe_redirect( $redirect );
+		wp_safe_redirect( $redirect, 302 );
 		exit();
 	}
 
