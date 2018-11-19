@@ -135,7 +135,7 @@ class MW_WP_Form_Field_Textarea extends MW_WP_Form_Abstract_Form_Field {
 			<input type="text" name="placeholder" value="<?php echo esc_attr( $placeholder ); ?>" />
 		</p>
 		<p>
-			<strong><?php esc_html_e( 'Dsiplay error', 'mw-wp-form' ); ?></strong>
+			<strong><?php esc_html_e( 'Display error', 'mw-wp-form' ); ?></strong>
 			<?php $show_error = $this->get_value_for_generator( 'show_error', $options ); ?>
 			<label><input type="checkbox" name="show_error" value="false" <?php checked( 'false', $show_error ); ?> /> <?php esc_html_e( 'Don\'t display error.', 'mw-wp-form' ); ?></label>
 		</p>
