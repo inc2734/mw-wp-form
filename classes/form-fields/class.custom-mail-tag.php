@@ -41,7 +41,7 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 			'name'  => '',
 			'id'    => null,
 			'class' => null,
-			'echo'  => 'false',
+			'echo'  => 'true',
 		);
 	}
 
@@ -113,7 +113,7 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 		<p>
 			<strong><?php esc_html_e( 'Display', 'mw-wp-form' ); ?></strong>
 			<?php $echo = $this->get_value_for_generator( 'echo', $options ); ?>
-			<input type="checkbox" name="echo" value="true" <?php checked( 'true', $echo ); ?> /> <?php esc_html_e( 'Display hidden value.', 'mw-wp-form' ); ?>
+			<input type="checkbox" name="echo" value="false" <?php checked( 'false', $echo ); ?> /> <?php esc_html_e( 'Don\'t display.', 'mw-wp-form' ); ?>
 		</p>
 		<?php
 	}
