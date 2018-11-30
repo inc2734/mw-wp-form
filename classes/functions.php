@@ -148,7 +148,7 @@ class MWF_Functions {
 		unset( $mwform_deprecated_message );
 		echo $content;
 	}
-	protected static function _return_deprecated_message( $content = '' ) {
+	public static function _return_deprecated_message( $content = '' ) {
 		global $mwform_deprecated_message;
 		$content = $mwform_deprecated_message . $content;
 		unset( $mwform_deprecated_message );
