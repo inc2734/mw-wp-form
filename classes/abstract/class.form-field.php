@@ -181,7 +181,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	public function _input_page( $atts, $element_content = null ) {
 		$this->element_content = $element_content;
 
-		if ( isset( $this->defaults['value'] ) && isset( $atts['name'] ) && ! isset( $atts['value'] ) ) {
+		if ( array_key_exists( 'value', $this->defaults ) && isset( $atts['name'] ) && ! isset( $atts['value'] ) ) {
 			$atts['value'] = apply_filters(
 				'mwform_value_' . $this->form_key,
 				$this->defaults['value'],
