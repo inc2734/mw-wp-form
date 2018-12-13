@@ -41,6 +41,7 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 			'name'  => '',
 			'id'    => null,
 			'class' => null,
+			'echo'  => 'true',
 		);
 	}
 
@@ -52,10 +53,13 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function input_page() {
-		$_ret = $this->custom_mail_tag_field( $this->atts['name'], array(
-			'id'    => $this->atts['id'],
-			'class' => $this->atts['class'],
-		) );
+		$_ret = '';
+		if ( 'true' === $this->atts['echo'] ) {
+			$_ret .= $this->custom_mail_tag_field( $this->atts['name'], array(
+				'id'    => $this->atts['id'],
+				'class' => $this->atts['class'],
+			) );
+		}
 		$_ret .= $this->Form->hidden( MWF_Config::CUSTOM_MAIL_TAG_KEYS . '[]', $this->atts['name'] );
 		if ( 'false' !== $this->atts['show_error'] ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
@@ -71,10 +75,13 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 	 * @return string HTML
 	 */
 	protected function confirm_page() {
-		$_ret = $this->custom_mail_tag_field( $this->atts['name'], array(
-			'id'    => $this->atts['id'],
-			'class' => $this->atts['class'],
-		) );
+		$_ret = '';
+		if ( 'true' === $this->atts['echo'] ) {
+			$_ret .= $this->custom_mail_tag_field( $this->atts['name'], array(
+				'id'    => $this->atts['id'],
+				'class' => $this->atts['class'],
+			) );
+		}
 		$_ret .= $this->Form->hidden( MWF_Config::CUSTOM_MAIL_TAG_KEYS . '[]', $this->atts['name'] );
 		return $_ret;
 	}
@@ -102,6 +109,11 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 			<strong>class</strong>
 			<?php $class = $this->get_value_for_generator( 'class', $options ); ?>
 			<input type="text" name="class" value="<?php echo esc_attr( $class ); ?>" />
+		</p>
+		<p>
+			<strong><?php esc_html_e( 'Display', 'mw-wp-form' ); ?></strong>
+			<?php $echo = $this->get_value_for_generator( 'echo', $options ); ?>
+			<input type="checkbox" name="echo" value="false" <?php checked( 'false', $echo ); ?> /> <?php esc_html_e( 'Don\'t display.', 'mw-wp-form' ); ?>
 		</p>
 		<?php
 	}
