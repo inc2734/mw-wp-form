@@ -253,6 +253,7 @@ class MW_WP_Form_Main_Controller {
 		$is_admin_mail_sended = $Mail_Service->send_admin_mail();
 
 		if ( ! $is_admin_mail_sended ) {
+			error_log( 'Failed to send admin mail.' );
 			return false;
 		}
 
@@ -268,6 +269,9 @@ class MW_WP_Form_Main_Controller {
 
 			if ( $automatic_reply_email && ! $is_invalid_mail_address ) {
 				$is_reply_mail_sended = $Mail_Service->send_reply_mail();
+				if ( ! $is_reply_mail_sended ) {
+					error_log( 'Failed to send auto reply mail.' );
+				}
 			}
 		}
 
