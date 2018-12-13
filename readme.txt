@@ -3,8 +3,8 @@ Contributors: inc2734, ryu263, tomothumb, nanniku, mt8.biz, NExt-Season, kuck1u,
 Donate link: https://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 4.0
-Tested up to: 4.9.8
-Stable tag: 4.0.4
+Tested up to: 5.0.1
+Stable tag: 4.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -70,6 +70,13 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 5. Supports chart display of saved inquiry data.
 
 == Changelog ==
+
+= 4.0.5 =
+* Add filter hook mwform_send_nocache_header.
+* Fix MWF_Functions::_return_deprecated_message() error.
+* Fix bug that mwform_value_mw-wp-form-xxx filter not applyed to radio and checkbox.
+* Fix bug that nocache_header not applyed.
+* Add the echo attribute to mwform_custom_mail_tag.
 
 = 4.0.4 =
 * PHP 5.3, 5.2.4 support
