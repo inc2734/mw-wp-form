@@ -284,13 +284,7 @@ class MW_WP_Form_Exec_Shortcode {
 	protected function _wpautop( $content ) {
 		$has_wpautop = false;
 
-		if ( apply_filters( 'replace_editor', false, $post ) !== true ) {
-			if ( function_exists( 'use_block_editor_for_post' ) ) {
-				$has_wpautop = true;
-			} else {
-				$has_wpautop = true;
-			}
-		} elseif ( function_exists( 'is_gutenberg_page' ) ) {
+		if ( has_filter( 'the_content', '_restore_wpautop_hook' ) ) {
 			$has_wpautop = true;
 		} elseif ( has_filter( 'the_content', 'wpautop' ) ) {
 			$has_wpautop = true;
