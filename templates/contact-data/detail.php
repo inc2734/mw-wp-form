@@ -47,7 +47,7 @@
 	<?php endif; ?>
 	<?php endforeach; ?>
 	<tr>
-		<th><?php esc_html_e( 'Admin Mail To', 'mw-wp-form' ); ?></th>
+		<th><?php esc_html_e( 'Admin Email To', 'mw-wp-form' ); ?></th>
 		<td>
 			<?php echo esc_html( $Contact_Data_Setting->get( 'admin_mail_to' ) ); ?>
 		</td>
