@@ -3,8 +3,8 @@ Contributors: inc2734, ryu263, tomothumb, nanniku, mt8.biz, NExt-Season, kuck1u,
 Donate link: https://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 4.0
-Tested up to: 5.0.1
-Stable tag: 4.0.6
+Tested up to: 5.2.2
+Stable tag: 4.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,7 @@ Source: https://developers.google.com/chart/
 * [mh35](https://profiles.wordpress.org/mh35)
 * [Takashi Nojima](https://github.com/nojimage)
 * [herikutu](https://github.com/herikutu)
+* [tsucharoku](https://github.com/tsucharoku)
 
 == Installation ==
 
@@ -70,6 +71,12 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 5. Supports chart display of saved inquiry data.
 
 == Changelog ==
+
+= 4.1.0 =
+* Add filter hook mwform_csv_columns-mwf_xxx
+* Fixed the bug that "MW WP Form dosen't support" mwform_after_exec_shortcode "already." is output to the error log even though it is not hooked.
+* Changed to save destination admin email address in inquiry data.
+* Fixed a bug that notice occurs when changing the response status of inquiry data.
 
 = 4.0.6 =
 * Fixed a bug that line feed was not applied to the form that using the block editor.
