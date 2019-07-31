@@ -157,6 +157,7 @@ class MW_WP_Form_CSV {
 		$_columns = apply_filters( 'mwform_inquiry_data_columns-' . $this->post_type, $_columns );
 		$columns = array_merge( $columns, $_columns );
 		$columns = array_merge( $columns, array( 'memo' => __( 'Memo', 'mw-wp-form' ) ) );
+		$columns = apply_filters( 'mwform_csv_columns-' . $this->post_type, $columns );
 		return $columns;
 	}
 
