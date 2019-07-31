@@ -27,11 +27,18 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 			$args = array();
 		}
 
+		$_post_id = null;
+		if ( isset( $_GET['post'] ) ) {
+			$_post_id = $_GET['post'];
+		} elseif ( $_POST['post_ID'] ) {
+			$_post_id = $_POST['post_ID'];
+		}
+
 		$args = array_merge( $args, array(
 			'post_type'      => $screen->post_type,
 			'posts_per_page' => 1,
 			'post_status'    => 'any',
-			'p'              => $_GET['post'],
+			'p'              => $_post_id,
 		) );
 		$permit_posts = get_posts( $args );
 		if ( empty( $permit_posts ) ) {
