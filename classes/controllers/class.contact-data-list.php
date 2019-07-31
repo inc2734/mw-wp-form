@@ -156,6 +156,7 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 
 		unset( $columns['date'] );
 		$columns['post_date']       = __( 'Registed Date', 'mw-wp-form' );
+		$columns['admin_mail_to']   = __( 'Admin Mail To', 'mw-wp-form' );
 		$columns['response_status'] = __( 'Response Status', 'mw-wp-form' );
 		$_columns = array();
 
@@ -202,6 +203,8 @@ class MW_WP_Form_Contact_Data_List_Controller extends MW_WP_Form_Controller {
 			$response_statuses = $Contact_Data_Setting->get_response_statuses();
 			$response_status   = $Contact_Data_Setting->get( 'response_status' );
 			$value = $response_statuses[ $response_status ];
+		} elseif ( 'admin_mail_to' === $column ) {
+			$value = $Contact_Data_Setting->get( 'admin_mail_to' );
 		} elseif ( is_array( $post_custom_keys ) && in_array( $column, $post_custom_keys ) ) {
 			$post_meta = get_post_meta( $post_id, $column, true );
 			if ( $Contact_Data_Setting->is_upload_file_key( $column ) ) {

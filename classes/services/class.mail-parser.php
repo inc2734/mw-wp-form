@@ -156,6 +156,13 @@ class MW_WP_Form_Mail_Parser {
 			$data[ $name ] = ( is_null( $value ) ) ? '' : $value;
 		}
 
+		$data = array_merge(
+			array(
+				'admin_mail_to' => $this->Mail->to, // admin_mail_to = The property of MW_WP_Form_Contact_Data_Setting
+			),
+			$data
+		);
+
 		$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $this->Data->get_saved_mail_id() );
 		$Contact_Data_Setting->sets( $data );
 		$Contact_Data_Setting->save();

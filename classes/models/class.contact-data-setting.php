@@ -30,6 +30,12 @@ class MW_WP_Form_Contact_Data_Setting {
 	protected $response_status = 'not-supported';
 
 	/**
+	 * Sended mail to
+	 * @var string
+	 */
+	protected $admin_mail_to;
+
+	/**
 	 * Memo
 	 * @var string
 	 */
@@ -123,8 +129,10 @@ class MW_WP_Form_Contact_Data_Setting {
 			if ( 'response_status' === $key ) {
 				$response_statuses = $this->get_response_statuses();
 				if ( isset( $response_statuses[ $this->response_status ] ) ) {
-					return $this->response_status;
+					return $this->$key;
 				}
+			} elseif ( 'admin_mail_to' === $key ) {
+				return $this->$key;
 			}
 			return $this->$key;
 		} elseif ( isset( $this->options[ $key ] ) ) {
@@ -146,14 +154,13 @@ class MW_WP_Form_Contact_Data_Setting {
 			return;
 		}
 
-		if ( 'response_status' !== $key ) {
+		if ( 'response_status' === $key ) {
+			if ( array_key_exists( $value, $this->get_response_statuses() ) ) {
+				$this->$key = $value;
+				return;
+			}
+		} elseif ( 'admin_mail_to' === $key ) {
 			$this->$key = $value;
-			return;
-		}
-
-		if ( array_key_exists( $value, $this->get_response_statuses() ) ) {
-			$this->$key = $value;
-			return;
 		}
 	}
 

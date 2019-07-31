@@ -33,6 +33,7 @@
  */
 .mw-wp-form-wp-list-table {
 	overflow: auto;
+	width: 100%;
 }
 .mw-wp-form-wp-list-table .wp-list-table {
 	table-layout: auto;

@@ -47,6 +47,12 @@
 	<?php endif; ?>
 	<?php endforeach; ?>
 	<tr>
+		<th><?php esc_html_e( 'Admin Mail To', 'mw-wp-form' ); ?></th>
+		<td>
+			<?php echo esc_html( $Contact_Data_Setting->get( 'admin_mail_to' ) ); ?>
+		</td>
+	</tr>
+	<tr>
 		<th><?php esc_html_e( 'Response Status', 'mw-wp-form' ); ?></th>
 		<td>
 			<select name="<?php echo esc_attr( MWF_Config::INQUIRY_DATA_NAME ); ?>[response_status]">

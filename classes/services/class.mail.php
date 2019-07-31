@@ -81,12 +81,14 @@ class MW_WP_Form_Mail_Service {
 	 */
 	public function send_admin_mail() {
 		$Mail_admin = $this->_get_parsed_mail_object( $this->Mail_admin_raw );
-		if ( $this->Setting->get( 'usedb' ) ) {
-			$Mail_admin_for_save = clone $this->Mail_admin_raw;
-		}
-
 		$Mail_admin = $this->_apply_filters_mwform_mail( $Mail_admin );
 		$Mail_admin = $this->_apply_filters_mwform_admin_mail( $Mail_admin );
+
+		if ( $this->Setting->get( 'usedb' ) ) {
+			$Mail_admin_for_save = clone $this->Mail_admin_raw;
+			$Mail_admin_for_save->to = $Mail_admin->to;
+		}
+
 		do_action(
 			'mwform_before_send_admin_mail_' . $this->form_key,
 			clone $Mail_admin,
