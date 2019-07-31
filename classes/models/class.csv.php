@@ -127,6 +127,7 @@ class MW_WP_Form_CSV {
 	protected function _get_csv_headings( array $posts ) {
 		$columns = array(
 			'ID'              => 'ID',
+			'admin_mail_to'   => __( 'Admin Email To', 'mw-wp-form' ),
 			'response_status' => __( 'Response Status', 'mw-wp-form' ),
 			'post_date'       => 'post_date',
 			'post_modified'   => 'post_modified',
@@ -183,6 +184,8 @@ class MW_WP_Form_CSV {
 				if ( 'response_status' === $key ) {
 					$response_status = $Contact_Data_Setting->get( 'response_status' );
 					$column = $response_statuses[ $response_status ];
+				} elseif ( 'admin_mail_to' === $key ) {
+					$column = $Contact_Data_Setting->get( 'admin_mail_to' );
 				} elseif ( 'memo' === $key ) {
 					$column = $Contact_Data_Setting->get( 'memo' );
 				} elseif ( MWF_Config::TRACKINGNUMBER === $key) {
