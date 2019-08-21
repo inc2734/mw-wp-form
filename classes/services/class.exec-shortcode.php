@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Exec Shortcode
- * Version    : 2.0.0
+ * Version    : 2.0.1
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : December 31, 2014
- * Modified   : May 17, 2017
+ * Modified   : August 22, 2019
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -198,6 +198,7 @@ class MW_WP_Form_Exec_Shortcode {
 			$this->Data
 		);
 
+		$content = str_replace( '{' . MWF_Config::TRACKINGNUMBER . '}', '{' . MWF_Config::TRACKINGNUMBER . '_for_complete_page}', $content );
 		$content = $this->_wpautop( $content );
 		$content = $Parser->replace_for_mail_content( $content );
 

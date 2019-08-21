@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Parser
- * Version    : 1.0.0
+ * Version    : 1.0.1
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : July 10, 2017
- * Modified   :
+ * Modified   : August 22, 2019
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -229,6 +229,13 @@ class MW_WP_Form_Parser {
 		if ( MWF_Config::TRACKINGNUMBER === $name ) {
 			if ( $form_id ) {
 				return $this->Setting->get_tracking_number( $form_id );
+			}
+		}
+
+		// @see https://github.com/inc2734/mw-wp-form/issues/99
+		if ( MWF_Config::TRACKINGNUMBER . '_for_complete_page' === $name ) {
+			if ( $form_id ) {
+				return $this->Setting->get_tracking_number( $form_id ) - 1;
 			}
 		}
 
