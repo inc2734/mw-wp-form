@@ -1,6 +1,6 @@
 <?php
 /**
- * Name       : MW WP Form Field　Error
+ * Name       : MW WP Form Field Error
  * Version    : 2.0.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
