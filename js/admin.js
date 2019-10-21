@@ -17,7 +17,7 @@ jQuery( function( $ ) {
 		var shortcode_name  = dialog_id.replace( 'dialog-', '' );
 		var element_content = null;
 
-		$( '#' + dialog_id + ':first' ).find( 'input, textarea' ).each( function( i, e ) {
+		$( '#' + dialog_id + ':first' ).find( 'input, textarea, select' ).each( function( i, e ) {
 			var val;
 			var name = $( e ).attr( 'name' );
 
