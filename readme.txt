@@ -48,6 +48,7 @@ Source: https://developers.google.com/chart/
 * [Takashi Nojima](https://github.com/nojimage)
 * [herikutu](https://github.com/herikutu)
 * [tsucharoku](https://github.com/tsucharoku)
+* [t-hamano](https://github.com/t-hamano)
 
 == Installation ==
 
