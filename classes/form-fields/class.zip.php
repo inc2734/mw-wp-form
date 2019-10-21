@@ -104,7 +104,7 @@ class MW_WP_Form_Field_Zip extends MW_WP_Form_Abstract_Form_Field {
 		<p>
 			<strong>name</strong>
 			<?php $name = $this->get_value_for_generator( 'name', $options ); ?>
-			<input type="text" name="name" value="<?php echo esc_attr( $name ); ?>" /></td>
+			<input type="text" name="name" value="<?php echo esc_attr( $name ); ?>" />
 		</p>
 		<p>
 			<strong>class</strong>
