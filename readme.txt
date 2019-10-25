@@ -3,8 +3,8 @@ Contributors: inc2734, ryu263, tomothumb, nanniku, mt8.biz, NExt-Season, kuck1u,
 Donate link: https://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 4.0
-Tested up to: 5.2.2
-Stable tag: 4.1.2
+Tested up to: 5.2.4
+Stable tag: 4.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -72,6 +72,12 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 5. Supports chart display of saved inquiry data.
 
 == Changelog ==
+
+= 4.2.0 =
+* Fixed a bug that memo is not saved.
+* The select element can be used in tag generator dialog box.
+* You can set original tag group in tag generator.
+* Add filter hook mwform_tag_generator_labels.
 
 = 4.1.2 =
 * Fixed a bug that tracking number was displayed +1 on the complete screen.
