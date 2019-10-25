@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Abstract Form Field
- * Version    : 2.0.0
+ * Version    : 2.1.0
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : December 14, 2012
- * Modified   : May 30, 2017
+ * Modified   : October 25, 2019
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -67,7 +67,8 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	public function __construct() {
 		$this->_set_names();
 		$this->_set_defaults();
-		add_filter( 'mwform_form_fields'  , array( $this, '_mwform_form_fields' ) );
+		add_filter( 'mwform_form_fields', array( $this, '_mwform_form_fields' ) );
+		add_filter( 'mwform_tag_generator_group', array( $this, '_mwform_tag_generator_group' ) );
 	}
 
 	/**
@@ -309,6 +310,11 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	 */
 	public function _mwform_form_fields( array $form_fields ) {
 		return array_merge( $form_fields, array( $this->shortcode_name => $this ) );
+	}
+
+	public function _mwform_tag_generator_group( $group ) {
+		$group[ $this->type ] = $this->type;
+		return $group;
 	}
 
 	/**
