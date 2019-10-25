@@ -1,11 +1,11 @@
 <?php
 /**
  * Name       : MW WP Form Contact Data Setting
- * Version    : 2.0.0
+ * Version    : 2.0.1
  * Author     : Takashi Kitajima
  * Author URI : https://2inc.org
  * Created    : January 1, 2015
- * Modified   : June 1, 2017
+ * Modified   : October 25, 2019
  * License    : GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -160,6 +160,8 @@ class MW_WP_Form_Contact_Data_Setting {
 				return;
 			}
 		} elseif ( 'admin_mail_to' === $key ) {
+			$this->$key = $value;
+		} elseif ( 'memo' === $key ) {
 			$this->$key = $value;
 		}
 	}
