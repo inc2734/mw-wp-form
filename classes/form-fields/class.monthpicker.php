@@ -91,7 +91,7 @@ class MW_WP_Form_Field_Monthpicker extends MW_WP_Form_Abstract_Form_Field {
 		);
 
 		$translate_monthpicker = apply_filters( 'mwform_translate_monthpicker_' . $this->form_key, true );
-		if ( 'ja' === $translate_monthpicker && get_locale() ) {
+		if ( $translate_monthpicker && 'ja' === get_locale() ) {
 			$js = array_merge(
 				array(
 					'i18n'        => array(
