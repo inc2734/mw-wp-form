@@ -1,4 +1,10 @@
 <?php
+/**
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
 if ( 'true' === $vertically ) {
 	$vertically_class = 'vertical-item';
 } else {

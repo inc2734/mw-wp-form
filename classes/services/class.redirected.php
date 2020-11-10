@@ -1,13 +1,12 @@
 <?php
 /**
- * Name       : MW WP Form Redirected
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : December 31, 2014
- * Modified   : May 21, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Redirected
  */
 class MW_WP_Form_Redirected {
 
@@ -31,9 +30,17 @@ class MW_WP_Form_Redirected {
 	 */
 	protected $url;
 
-	public function __construct( $form_key, $Setting, $is_valid, $post_condition ) {
+	/**
+	 * Constructor.
+	 *
+	 * @param string             $form_key Form key.
+	 * @param MW_WP_Form_Setting $setting  MW_WP_Form_Setting object.
+	 * @param boolean            $is_valid Return true when valid.
+	 * @param string             $post_condition back|confirm|complete.
+	 */
+	public function __construct( $form_key, $setting, $is_valid, $post_condition ) {
 		$this->form_key = $form_key;
-		$this->Setting  = $Setting;
+		$this->Setting  = $setting;
 
 		$input    = $this->_parse_url( $this->Setting->get( 'input_url' ) );
 		$confirm  = $this->_parse_url( $this->Setting->get( 'confirmation_url' ) );
@@ -106,17 +113,17 @@ class MW_WP_Form_Redirected {
 	/**
 	 * Return $_SERVER['REQUEST_URI'] that converted https?://...
 	 *
-	 * @return string URL
+	 * @return string
 	 */
 	public function get_request_uri() {
-		$REQUEST_URI = $_SERVER['REQUEST_URI'];
+		$request_uri = $_SERVER['REQUEST_URI'];
 
-		if ( ! $REQUEST_URI ) {
+		if ( ! $request_uri ) {
 			return;
 		}
 
-		if ( preg_match( '/^https?:\/\//', $REQUEST_URI ) ) {
-			return $REQUEST_URI;
+		if ( preg_match( '/^https?:\/\//', $request_uri ) ) {
+			return $request_uri;
 		}
 
 		$parse_url = parse_url( home_url() );
@@ -124,18 +131,18 @@ class MW_WP_Form_Redirected {
 		// For WP installed in subdirectory
 		if ( ! empty( $parse_url['path'] ) ) {
 			$pettern = preg_quote( $parse_url['path'], '/' );
-			return preg_replace( '/' . $pettern . '$/', $REQUEST_URI, home_url() );
+			return preg_replace( '/' . $pettern . '$/', $request_uri, home_url() );
 		}
 
-		return trailingslashit( home_url() ) . ltrim( $REQUEST_URI, '/' );
-		return $REQUEST_URI;
+		return trailingslashit( home_url() ) . ltrim( $request_uri, '/' );
+		return $request_uri;
 	}
 
 	/**
 	 * Convert URL to https?://...
 	 *
-	 * @param string URL
-	 * @return string URL
+	 * @param string $url URL.
+	 * @return string
 	 */
 	protected function _parse_url( $url ) {
 		if ( empty( $url ) ) {
@@ -150,7 +157,7 @@ class MW_WP_Form_Redirected {
 		}
 		if ( ! preg_match( '/^https?:\/\//', $url ) ) {
 			$home_url = home_url();
-			$url = $home_url . $url;
+			$url      = $home_url . $url;
 		}
 		$url = preg_replace( '/([^:])\/+/', '$1/', $url );
 
@@ -171,10 +178,8 @@ class MW_WP_Form_Redirected {
 	}
 
 	/**
-	 * Redirect
-	 * Don't redirect if the current URL and the redirect URL are the same
-	 *
-	 * @return void
+	 * Redirect.
+	 * Don't redirect if the current URL and the redirect URL are the same.
 	 */
 	public function redirect() {
 		$redirect = $this->_get_real_redirect_url();
@@ -189,10 +194,8 @@ class MW_WP_Form_Redirected {
 	}
 
 	/**
-	 * Redirect using JavaScript
-	 * Don't redirect if the current URL and the redirect URL are the same
-	 *
-	 * @return void
+	 * Redirect using JavaScript.
+	 * Don't redirect if the current URL and the redirect URL are the same.
 	 */
 	public function redirect_js() {
 		$redirect = $this->_get_real_redirect_url();
@@ -209,15 +212,15 @@ class MW_WP_Form_Redirected {
 	}
 
 	/**
-	 * Return redirect url that sanitize and validate
+	 * Return redirect url that sanitize and validate.
 	 *
 	 * @return string
 	 */
 	protected function _get_real_redirect_url() {
 		$redirect    = ( $this->get_url() ) ? $this->get_url() : $this->get_request_uri();
-		$REQUEST_URI = $this->get_request_uri();
+		$request_uri = $this->get_request_uri();
 
-		if ( empty( $_POST ) && $redirect === $REQUEST_URI ) {
+		if ( empty( $_POST ) && $redirect === $request_uri ) {
 			return;
 		}
 

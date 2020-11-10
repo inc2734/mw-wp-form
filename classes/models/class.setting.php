@@ -1,192 +1,222 @@
 <?php
 /**
- * Name       : MW WP Form Setting
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : December 31, 2014
- * Modified   : June 1, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Setting
  */
 class MW_WP_Form_Setting {
 
 	/**
-	 * Form ID
+	 * Form ID.
+	 *
 	 * @var int
 	 */
 	protected $post_id;
 
 	/**
-	 * Whether to enable URL querystring
+	 * Whether to enable URL querystring.
+	 *
 	 * @var false|1
 	 */
 	protected $querystring = false;
 
 	/**
-	 * Whether to use database
+	 * Whether to use database.
+	 *
 	 * @var false|1
 	 */
 	protected $usedb = false;
 
 	/**
-	 * Reply mail subject
+	 * Reply mail subject.
+	 *
 	 * @var string
 	 */
 	protected $mail_subject = '';
 
 	/**
-	 * Reply mail from
+	 * Reply mail from.
+	 *
 	 * @var string
 	 */
 	protected $mail_from = '';
 
 	/**
-	 * Reply mail sender
+	 * Reply mail sender.
+	 *
 	 * @var string
 	 */
 	protected $mail_sender = '';
 
 	/**
-	 * Reply mail Reply-to
+	 * Reply mail Reply-to.
+	 *
 	 * @var string
 	 */
 	protected $mail_reply_to = '';
 
 	/**
-	 * Reply mail content
+	 * Reply mail content.
+	 *
 	 * @var string
 	 */
 	protected $mail_content = '';
 
 	/**
-	 * The name of the form field storing the destination of the automatic reply e-mail
+	 * The name of the form field storing the destination of the automatic reply e-mail.
+	 *
 	 * @var string
 	 */
 	protected $automatic_reply_email = '';
 
 	/**
-	 * Admin mail To
+	 * Admin mail To.
+	 *
 	 * @var string
 	 */
 	protected $mail_to = '';
 
 	/**
-	 * Admin mail CC
+	 * Admin mail CC.
+	 *
 	 * @var string
 	 */
 	protected $mail_cc = '';
 
 	/**
-	 * Admin mail BCC
+	 * Admin mail BCC.
+	 *
 	 * @var string
 	 */
 	protected $mail_bcc = '';
 
 	/**
-	 * Admin mail Reply-to
+	 * Admin mail Reply-to.
+	 *
 	 * @var string
 	 */
 	protected $admin_mail_reply_to = '';
 
 	/**
-	 * Admin mail subject
+	 * Admin mail subject.
+	 *
 	 * @var string
 	 */
 	protected $admin_mail_subject = '';
 
 	/**
-	 * Return-Path
+	 * Return-Path.
+	 *
 	 * @var string
 	 */
 	protected $mail_return_path = '';
 
 	/**
-	 * Admin mail from
+	 * Admin mail from.
+	 *
 	 * @var string
 	 */
 	protected $admin_mail_from = '';
 
 	/**
-	 * Admin mail sender
+	 * Admin mail sender.
+	 *
 	 * @var string
 	 */
 	protected $admin_mail_sender = '';
 
 	/**
-	 * Admin mail content
+	 * Admin mail content.
+	 *
 	 * @var string
 	 */
 	protected $admin_mail_content = '';
 
 	/**
-	 * Input field name that targeted akismet author
+	 * Input field name that targeted akismet author.
+	 *
 	 * @var string
 	 */
 	protected $akismet_author = '';
 
 	/**
-	 * Input field name that targeted akismet e-mail
+	 * Input field name that targeted akismet e-mail.
+	 *
 	 * @var string
 	 */
 	protected $akismet_author_email = '';
 
 	/**
-	 * Input field name that targeted akismet URL
+	 * Input field name that targeted akismet URL.
+	 *
 	 * @var string
 	 */
 	protected $akismet_author_url = '';
 
 	/**
-	 * Complete screen message
+	 * Complete screen message.
+	 *
 	 * @var string
 	 */
 	protected $complete_message = '';
 
 	/**
-	 * Input screen URL
+	 * Input screen URL.
+	 *
 	 * @var string
 	 */
 	protected $input_url = '';
 
 	/**
-	 * Confirm screen URL
+	 * Confirm screen URL.
+	 *
 	 * @var string
 	 */
 	protected $confirmation_url = '';
 
 	/**
-	 * Complete screen URL
+	 * Complete screen URL.
+	 *
 	 * @var string
 	 */
 	protected $complete_url = '';
 
 	/**
-	 * Validation error screen url
+	 * Validation error screen url.
+	 *
 	 * @var string
 	 */
 	protected $validation_error_url = '';
 
 	/**
-	 * Array of validation rules set in the form
+	 * Array of validation rules set in the form.
+	 *
 	 * @var array
 	 */
 	protected $validation = array();
 
 	/**
-	 * Style set in the form
+	 * Style set in the form.
+	 *
 	 * @var string
 	 */
 	protected $style = '';
 
 	/**
-	 * Whether to scroll to the position of the form
+	 * Whether to scroll to the position of the form.
+	 *
 	 * @var false|1
 	 */
 	protected $scroll = false;
 
 	/**
-	 * @param int $post_id
+	 * Constructor.
+	 *
+	 * @param int $post_id Post ID.
 	 */
 	public function __construct( $post_id ) {
 		if ( MWF_Config::NAME !== get_post_type( $post_id ) ) {
@@ -194,7 +224,7 @@ class MW_WP_Form_Setting {
 		}
 
 		$this->post_id = $post_id;
-		$values = get_post_meta( $post_id, MWF_Config::NAME, true );
+		$values        = get_post_meta( $post_id, MWF_Config::NAME, true );
 		if ( ! is_array( $values ) ) {
 			return;
 		}
@@ -203,9 +233,9 @@ class MW_WP_Form_Setting {
 	}
 
 	/**
-	 * Return a attribute
+	 * Return a attribute.
 	 *
-	 * @param string $key
+	 * @param string $key Setting name.
 	 * @return mixed|null
 	 */
 	public function get( $key ) {
@@ -215,11 +245,10 @@ class MW_WP_Form_Setting {
 	}
 
 	/**
-	 * Set a attribute
+	 * Set a attribute.
 	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return void
+	 * @param string $key   Setting name.
+	 * @param mixed  $value Setting value.
 	 */
 	public function set( $key, $value ) {
 		if ( isset( $this->$key ) ) {
@@ -228,9 +257,9 @@ class MW_WP_Form_Setting {
 	}
 
 	/**
-	 * Set attributes
+	 * Set attributes.
 	 *
-	 * @param array $values
+	 * @param array $values Setting valuels.
 	 */
 	public function sets( array $values ) {
 		foreach ( $values as $key => $value ) {
@@ -239,15 +268,13 @@ class MW_WP_Form_Setting {
 	}
 
 	/**
-	 * Update with retained data
-	 *
-	 * @return void
+	 * Update with retained data.
 	 */
 	public function save() {
-		$values = get_object_vars( $this );
+		$values     = get_object_vars( $this );
 		$new_values = array();
 		foreach ( $values as $key => $value ) {
-			if ( 'post_id' == $key ) {
+			if ( 'post_id' === $key ) {
 				continue;
 			}
 			$new_values[ $key ] = $value;
@@ -258,9 +285,9 @@ class MW_WP_Form_Setting {
 	}
 
 	/**
-	 * Return all forms
+	 * Return all forms.
 	 *
-	 * @return array Array of WP_Post
+	 * @return array
 	 */
 	public function get_posts() {
 		$Admin = new MW_WP_Form_Admin();
@@ -268,9 +295,9 @@ class MW_WP_Form_Setting {
 	}
 
 	/**
-	 * Return tracking number
+	 * Return tracking number.
 	 *
-	 * @return int $tracking_number
+	 * @return int
 	 */
 	public function get_tracking_number() {
 		$tracking_number = get_post_meta( $this->post_id, MWF_Config::TRACKINGNUMBER, true );
@@ -281,9 +308,9 @@ class MW_WP_Form_Setting {
 	}
 
 	/**
-	 * Update traking number
+	 * Update traking number.
 	 *
-	 * @param null|int $count Update to it if specified
+	 * @param null|int $count Update to it if specified.
 	 */
 	public function update_tracking_number( $count = null ) {
 		$new_tracking_number = null;
@@ -299,7 +326,7 @@ class MW_WP_Form_Setting {
 	}
 
 	/**
-	 * Generate verify token for form posts data correct checking
+	 * Generate verify token for form posts data correct checking.
 	 *
 	 * @return string
 	 */

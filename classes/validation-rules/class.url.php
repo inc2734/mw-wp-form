@@ -1,28 +1,28 @@
 <?php
 /**
- * Name       : MW WP Form Validation Rule Url
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : July 21, 2014
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Validation_Rule_Url
  */
 class MW_WP_Form_Validation_Rule_Url extends MW_WP_Form_Abstract_Validation_Rule {
 
 	/**
-	 * Validation rule name
+	 * Validation rule name.
+	 *
 	 * @var string
 	 */
 	protected $name = 'url';
 
 	/**
-	 * Validation process
+	 * Validation process.
 	 *
-	 * @param string $name
-	 * @param array $option
-	 * @return string Error message
+	 * @param string $name    Validation name.
+	 * @param array  $options Validation options.
+	 * @return string
 	 */
 	public function rule( $name, array $options = array() ) {
 		$value = $this->Data->get( $name );
@@ -36,17 +36,17 @@ class MW_WP_Form_Validation_Rule_Url extends MW_WP_Form_Abstract_Validation_Rule
 		}
 
 		$defaults = array(
-			'message' => __( 'This is not the format of a url.', 'mw-wp-form' )
+			'message' => __( 'This is not the format of a url.', 'mw-wp-form' ),
 		);
-		$options = array_merge( $defaults, $options );
+		$options  = array_merge( $defaults, $options );
 		return $options['message'];
 	}
 
 	/**
-	 * Add setting field to validation rule setting panel
+	 * Add setting field to validation rule setting panel.
 	 *
-	 * @param numeric $key ID of validation rule
-	 * @param array $value Content of validation rule
+	 * @param numeric $key ID of validation rule.
+	 * @param array   $value Content of validation rule.
 	 * @return void
 	 */
 	public function admin( $key, $value ) {

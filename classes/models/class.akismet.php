@@ -1,13 +1,12 @@
 <?php
 /**
- * Name       : MW WP Form Akismet
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : April 30, 2014
- * Modified   : June 1, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Akismet
  */
 class MW_WP_Form_Akismet {
 
@@ -29,12 +28,12 @@ class MW_WP_Form_Akismet {
 	}
 
 	/**
-	 * Return true when through akismet check
+	 * Return true when through akismet check.
 	 *
-	 * @param string $akismet_author
-	 * @param string $akismet_author_email
-	 * @param string $akismet_author_url
-	 * @param MW_WP_Form_Data $Data
+	 * @param string          $akismet_author       Akismet author.
+	 * @param string          $akismet_author_email Akismet author e-mail.
+	 * @param string          $akismet_author_url   Akismet author url.
+	 * @param MW_WP_Form_Data $Data MW_WP_Form_Data object.
 	 * @return bool
 	 */
 	public function is_valid( $akismet_author, $akismet_author_email, $akismet_author_url, $Data ) {
@@ -48,20 +47,20 @@ class MW_WP_Form_Akismet {
 
 		$author = '';
 		if ( $Data->get_post_value_by_key( $akismet_author ) ) {
-			$author = $Data->get_post_value_by_key( $akismet_author );
+			$author    = $Data->get_post_value_by_key( $akismet_author );
 			$doAkismet = true;
 		}
 
 		$author_email = '';
 		if ( $Data->get_post_value_by_key( $akismet_author_email ) ) {
 			$author_email = $Data->get_post_value_by_key( $akismet_author_email );
-			$doAkismet = true;
+			$doAkismet    = true;
 		}
 
 		$author_url = '';
 		if ( $Data->get_post_value_by_key( $akismet_author_url ) ) {
 			$author_url = $Data->get_post_value_by_key( $akismet_author_url );
-			$doAkismet = true;
+			$doAkismet  = true;
 		}
 
 		if ( ! $doAkismet ) {
@@ -85,14 +84,24 @@ class MW_WP_Form_Akismet {
 		$akismet['referrer']     = $_SERVER['HTTP_REFERER'];
 		$akismet['comment_type'] = MWF_Config::NAME;
 
-		if ( $permalink )    $akismet['permalink']            = $permalink;
-		if ( $author )       $akismet['comment_author']       = $author;
-		if ( $author_email ) $akismet['comment_author_email'] = $author_email;
-		if ( $author_url )   $akismet['comment_author_url']   = $author_url;
-		if ( $content )      $akismet['comment_content']      = $content;
+		if ( $permalink ) {
+			$akismet['permalink'] = $permalink;
+		}
+		if ( $author ) {
+			$akismet['comment_author'] = $author;
+		}
+		if ( $author_email ) {
+			$akismet['comment_author_email'] = $author_email;
+		}
+		if ( $author_url ) {
+			$akismet['comment_author_url'] = $author_url;
+		}
+		if ( $content ) {
+			$akismet['comment_content'] = $content;
+		}
 
 		foreach ( $_SERVER as $key => $value ) {
-			if ( in_array( $key, array( 'HTTP_COOKIE', 'HTTP_COOKIE2', 'PHP_AUTH_PW' ) ) ) {
+			if ( in_array( $key, array( 'HTTP_COOKIE', 'HTTP_COOKIE2', 'PHP_AUTH_PW' ), true ) ) {
 				continue;
 			}
 			$akismet[ $key ] = $value;
@@ -104,7 +113,8 @@ class MW_WP_Form_Akismet {
 		} else {
 			$response = akismet_http_post(
 				$query_string,
-				$akismet_api_host, '/1.1/comment-check',
+				$akismet_api_host,
+				'/1.1/comment-check',
 				$akismet_api_port
 			);
 		}

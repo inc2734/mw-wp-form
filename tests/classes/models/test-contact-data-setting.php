@@ -71,6 +71,7 @@ class MW_WP_Form_Contact_Data_Setting_Test extends WP_UnitTestCase {
 		$this->assertEquals(
 			array(
 				'response_status',
+				'admin_mail_to',
 				'memo',
 			),
 			$Setting->get_permit_keys()
@@ -86,6 +87,7 @@ class MW_WP_Form_Contact_Data_Setting_Test extends WP_UnitTestCase {
 		$this->assertSame(
 			array(
 				'response_status' => 'not-supported',
+				'admin_mail_to'   => null,
 				'memo'            => '',
 			),
 			$Setting->gets()
@@ -98,6 +100,7 @@ class MW_WP_Form_Contact_Data_Setting_Test extends WP_UnitTestCase {
 			array(
 				'first-name'      => 'John',
 				'response_status' => 'not-supported',
+				'admin_mail_to'   => null,
 				'memo'            => '',
 			),
 			$Setting->gets()
@@ -109,6 +112,7 @@ class MW_WP_Form_Contact_Data_Setting_Test extends WP_UnitTestCase {
 		$this->assertSame(
 			array(
 				'response_status' => 'not-supported',
+				'admin_mail_to'   => null,
 				'memo'            => 'dummy',
 			),
 			$Setting->gets()
@@ -120,6 +124,19 @@ class MW_WP_Form_Contact_Data_Setting_Test extends WP_UnitTestCase {
 		$this->assertSame(
 			array(
 				'response_status' => 'not-supported',
+				'admin_mail_to'   => null,
+				'memo'            => '',
+			),
+			$Setting->gets()
+		);
+
+		$Setting = $this->_instantiation_Contact_Data_Setting( array(
+			'admin_mail_to' => 'info@example.com',
+		) );
+		$this->assertSame(
+			array(
+				'response_status' => 'not-supported',
+				'admin_mail_to'   => 'info@example.com',
 				'memo'            => '',
 			),
 			$Setting->gets()
@@ -154,6 +171,7 @@ class MW_WP_Form_Contact_Data_Setting_Test extends WP_UnitTestCase {
 			array(
 				'first-name'      => 'John',
 				'response_status' => 'not-supported',
+				'admin_mail_to'   => null,
 				'memo'            => 'dummy',
 			),
 			$Setting->gets()
@@ -173,6 +191,7 @@ class MW_WP_Form_Contact_Data_Setting_Test extends WP_UnitTestCase {
 			array(
 				'first-name'      => 'John',
 				'response_status' => 'not-supported',
+				'admin_mail_to'   => null,
 				'memo'            => 'dummy',
 			),
 			$Setting->gets()

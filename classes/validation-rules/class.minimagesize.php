@@ -1,28 +1,28 @@
 <?php
 /**
- * Name       : MW WP Form Validation Rule MinImageSize
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : April 4, 2016
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Validation_Rule_MinImageSize
  */
 class MW_WP_Form_Validation_Rule_MinImageSize extends MW_WP_Form_Abstract_Validation_Rule {
 
 	/**
-	 * Validation rule name
+	 * Validation rule name.
+	 *
 	 * @var string
 	 */
 	protected $name = 'minfilesize';
 
 	/**
-	 * Validation process
+	 * Validation process.
 	 *
-	 * @param string $name
-	 * @param array $option
-	 * @return string Error message
+	 * @param string $name    Validation name.
+	 * @param array  $options Validation options.
+	 * @return string
 	 */
 	public function rule( $name, array $options = array() ) {
 		$value = $this->Data->get( $name );
@@ -37,7 +37,7 @@ class MW_WP_Form_Validation_Rule_MinImageSize extends MW_WP_Form_Abstract_Valida
 
 		$upload_file_keys = $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
 		$upload_files     = $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILES );
-		$is_error = false;
+		$is_error         = false;
 
 		if ( ! is_array( $upload_file_keys ) ) {
 			$upload_file_keys = array();
@@ -47,19 +47,18 @@ class MW_WP_Form_Validation_Rule_MinImageSize extends MW_WP_Form_Abstract_Valida
 			$upload_files = array();
 		}
 
-		// Check after upload
-		if ( ! in_array( $name, $upload_file_keys ) && array_key_exists( $name, $upload_files ) ) {
+		if ( ! in_array( $name, $upload_file_keys, true ) && array_key_exists( $name, $upload_files ) ) {
+			// Check after upload
 			$file_path = $upload_files[ $name ]['tmp_name'];
-		}
-		// Check if uploaded
-		else {
+		} else {
+			// Check if uploaded
 			$file_path = MWF_Functions::fileurl_to_path( $value );
 		}
 
 		if ( file_exists( $file_path ) && exif_imagetype( $file_path ) ) {
 			$imagesize = getimagesize( $file_path );
 		} else {
-			if ( ! in_array( $name, $upload_file_keys ) ) {
+			if ( ! in_array( $name, $upload_file_keys, true ) ) {
 				$is_error = true;
 			}
 		}
@@ -67,19 +66,19 @@ class MW_WP_Form_Validation_Rule_MinImageSize extends MW_WP_Form_Abstract_Valida
 		$defaults = array(
 			'width'   => 1,
 			'height'  => 1,
-			'message' => __( 'This image size is too small.', 'mw-wp-form' )
+			'message' => __( 'This image size is too small.', 'mw-wp-form' ),
 		);
-		$options = array_merge( $defaults, $options );
+		$options  = array_merge( $defaults, $options );
 		if ( $is_error || $imagesize[0] < $options['width'] || $imagesize[1] < $options['height'] ) {
 			return $options['message'];
 		}
 	}
 
 	/**
-	 * Add setting field to validation rule setting panel
+	 * Add setting field to validation rule setting panel.
 	 *
-	 * @param numeric $key ID of validation rule
-	 * @param array $value Content of validation rule
+	 * @param numeric $key ID of validation rule.
+	 * @param array   $value Content of validation rule.
 	 * @return void
 	 */
 	public function admin( $key, $value ) {

@@ -1,48 +1,54 @@
 <?php
 /**
- * Name       : MW WP Form Contact Data Setting
- * Version    : 2.0.1
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : January 1, 2015
- * Modified   : October 25, 2019
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Contact_Data_Setting
  */
 class MW_WP_Form_Contact_Data_Setting {
 
 	/**
-	 * Inquiry data ID
+	 * Inquiry data ID.
+	 *
 	 * @var int
 	 */
 	protected $post_id;
 
 	/**
-	 * Array of posted data
+	 * Array of posted data.
+	 *
 	 * @var array
 	 */
 	protected $options = array();
 
 	/**
-	 * Status of inquiry data
+	 * Status of inquiry data.
+	 *
 	 * @var string not-supported|reservation|supported
 	 */
 	protected $response_status = 'not-supported';
 
 	/**
-	 * Sended mail to
+	 * Sended mail to.
+	 *
 	 * @var string
 	 */
 	protected $admin_mail_to;
 
 	/**
-	 * Memo
+	 * Memo.
+	 *
 	 * @var string
 	 */
 	protected $memo = '';
 
 	/**
-	 * @param int $post_id
+	 * Constructor.
+	 *
+	 * @param int $post_id Post ID.
 	 */
 	public function __construct( $post_id ) {
 		if ( ! MWF_Functions::is_contact_data_post_type( get_post_type( $post_id ) ) ) {
@@ -72,7 +78,7 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * Return statuses
+	 * Return statuses.
 	 *
 	 * @return array
 	 */
@@ -89,24 +95,24 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * Return updatable keys
+	 * Return updatable keys.
 	 *
 	 * @return array
 	 */
 	public function get_permit_keys() {
 		$vars = get_object_vars( $this );
-		unset( $vars[ 'post_id' ] );
-		unset( $vars[ 'options' ] );
+		unset( $vars['post_id'] );
+		unset( $vars['options'] );
 		return array_keys( $vars );
 	}
 
 	/**
-	 * Return all data
+	 * Return all data.
 	 *
 	 * @return array
 	 */
 	public function gets() {
-		$options = $this->options;
+		$options     = $this->options;
 		$permit_keys = $this->get_permit_keys();
 		foreach ( $permit_keys as $permit_key ) {
 			$options[ $permit_key ] = $this->$permit_key;
@@ -115,9 +121,9 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * Return specify data
+	 * Return specify data.
 	 *
-	 * @param string $key
+	 * @param string $key Meta data name.
 	 * @return mixed|null
 	 */
 	public function get( $key ) {
@@ -125,7 +131,7 @@ class MW_WP_Form_Contact_Data_Setting {
 		unset( $vars['options'] );
 		$attributes = array_keys( $vars );
 
-		if ( in_array( $key, $attributes ) ) {
+		if ( in_array( $key, $attributes, true ) ) {
 			if ( 'response_status' === $key ) {
 				$response_statuses = $this->get_response_statuses();
 				if ( isset( $response_statuses[ $this->response_status ] ) ) {
@@ -141,15 +147,14 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * Set a option
+	 * Set a option.
 	 *
-	 * @param string $key
-	 * @param mixed
-	 * @return void
+	 * @param string $key   Meta data name.
+	 * @param mixed  $value Value.
 	 */
 	public function set( $key, $value ) {
 		$permit_keys = $this->get_permit_keys();
-		if ( ! in_array( $key, $permit_keys ) ) {
+		if ( ! in_array( $key, $permit_keys, true ) ) {
 			$this->options[ $key ] = $value;
 			return;
 		}
@@ -167,10 +172,9 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * Set options
+	 * Set options.
 	 *
-	 * @param array $values
-	 * @return void
+	 * @param array $values Values.
 	 */
 	public function sets( array $values ) {
 		foreach ( $values as $key => $value ) {
@@ -179,9 +183,7 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * Save values of permit keys and options
-	 *
-	 * @return void
+	 * Save values of permit keys and options.
 	 */
 	public function save() {
 		$permit_keys   = $this->get_permit_keys();
@@ -203,21 +205,21 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * Return post types of inquiry data
+	 * Return post types of inquiry data.
 	 *
 	 * @return array
 	 */
 	public static function get_form_post_types() {
 		$contact_data_post_types = array();
-		$Admin = new MW_WP_Form_Admin();
-		$forms = $Admin->get_forms_using_database();
+		$Admin                   = new MW_WP_Form_Admin();
+		$forms                   = $Admin->get_forms_using_database();
 		foreach ( $forms as $form ) {
-			$post_type = MWF_Functions::get_contact_data_post_type_from_form_id( $form->ID );
+			$post_type                 = MWF_Functions::get_contact_data_post_type_from_form_id( $form->ID );
 			$contact_data_post_types[] = $post_type;
 		}
 
-		$raw_post_types = $contact_data_post_types;
-		$new_post_types = array();
+		$raw_post_types          = $contact_data_post_types;
+		$new_post_types          = array();
 		$contact_data_post_types = apply_filters(
 			'mwform_contact_data_post_types',
 			$contact_data_post_types
@@ -225,7 +227,7 @@ class MW_WP_Form_Contact_Data_Setting {
 
 		// もともとの配列に含まれていない値は削除する
 		foreach ( $contact_data_post_types as $post_type ) {
-			if ( in_array( $post_type, $raw_post_types ) ) {
+			if ( in_array( $post_type, $raw_post_types, true ) ) {
 				$new_post_types[] = $post_type;
 			}
 		}
@@ -233,6 +235,13 @@ class MW_WP_Form_Contact_Data_Setting {
 		return $new_post_types;
 	}
 
+	/**
+	 * Return post types of inquiry data.
+	 *
+	 * @deprecated
+	 *
+	 * @return array
+	 */
 	public static function get_posts() {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Contact_Data_Setting::get_posts()',
@@ -243,34 +252,34 @@ class MW_WP_Form_Contact_Data_Setting {
 	}
 
 	/**
-	 * Return true if $meta_key is upload_file_key
+	 * Return true if $meta_key is upload_file_key.
 	 *
-	 * @param string $meta_key
+	 * @param string $meta_key Meta data name.
 	 * @return bool
 	 */
 	public function is_upload_file_key( $meta_key ) {
 		$upload_file_keys = $this->_get_upload_file_keys();
-		return ( is_array( $upload_file_keys ) && in_array( $meta_key, $upload_file_keys ) );
+		return ( is_array( $upload_file_keys ) && in_array( $meta_key, $upload_file_keys, true ) );
 	}
 
 	/**
-	 * Return index when $meta_key is included in upload_file_key
+	 * Return index when $meta_key is included in upload_file_key.
 	 *
-	 * @param string $meta_key
+	 * @param string $meta_key Meta data name.
 	 * @return int|false
 	 */
 	public function get_index_of_key_in_upload_file_keys( $meta_key ) {
 		$upload_file_keys = $this->_get_upload_file_keys();
 		if ( is_array( $upload_file_keys ) ) {
-			return array_search( $meta_key, $upload_file_keys );
+			return array_search( $meta_key, $upload_file_keys, true );
 		}
 		return false;
 	}
 
 	/**
-	 * Return the upload_file_key that the post has
+	 * Return the upload_file_key that the post has.
 	 *
-	 * @return array $upload_file_keys
+	 * @return array
 	 */
 	protected function _get_upload_file_keys() {
 		// 前のバージョンでは MWF_Config::UPLOAD_FILE_KEYS を配列で保持していなかったので分岐させる

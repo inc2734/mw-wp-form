@@ -39,7 +39,7 @@ class MW_WP_Form_Validation_Test extends WP_UnitTestCase {
 		$Validation->set_rule( 'name-1', 'numeric', array( 'message' => 'message' ) );
 		$Validation->set_rule( 'name-2', 'alpha', array( 'message' => 'message' ) );
 		$Validation->set_rule( 'name-3', 'numeric', array( 'message' => 'message' ) );
-		//$this->assertTrue( $Validation->is_valid() );
+		$this->assertTrue( $Validation->is_valid() );
 	}
 
 	/**
@@ -56,9 +56,9 @@ class MW_WP_Form_Validation_Test extends WP_UnitTestCase {
 		) );
 		$Validation = new MW_WP_Form_Validation( $form_key );
 		$Validation->set_rule( 'name-1', 'noempty', array( 'message' => 'message' ) );
-		//$Validation->set_rule( 'name-1', 'numeric', array( 'message' => 'message' ) );
+		$Validation->set_rule( 'name-1', 'numeric', array( 'message' => 'message' ) );
 		$Validation->set_rule( 'name-2', 'alpha', array( 'message' => 'message' ) );
-		//$Validation->set_rule( 'name-3', 'numeric', array( 'message' => 'message' ) );
+		$Validation->set_rule( 'name-3', 'numeric', array( 'message' => 'message' ) );
 		$this->assertTrue( $Validation->is_valid() );
 	}
 

@@ -1,21 +1,20 @@
 <?php
 /**
- * Name       : MW WP Form Hidden
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : December 14, 2012
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Field_Hidden
  */
 class MW_WP_Form_Field_Hidden extends MW_WP_Form_Abstract_Form_Field {
 
 	/**
-	 * Set shortcode_name and display_name
-	 * Overwrite required for each child class
+	 * Set shortcode_name and display_name.
+	 * Overwrite required for each child class.
 	 *
-	 * @return array(shortcode_name, display_name)
+	 * @return array
 	 */
 	protected function set_names() {
 		return array(
@@ -25,9 +24,9 @@ class MW_WP_Form_Field_Hidden extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Set default attributes
+	 * Set default attributes.
 	 *
-	 * @return array defaults
+	 * @return array
 	 */
 	protected function set_defaults() {
 		return array(
@@ -38,11 +37,9 @@ class MW_WP_Form_Field_Hidden extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Callback of add shortcode for input page
+	 * Callback of add shortcode for input page.
 	 *
-	 * @param array $atts
-	 * @param string $element_content
-	 * @return string HTML
+	 * @return string
 	 */
 	protected function input_page() {
 		$value = $this->Data->get_raw( $this->atts['name'] );
@@ -58,15 +55,13 @@ class MW_WP_Form_Field_Hidden extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Callback of add shortcode for confirm page
+	 * Callback of add shortcode for confirm page.
 	 *
-	 * @param array $atts
-	 * @param string $element_content
-	 * @return string HTML
+	 * @return string
 	 */
 	protected function confirm_page() {
 		$value = $this->Data->get_raw( $this->atts['name'] );
-		$echo = '';
+		$echo  = '';
 		if ( 'true' === $this->atts['echo'] ) {
 			$echo = $value;
 		}
@@ -74,11 +69,10 @@ class MW_WP_Form_Field_Hidden extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Display tag generator dialog
-	 * Overwrite required for each child class
+	 * Display tag generator dialog.
+	 * Overwrite required for each child class.
 	 *
-	 * @param array $options
-	 * @return void
+	 * @param array $options Options.
 	 */
 	public function mwform_tag_generator_dialog( array $options = array() ) {
 		?>

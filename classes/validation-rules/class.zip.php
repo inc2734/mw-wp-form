@@ -1,28 +1,28 @@
 <?php
 /**
- * Name       : MW WP Form Validation Rule Zip
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : July 21, 2014
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Validation_Rule_Zip
  */
 class MW_WP_Form_Validation_Rule_Zip extends MW_WP_Form_Abstract_Validation_Rule {
 
 	/**
-	 * Validation rule name
+	 * Validation rule name.
+	 *
 	 * @var string
 	 */
 	protected $name = 'zip';
 
 	/**
-	 * Validation process
+	 * Validation process.
 	 *
-	 * @param string $name
-	 * @param array $option
-	 * @return string Error message
+	 * @param string $name    Validation name.
+	 * @param array  $options Validation options.
+	 * @return string
 	 */
 	public function rule( $name, array $options = array() ) {
 		$value = $this->Data->get( $name );
@@ -32,9 +32,9 @@ class MW_WP_Form_Validation_Rule_Zip extends MW_WP_Form_Abstract_Validation_Rule
 		}
 
 		$defaults = array(
-			'message' => __( 'This is not the format of a zip code.', 'mw-wp-form' )
+			'message' => __( 'This is not the format of a zip code.', 'mw-wp-form' ),
 		);
-		$options = array_merge( $defaults, $options );
+		$options  = array_merge( $defaults, $options );
 		if ( preg_match( '/^\d{3}-\d{4}$/', $value )
 			|| preg_match( '/^\d{7}$/', $value ) ) {
 
@@ -45,11 +45,10 @@ class MW_WP_Form_Validation_Rule_Zip extends MW_WP_Form_Abstract_Validation_Rule
 	}
 
 	/**
-	 * Add setting field to validation rule setting panel
+	 * Add setting field to validation rule setting panel.
 	 *
-	 * @param numeric $key ID of validation rule
-	 * @param array $value Content of validation rule
-	 * @return void
+	 * @param numeric $key ID of validation rule.
+	 * @param array   $value Content of validation rule.
 	 */
 	public function admin( $key, $value ) {
 		?>
@@ -58,10 +57,10 @@ class MW_WP_Form_Validation_Rule_Zip extends MW_WP_Form_Abstract_Validation_Rule
 	}
 
 	/**
-	 * This validation rule is for Japanese environments only
+	 * This validation rule is for Japanese environments only.
 	 *
-	 * @param array $validation_rules array of MW_WP_Form_Abstract_Validation_Rule
-	 * @return array $validation_rules
+	 * @param array $validation_rules Array of MW_WP_Form_Abstract_Validation_Rule.
+	 * @return array
 	 */
 	public function _mwform_validation_rules( array $validation_rules ) {
 		$validation_rules = parent::_mwform_validation_rules( $validation_rules );

@@ -1,28 +1,28 @@
 <?php
 /**
- * Name       : MW WP Form Validation Rule Between
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : July 21, 2014
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Validation_Rule_Between
  */
 class MW_WP_Form_Validation_Rule_Between extends MW_WP_Form_Abstract_Validation_Rule {
 
 	/**
-	 * Validation rule name
+	 * Validation rule name.
+	 *
 	 * @var string
 	 */
 	protected $name = 'between';
 
 	/**
-	 * Validation process
+	 * Validation process.
 	 *
-	 * @param string $name
-	 * @param array $option
-	 * @return string Error message
+	 * @param string $name    Validation name.
+	 * @param array  $options Validation options.
+	 * @return string
 	 */
 	public function rule( $name, array $options = array() ) {
 		$value = $this->Data->get( $name );
@@ -35,10 +35,10 @@ class MW_WP_Form_Validation_Rule_Between extends MW_WP_Form_Abstract_Validation_
 		$defaults = array(
 			'min'     => 0,
 			'max'     => 0,
-			'message' => __( 'The number of characters is invalid.', 'mw-wp-form' )
+			'message' => __( 'The number of characters is invalid.', 'mw-wp-form' ),
 		);
-		$options = array_merge( $defaults, $options );
-		$length = mb_strlen( $value, get_bloginfo( 'charset' ) );
+		$options  = array_merge( $defaults, $options );
+		$length   = mb_strlen( $value, get_bloginfo( 'charset' ) );
 		if ( MWF_Functions::is_numeric( $options['min'] ) ) {
 			if ( MWF_Functions::is_numeric( $options['max'] ) ) {
 				if ( $options['min'] > $length || $length > $options['max'] ) {
@@ -57,10 +57,10 @@ class MW_WP_Form_Validation_Rule_Between extends MW_WP_Form_Abstract_Validation_
 	}
 
 	/**
-	 * Add setting field to validation rule setting panel
+	 * Add setting field to validation rule setting panel.
 	 *
-	 * @param numeric $key ID of validation rule
-	 * @param array $value Content of validation rule
+	 * @param numeric $key ID of validation rule.
+	 * @param array   $value Content of validation rule.
 	 * @return void
 	 */
 	public function admin( $key, $value ) {

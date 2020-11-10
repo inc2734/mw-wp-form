@@ -1,0 +1,21 @@
+{
+  "author": "inc2734",
+  "license": "GPL-2.0+",
+  "devDependencies": {
+    "@wordpress/env": "^2.1.0",
+    "npm-run-all": "^4.1.5"
+  },
+  "scripts": {
+    "wp-env": "wp-env",
+    "start": "wp-env start && open http://localhost:8888",
+    "stop": "npm run wp db export sql/local.sql && wp-env stop",
+    "cli": "wp-env run cli",
+    "wp": "wp-env run cli wp",
+    "pretest": "wp-env start && wp-env run composer 'install --no-interaction'",
+    "test:lint:php": "wp-env run composer run-script lint",
+    "test:lint": "run-s test:lint:*",
+    "test:unit:php": "wp-env run phpunit 'phpunit -c /var/www/html/wp-content/plugins/mw-wp-form/.phpunit.xml.dist --verbose'",
+    "test:unit": "run-s test:unit:*",
+    "test": "run-s test:*"
+  }
+}

@@ -1,13 +1,12 @@
 <?php
 /**
- * Name       : MW WP Form Validation
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : July 20, 2012
- * Modified   : June 1, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Validation
  */
 class MW_WP_Form_Validation {
 
@@ -27,13 +26,16 @@ class MW_WP_Form_Validation {
 	protected $Setting;
 
 	/**
-	 * Array of name of validated and array of validation rules for it pairs
+	 * Array of name of validated and array of validation rules for it pairs.
+	 *
 	 * @var array
 	 */
 	protected $validate = array();
 
 	/**
-	 * @param string $form_key
+	 * Constructor.
+	 *
+	 * @param string $form_key Form key.
 	 */
 	public function __construct( $form_key ) {
 		$this->form_key = $form_key;
@@ -65,7 +67,7 @@ class MW_WP_Form_Validation {
 			}
 		}
 
-		$Akismet = new MW_WP_Form_Akismet();
+		$Akismet       = new MW_WP_Form_Akismet();
 		$akismet_check = $Akismet->is_valid(
 			$this->Setting->get( 'akismet_author' ),
 			$this->Setting->get( 'akismet_author_email' ),
@@ -76,7 +78,7 @@ class MW_WP_Form_Validation {
 			$this->set_rule( MWF_Config::AKISMET, 'akismet_check' );
 		}
 
-		$Validation = apply_filters(
+		apply_filters(
 			'mwform_validation_' . $this->form_key,
 			$this,
 			$this->Data->gets(),
@@ -87,22 +89,24 @@ class MW_WP_Form_Validation {
 	/**
 	 * Set validation rule of the form field.
 	 *
-	 * @param string $key
-	 * @param string $rule
-	 * @param array $options
+	 * @param string $key     Target field name.
+	 * @param string $rule    Validation name.
+	 * @param array  $options Options.
 	 * @return MW_WP_Form_Validation
 	 */
 	public function set_rule( $key, $rule, array $options = array() ) {
 		$rules = array(
 			'rule'    => strtolower( $rule ),
-			'options' => $options
+			'options' => $options,
 		);
+
 		$this->validate[ $key ][] = $rules;
+
 		return $this;
 	}
 
 	/**
-	 * for unit tests
+	 * for unit tests.
 	 *
 	 * @return bool
 	 */
@@ -116,7 +120,7 @@ class MW_WP_Form_Validation {
 				return false;
 			}
 
-			foreach ( $validate as $key => $validation_rule ) {
+			foreach ( $validate as $validation_rule ) {
 				if ( ! is_array( $validation_rule ) ) {
 					return false;
 				}
@@ -139,9 +143,9 @@ class MW_WP_Form_Validation {
 	}
 
 	/**
-	 * Validation check form fields
+	 * Validation check form fields.
 	 *
-	 * @return bool Return true when nothing errors
+	 * @return bool
 	 */
 	public function is_valid() {
 		foreach ( $this->validate as $key => $rules ) {
@@ -151,6 +155,11 @@ class MW_WP_Form_Validation {
 		return (bool) ! $this->Data->get_validation_errors();
 	}
 
+	/**
+	 * Return true when valid.
+	 *
+	 * @return boolean
+	 */
 	public function check() {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Validation::check()',
@@ -161,10 +170,10 @@ class MW_WP_Form_Validation {
 	}
 
 	/**
-	 * Validation check the one form field
+	 * Validation check the one form field.
 	 *
-	 * @param string $key
-	 * @return bool Return true when nothing errors
+	 * @param string $key Target field name.
+	 * @return bool
 	 */
 	public function is_valid_field( $key ) {
 		if ( isset( $this->validate[ $key ] ) ) {
@@ -174,7 +183,17 @@ class MW_WP_Form_Validation {
 		return (bool) ! $this->Data->get_validation_error( $key );
 	}
 
-	public function single_check( $key ) {
+	/**
+	 * Return true when valid.
+	 *
+	 * @param string $key Target field name.
+	 * @return boolean
+	 */
+	public function single_check(
+		// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		$key
+		// phpcs:enable
+	) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Validation::single_check()',
 			'MW_WP_Form_Validation::is_valid_field()'
@@ -184,10 +203,10 @@ class MW_WP_Form_Validation {
 	}
 
 	/**
-	 * Set varidation errors into MW_WP_Form_Data
+	 * Set varidation errors into MW_WP_Form_Data.
 	 *
-	 * @param string $key
-	 * @param array $rules
+	 * @param string $key   Target field name.
+	 * @param array  $rules Rules.
 	 */
 	protected function _is_valid( $key, array $rules ) {
 		$Validation_Rules = MW_WP_Form_Validation_Rules::instantiation( $this->form_key );

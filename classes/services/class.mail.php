@@ -1,13 +1,12 @@
 <?php
 /**
- * Name       : MW WP Form Mail Service
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : January 1, 2015
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Mail_Service
  */
 class MW_WP_Form_Mail_Service {
 
@@ -47,10 +46,10 @@ class MW_WP_Form_Mail_Service {
 	protected $Setting;
 
 	/**
-	 * @param MW_WP_Form_Mail $Mail
-	 * @param strign $form_key
-	 * @param MW_WP_Form_Setting $Setting
-	 * @param array $attachments
+	 * @param MW_WP_Form_Mail    $Mail        MW_WP_Form_Mail object.
+	 * @param strign             $form_key    Form key.
+	 * @param MW_WP_Form_Setting $Setting     MW_WP_Form_Setting object.
+	 * @param array              $attachments Array of attachment.
 	 */
 	public function __construct( MW_WP_Form_Mail $Mail, $form_key, MW_WP_Form_Setting $Setting, array $attachments = array() ) {
 		$this->form_key       = $form_key;
@@ -75,7 +74,7 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * Send admin mail and save to database
+	 * Send admin mail and save to database.
 	 *
 	 * @return boolean
 	 */
@@ -85,7 +84,7 @@ class MW_WP_Form_Mail_Service {
 		$Mail_admin = $this->_apply_filters_mwform_admin_mail( $Mail_admin );
 
 		if ( $this->Setting->get( 'usedb' ) ) {
-			$Mail_admin_for_save = clone $this->Mail_admin_raw;
+			$Mail_admin_for_save     = clone $this->Mail_admin_raw;
 			$Mail_admin_for_save->to = $Mail_admin->to;
 		}
 
@@ -103,7 +102,7 @@ class MW_WP_Form_Mail_Service {
 		}
 
 		if ( isset( $Mail_admin_for_save ) && $is_admin_mail_sended ) {
-			$saved_mail_id = $this->_save( $Mail_admin_for_save );
+			$this->_save( $Mail_admin_for_save );
 		}
 
 		// If not usedb, remove files after sending admin mail
@@ -115,9 +114,9 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * Return parsed Mail object and save to database
+	 * Return parsed Mail object and save to database.
 	 *
-	 * @param MW_WP_Form_Mail $_Mail
+	 * @param MW_WP_Form_Mail $_Mail MW_WP_Form_Mail object.
 	 * @return MW_WP_Form_Mail
 	 */
 	protected function _get_parsed_mail_object( MW_WP_Form_Mail $_Mail ) {
@@ -127,9 +126,9 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * Save to database and return saved mail ID
+	 * Save to database and return saved mail ID.
 	 *
-	 * @param MW_WP_Form_Mail $Mail
+	 * @param MW_WP_Form_Mail $Mail MW_WP_Form_Mail object.
 	 * @return int
 	 */
 	protected function _save( MW_WP_Form_Mail $Mail ) {
@@ -137,7 +136,7 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * Send reply mail
+	 * Send reply mail.
 	 *
 	 * @return boolean
 	 */
@@ -154,38 +153,33 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * Set attachment files to Mail object
+	 * Set attachment files to Mail object.
 	 *
-	 * @param MW_WP_Form_Mail $Mail
-	 * @return void
+	 * @param MW_WP_Form_Mail $Mail MW_WP_Form_Mail object.
 	 */
 	protected function _set_attachments_to( MW_WP_Form_Mail $Mail ) {
 		$Mail->attachments = $this->attachments;
 	}
 
 	/**
-	 * Set admin mail params
-	 *
-	 * @return void
+	 * Set admin mail params.
 	 */
 	protected function _set_admin_mail_raw_params() {
 		$this->Mail_admin_raw->set_admin_mail_raw_params( $this->Setting );
 	}
 
 	/**
-	 * Set reply mail params
-	 *
-	 * @return void
+	 * Set reply mail params.
 	 */
 	private function _set_reply_mail_raw_params() {
 		$this->Mail_auto_raw->set_reply_mail_raw_params( $this->Setting );
 	}
 
 	/**
-	 * Apply mwform_admin_mail_raw filter hook
+	 * Apply mwform_admin_mail_raw filter hook.
 	 *
-	 * @param MW_WP_Form_Mail $Mail
-	 * @return MW_WP_Form_Mail $Mail
+	 * @param MW_WP_Form_Mail $Mail MW_WP_Form_Mail object.
+	 * @return MW_WP_Form_Mail
 	 */
 	protected function _apply_filters_mwform_admin_mail_raw( MW_WP_Form_Mail $Mail ) {
 		return apply_filters(
@@ -197,10 +191,10 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * Apply mwform_mail filter hook
+	 * Apply mwform_mail filter hook.
 	 *
-	 * @param MW_WP_Form_Mail $Mail
-	 * @return MW_WP_Form_Mail $Mail
+	 * @param MW_WP_Form_Mail $Mail MW_WP_Form_Mail object.
+	 * @return MW_WP_Form_Mail
 	 */
 	protected function _apply_filters_mwform_mail( MW_WP_Form_Mail $Mail ) {
 		return apply_filters(
@@ -212,10 +206,10 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * Apply mwform_admin_mail filter hook
+	 * Apply mwform_admin_mail filter hook.
 	 *
-	 * @param MW_WP_Form_Mail $Mail
-	 * @return MW_WP_Form_Mail $Mail
+	 * @param MW_WP_Form_Mail $Mail MW_WP_Form_Mail object.
+	 * @return MW_WP_Form_Mail
 	 */
 	protected function _apply_filters_mwform_admin_mail( MW_WP_Form_Mail $Mail ) {
 		return apply_filters(
@@ -227,10 +221,10 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * Apply mwform_auto_mail_raw filter hook
+	 * Apply mwform_auto_mail_raw filter hook.
 	 *
-	 * @param MW_WP_Form_Mail $Mail
-	 * @return MW_WP_Form_Mail $Mail
+	 * @param MW_WP_Form_Mail $Mail MW_WP_Form_Mail object.
+	 * @return MW_WP_Form_Mail
 	 */
 	protected function _apply_filters_mwform_auto_mail_raw( MW_WP_Form_Mail $Mail ) {
 		return apply_filters(
@@ -242,10 +236,10 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * Apply mwform_auto_mail filter hook
+	 * Apply mwform_auto_mail filter hook.
 	 *
-	 * @param MW_WP_Form_Mail $Mail
-	 * @return MW_WP_Form_Mail $Mail
+	 * @param MW_WP_Form_Mail $Mail MW_WP_Form_Mail object.
+	 * @return MW_WP_Form_Mail
 	 */
 	protected function _apply_filters_mwform_auto_mail( MW_WP_Form_Mail $Mail ) {
 		return apply_filters(
@@ -257,9 +251,7 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * Delete attachment files
-	 *
-	 * @return void
+	 * Delete attachment files.
 	 */
 	protected function _delete_files() {
 		foreach ( $this->attachments as $file ) {
@@ -270,9 +262,7 @@ class MW_WP_Form_Mail_Service {
 	}
 
 	/**
-	 * Update tracking number
-	 *
-	 * @return void
+	 * Update tracking number.
 	 */
 	public function update_tracking_number() {
 		if ( preg_match( '{' . MWF_Config::TRACKINGNUMBER . '}', $this->Mail_admin_raw->body ) ) {

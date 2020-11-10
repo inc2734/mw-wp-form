@@ -1,28 +1,28 @@
 <?php
 /**
- * Name       : MW WP Form Field Range
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : July 21, 2015
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Field_Range
  */
 class MW_WP_Form_Field_Range extends MW_WP_Form_Abstract_Form_Field {
 
 	/**
 	 * Types of form type.
-	 * input|select|button|input_button|error|other
+	 * input|select|button|input_button|error|other.
+	 *
 	 * @var string
 	 */
 	public $type = 'input';
 
 	/**
-	 * Set shortcode_name and display_name
-	 * Overwrite required for each child class
+	 * Set shortcode_name and display_name.
+	 * Overwrite required for each child class.
 	 *
-	 * @return array(shortcode_name, display_name)
+	 * @return array
 	 */
 	protected function set_names() {
 		return array(
@@ -32,9 +32,9 @@ class MW_WP_Form_Field_Range extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Set default attributes
+	 * Set default attributes.
 	 *
-	 * @return array defaults
+	 * @return array
 	 */
 	protected function set_defaults() {
 		return array(
@@ -50,11 +50,9 @@ class MW_WP_Form_Field_Range extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Callback of add shortcode for input page
+	 * Callback of add shortcode for input page.
 	 *
-	 * @param array $atts
-	 * @param string $element_content
-	 * @return string HTML
+	 * @return string
 	 */
 	protected function input_page() {
 		$value = $this->Data->get_raw( $this->atts['name'] );
@@ -62,14 +60,17 @@ class MW_WP_Form_Field_Range extends MW_WP_Form_Abstract_Form_Field {
 			$value = $this->atts['value'];
 		}
 
-		$_ret = $this->Form->range( $this->atts['name'], array(
-			'id'    => $this->atts['id'],
-			'class' => $this->atts['class'],
-			'value' => $value,
-			'min'   => $this->atts['min'],
-			'max'   => $this->atts['max'],
-			'step'  => $this->atts['step'],
-		) );
+		$_ret = $this->Form->range(
+			$this->atts['name'],
+			array(
+				'id'    => $this->atts['id'],
+				'class' => $this->atts['class'],
+				'value' => $value,
+				'min'   => $this->atts['min'],
+				'max'   => $this->atts['max'],
+				'step'  => $this->atts['step'],
+			)
+		);
 		if ( 'false' !== $this->atts['show_error'] ) {
 			$_ret .= $this->get_error( $this->atts['name'] );
 		}
@@ -77,11 +78,9 @@ class MW_WP_Form_Field_Range extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Callback of add shortcode for confirm page
+	 * Callback of add shortcode for confirm page.
 	 *
-	 * @param array $atts
-	 * @param string $element_content
-	 * @return string HTML
+	 * @return string
 	 */
 	protected function confirm_page() {
 		$value = $this->Data->get_raw( $this->atts['name'] );
@@ -91,11 +90,10 @@ class MW_WP_Form_Field_Range extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Display tag generator dialog
-	 * Overwrite required for each child class
+	 * Display tag generator dialog.
+	 * Overwrite required for each child class.
 	 *
-	 * @param array $options
-	 * @return void
+	 * @param array $options Options.
 	 */
 	public function mwform_tag_generator_dialog( array $options = array() ) {
 		?>

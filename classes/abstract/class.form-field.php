@@ -1,24 +1,25 @@
 <?php
 /**
- * Name       : MW WP Form Abstract Form Field
- * Version    : 2.1.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : December 14, 2012
- * Modified   : October 25, 2019
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Abstract_Form_Field
  */
 abstract class MW_WP_Form_Abstract_Form_Field {
 
 	/**
-	 * Shortcode name
+	 * Shortcode name.
+	 *
 	 * @var string
 	 */
 	protected $shortcode_name;
 
 	/**
-	 * Display name
+	 * Display name.
+	 *
 	 * @var string
 	 */
 	protected $display_name;
@@ -34,36 +35,44 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	protected $Data;
 
 	/**
-	 * Default attributes
+	 * Default attributes.
+	 *
 	 * @var array
 	 */
 	protected $defaults = array();
 
 	/**
-	 * Attirbutes of shortcode
+	 * Attirbutes of shortcode.
+	 *
 	 * @var array
 	 */
 	protected $atts = array();
 
 	/**
-	 * Form key
+	 * Form key.
+	 *
 	 * @var string
 	 */
 	protected $form_key;
 
 	/**
 	 * Types of form type.
-	 * input|select|button|input_button|error|other
+	 * input|select|button|input_button|error|other.
+	 *
 	 * @var string
 	 */
 	protected $type = 'other';
 
 	/**
-	 * Content of shortcode
+	 * Content of shortcode.
+	 *
 	 * @var string
 	 */
 	protected $element_content = null;
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		$this->_set_names();
 		$this->_set_defaults();
@@ -72,12 +81,12 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Add form field shortcodes
+	 * Add form field shortcodes.
 	 *
-	 * @param MW_WP_Form_Form $Form
-	 * @param string $form_key
-	 * @param string $view_flg
-	 * @return bool
+	 * @param MW_WP_Form_Form $Form     MW_WP_Form_Form object.
+	 * @param string          $form_key Form key.
+	 * @param string          $view_flg View flg.
+	 * @return boolean
 	 */
 	public function initialize( MW_WP_Form_Form $Form, $form_key, $view_flg ) {
 		if ( empty( $this->shortcode_name ) ) {
@@ -88,16 +97,16 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 		$this->form_key = $form_key;
 		$this->Data     = MW_WP_Form_Data::connect( $form_key );
 
-		switch( $view_flg ) {
-			case 'input' :
+		switch ( $view_flg ) {
+			case 'input':
 				add_shortcode( $this->shortcode_name, array( $this, '_input_page' ) );
 				break;
-			case 'confirm' :
+			case 'confirm':
 				add_shortcode( $this->shortcode_name, array( $this, '_confirm_page' ) );
 				break;
-			case 'complete' :
+			case 'complete':
 				break;
-			default :
+			default:
 				exit( '$view_flg is not right value. $view_flg is ' . $view_flg . ' now.' );
 		}
 
@@ -105,12 +114,17 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Set shortcode_name and display_name
-	 * Overwrite required for each child class
+	 * Set shortcode_name and display_name.
+	 * Overwrite required for each child class.
 	 *
-	 * @return array(shortcode_name, display_name)
+	 * @return array
 	 */
 	abstract protected function set_names();
+
+	/**
+	 * Set shortcode_name and display_name.
+	 * Overwrite required for each child class.
+	 */
 	private function _set_names() {
 		$args = $this->set_names();
 
@@ -123,20 +137,24 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Set default attributes
+	 * Set default attributes.
 	 *
-	 * @return array defaults
+	 * @return array
 	 */
 	abstract protected function set_defaults();
+
+	/**
+	 * Set default attributes.
+	 */
 	private function _set_defaults() {
 		$this->defaults = $this->set_defaults();
 	}
 
 	/**
-	 * Return HTML of error message
+	 * Return HTML of error message.
 	 *
-	 * @param  string $name
-	 * @return string HTML of error message
+	 * @param  string $name Field name.
+	 * @return string
 	 */
 	protected function get_error( $name ) {
 		if ( ! is_array( $this->Data->get_validation_error( $name ) ) ) {
@@ -147,7 +165,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 		$start_tag  = '<span class="error">';
 		$end_tag    = '</span>';
 		foreach ( $this->Data->get_validation_error( $name ) as $rule => $error ) {
-			$rule = strtolower( $rule );
+			$rule  = strtolower( $rule );
 			$error = apply_filters(
 				'mwform_error_message_' . $this->form_key,
 				$error,
@@ -155,7 +173,8 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 				$rule
 			);
 
-			$error_html .= apply_filters( 'mwform_error_message_html',
+			$error_html .= apply_filters(
+				'mwform_error_message_html',
 				$start_tag . esc_html( $error ) . $end_tag,
 				$error,
 				$start_tag,
@@ -172,13 +191,19 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Callback of add shortcode for input page
+	 * Callback of add shortcode for input page.
 	 *
-	 * @param array $atts
-	 * @param string $element_content
-	 * @return string HTML
+	 * @return string
 	 */
 	abstract protected function input_page();
+
+	/**
+	 * Callback of add shortcode for input page.
+	 *
+	 * @param array  $atts            Attributes of shortcode.
+	 * @param string $element_content Content of shortcode.
+	 * @return string
+	 */
 	public function _input_page( $atts, $element_content = null ) {
 		$this->element_content = $element_content;
 
@@ -195,25 +220,31 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Callback of add shortcode for confirm page
+	 * Callback of add shortcode for confirm page.
 	 *
-	 * @param array $atts
-	 * @param string $element_content
-	 * @return string HTML
+	 * @return string
 	 */
 	abstract protected function confirm_page();
+
+	/**
+	 * Callback of add shortcode for confirm page.
+	 *
+	 * @param array  $atts            Attributes of shortcode.
+	 * @param string $element_content Content of shortcode.
+	 * @return string
+	 */
 	public function _confirm_page( $atts, $element_content = null ) {
 		$this->element_content = $element_content;
-		$this->atts = shortcode_atts( $this->defaults, $atts );
+		$this->atts            = shortcode_atts( $this->defaults, $atts );
 
 		return $this->confirm_page();
 	}
 
 	/**
-	 * Return array for children of select, checkbox and radio
-	 * If including ":", Split and use the before as the name and the after as the label
+	 * Return array for children of select, checkbox and radio.
+	 * If including ":", Split and use the before as the name and the after as the label.
 	 *
-	 * @param string|array $_children
+	 * @param string|array $_children Children.
 	 * @return array
 	 */
 	public function get_children( $_children ) {
@@ -236,7 +267,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 					$child[ $child_key ] = str_replace( $temp_replacement, ':', $child_value );
 				}
 				if ( count( $child ) === 1 ) {
-					$children[ $child[0] ] = $child[0] ;
+					$children[ $child[0] ] = $child[0];
 				} else {
 					$children[ $child[0] ] = $child[1];
 				}
@@ -251,9 +282,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Generate tag generator
-	 *
-	 * @return void
+	 * Generate tag generator.
 	 */
 	public function add_tag_generator() {
 		add_action( 'mwform_tag_generator_dialog', array( $this, '_mwform_tag_generator_dialog' ) );
@@ -268,9 +297,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Display tag generator wrapper
-	 *
-	 * @return void
+	 * Display tag generator wrapper.
 	 */
 	public function _mwform_tag_generator_dialog() {
 		?>
@@ -283,18 +310,14 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Display tag generator dialog
-	 * Overwrite required for each child class
-	 *
-	 * @param array $options
-	 * @return void
+	 * Display tag generator dialog.
+	 * Overwrite required for each child class.
 	 */
-	public function mwform_tag_generator_dialog( array $options = array() ) {}
+	public function mwform_tag_generator_dialog() {
+	}
 
 	/**
-	 * Display tag generator selectbox
-	 *
-	 * @return void
+	 * Display tag generator selectbox.
 	 */
 	public function _mwform_tag_generator_option() {
 		?>
@@ -303,22 +326,28 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Generate array of form fields
+	 * Generate array of form fields.
 	 *
-	 * @param array $form_fields array of MW_WP_Form_Abstract_Form_Field
+	 * @param array $form_fields Array of MW_WP_Form_Abstract_Form_Field.
 	 * @return array
 	 */
 	public function _mwform_form_fields( array $form_fields ) {
 		return array_merge( $form_fields, array( $this->shortcode_name => $this ) );
 	}
 
+	/**
+	 * Add tag generator group.
+	 *
+	 * @param array $group Tag generator group.
+	 * @return array
+	 */
 	public function _mwform_tag_generator_group( $group ) {
 		$group[ $this->type ] = $this->type;
 		return $group;
 	}
 
 	/**
-	 * Return display name
+	 * Return display name.
 	 *
 	 * @return string
 	 */
@@ -327,7 +356,7 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Return shortcode name
+	 * Return shortcode name.
 	 *
 	 * @return string
 	 */
@@ -336,10 +365,10 @@ abstract class MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Return value for setting field of Tag generator dialog
+	 * Return value for setting field of Tag generator dialog.
 	 *
-	 * @param string $key
-	 * @param array $options
+	 * @param string $key     Attribute name.
+	 * @param array  $options Options.
 	 * @return string
 	 */
 	public function get_value_for_generator( $key, $options ) {

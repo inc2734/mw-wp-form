@@ -1,28 +1,28 @@
 <?php
 /**
- * Name       : MW WP Form Field Custom Mail Tag
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : April 3, 2016
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Field_Custom_Mail_Tag
  */
 class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 
 	/**
 	 * Types of form type.
-	 * input|select|button|input_button|error|other
+	 * input|select|button|input_button|error|other.
+	 *
 	 * @var string
 	 */
 	public $type = 'other';
 
 	/**
-	 * Set shortcode_name and display_name
-	 * Overwrite required for each child class
+	 * Set shortcode_name and display_name.
+	 * Overwrite required for each child class.
 	 *
-	 * @return array(shortcode_name, display_name)
+	 * @return array
 	 */
 	protected function set_names() {
 		return array(
@@ -32,9 +32,9 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Set default attributes
+	 * Set default attributes.
 	 *
-	 * @return array defaults
+	 * @return array
 	 */
 	protected function set_defaults() {
 		return array(
@@ -46,19 +46,20 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Callback of add shortcode for input page
+	 * Callback of add shortcode for input page.
 	 *
-	 * @param array $atts
-	 * @param string $element_content
-	 * @return string HTML
+	 * @return string
 	 */
 	protected function input_page() {
 		$_ret = '';
 		if ( 'true' === $this->atts['echo'] ) {
-			$_ret .= $this->custom_mail_tag_field( $this->atts['name'], array(
-				'id'    => $this->atts['id'],
-				'class' => $this->atts['class'],
-			) );
+			$_ret .= $this->custom_mail_tag_field(
+				$this->atts['name'],
+				array(
+					'id'    => $this->atts['id'],
+					'class' => $this->atts['class'],
+				)
+			);
 		}
 		$_ret .= $this->Form->hidden( MWF_Config::CUSTOM_MAIL_TAG_KEYS . '[]', $this->atts['name'] );
 		if ( 'false' !== $this->atts['show_error'] ) {
@@ -68,30 +69,30 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Callback of add shortcode for confirm page
+	 * Callback of add shortcode for confirm page.
 	 *
-	 * @param array $atts
-	 * @param string $element_content
-	 * @return string HTML
+	 * @return string
 	 */
 	protected function confirm_page() {
 		$_ret = '';
 		if ( 'true' === $this->atts['echo'] ) {
-			$_ret .= $this->custom_mail_tag_field( $this->atts['name'], array(
-				'id'    => $this->atts['id'],
-				'class' => $this->atts['class'],
-			) );
+			$_ret .= $this->custom_mail_tag_field(
+				$this->atts['name'],
+				array(
+					'id'    => $this->atts['id'],
+					'class' => $this->atts['class'],
+				)
+			);
 		}
 		$_ret .= $this->Form->hidden( MWF_Config::CUSTOM_MAIL_TAG_KEYS . '[]', $this->atts['name'] );
 		return $_ret;
 	}
 
 	/**
-	 * Display tag generator dialog
-	 * Overwrite required for each child class
+	 * Display tag generator dialog.
+	 * Overwrite required for each child class.
 	 *
-	 * @param array $options
-	 * @return void
+	 * @param array $options Options.
 	 */
 	public function mwform_tag_generator_dialog( array $options = array() ) {
 		?>
@@ -119,21 +120,21 @@ class MW_WP_Form_Field_Custom_Mail_Tag extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * 任意のデータを表示する要素を生成
+	 * 任意のデータを表示する要素を生成.
 	 *
-	 * @param string $name name属性
-	 * @param array
-	 * @return string html
+	 * @param string $name    Field name.
+	 * @param array  $options Options.
+	 * @return string
 	 */
 	public function custom_mail_tag_field( $name, $options = array() ) {
 		$defaults = array(
 			'id'    => null,
 			'class' => null,
 		);
-		$options = array_merge( $defaults, $options );
-		$class   = $options['class'];
+		$options  = array_merge( $defaults, $options );
+		$class    = $options['class'];
 		unset( $options['class'] );
-		$Form = new MW_WP_Form_Form();
+		$Form       = new MW_WP_Form_Form();
 		$attributes = $Form->generate_attributes( $options );
 
 		return sprintf(

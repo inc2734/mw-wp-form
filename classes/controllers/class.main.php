@@ -1,13 +1,12 @@
 <?php
 /**
- * Name       : MW WP Form Main Controller
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : December 23, 2014
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Main_Controller
  */
 class MW_WP_Form_Main_Controller {
 
@@ -26,20 +25,22 @@ class MW_WP_Form_Main_Controller {
 	 */
 	protected $Validation;
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		add_filter( 'nocache_headers', array( $this, '_nocache_headers' ), 1 );
 		add_filter( 'nginxchampuru_caching_headers', array( $this, '_nginxchampuru_caching_headers' ) );
 
-		add_action( 'parse_request'    , array( $this, '_remove_query_vars_from_post' ) );
+		add_action( 'parse_request', array( $this, '_remove_query_vars_from_post' ) );
 		add_action( 'template_redirect', array( $this, '_send_headers' ), 10000 );
 		add_action( 'template_redirect', array( $this, '_template_redirect' ), 10000 );
 	}
 
 	/**
-	 * Delete the value of $_POST included in the request to WordPress
+	 * Delete the value of $_POST included in the request to WordPress.
 	 *
-	 * @param WP_Query $wp_query
-	 * @return void
+	 * @param WP_Query $wp_query WP_Query object.
 	 */
 	public function _remove_query_vars_from_post( $wp_query ) {
 		if ( isset( $_POST[ MWF_Config::TOKEN_NAME ] ) ) {
@@ -65,9 +66,11 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * Cache control for Nginx Cache Controller plugin
+	 * Cache control for Nginx Cache Controller plugin.
 	 *
 	 * @todo NOT WORKING
+	 *
+	 * @param array $headers HTTP headers.
 	 */
 	public function _nginxchampuru_caching_headers( $headers ) {
 		$headers = $this->_nocache_headers( $headers );
@@ -75,10 +78,10 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * Customize request header for Nginx Cache Controller
+	 * Customize request header for Nginx Cache Controller.
 	 *
-	 * @param array $headers
-	 * @return array $headers
+	 * @param array $headers HTTP headers.
+	 * @return array
 	 */
 	public function _nocache_headers( $headers ) {
 		$headers['X-Accel-Expires'] = 0;
@@ -87,7 +90,7 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * Proxy cache measures
+	 * Proxy cache measures.
 	 *
 	 * @todo NOT WORKING
 	 */
@@ -109,7 +112,7 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * Main process for form displaying
+	 * Main process for form displaying.
 	 */
 	public function _template_redirect() {
 		/**
@@ -146,7 +149,7 @@ class MW_WP_Form_Main_Controller {
 				exit;
 			}
 
-			if ( in_array( $post_condition, array( 'confirm', 'complete' ) ) ) {
+			if ( in_array( $post_condition, array( 'confirm', 'complete' ), true ) ) {
 				$this->_file_upload();
 			}
 
@@ -188,11 +191,12 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * Add shortcode for [mwform_formkey]
+	 * Add shortcode for [mwform_formkey].
 	 *
-	 * @param array $attributes
-	 * @return string html
 	 * @example [mwform_formkey key="post_id"]
+	 *
+	 * @param array $attributes Attributes of [mwform_formkey].
+	 * @return string
 	 */
 	public function _mwform_formkey( $attributes ) {
 		$Exec_Shortcode = new MW_WP_Form_Exec_Shortcode();
@@ -201,8 +205,6 @@ class MW_WP_Form_Main_Controller {
 
 	/**
 	 * If [mwform_formkey] in $post, enqueue assets.
-	 *
-	 * @return boid
 	 */
 	protected function _mwform_enqueue_scripts() {
 		global $post;
@@ -217,7 +219,7 @@ class MW_WP_Form_Main_Controller {
 		}
 
 		foreach ( $matches as $match ) {
-			if ( ! isset( $match[2] ) || 'mwform_formkey' !==  $match[2] ) {
+			if ( ! isset( $match[2] ) || 'mwform_formkey' !== $match[2] ) {
 				continue;
 			}
 
@@ -232,7 +234,7 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * Send mail
+	 * Send mail.
 	 *
 	 * @return boolean
 	 */
@@ -281,9 +283,9 @@ class MW_WP_Form_Main_Controller {
 	}
 
 	/**
-	 * Return that generate an array for the attached file based on the transmitted data
+	 * Return that generate an array for the attached file based on the transmitted data.
 	 *
-	 * @return array $attachments pathの配列
+	 * @return array
 	 */
 	protected function _get_attachments() {
 		$attachments      = array();
@@ -293,7 +295,6 @@ class MW_WP_Form_Main_Controller {
 			return array();
 		}
 
-		$wp_upload_dir = wp_upload_dir();
 		foreach ( $upload_file_keys as $key ) {
 			$upload_file_url = $this->Data->get_post_value_by_key( $key );
 			if ( ! $upload_file_url ) {
@@ -305,7 +306,7 @@ class MW_WP_Form_Main_Controller {
 				continue;
 			}
 
-			$form_key = $this->Data->get_form_key();
+			$form_key       = $this->Data->get_form_key();
 			$new_upload_dir = apply_filters(
 				'mwform_upload_dir_' . $form_key,
 				'',
@@ -339,8 +340,8 @@ class MW_WP_Form_Main_Controller {
 	 * Regenerate form data according to the actual upload situation.
 	 */
 	protected function _file_upload() {
-		$File  = new MW_WP_Form_File();
-		$files = array();
+		$File         = new MW_WP_Form_File();
+		$files        = array();
 		$upload_files = $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILES );
 		if ( ! is_array( $upload_files ) ) {
 			$upload_files = array();

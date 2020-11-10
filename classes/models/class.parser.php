@@ -1,13 +1,12 @@
 <?php
 /**
- * Name       : MW WP Form Parser
- * Version    : 1.0.1
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : July 10, 2017
- * Modified   : August 22, 2019
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Parser
  */
 class MW_WP_Form_Parser {
 
@@ -32,7 +31,9 @@ class MW_WP_Form_Parser {
 	protected static $pattern = '/{(.+?)}/';
 
 	/**
-	 * @param MW_WP_Form_Setting
+	 * Constructor.
+	 *
+	 * @param MW_WP_Form_Setting $Setting MW_WP_Form_Setting object.
 	 */
 	public function __construct( $Setting ) {
 		$this->Setting  = $Setting;
@@ -42,14 +43,21 @@ class MW_WP_Form_Parser {
 	}
 
 	/**
-	 * Replace {name} for mail destination
+	 * Replace {name} for mail destination.
 	 *
-	 * @param string $value
+	 * @param string $value Value.
 	 * @return string
 	 */
 	public function replace_for_mail_destination( $value ) {
 		return $this->_replace( $value, array( $this, '_replace_for_mail_destination_callback' ) );
 	}
+
+	/**
+	 * Callback for replace_for_mail_destination.
+	 *
+	 * @param array $matches $matches of preg_replace_callback.
+	 * @return string|null
+	 */
 	protected function _replace_for_mail_destination_callback( $matches ) {
 		$match = $matches[1];
 		$value = MW_WP_Form_Parser::apply_filters_mwform_custom_mail_tag( $this->form_key, null, $match );
@@ -62,23 +70,30 @@ class MW_WP_Form_Parser {
 	}
 
 	/**
-	 * Replace {name} for mail content
+	 * Replace {name} for mail content.
 	 *
-	 * @param string $value
+	 * @param string $value Value.
 	 * @return string
 	 */
 	public function replace_for_mail_content( $value ) {
 		return $this->_replace( $value, array( $this, '_replace_for_mail_content_callback' ) );
 	}
+
+	/**
+	 * Callback for replace_for_mail_content.
+	 *
+	 * @param array $matches $matches of preg_replace_callback.
+	 * @return string|null
+	 */
 	protected function _replace_for_mail_content_callback( $matches ) {
 		$match = $matches[1];
 		return $this->parse( $match );
 	}
 
 	/**
-	 * Replace {name} for input and confirm page
+	 * Replace {name} for input and confirm page.
 	 *
-	 * @param string $value
+	 * @param string $value Value.
 	 * @return string
 	 */
 	public function replace_for_page( $value ) {
@@ -88,9 +103,9 @@ class MW_WP_Form_Parser {
 	}
 
 	/**
-	 * Replace {foo} in the form. e.g. $post->foo
+	 * Replace {foo} in the form. e.g. $post->foo.
 	 *
-	 * @param string $value
+	 * @param string $value Value.
 	 * @return string
 	 */
 	protected function _replace_post_property( $value ) {
@@ -104,9 +119,9 @@ class MW_WP_Form_Parser {
 	}
 
 	/**
-	 * Callback from preg_replace_callback when enabled querystring setting
+	 * Callback from preg_replace_callback when enabled querystring setting.
 	 *
-	 * @param array $matches
+	 * @param array $matches $matches of preg_replace_callback.
 	 * @return string|null
 	 */
 	protected function _get_post_property_from_querystring( $matches ) {
@@ -123,14 +138,13 @@ class MW_WP_Form_Parser {
 	}
 
 	/**
-	 * Callback from preg_replace_callback when disabled querystring setting
+	 * Callback from preg_replace_callback when disabled querystring setting.
 	 *
-	 * @param array $matches
+	 * @param array $matches $matches of preg_replace_callback.
 	 * @return string|null
 	 */
 	protected function _get_post_property_from_this( $matches ) {
 		global $post;
-			global $wp_query;
 
 		if ( ! is_singular() ) {
 			return;
@@ -144,10 +158,10 @@ class MW_WP_Form_Parser {
 	}
 
 	/**
-	 * Get WP_Post property
+	 * Get WP_Post property.
 	 *
-	 * @param WP_Post|null $post
-	 * @param string $meta_key
+	 * @param WP_Post|null $post     WP_Post object.
+	 * @param string       $meta_key Meta data name.
 	 * @return string|null
 	 */
 	protected function _get_post_property( $post, $meta_key ) {
@@ -168,9 +182,9 @@ class MW_WP_Form_Parser {
 	}
 
 	/**
-	 * Replace {property of user} when logged in
+	 * Replace {property of user} when logged in.
 	 *
-	 * @param string $content
+	 * @param string $content Post content.
 	 * @return string
 	 */
 	protected function _replace_user_property( $content ) {
@@ -185,14 +199,18 @@ class MW_WP_Form_Parser {
 		);
 
 		if ( ! empty( $user ) ) {
-			$content = str_replace( $search, array(
-				$user->get( 'ID' ),
-				$user->get( 'user_login' ),
-				$user->get( 'user_email' ),
-				$user->get( 'user_url' ),
-				$user->get( 'user_registered' ),
-				$user->get( 'display_name' ),
-			), $content );
+			$content = str_replace(
+				$search,
+				array(
+					$user->get( 'ID' ),
+					$user->get( 'user_login' ),
+					$user->get( 'user_email' ),
+					$user->get( 'user_url' ),
+					$user->get( 'user_registered' ),
+					$user->get( 'display_name' ),
+				),
+				$content
+			);
 		} else {
 			$content = str_replace( $search, '', $content );
 		}
@@ -201,10 +219,10 @@ class MW_WP_Form_Parser {
 	}
 
 	/**
-	 * Search {$name}
+	 * Search {$name}.
 	 *
-	 * @param string $value
-	 * @return array $matches
+	 * @param string $value   Value.
+	 * @return array
 	 */
 	public static function search( $value ) {
 		preg_match_all(
@@ -217,9 +235,9 @@ class MW_WP_Form_Parser {
 	}
 
 	/**
-	 * そのキーについて送信された値を返す
+	 * そのキーについて送信された値を返す.
 	 *
-	 * @param string $name
+	 * @param string $name Posted field name.
 	 * @return string
 	 */
 	public function parse( $name ) {
@@ -250,12 +268,12 @@ class MW_WP_Form_Parser {
 	}
 
 	/**
-	 * Apply mwform_custom_mail_tag filter hook
+	 * Apply mwform_custom_mail_tag filter hook.
 	 *
-	 * @param string $form_key
-	 * @param string|null $value
-	 * @param string $name
-	 * @param string $saved_mail_id
+	 * @param string      $form_key      Form key.
+	 * @param string|null $value         Value.
+	 * @param string      $name          Custom mail tag name.
+	 * @param string      $saved_mail_id Saved mail ID.
 	 * @return string
 	 */
 	public static function apply_filters_mwform_custom_mail_tag( $form_key, $value, $name, $saved_mail_id = null ) {
@@ -276,9 +294,10 @@ class MW_WP_Form_Parser {
 	}
 
 	/**
-	 * Replace {name} for mail content
+	 * Replace {name} for mail content.
 	 *
-	 * @param string $value
+	 * @param string   $value    Value.
+	 * @param function $callback Callback of preg_replace_callback.
 	 * @return string
 	 */
 	protected static function _replace( $value, $callback ) {

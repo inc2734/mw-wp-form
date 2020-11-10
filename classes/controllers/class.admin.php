@@ -1,13 +1,12 @@
 <?php
 /**
- * Name       : MW WP Form Admin Controller
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : December 31, 2014
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Admin_Controller
  */
 class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 
@@ -16,18 +15,19 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 */
 	protected $styles = array();
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
-		add_action( 'add_meta_boxes'       , array( $this, '_add_meta_boxes' ) );
-		add_filter( 'default_content'      , array( $this, '_default_content' ) );
-		add_action( 'media_buttons'        , array( $this, '_tag_generator' ) );
+		add_action( 'add_meta_boxes', array( $this, '_add_meta_boxes' ) );
+		add_filter( 'default_content', array( $this, '_default_content' ) );
+		add_action( 'media_buttons', array( $this, '_tag_generator' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue_scripts' ) );
-		add_action( 'save_post'            , array( $this, '_save_post' ) );
+		add_action( 'save_post', array( $this, '_save_post' ) );
 	}
 
 	/**
-	 * Add meta boxes
-	 *
-	 * @return void
+	 * Add meta boxes.
 	 */
 	public function _add_meta_boxes() {
 		global $post;
@@ -116,20 +116,18 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * Set default form html
+	 * Set default form html.
 	 *
-	 * @param string $content
 	 * @return string
 	 */
-	public function _default_content( $content ) {
+	public function _default_content() {
 		return apply_filters( 'mwform_default_content', '' );
 	}
 
 	/**
-	 * Render tag generator
+	 * Render tag generator.
 	 *
-	 * @param string $editor_id
-	 * @return void
+	 * @param string $editor_id Editor ID.
 	 */
 	public function _tag_generator( $editor_id ) {
 		$post_type = get_post_type();
@@ -145,9 +143,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * Enqueue assets
-	 *
-	 * @return void
+	 * Enqueue assets.
 	 */
 	public function _admin_enqueue_scripts() {
 		$url = plugins_url( MWF_Config::NAME );
@@ -187,10 +183,9 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * Save
+	 * Save.
 	 *
-	 * @param int $post_id
-	 * @return void
+	 * @param int $post_id Post ID.
 	 */
 	public function _save_post( $post_id ) {
 		if ( ! isset( $_POST['post_type'] ) || MWF_Config::NAME !== $_POST['post_type'] ) {
@@ -250,7 +245,7 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 						}
 					}
 
-					if ( 'minlength' === $key  && ! MWF_Functions::is_numeric( $value['min'] ) ) {
+					if ( 'minlength' === $key && ! MWF_Functions::is_numeric( $value['min'] ) ) {
 						unset( $_validation[ $key ] );
 					}
 
@@ -301,34 +296,34 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * Render complete message meta box
-	 *
-	 * @return void
+	 * Render complete message meta box.
 	 */
 	public function _complete_message() {
-		$this->_render( 'admin/complete-message', array(
-			'content' => $this->_get_option( 'complete_message' ),
-		) );
+		$this->_render(
+			'admin/complete-message',
+			array(
+				'content' => $this->_get_option( 'complete_message' ),
+			)
+		);
 	}
 
 	/**
-	 * Render URL setting meta box
-	 *
-	 * @return void
+	 * Render URL setting meta box.
 	 */
 	public function _url() {
-		$this->_render( 'admin/url', array(
-			'input_url'            => $this->_get_option( 'input_url' ),
-			'confirmation_url'     => $this->_get_option( 'confirmation_url' ),
-			'complete_url'         => $this->_get_option( 'complete_url' ),
-			'validation_error_url' => $this->_get_option( 'validation_error_url' ),
-		) );
+		$this->_render(
+			'admin/url',
+			array(
+				'input_url'            => $this->_get_option( 'input_url' ),
+				'confirmation_url'     => $this->_get_option( 'confirmation_url' ),
+				'complete_url'         => $this->_get_option( 'complete_url' ),
+				'validation_error_url' => $this->_get_option( 'validation_error_url' ),
+			)
+		);
 	}
 
 	/**
-	 * Render validation meta box
-	 *
-	 * @return void
+	 * Render validation meta box.
 	 */
 	public function _validation_rule() {
 		global $post;
@@ -342,46 +337,46 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			'target' => '',
 		);
 
-		$form_key = MWF_Functions::get_form_key_from_form_id( $post->ID );
+		$form_key         = MWF_Functions::get_form_key_from_form_id( $post->ID );
 		$Validation_Rules = MW_WP_Form_Validation_Rules::instantiation( $form_key );
 
-		foreach ( $Validation_Rules->get_validation_rules() as $validation_rule => $instance ) {
+		foreach ( $Validation_Rules->get_validation_rules() as $instance ) {
 			$validation_keys[ $instance->getName() ] = '';
 		}
 
 		// 空の隠れバリデーションフィールド（コピー元）を挿入
 		array_unshift( $validation, $validation_keys );
-		$this->_render( 'admin/validation-rule', array(
-			'validation'       => $validation,
-			'validation_rules' => $Validation_Rules->get_validation_rules(),
-			'validation_keys'  => $validation_keys,
-		) );
+		$this->_render(
+			'admin/validation-rule',
+			array(
+				'validation'       => $validation,
+				'validation_rules' => $Validation_Rules->get_validation_rules(),
+				'validation_keys'  => $validation_keys,
+			)
+		);
 	}
 
 	/**
-	 * Render add-on meta box
-	 *
-	 * @return void
+	 * Render add-on meta box.
 	 */
 	public function _add_ons() {
 		$this->_render( 'admin/add-ons' );
 	}
 
 	/**
-	 * Render form key meta box
-	 *
-	 * @return void
+	 * Render form key meta box.
 	 */
 	public function _form_key() {
-		$this->_render( 'admin/form-key', array(
-			'post_id' => get_the_ID(),
-		) );
+		$this->_render(
+			'admin/form-key',
+			array(
+				'post_id' => get_the_ID(),
+			)
+		);
 	}
 
 	/**
-	 * Render reply mail meta box
-	 *
-	 * @return void
+	 * Render reply mail meta box.
 	 */
 	public function _mail_options() {
 		$mail_sender = $this->_get_option( 'mail_sender' );
@@ -394,20 +389,21 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			$mail_reply_to = get_bloginfo( 'admin_email' );
 		}
 
-		$this->_render( 'admin/mail-options', array(
-			'mail_subject'          => $this->_get_option( 'mail_subject' ),
-			'mail_sender'           => $mail_sender,
-			'mail_reply_to'         => $mail_reply_to,
-			'mail_from'             => $this->_get_option( 'mail_from' ),
-			'mail_content'          => $this->_get_option( 'mail_content' ),
-			'automatic_reply_email' => $this->_get_option( 'automatic_reply_email' ),
-		) );
+		$this->_render(
+			'admin/mail-options',
+			array(
+				'mail_subject'          => $this->_get_option( 'mail_subject' ),
+				'mail_sender'           => $mail_sender,
+				'mail_reply_to'         => $mail_reply_to,
+				'mail_from'             => $this->_get_option( 'mail_from' ),
+				'mail_content'          => $this->_get_option( 'mail_content' ),
+				'automatic_reply_email' => $this->_get_option( 'automatic_reply_email' ),
+			)
+		);
 	}
 
 	/**
-	 * Render admin mail meta box
-	 *
-	 * @return void
+	 * Render admin mail meta box.
 	 */
 	public function _admin_mail_options() {
 		$mail_to = $this->_get_option( 'mail_to' );
@@ -425,52 +421,57 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			$admin_mail_reply_to = get_bloginfo( 'admin_email' );
 		}
 
-		$this->_render( 'admin/admin-mail-options', array(
-			'mail_to'             => $mail_to,
-			'mail_cc'             => $this->_get_option( 'mail_cc' ),
-			'mail_bcc'            => $this->_get_option( 'mail_bcc' ),
-			'admin_mail_subject'  => $this->_get_option( 'admin_mail_subject' ),
-			'admin_mail_sender'   => $admin_mail_sender,
-			'admin_mail_reply_to' => $admin_mail_reply_to,
-			'mail_return_path'    => $this->_get_option( 'mail_return_path' ),
-			'admin_mail_from'     => $this->_get_option( 'admin_mail_from' ),
-			'admin_mail_content'  => $this->_get_option( 'admin_mail_content' ),
-		) );
+		$this->_render(
+			'admin/admin-mail-options',
+			array(
+				'mail_to'             => $mail_to,
+				'mail_cc'             => $this->_get_option( 'mail_cc' ),
+				'mail_bcc'            => $this->_get_option( 'mail_bcc' ),
+				'admin_mail_subject'  => $this->_get_option( 'admin_mail_subject' ),
+				'admin_mail_sender'   => $admin_mail_sender,
+				'admin_mail_reply_to' => $admin_mail_reply_to,
+				'mail_return_path'    => $this->_get_option( 'mail_return_path' ),
+				'admin_mail_from'     => $this->_get_option( 'admin_mail_from' ),
+				'admin_mail_content'  => $this->_get_option( 'admin_mail_content' ),
+			)
+		);
 	}
 
 	/**
-	 * Render settings meta box
-	 *
-	 * @return void
+	 * Render settings meta box.
 	 */
 	public function _settings() {
-		$this->_render( 'admin/settings', array(
-			'querystring'          => $this->_get_option( 'querystring' ),
-			'usedb'                => $this->_get_option( 'usedb' ),
-			'scroll'               => $this->_get_option( 'scroll' ),
-			'akismet_author'       => $this->_get_option( 'akismet_author' ),
-			'akismet_author_email' => $this->_get_option( 'akismet_author_email' ),
-			'akismet_author_url'   => $this->_get_option( 'akismet_author_url' ),
-			'tracking_number'      => $this->_get_option( MWF_Config::TRACKINGNUMBER ),
-		) );
+		$this->_render(
+			'admin/settings',
+			array(
+				'querystring'          => $this->_get_option( 'querystring' ),
+				'usedb'                => $this->_get_option( 'usedb' ),
+				'scroll'               => $this->_get_option( 'scroll' ),
+				'akismet_author'       => $this->_get_option( 'akismet_author' ),
+				'akismet_author_email' => $this->_get_option( 'akismet_author_email' ),
+				'akismet_author_url'   => $this->_get_option( 'akismet_author_url' ),
+				'tracking_number'      => $this->_get_option( MWF_Config::TRACKINGNUMBER ),
+			)
+		);
 	}
 
 	/**
-	 * Render styles meta box
-	 *
-	 * @return void
+	 * Render styles meta box.
 	 */
 	public function _style() {
-		$this->_render( 'admin/style', array(
-			'styles' => $this->styles,
-			'style'  => $this->_get_option( 'style' ),
-		) );
+		$this->_render(
+			'admin/style',
+			array(
+				'styles' => $this->styles,
+				'style'  => $this->_get_option( 'style' ),
+			)
+		);
 	}
 
 	/**
-	 * Get form option
+	 * Get form option.
 	 *
-	 * @param string $key Key of option
+	 * @param string $key Key of option.
 	 * @return mixed
 	 */
 	protected function _get_option( $key ) {

@@ -1,3 +1,5 @@
 vendor/
 _tests/
 languages/
+node_modules/
+sql/

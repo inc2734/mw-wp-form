@@ -1,28 +1,28 @@
 <?php
 /**
- * Name       : MW WP Form Field Akismet Error
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : June 21, 2013
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Field_Akismet_Error
  */
 class MW_WP_Form_Field_Akismet_Error extends MW_WP_Form_Abstract_Form_Field {
 
 	/**
 	 * Types of form type.
-	 * input|select|button|input_button|error|other
+	 * input|select|button|input_button|error|other.
+	 *
 	 * @var string
 	 */
 	public $type = 'error';
 
 	/**
-	 * Set shortcode_name and display_name
-	 * Overwrite required for each child class
+	 * Set shortcode_name and display_name.
+	 * Overwrite required for each child class.
 	 *
-	 * @return array(shortcode_name, display_name)
+	 * @return array
 	 */
 	protected function set_names() {
 		return array(
@@ -32,20 +32,18 @@ class MW_WP_Form_Field_Akismet_Error extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Set default attributes
+	 * Set default attributes.
 	 *
-	 * @return array defaults
+	 * @return array
 	 */
 	protected function set_defaults() {
 		return array();
 	}
 
 	/**
-	 * Callback of add shortcode for input page
+	 * Callback of add shortcode for input page.
 	 *
-	 * @param array $atts
-	 * @param string $element_content
-	 * @return string HTML
+	 * @return string
 	 */
 	protected function input_page() {
 		$error = $this->get_error( MWF_Config::AKISMET );
@@ -58,11 +56,7 @@ class MW_WP_Form_Field_Akismet_Error extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Callback of add shortcode for confirm page
-	 *
-	 * @param array $atts
-	 * @param string $element_content
-	 * @return string HTML
+	 * Callback of add shortcode for confirm page.
 	 */
 	protected function confirm_page() {
 	}

@@ -1,28 +1,28 @@
 <?php
 /**
- * Name       : MW WP Form Field Submit Button
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : December 14, 2012
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Field_Submit_Button
  */
 class MW_WP_Form_Field_Submit_Button extends MW_WP_Form_Abstract_Form_Field {
 
 	/**
 	 * Types of form type.
-	 * input|select|button|input_button|error|other
+	 * input|select|button|input_button|error|other.
+	 *
 	 * @var string
 	 */
 	public $type = 'input_button';
 
 	/**
-	 * Set shortcode_name and display_name
-	 * Overwrite required for each child class
+	 * Set shortcode_name and display_name.
+	 * Overwrite required for each child class.
 	 *
-	 * @return array(shortcode_name, display_name)
+	 * @return array
 	 */
 	protected function set_names() {
 		return array(
@@ -32,56 +32,63 @@ class MW_WP_Form_Field_Submit_Button extends MW_WP_Form_Abstract_Form_Field {
 	}
 
 	/**
-	 * Set default attributes
+	 * Set default attributes.
 	 *
-	 * @return array defaults
+	 * @return array
 	 */
 	protected function set_defaults() {
 		return array(
-			'name'  => '',
-			'class' => null,
+			'name'          => '',
+			'class'         => null,
 			'confirm_value' => __( 'Confirm', 'mw-wp-form' ),
 			'submit_value'  => __( 'Send', 'mw-wp-form' ),
 		);
 	}
 
 	/**
-	 * Callback of add shortcode for input page
+	 * Callback of add shortcode for input page.
 	 *
-	 * @param array $atts
-	 * @param string $element_content
-	 * @return string HTML
+	 * @return string
 	 */
 	protected function input_page() {
 		if ( ! empty( $this->atts['confirm_value'] ) ) {
-			return $this->Form->submit( MWF_Config::CONFIRM_BUTTON, $this->atts['confirm_value'], array(
-				'class' => $this->atts['class'],
-			) );
+			return $this->Form->submit(
+				MWF_Config::CONFIRM_BUTTON,
+				$this->atts['confirm_value'],
+				array(
+					'class' => $this->atts['class'],
+				)
+			);
 		}
-		return $this->Form->submit( $this->atts['name'], $this->atts['submit_value'], array(
-			'class' => $this->atts['class'],
-		) );
+		return $this->Form->submit(
+			$this->atts['name'],
+			$this->atts['submit_value'],
+			array(
+				'class' => $this->atts['class'],
+			)
+		);
 	}
 
 	/**
-	 * Callback of add shortcode for confirm page
+	 * Callback of add shortcode for confirm page.
 	 *
-	 * @param array $atts
-	 * @param string $element_content
-	 * @return string HTML
+	 * @return string
 	 */
 	protected function confirm_page() {
-		return $this->Form->submit( $this->atts['name'], $this->atts['submit_value'], array(
-			'class' => $this->atts['class'],
-		) );
+		return $this->Form->submit(
+			$this->atts['name'],
+			$this->atts['submit_value'],
+			array(
+				'class' => $this->atts['class'],
+			)
+		);
 	}
 
 	/**
-	 * Display tag generator dialog
-	 * Overwrite required for each child class
+	 * Display tag generator dialog.
+	 * Overwrite required for each child class.
 	 *
-	 * @param array $options
-	 * @return void
+	 * @param array $options Options.
 	 */
 	public function mwform_tag_generator_dialog( array $options = array() ) {
 		?>

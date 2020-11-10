@@ -1,3 +1,11 @@
+<?php
+/**
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+?>
+
 <p>
 	<select name="<?php echo MWF_Config::NAME; ?>[style]">
 		<option value=""><?php esc_html_e( 'Select Style', 'mw-wp-form' ); ?></option>

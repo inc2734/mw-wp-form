@@ -1,3 +1,11 @@
+<?php
+/**
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+?>
+
 <div class="wrap">
 	<?php $post_id = preg_replace( '/^(.+_)(\d+)$/', '$2', $post_type ); ?>
 	<h2>
@@ -13,8 +21,12 @@
 			<div class="inside">
 				<b class="add-btn"><?php esc_html_e( 'Add Chart', 'mw-wp-form' ); ?></b>
 				<div class="repeatable-boxes">
-					<?php foreach ( $postdata as $key => $value ) :  ?>
-					<div class="repeatable-box" <?php if ( $key === 0 ) : ?>style="display:none"<?php endif; ?>>
+					<?php foreach ( $postdata as $key => $value ) : ?>
+					<div class="repeatable-box"
+						<?php
+						if ( 0 === $key ) :
+							?>
+						style="display:none"<?php endif; ?>>
 						<div class="sortable-icon-handle"></div>
 						<div class="remove-btn"><b>×</b></div>
 						<div class="open-btn"><span><?php echo esc_html( $value['target'] ); ?></span><b>▼</b></div>
@@ -75,11 +87,11 @@
 
 	$chart_data = array();
 	foreach ( $postdata as $postdata_key => $chart ) {
-		$data = array();
+		$data     = array();
 		$raw_data = array();
 		foreach ( $custom_keys[ $chart['target'] ] as $item => $values ) {
 			if ( $chart['separator'] && strstr( $item, $chart['separator'] ) ) {
-				$item = explode( $chart['separator'] , $item );
+				$item = explode( $chart['separator'], $item );
 			}
 			if ( is_array( $item ) ) {
 				foreach ( $item as $_item ) {
@@ -111,7 +123,7 @@
 				$value = $raw_data_value;
 			}
 			$data[] = array(
-				( string ) $raw_data_key,
+				(string) $raw_data_key,
 				$value,
 			);
 		}

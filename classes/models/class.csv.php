@@ -1,13 +1,12 @@
 <?php
 /**
- * Name       : MW WP Form CSV
- * Version    : 2.0.1
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : April 3, 2015
- * Modified   : June 26, 2018
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_CSV
  */
 class MW_WP_Form_CSV {
 
@@ -16,14 +15,17 @@ class MW_WP_Form_CSV {
 	 */
 	protected $post_type;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param string $post_type Post type name.
+	 */
 	public function __construct( $post_type ) {
 		$this->post_type = $post_type;
 	}
 
 	/**
-	 * Download CSV
-	 *
-	 * @return void
+	 * Download CSV.
 	 */
 	public function download() {
 		$key_of_csv_download = MWF_Config::NAME . '-csv-download';
@@ -34,7 +36,7 @@ class MW_WP_Form_CSV {
 
 		$csv = $this->_generate_csv();
 
-		$file_name = 'mw_wp_form_' . date( 'YmdHis' ) . '.csv';
+		$file_name = 'mw_wp_form_' . date_i18n( 'YmdHis' ) . '.csv';
 		header( 'Content-Type: application/octet-stream' );
 		header( 'Content-Disposition: attachment; filename=' . $file_name );
 		echo $csv;
@@ -42,9 +44,9 @@ class MW_WP_Form_CSV {
 	}
 
 	/**
-	 * Generate CSV
+	 * Generate CSV.
 	 *
-	 * @return string CSV
+	 * @return string
 	 */
 	protected function _generate_csv() {
 		$posts_per_page = $this->_get_posts_per_page();
@@ -54,12 +56,15 @@ class MW_WP_Form_CSV {
 		if ( empty( $args ) || ! is_array( $args ) ) {
 			$args = array();
 		}
-		$args = array_merge( $args, array(
-			'post_type'      => $this->post_type,
-			'posts_per_page' => $posts_per_page,
-			'paged'          => $paged,
-			'post_status'    => 'any',
-		) );
+		$args = array_merge(
+			$args,
+			array(
+				'post_type'      => $this->post_type,
+				'posts_per_page' => $posts_per_page,
+				'paged'          => $paged,
+				'post_status'    => 'any',
+			)
+		);
 
 		$posts_mwf = get_posts( $args );
 
@@ -67,13 +72,14 @@ class MW_WP_Form_CSV {
 		$csv = '';
 
 		// 見出しを追加
+		$rows    = array();
 		$rows[0] = $this->_get_csv_headings( $posts_mwf );
 
 		// 各データを追加
 		$rows = array_merge( $rows, $this->_get_rows( $posts_mwf, $rows[0] ) );
 
 		// エンコード
-		foreach ( $rows as $key => $row ) {
+		foreach ( $rows as $row ) {
 			foreach ( $row as $column_name => $column ) {
 				$row[ $column_name ] = $this->_escape_double_quote( $column );
 			}
@@ -85,7 +91,7 @@ class MW_WP_Form_CSV {
 	}
 
 	/**
-	 * Return number of CSV output
+	 * Return number of CSV output.
 	 *
 	 * @return int
 	 */
@@ -104,7 +110,7 @@ class MW_WP_Form_CSV {
 	}
 
 	/**
-	 * Return page number of CSV output
+	 * Return page number of CSV output.
 	 *
 	 * @return int
 	 */
@@ -119,13 +125,13 @@ class MW_WP_Form_CSV {
 	}
 
 	/**
-	 * Genrate headings of CSV
+	 * Genrate headings of CSV.
 	 *
-	 * @param array $posts
+	 * @param array $posts Array of WP_Post.
 	 * @return array
 	 */
 	protected function _get_csv_headings( array $posts ) {
-		$columns = array(
+		$columns  = array(
 			'ID'              => 'ID',
 			'admin_mail_to'   => __( 'Admin Email To', 'mw-wp-form' ),
 			'response_status' => __( 'Response Status', 'mw-wp-form' ),
@@ -156,17 +162,17 @@ class MW_WP_Form_CSV {
 
 		ksort( $_columns );
 		$_columns = apply_filters( 'mwform_inquiry_data_columns-' . $this->post_type, $_columns );
-		$columns = array_merge( $columns, $_columns );
-		$columns = array_merge( $columns, array( 'memo' => __( 'Memo', 'mw-wp-form' ) ) );
-		$columns = apply_filters( 'mwform_csv_columns-' . $this->post_type, $columns );
+		$columns  = array_merge( $columns, $_columns );
+		$columns  = array_merge( $columns, array( 'memo' => __( 'Memo', 'mw-wp-form' ) ) );
+		$columns  = apply_filters( 'mwform_csv_columns-' . $this->post_type, $columns );
 		return $columns;
 	}
 
 	/**
-	 * Generate rows of CSV
+	 * Generate rows of CSV.
 	 *
-	 * @param array $posts
-	 * @param array $headings
+	 * @param array $posts    Array of WP_Post.
+	 * @param array $headings Headings of CSV.
 	 * @return array
 	 */
 	protected function _get_rows( array $posts, array $headings ) {
@@ -177,30 +183,30 @@ class MW_WP_Form_CSV {
 			setup_postdata( $post );
 			$columns = array();
 			foreach ( $headings as $key => $value ) {
-				$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $post->ID );
-				$response_statuses    = $Contact_Data_Setting->get_response_statuses();
-				$column = '';
+				$contact_data_setting = new MW_WP_Form_Contact_Data_Setting( $post->ID );
+				$response_statuses    = $contact_data_setting->get_response_statuses();
+				$column               = '';
 
 				if ( 'response_status' === $key ) {
-					$response_status = $Contact_Data_Setting->get( 'response_status' );
-					$column = $response_statuses[ $response_status ];
+					$response_status = $contact_data_setting->get( 'response_status' );
+					$column          = $response_statuses[ $response_status ];
 				} elseif ( 'admin_mail_to' === $key ) {
-					$column = $Contact_Data_Setting->get( 'admin_mail_to' );
+					$column = $contact_data_setting->get( 'admin_mail_to' );
 				} elseif ( 'memo' === $key ) {
-					$column = $Contact_Data_Setting->get( 'memo' );
-				} elseif ( MWF_Config::TRACKINGNUMBER === $key) {
+					$column = $contact_data_setting->get( 'memo' );
+				} elseif ( MWF_Config::TRACKINGNUMBER === $key ) {
 					$column = get_post_meta( get_the_ID(), MWF_Config::TRACKINGNUMBER, true );
 				} elseif ( isset( $post->$key ) ) {
 					$post_meta = $post->$key;
 
-					if ( $Contact_Data_Setting->is_upload_file_key( $key ) ) {
+					if ( $contact_data_setting->is_upload_file_key( $key ) ) {
 						// 過去バージョンでの不具合でメタデータが空になっていることがあるのでその場合は代替処理
 						if ( '' === $post_meta ) {
 							$post_meta = MWF_Functions::get_multimedia_id__fallback( $post, $key );
 						}
 						$column = wp_get_attachment_url( $post_meta );
 					} else {
-						$column = ( '' === $post_meta || null === $post_meta || false === $post_meta ) ?  '' : $post_meta;
+						$column = ( '' === $post_meta || null === $post_meta || false === $post_meta ) ? '' : $post_meta;
 					}
 				}
 				$columns[ $key ] = $column;
@@ -212,9 +218,9 @@ class MW_WP_Form_CSV {
 	}
 
 	/**
-	 * Escape double quotes
+	 * Escape double quotes.
 	 *
-	 * @param string $value
+	 * @param string $value Value.
 	 * @return string
 	 */
 	protected function _escape_double_quote( $value ) {

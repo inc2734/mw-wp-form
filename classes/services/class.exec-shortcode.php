@@ -1,13 +1,12 @@
 <?php
 /**
- * Name       : MW WP Form Exec Shortcode
- * Version    : 2.0.1
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : December 31, 2014
- * Modified   : August 22, 2019
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Exec_Shortcode
  */
 class MW_WP_Form_Exec_Shortcode {
 
@@ -22,7 +21,7 @@ class MW_WP_Form_Exec_Shortcode {
 	protected $form_key;
 
 	/**
-	 * @param MW_WP_Form_Data
+	 * @var MW_WP_Form_Data
 	 */
 	protected $Data;
 
@@ -36,8 +35,11 @@ class MW_WP_Form_Exec_Shortcode {
 	 */
 	protected $Setting;
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
-		add_shortcode( 'mwform'                 , array( $this, '_mwform' ) );
+		add_shortcode( 'mwform', array( $this, '_mwform' ) );
 		add_shortcode( 'mwform_complete_message', array( $this, '_mwform_complete_message' ) );
 
 		add_filter( 'mwform_form_end_html', array( $this, '_mwform_form_end_html' ) );
@@ -48,9 +50,10 @@ class MW_WP_Form_Exec_Shortcode {
 	/**
 	 * Add shortcode for [mwform_formkey]
 	 *
-	 * @param array $attributes
-	 * @return string html
 	 * @example [mwform_formkey key="post_id"]
+	 *
+	 * @param array $attributes Attributes of [mwform_formkey].
+	 * @return string
 	 */
 	public function initialize( $attributes ) {
 		$this->form_id  = $this->_get_form_id_by_mwform_formkey( $attributes );
@@ -70,8 +73,8 @@ class MW_WP_Form_Exec_Shortcode {
 
 		add_action( 'wp_footer', array( $this->Data, 'clear_values' ) );
 
-		$Validation  = new MW_WP_Form_Validation( $this->form_key );
-		$is_valid = $Validation->is_valid();
+		$Validation = new MW_WP_Form_Validation( $this->form_key );
+		$is_valid   = $Validation->is_valid();
 
 		$Redirected = new MW_WP_Form_Redirected( $this->form_key, $this->Setting, $is_valid, $this->Data->get_post_condition() );
 		if ( $Redirected->get_request_uri() !== $Redirected->get_url() && $Redirected->get_url() ) {
@@ -94,11 +97,14 @@ class MW_WP_Form_Exec_Shortcode {
 			$content = '';
 		}
 
-		do_action( 'mwform_after_load_content_' .  $this->form_key );
+		do_action( 'mwform_after_load_content_' . $this->form_key );
 
 		// Enqueue scroll to MW WP Form script
 		if ( $this->Setting->get( 'scroll' ) ) {
-			if ( 'input' !== $this->view_flg || in_array( $this->Data->get_post_condition(), array( 'back', 'confirm', 'complete' ) ) ) {
+			if (
+				'input' !== $this->view_flg
+				|| in_array( $this->Data->get_post_condition(), array( 'back', 'confirm', 'complete' ), true )
+			) {
 				add_action( 'wp_footer', array( $this, '_enqueue_scroll_script' ) );
 			}
 		}
@@ -112,15 +118,16 @@ class MW_WP_Form_Exec_Shortcode {
 	}
 
 	/**
-	 * Add shortcode for [mwform]
+	 * Add shortcode for [mwform].
 	 *
-	 * @param null $attributes
-	 * @return string html
+	 * @param array  $attributes Attributes of [mwform].
+	 * @param string $content    Content of [mwform].
+	 * @return string
 	 */
 	public function _mwform( $attributes, $content = '' ) {
 		$Form = new MW_WP_Form_Form();
 
-		if ( in_array( $this->view_flg, array( 'input', 'confirm' ) ) ) {
+		if ( in_array( $this->view_flg, array( 'input', 'confirm' ), true ) ) {
 			$content            = $this->_get_the_content( $content );
 			$upload_file_keys   = $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
 			$upload_file_hidden = $this->_get_upload_file_hidden( $upload_file_keys );
@@ -140,10 +147,11 @@ class MW_WP_Form_Exec_Shortcode {
 	}
 
 	/**
-	 * Add shortcode for [mwform_complete_message]
+	 * Add shortcode for [mwform_complete_message].
 	 *
-	 * @param array $attributes
-	 * @return string html
+	 * @param array  $attributes Attributes of [mwform_complete_message].
+	 * @param string $content    Content of [mwform_complete_message].
+	 * @return string
 	 */
 	public function _mwform_complete_message( $attributes, $content = '' ) {
 		return sprintf(
@@ -157,9 +165,9 @@ class MW_WP_Form_Exec_Shortcode {
 	}
 
 	/**
-	 * Display input page
+	 * Display input page.
 	 *
-	 * @return string $content
+	 * @return string
 	 */
 	protected function _get_input_page_content() {
 		global $post;
@@ -176,21 +184,21 @@ class MW_WP_Form_Exec_Shortcode {
 	}
 
 	/**
-	 * Display confirm page
+	 * Display confirm page.
 	 *
-	 * @return string $content
+	 * @return string
 	 */
-	protected function _get_confirm_page_content( ) {
+	protected function _get_confirm_page_content() {
 		return $this->_get_input_page_content();
 	}
 
 	/**
-	 * Display complete page
+	 * Display complete page.
 	 *
-	 * @return string $content
+	 * @return string
 	 */
 	protected function _get_complete_page_content() {
-		$Parser = new MW_WP_Form_Parser(  $this->Setting );
+		$Parser = new MW_WP_Form_Parser( $this->Setting );
 
 		$content = apply_filters(
 			'mwform_complete_content_raw_' . $this->form_key,
@@ -210,9 +218,9 @@ class MW_WP_Form_Exec_Shortcode {
 	}
 
 	/**
-	 * Display validation error page
+	 * Display validation error page.
 	 *
-	 * @return string $content
+	 * @return string
 	 */
 	protected function _get_send_error_page_content() {
 		$content = sprintf(
@@ -261,12 +269,12 @@ class MW_WP_Form_Exec_Shortcode {
 		$complete = $this->Setting->get( 'complete_url' );
 		$error    = $this->Setting->get( 'validation_error_url' );
 
-	 	if ( ! $confirm && ! $complete && ! $error ) {
+		if ( ! $confirm && ! $complete && ! $error ) {
 			return false;
 		}
 
-		$Validation  = new MW_WP_Form_Validation( $this->form_key );
-		$is_valid = $Validation->is_valid();
+		$Validation = new MW_WP_Form_Validation( $this->form_key );
+		$is_valid   = $Validation->is_valid();
 
 		$Redirected = new MW_WP_Form_Redirected( $this->form_key, $this->Setting, $is_valid, $this->Data->get_post_condition() );
 		if ( $Redirected->get_request_uri() === $Redirected->get_url() ) {
@@ -277,9 +285,9 @@ class MW_WP_Form_Exec_Shortcode {
 	}
 
 	/**
-	 * Line breaks content according to wpautop()
+	 * Line breaks content according to wpautop().
 	 *
-	 * @param string $content
+	 * @param string $content Post content.
 	 * @return string
 	 */
 	protected function _wpautop( $content ) {
@@ -305,9 +313,9 @@ class MW_WP_Form_Exec_Shortcode {
 	}
 
 	/**
-	 * Replace {key} in the form
+	 * Replace {key} in the form.
 	 *
-	 * @param string $content
+	 * @param string $content Post content.
 	 * @return string
 	 */
 	public function _get_the_content( $content ) {
@@ -317,9 +325,9 @@ class MW_WP_Form_Exec_Shortcode {
 	}
 
 	/**
-	 * Hidden field for file upload name attribute
+	 * Hidden field for file upload name attribute.
 	 *
-	 * @param array|string $upload_file_keys
+	 * @param array|string $upload_file_keys Upload file keys.
 	 */
 	protected function _get_upload_file_hidden( $upload_file_keys ) {
 		$Form = new MW_WP_Form_Form();
@@ -337,9 +345,9 @@ class MW_WP_Form_Exec_Shortcode {
 	}
 
 	/**
-	 * Get classes for backward compatibility
+	 * Get classes for backward compatibility.
 	 *
-	 * @return string mw_wp_form_preview
+	 * @return string
 	 */
 	protected function _get_old_confirm_class() {
 		if ( 'confirm' === $this->view_flg ) {
@@ -348,7 +356,7 @@ class MW_WP_Form_Exec_Shortcode {
 	}
 
 	/**
-	 * Get classes for style feature
+	 * Get classes for style feature.
 	 *
 	 * @return string
 	 */
@@ -360,16 +368,19 @@ class MW_WP_Form_Exec_Shortcode {
 	}
 
 	/**
-	 * ショートコード mwform_formkey をもとにフォームの ID を取得
+	 * ショートコード mwform_formkey をもとにフォームの ID を取得.
 	 *
-	 * @param array $attributes
-	 * @return string Post ID
+	 * @param array $attributes Attributes of mwform_formkey.
+	 * @return string
 	 */
 	protected function _get_form_id_by_mwform_formkey( $attributes ) {
-		$attributes = shortcode_atts( array(
-			'key'  => '',
-			'slug' => '',
-		), $attributes );
+		$attributes = shortcode_atts(
+			array(
+				'key'  => '',
+				'slug' => '',
+			),
+			$attributes
+		);
 
 		if ( ! empty( $attributes['slug'] ) ) {
 			$post = get_page_by_path( $attributes['slug'], OBJECT, MWF_Config::NAME );
@@ -383,9 +394,9 @@ class MW_WP_Form_Exec_Shortcode {
 	}
 
 	/**
-	 * Add nonce field and form meta data
+	 * Add nonce field and form meta data.
 	 *
-	 * @param string $html
+	 * @param string $html HTML.
 	 * @return string
 	 */
 	public function _mwform_form_end_html( $html ) {
@@ -435,9 +446,13 @@ class MW_WP_Form_Exec_Shortcode {
 			false,
 			true
 		);
-		wp_localize_script( MWF_Config::NAME . '-scroll', 'mwform_scroll', array(
-			'offset' => apply_filters( 'mwform_scroll_offset_' . $this->form_key, 0 ),
-		) );
+		wp_localize_script(
+			MWF_Config::NAME . '-scroll',
+			'mwform_scroll',
+			array(
+				'offset' => apply_filters( 'mwform_scroll_offset_' . $this->form_key, 0 ),
+			)
+		);
 		wp_enqueue_script( MWF_Config::NAME . '-scroll' );
 	}
 }

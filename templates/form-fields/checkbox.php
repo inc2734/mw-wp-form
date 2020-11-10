@@ -1,8 +1,20 @@
 <?php
+/**
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+?>
+
+<?php
 if ( 'true' === $vertically ) {
 	$vertically_class = 'vertical-item';
 } else {
 	$vertically_class = 'horizontal-item';
+}
+
+foreach ( $value as $_key => $_value ) {
+	$value[ $_key ] = (string) $_value;
 }
 ?>
 <?php foreach ( $fields as $field_value => $field ) : ?>
@@ -11,7 +23,7 @@ if ( 'true' === $vertically ) {
 			<input type="checkbox"
 				name="<?php echo esc_attr( $field['name'] ); ?>"
 				value="<?php echo esc_attr( $field_value ); ?>"
-				<?php checked( in_array( $field_value, $value ), true, true ); ?>
+				<?php checked( in_array( (string) $field_value, $value, true ), true, true ); ?>
 				<?php echo MWF_Functions::generate_input_attribute( 'id', $field['id'] ); ?>
 				<?php echo MWF_Functions::generate_input_attribute( 'class', $field['class'] ); ?>
 			/>

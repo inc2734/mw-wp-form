@@ -1,24 +1,26 @@
 <?php
 /**
- * Name       : MW WP Form File
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : October 10, 2013
- * Modified   : June 1, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_File
  */
 class MW_WP_Form_File {
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		add_filter( 'upload_mimes', array( $this, '_upload_mimes' ) );
 	}
 
 	/**
-	 * Add mimes
+	 * Add mimes.
 	 *
-	 * @param array $t array of MIME types
+	 * @param array $t Array of MIME types.
 	 */
 	public function _upload_mimes( $t ) {
 		$t['psd'] = 'image/vnd.adobe.photoshop';
@@ -28,10 +30,10 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * Upload all files
+	 * Upload all files.
 	 *
-	 * @param array $files array of upload files
-	 * @return array (name => uploaded file url)
+	 * @param array $files Array of upload files.
+	 * @return array
 	 */
 	public function upload( array $files = array() ) {
 		$this->_clean_temp_dir();
@@ -49,10 +51,10 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * 指定したファイルをアップロード
+	 * 指定したファイルをアップロード.
 	 *
-	 * @param string $name
-	 * @return string Uploaded file URL
+	 * @param string $name Field name.
+	 * @return string
 	 */
 	protected function _single_file_upload( $name ) {
 		$this->create_temp_dir();
@@ -66,20 +68,21 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * Upload process
+	 * Upload process.
 	 *
-	 * @param arary $file $_FILES['name']
-	 * @return string Uploaded file URL
+	 * @param arary $file $_FILES['name'].
+	 * @return string
 	 */
 	protected function _file_upload( $file ) {
 		if ( empty( $file['tmp_name'] ) ) {
 			return false;
 		}
 
-		if ( ! MWF_Functions::check_file_type( $file['tmp_name'], $file['name'] )
-				 || ! $file['error'] == UPLOAD_ERR_OK
-				 || ! is_uploaded_file( $file['tmp_name'] ) ) {
-
+		if (
+			! MWF_Functions::check_file_type( $file['tmp_name'], $file['name'] )
+			|| ! UPLOAD_ERR_OK === $file['error']
+			|| ! is_uploaded_file( $file['tmp_name'] )
+		) {
 			return false;
 		}
 
@@ -94,14 +97,13 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * Generate temp file name
-	 * If doesn't generate temp directory, using upload directory
+	 * Generate temp file name.
+	 * If doesn't generate temp directory, using upload directory.
 	 *
-	 * @param string ext
-	 * @return array (file =>, url =>)
+	 * @param string $extension ext.
+	 * @return array
 	 */
 	protected function _set_upload_file_name( $extension ) {
-		$count      = 0;
 		$basename   = uniqid( rand() );
 		$temp_dir   = $this->get_temp_dir();
 		$upload_dir = $temp_dir['dir'];
@@ -113,7 +115,8 @@ class MW_WP_Form_File {
 			$upload_url    = $wp_upload_dir['url'];
 		}
 
-		$filename = wp_unique_filename( trailingslashit( $upload_dir ), $basename . '.' . $extension );
+		$filename           = wp_unique_filename( trailingslashit( $upload_dir ), $basename . '.' . $extension );
+		$uploadfile         = array();
 		$uploadfile['file'] = trailingslashit( $upload_dir ) . $filename;
 		$uploadfile['url']  = trailingslashit( $upload_url ) . $filename;
 
@@ -121,20 +124,21 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * Return array of temp directory. Return directory even if it does not exist
+	 * Return array of temp directory. Return directory even if it does not exist.
 	 *
-	 * @return array (dir => temp directory path, url => temp directory url)
+	 * @return array
 	 */
 	public function get_temp_dir() {
-		$wp_upload_dir = wp_upload_dir();
-		$temp_dir_name = '/' . MWF_Config::NAME . '_uploads';
+		$wp_upload_dir   = wp_upload_dir();
+		$temp_dir_name   = '/' . MWF_Config::NAME . '_uploads';
+		$temp_dir        = array();
 		$temp_dir['dir'] = $wp_upload_dir['basedir'] . $temp_dir_name;
 		$temp_dir['url'] = $wp_upload_dir['baseurl'] . $temp_dir_name;
 		return $temp_dir;
 	}
 
 	/**
-	 * Create temp directory
+	 * Create temp directory.
 	 *
 	 * @return bool
 	 */
@@ -153,9 +157,9 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * Delete temp directory
+	 * Delete temp directory.
 	 *
-	 * @param string $sub_dir
+	 * @param string $sub_dir Sub directory path.
 	 */
 	public function remove_temp_dir( $sub_dir = '' ) {
 		$temp_dir = $this->get_temp_dir();
@@ -173,7 +177,9 @@ class MW_WP_Form_File {
 			return;
 		}
 
+		// phpcs:disable WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 		while ( false !== ( $file = readdir( $handle ) ) ) {
+		// phpcs:enable
 			if ( '.' === $file || '..' === $file ) {
 				continue;
 			}
@@ -190,9 +196,7 @@ class MW_WP_Form_File {
 	}
 
 	/**
-	 * Delete files in temp directory
-	 *
-	 * @return void
+	 * Delete files in temp directory.
 	 */
 	protected function _clean_temp_dir() {
 		$temp_dir = $this->get_temp_dir();
@@ -207,7 +211,9 @@ class MW_WP_Form_File {
 			return;
 		}
 
+		// phpcs:disable WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
 		while ( false !== ( $filename = readdir( $handle ) ) ) {
+		// phpcs:enable
 			if ( '.' === $filename && '..' === $filename || is_dir( trailingslashit( $temp_dir ) . $filename ) ) {
 				continue;
 			}

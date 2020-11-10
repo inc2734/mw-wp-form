@@ -1,20 +1,19 @@
 <?php
 /**
- * Name       : MWF Functions
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : May 29, 2013
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MWF_Functions
  */
 class MWF_Functions {
 
 	/**
-	 * Return true when the variable passed as an argument exists and the numeric value
+	 * Return true when the variable passed as an argument exists and the numeric value.
 	 *
-	 * @param variable $value Pass by reference
+	 * @param variable $value Pass by reference.
 	 * @return bool
 	 */
 	public static function is_numeric( &$value ) {
@@ -22,9 +21,9 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Delete empty element of array
+	 * Delete empty element of array.
 	 *
-	 * @param array $array
+	 * @param array $array Array.
 	 * @return array
 	 */
 	public static function array_clean( $array ) {
@@ -32,19 +31,19 @@ class MWF_Functions {
 	}
 
 	/**
-	 * If the value is empty (0 is permitted)
+	 * If the value is empty (0 is permitted).
 	 *
-	 * @param mixed
-	 * @return bool
+	 * @param mixed $value Value.
+	 * @return boolean
 	 */
 	public static function is_empty( $value ) {
 		return ( array() === $value || '' === $value || is_null( $value ) || false === $value );
 	}
 
 	/**
-	 * Convert file URL to file path
+	 * Convert file URL to file path.
 	 *
-	 * @param string $fileurl
+	 * @param string $fileurl File URL.
 	 * @return string
 	 */
 	public static function fileurl_to_path( $fileurl ) {
@@ -53,9 +52,9 @@ class MWF_Functions {
 		}
 
 		$wp_upload_dir = wp_upload_dir();
-		$baseurl = preg_replace( '/^https?:\/\/(.+)$/', '$1', $wp_upload_dir['baseurl'] );
-		$fileurl = preg_replace( '/^https?:\/\/(.+)$/', '$1', $fileurl );
-		$filepath = str_replace(
+		$baseurl       = preg_replace( '/^https?:\/\/(.+)$/', '$1', $wp_upload_dir['baseurl'] );
+		$fileurl       = preg_replace( '/^https?:\/\/(.+)$/', '$1', $fileurl );
+		$filepath      = str_replace(
 			$baseurl,
 			$wp_upload_dir['basedir'],
 			$fileurl
@@ -65,9 +64,9 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Convert file path to file URL
+	 * Convert file path to file URL.
 	 *
-	 * @param string $filepath
+	 * @param string $filepath File path.
 	 * @return string
 	 */
 	public static function filepath_to_url( $filepath ) {
@@ -76,7 +75,7 @@ class MWF_Functions {
 		}
 
 		$wp_upload_dir = wp_upload_dir();
-		$fileurl = str_replace(
+		$fileurl       = str_replace(
 			$wp_upload_dir['basedir'],
 			$wp_upload_dir['baseurl'],
 			$filepath
@@ -89,20 +88,20 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Unify line feed code to \n
+	 * Unify line feed code to \n.
 	 *
-	 * @param sring $string
-	 * @return string $string
+	 * @param sring $string String.
+	 * @return string
 	 */
 	public static function convert_eol( $string ) {
 		return preg_replace( "/\r\n|\r|\n/", "\n", $string );
 	}
 
 	/**
-	 * Display deprecated error message
+	 * Display deprecated error message.
 	 *
-	 * @param string $function_name
-	 * @param string $new_function_name
+	 * @param string $function_name  Function name.
+	 * @param string $new_function   New function name.
 	 */
 	public static function deprecated_message( $function_name, $new_function = '' ) {
 		if ( ! defined( 'WP_DEBUG' ) || true !== WP_DEBUG || ! current_user_can( 'manage_options' ) ) {
@@ -118,7 +117,11 @@ class MWF_Functions {
 		if ( $new_function ) {
 			$mwform_deprecated_message .= sprintf( 'You should use "<b>%s</b>". ', $new_function );
 		}
+
+		// phpcs:disable PHPCompatibility.FunctionUse.ArgumentFunctionsReportCurrentValue.NeedsInspection
 		$debug_backtrace = debug_backtrace();
+		// phpcs:enable
+
 		array_shift( $debug_backtrace );
 		foreach ( $debug_backtrace as $value ) {
 			if ( isset( $value['file'], $value['line'] ) ) {
@@ -142,12 +145,22 @@ class MWF_Functions {
 			}
 		}
 	}
+
+	/**
+	 * Display deprecated message.
+	 */
 	protected static function _display_deprecated_message() {
 		global $mwform_deprecated_message;
 		$content = $mwform_deprecated_message;
 		unset( $mwform_deprecated_message );
 		echo $content;
 	}
+
+	/**
+	 * Return deprecated message.
+	 *
+	 * @param string $content Content.
+	 */
 	public static function _return_deprecated_message( $content = '' ) {
 		global $mwform_deprecated_message;
 		$content = $mwform_deprecated_message . $content;
@@ -156,12 +169,12 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Move files from Temp directory to upload directory
+	 * Move files from Temp directory to upload directory.
 	 *
-	 * @param string $filepath Path of temp file
-	 * @param string $upload_dir Directory path of new file
-	 * @param string $filename new fine name
-	 * @return string New file path
+	 * @param string $filepath   Path of temp file.
+	 * @param string $upload_dir Directory path of new file.
+	 * @param string $filename   New fine name.
+	 * @return string
 	 */
 	public static function move_temp_file_to_upload_dir( $filepath, $upload_dir = '', $filename = '' ) {
 		$wp_upload_dir = wp_upload_dir();
@@ -170,7 +183,7 @@ class MWF_Functions {
 			$upload_dir = $wp_upload_dir['path'];
 		} else {
 			$upload_dir = trailingslashit( $wp_upload_dir['basedir'] ) . ltrim( $upload_dir, '/\\' );
-			$bool = wp_mkdir_p( $upload_dir );
+			wp_mkdir_p( $upload_dir );
 		}
 
 		if ( ! $filename ) {
@@ -179,14 +192,14 @@ class MWF_Functions {
 
 		if ( ! preg_match( '/(\..+?)$/', $filename ) ) {
 			$extension = pathinfo( $filepath, PATHINFO_EXTENSION );
-			$filename = $filename . '.' . $extension;
+			$filename  = $filename . '.' . $extension;
 		}
 		$filename = sanitize_file_name( $filename );
 		$filename = wp_unique_filename( $upload_dir, $filename );
 
 		$new_filepath = trailingslashit( $upload_dir ) . $filename;
 
-		if ( $filepath == $new_filepath ) {
+		if ( $filepath === $new_filepath ) {
 			return $filepath;
 		}
 
@@ -203,11 +216,11 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Save attached file on media, save attachment key (array) in posting data
+	 * Save attached file on media, save attachment key (array) in posting data.
 	 *
-	 * @param int $saved_mail_id
-	 * @param array $attachments (name => file path)
-	 * @param int $form_id
+	 * @param int   $saved_mail_id Saved mail ID.
+	 * @param array $attachments   Attachments.
+	 * @param int   $form_id       Form ID.
 	 * @return void
 	 */
 	public static function save_attachments_in_media( $saved_mail_id, $attachments, $form_id ) {
@@ -220,8 +233,7 @@ class MWF_Functions {
 			}
 
 			$wp_check_filetype = wp_check_filetype( $filepath );
-			global $wp_post_types;
-			$post_type = get_post_type_object( self::get_contact_data_post_type_from_form_id( $form_id ) );
+			$post_type         = get_post_type_object( self::get_contact_data_post_type_from_form_id( $form_id ) );
 			if ( empty( $post_type->label ) ) {
 				continue;
 			}
@@ -231,9 +243,7 @@ class MWF_Functions {
 				'post_status'    => 'inherit',
 				'post_content'   => __( 'Uploaded from ', 'mw-wp-form' ) . $post_type->label,
 			);
-			$attach_id   = wp_insert_attachment( $attachment, $filepath, $saved_mail_id );
-			$attach_data = wp_generate_attachment_metadata( $attach_id, $filepath );
-			$update_attachment_flg = wp_update_attachment_metadata( $attach_id, $attach_data );
+			$attach_id  = wp_insert_attachment( $attachment, $filepath, $saved_mail_id );
 			if ( $attach_id ) {
 				// 代わりにここで attachment_id を保存
 				update_post_meta( $saved_mail_id, $key, $attach_id );
@@ -247,10 +257,10 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Return true when correct file type
+	 * Return true when correct file type.
 	 *
-	 * @param string $filepath Uploaded file path
-	 * @param string $filename File name
+	 * @param string $filepath Uploaded file path.
+	 * @param string $filename File name.
 	 * @return bool
 	 */
 	public static function check_file_type( $filepath, $filename = '' ) {
@@ -276,7 +286,7 @@ class MWF_Functions {
 
 			// For files have multi mime types
 			switch ( $wp_check_filetype['ext'] ) {
-				case 'avi' :
+				case 'avi':
 					$wp_check_filetype['type'] = array(
 						'application/x-troff-msvideo',
 						'video/avi',
@@ -284,7 +294,7 @@ class MWF_Functions {
 						'video/x-msvideo',
 					);
 					break;
-				case 'mp3' :
+				case 'mp3':
 					$wp_check_filetype['type'] = array(
 						'audio/mpeg3',
 						'audio/x-mpeg3',
@@ -293,20 +303,20 @@ class MWF_Functions {
 						'audio/mpeg',
 					);
 					break;
-				case 'mpg' :
+				case 'mpg':
 					$wp_check_filetype['type'] = array(
 						'audio/mpeg',
 						'video/mpeg',
 					);
 					break;
-				case 'docx' :
+				case 'docx':
 					$wp_check_filetype['type'] = array(
 						$wp_check_filetype['type'],
 						'application/zip',
 						'application/msword',
 					);
 					break;
-				case 'xlsx' :
+				case 'xlsx':
 					$wp_check_filetype['type'] = array(
 						$wp_check_filetype['type'],
 						'application/zip',
@@ -315,7 +325,7 @@ class MWF_Functions {
 						'application/vnd.ms-excel',
 					);
 					break;
-				case 'pptx' :
+				case 'pptx':
 					$wp_check_filetype['type'] = array(
 						$wp_check_filetype['type'],
 						'application/zip',
@@ -328,7 +338,7 @@ class MWF_Functions {
 
 			$type = $finfo->file( $filepath );
 			if ( is_array( $wp_check_filetype['type'] ) ) {
-				if ( ! in_array( $type, $wp_check_filetype['type'] ) ) {
+				if ( ! in_array( $type, $wp_check_filetype['type'], true ) ) {
 					return false;
 				}
 			} else {
@@ -342,14 +352,14 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Return display name of the tracking number
+	 * Return display name of the tracking number.
 	 *
-	 * @param string $post_type Post type of inquiry data
+	 * @param string $post_type Post type of inquiry data.
 	 * @return string
 	 */
 	public static function get_tracking_number_title( $post_type ) {
 		$tracking_number_title = esc_html__( 'Tracking Number', 'mw-wp-form' );
-		$form_key = self::contact_data_post_type_to_form_key( $post_type );
+		$form_key              = self::contact_data_post_type_to_form_key( $post_type );
 		if ( $form_key ) {
 			$tracking_number_title = apply_filters(
 				'mwform_tracking_number_title_' . $form_key,
@@ -360,10 +370,10 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Return form key from inquiry data post type
+	 * Return form key from inquiry data post type.
 	 *
-	 * @param string $post_type Post type of inquiry data
-	 * @return string|null Form key
+	 * @param string $post_type Post type of inquiry data.
+	 * @return string|null
 	 */
 	public static function contact_data_post_type_to_form_key( $post_type ) {
 		if ( self::is_contact_data_post_type( $post_type ) ) {
@@ -375,10 +385,10 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Return form key from form ID
+	 * Return form key from form ID.
 	 *
-	 * @param int $form_id
-	 * @return string Form key
+	 * @param int $form_id Form ID.
+	 * @return string
 	 */
 	public static function get_form_key_from_form_id( $form_id ) {
 		if ( MWF_Functions::is_numeric( $form_id ) ) {
@@ -387,10 +397,10 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Return form ID from form key
+	 * Return form ID from form key.
 	 *
-	 * @param string $form_key
-	 * @return int Form ID
+	 * @param string $form_key Form key.
+	 * @return int
 	 */
 	public static function get_form_id_from_form_key( $form_key ) {
 		if ( preg_match( '/^' . MWF_Config::NAME . '-(\d+)$/', $form_key, $reg ) ) {
@@ -399,10 +409,10 @@ class MWF_Functions {
 	}
 
 	/**
- 	 * Return inquiry data post type from form ID
+	 * Return inquiry data post type from form ID.
 	 *
-	 * @param int $form_id
-	 * @return string Form key
+	 * @param int $form_id Form ID.
+	 * @return string
 	 */
 	public static function get_contact_data_post_type_from_form_id( $form_id ) {
 		if ( MWF_Functions::is_numeric( $form_id ) ) {
@@ -412,26 +422,26 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Whether the inquiry data post type
+	 * Whether the inquiry data post type.
 	 *
-	 * @param string $post_type
-	 * @return bool
+	 * @param string $post_type Post type name.
+	 * @return boolean
 	 */
 	public static function is_contact_data_post_type( $post_type ) {
 		return (bool) ( preg_match( '/^' . MWF_Config::DBDATA . '\d+$/', $post_type ) );
 	}
 
 	/**
-	 * Return converting attached data to appropriate HTML
+	 * Return converting attached data to appropriate HTML.
 	 *
-	 * @param string $value
+	 * @param string $value Post ID or not.
 	 * @return string
 	 */
 	public static function get_multimedia_data( $value ) {
 		$mimetype = get_post_mime_type( $value );
 		if ( $mimetype ) {
-			// Image
-			if ( in_array( $mimetype, array( 'image/jpeg', 'image/gif', 'image/png', 'image/bmp' ) ) ) {
+			if ( in_array( $mimetype, array( 'image/jpeg', 'image/gif', 'image/png', 'image/bmp' ), true ) ) {
+				// Image
 				$src_thumbnail = wp_get_attachment_image_src( $value, 'thumbnail' );
 				$src_full      = wp_get_attachment_image_src( $value, 'full' );
 				return sprintf(
@@ -439,9 +449,8 @@ class MWF_Functions {
 					esc_url( $src_full[0] ),
 					esc_url( $src_thumbnail[0] )
 				);
-			}
-			// Other
-			else {
+			} else {
+				// Other
 				$src = wp_mime_type_icon( $mimetype );
 				return sprintf(
 					'<a href="%s" target="_blank"><img src="%s" alt="" style="height:32px" /></a>',
@@ -449,35 +458,36 @@ class MWF_Functions {
 					esc_url( $src )
 				);
 			}
-		}
-		// Attached, but $value is not file ID because changed meta data by hook
-		else {
+		} else {
+			// Attached, but $value is not file ID because changed meta data by hook
 			return esc_html( $value );
 		}
 	}
 
 	/**
-	 * Return attachment file ID
-	 * 過去バージョンでの不具合でアップロードファイルを示すメタデータが空になっていることがあるのでその場合の代替処理
+	 * Return attachment file ID.
+	 * 過去バージョンでの不具合でアップロードファイルを示すメタデータが空になっていることがあるのでその場合の代替処理.
 	 *
-	 * @param WP_Post $post
-	 * @param int $meta_key
+	 * @param WP_Post $post     WP_Post object.
+	 * @param int     $meta_key Meta data name.
 	 * @return int
 	 */
 	public static function get_multimedia_id__fallback( $post, $meta_key ) {
-		$Contact_Data_Setting = new MW_WP_Form_Contact_Data_Setting( $post->ID );
-		$index = $Contact_Data_Setting->get_index_of_key_in_upload_file_keys( $meta_key );
+		$contact_data_setting = new MW_WP_Form_Contact_Data_Setting( $post->ID );
+		$index                = $contact_data_setting->get_index_of_key_in_upload_file_keys( $meta_key );
 
 		if ( false === $index ) {
 			return;
 		}
 
-		$attachments = get_posts( array(
-			'post_type'      => 'attachment',
-			'post_parent'    => $post->ID,
-			'posts_per_page' => 1,
-			'offset'         => $index,
-		) );
+		$attachments = get_posts(
+			array(
+				'post_type'      => 'attachment',
+				'post_parent'    => $post->ID,
+				'posts_per_page' => 1,
+				'offset'         => $index,
+			)
+		);
 
 		if ( isset( $attachments[0] ) ) {
 			return $attachments[0]->ID;
@@ -485,9 +495,9 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Enqueue MW WP Form assets
+	 * Enqueue MW WP Form assets.
 	 *
-	 * @param int $form_id
+	 * @param int $form_id Form ID.
 	 * @return void
 	 */
 	public static function mwform_enqueue_scripts( $form_id ) {
@@ -508,10 +518,10 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Generate input field's attribute and attribute value pair
+	 * Generate input field's attribute and attribute value pair.
 	 *
-	 * @param string $attribute_name
-	 * @param string $attribute_value
+	 * @param string $attribute_name  Attribute name.
+	 * @param string $attribute_value Attribute value.
 	 * @return string
 	 */
 	public static function generate_input_attribute( $attribute_name, $attribute_value ) {

@@ -1,16 +1,18 @@
 <?php
 /**
- * Name       : MW WP Form Contact Data Controller
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : December 31, 2014
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Contact_Data_Controller
  */
 class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		$screen = get_current_screen();
 		if ( 'post' !== $screen->base ) {
@@ -18,7 +20,7 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 		}
 
 		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_form_post_types();
-		if ( ! in_array( $screen->id, $contact_data_post_types ) ) {
+		if ( ! in_array( $screen->id, $contact_data_post_types, true ) ) {
 			exit;
 		}
 
@@ -34,28 +36,29 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 			$_post_id = $_POST['post_ID'];
 		}
 
-		$args = array_merge( $args, array(
-			'post_type'      => $screen->post_type,
-			'posts_per_page' => 1,
-			'post_status'    => 'any',
-			'p'              => $_post_id,
-		) );
+		$args         = array_merge(
+			$args,
+			array(
+				'post_type'      => $screen->post_type,
+				'posts_per_page' => 1,
+				'post_status'    => 'any',
+				'p'              => $_post_id,
+			)
+		);
 		$permit_posts = get_posts( $args );
 		if ( empty( $permit_posts ) ) {
 			return;
 		}
 
-		add_action( 'add_meta_boxes'       , array( $this, '_add_meta_boxes' ) );
+		add_action( 'add_meta_boxes', array( $this, '_add_meta_boxes' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue_scripts' ) );
-		add_action( 'admin_print_styles'   , array( $this, '_admin_print_styles' ) );
-		add_action( 'edit_form_top'        , array( $this, '_edit_form_top' ) );
-		add_action( 'save_post'            , array( $this, '_save_post' ) );
+		add_action( 'admin_print_styles', array( $this, '_admin_print_styles' ) );
+		add_action( 'edit_form_top', array( $this, '_edit_form_top' ) );
+		add_action( 'save_post', array( $this, '_save_post' ) );
 	}
 
 	/**
-	 * Add meta boxes
-	 *
-	 * @return void
+	 * Add meta boxes.
 	 */
 	public function _add_meta_boxes() {
 		$post_type = get_post_type();
@@ -68,9 +71,7 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * Enqueue assets
-	 *
-	 * @return void
+	 * Enqueue assets.
 	 */
 	public function _admin_enqueue_scripts() {
 		$url = plugins_url( MWF_Config::NAME );
@@ -78,33 +79,30 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * Delete add new link
-	 *
-	 * @return void
+	 * Delete add new link.
 	 */
 	public function _admin_print_styles() {
 		$this->_render( 'contact-data/admin-print-styles' );
 	}
 
 	/**
-	 * Render back to list link
-	 *
-	 * @param object $post
-	 * @return void
+	 * Render back to list link.
 	 */
-	public function _edit_form_top( $post ) {
+	public function _edit_form_top() {
 		$post_type = get_post_type();
-		$link = admin_url( '/edit.php?post_type=' . $post_type );
-		$this->_render( 'contact-data/returning-link', array(
-			'link' => $link,
-		) );
+		$link      = admin_url( '/edit.php?post_type=' . $post_type );
+		$this->_render(
+			'contact-data/returning-link',
+			array(
+				'link' => $link,
+			)
+		);
 	}
 
 	/**
-	 * Save
+	 * Save.
 	 *
-	 * @param int $post_id
-	 * @return void
+	 * @param int $post_id Post ID.
 	 */
 	public function _save_post( $post_id ) {
 		if ( ! isset( $_POST['post_type'] ) ) {
@@ -112,7 +110,7 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 		}
 
 		$contact_data_post_types = MW_WP_Form_Contact_Data_setting::get_form_post_types();
-		if ( ! in_array( $_POST['post_type'], $contact_data_post_types ) ) {
+		if ( ! in_array( $_POST['post_type'], $contact_data_post_types, true ) ) {
 			return;
 		}
 
@@ -128,35 +126,37 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 			return;
 		}
 
-		$Contact_Data_Setting = new MW_WP_Form_Contact_Data_setting( $post_id );
-		$permit_keys = $Contact_Data_Setting->get_permit_keys();
-		$data = array();
+		$contact_data_setting = new MW_WP_Form_Contact_Data_setting( $post_id );
+		$permit_keys          = $contact_data_setting->get_permit_keys();
+		$data                 = array();
 		foreach ( $permit_keys as $key ) {
 			if ( isset( $_POST[ MWF_Config::INQUIRY_DATA_NAME ][ $key ] ) ) {
 				$value = $_POST[ MWF_Config::INQUIRY_DATA_NAME ][ $key ];
 				if ( 'response_status' === $key ) {
-					if ( ! array_key_exists( $value, $Contact_Data_Setting->get_response_statuses() ) ) {
+					if ( ! array_key_exists( $value, $contact_data_setting->get_response_statuses() ) ) {
 						continue;
 					}
 				}
 				$data[ $key ] = $value;
 			}
 		}
-		$Contact_Data_Setting->sets( $data );
-		$Contact_Data_Setting->save();
+		$contact_data_setting->sets( $data );
+		$contact_data_setting->save();
 	}
 
 	/**
-	 * Render detail meta box
+	 * Render detail meta box.
 	 *
-	 * @param WP_Post $post
-	 * @return void
+	 * @param WP_Post $post WP_Post object.
 	 */
 	public function _detail( $post ) {
-		$this->_render( 'contact-data/detail', array(
-			'post'                 => $post,
-			'post_type'            => $post->post_type,
-			'Contact_Data_Setting' => new MW_WP_Form_Contact_Data_Setting( get_the_ID() ),
-		) );
+		$this->_render(
+			'contact-data/detail',
+			array(
+				'post'                 => $post,
+				'post_type'            => $post->post_type,
+				'Contact_Data_Setting' => new MW_WP_Form_Contact_Data_Setting( get_the_ID() ),
+			)
+		);
 	}
 }

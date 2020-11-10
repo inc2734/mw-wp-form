@@ -1,13 +1,12 @@
 <?php
 /**
- * Name       : MW WP Form Mail
- * Version    : 3.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : July 20, 2012
- * Modified   : May 31, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Mail
  */
 class MW_WP_Form_Mail {
 
@@ -67,7 +66,7 @@ class MW_WP_Form_Mail {
 	protected $Mail_Parser;
 
 	/**
-	 * Send mail
+	 * Send mail.
 	 *
 	 * @return boolean
 	 */
@@ -81,8 +80,8 @@ class MW_WP_Form_Mail {
 			return apply_filters( 'mwform_is_mail_sended', false );
 		}
 
-		add_action( 'phpmailer_init'   , array( $this, '_set_return_path' ) );
-		add_filter( 'wp_mail_from'     , array( $this, '_set_mail_from' ) );
+		add_action( 'phpmailer_init', array( $this, '_set_return_path' ) );
+		add_filter( 'wp_mail_from', array( $this, '_set_mail_from' ) );
 		add_filter( 'wp_mail_from_name', array( $this, '_set_mail_from_name' ) );
 
 		$headers = array();
@@ -110,17 +109,17 @@ class MW_WP_Form_Mail {
 			$is_mail_sended = wp_mail( $this->to, $this->subject, $this->body, $headers, $this->attachments );
 		}
 
-		remove_action( 'phpmailer_init'   , array( $this, '_set_return_path' ) );
-		remove_filter( 'wp_mail_from'     , array( $this, '_set_mail_from' ) );
+		remove_action( 'phpmailer_init', array( $this, '_set_return_path' ) );
+		remove_filter( 'wp_mail_from', array( $this, '_set_mail_from' ) );
 		remove_filter( 'wp_mail_from_name', array( $this, '_set_mail_from_name' ) );
 
 		return apply_filters( 'mwform_is_mail_sended', $is_mail_sended );
 	}
 
 	/**
-	 * Set mail from
+	 * Set mail from.
 	 *
-	 * @param string $email
+	 * @param string $email E-mail.
 	 * @return string
 	 */
 	public function _set_mail_from( $email ) {
@@ -132,9 +131,9 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * Set sender (from name)
+	 * Set sender (from name).
 	 *
-	 * @param string $sender
+	 * @param string $sender Sender.
 	 * @return string
 	 */
 	public function _set_mail_from_name( $sender ) {
@@ -146,10 +145,9 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * Set Return-Path
+	 * Set Return-Path.
 	 *
-	 * @param phpmailer $phpmailer
-	 * @return void
+	 * @param phpmailer $phpmailer phpmailer object.
 	 */
 	public function _set_return_path( $phpmailer ) {
 		if ( $this->return_path ) {
@@ -160,26 +158,27 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * Create mail content from array
+	 * Create mail content from array.
 	 *
-	 * @param array
-	 * @param array
+	 * @param array $array   Posted key and value.
+	 * @param array $options Options.
 	 * @return string
 	 */
 	public function createBody( array $array, array $options = array() ) {
-		$_ret = '';
+		$_ret     = '';
 		$defaults = array(
-			'exclude' => array()
+			'exclude' => array(),
 		);
-		$options = array_merge( $defaults, $options );
-		foreach( $array as $key => $value ) {
-			if ( in_array( $key, $options['exclude'] ) )
+		$options  = array_merge( $defaults, $options );
+		foreach ( $array as $key => $value ) {
+			if ( in_array( $key, $options['exclude'], true ) ) {
 				continue;
+			}
 			if ( is_array( $value ) && isset( $value['separator'], $value['data'] ) ) {
 				$_value = '';
 				if ( is_array( $value['data'] ) ) {
 					foreach ( $value['data'] as $_val ) {
-						if ( '' !== $_val && ! is_null ( $_val ) ) {
+						if ( '' !== $_val && ! is_null( $_val ) ) {
 							$_value = implode( $value['separator'], $value['data'] );
 							break;
 						}
@@ -197,10 +196,9 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * Set defaults setting for admin mail
+	 * Set defaults setting for admin mail.
 	 *
-	 * @param MW_WP_Form_Setting $Setting
-	 * @return void
+	 * @param MW_WP_Form_Setting $Setting MW_WP_Form_Setting object.
 	 */
 	public function set_admin_mail_raw_params( MW_WP_Form_Setting $Setting ) {
 		$this->subject     = $Setting->get( 'admin_mail_subject' );
@@ -215,10 +213,9 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
- 	 * Set defaults setting for reply mail
+	 * Set defaults setting for reply mail.
 	 *
-	 * @param MW_WP_Form_Setting $Setting
-	 * @return void
+	 * @param MW_WP_Form_Setting $Setting MW_WP_Form_Setting object.
 	 */
 	public function set_reply_mail_raw_params( MW_WP_Form_Setting $Setting ) {
 		$this->to          = '';
@@ -226,16 +223,16 @@ class MW_WP_Form_Mail {
 		$this->bcc         = '';
 		$this->attachments = array();
 
-		$form_id  = $Setting->get( 'post_id' );
-		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
-		$Data     = MW_WP_Form_Data::connect( $form_key );
+		$form_id               = $Setting->get( 'post_id' );
+		$form_key              = MWF_Functions::get_form_key_from_form_id( $form_id );
+		$Data                  = MW_WP_Form_Data::connect( $form_key );
 		$automatic_reply_email = $Setting->get( 'automatic_reply_email' );
 
 		if ( ! $form_id ) {
 			return;
 		}
 
-		$Validation = new MW_WP_Form_Validation_Rule_Mail( $Data );
+		$Validation              = new MW_WP_Form_Validation_Rule_Mail( $Data );
 		$is_invalid_mail_address = $Validation->rule(
 			$automatic_reply_email
 		);
@@ -253,23 +250,22 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * Replace {name} to content in mail content
+	 * Replace {name} to content in mail content.
 	 *
-	 * @param MW_WP_Form_Setting $Setting
-	 * @return void
+	 * @param MW_WP_Form_Setting $Setting MW_WP_Form_Setting object.
 	 */
 	public function parse( $Setting ) {
 		$this->Mail_Parser = new MW_WP_Form_Mail_Parser( $this, $Setting );
-		$Mail = $this->Mail_Parser->get_parsed_mail_object();
+		$Mail              = $this->Mail_Parser->get_parsed_mail_object();
 		foreach ( get_object_vars( $Mail ) as $key => $value ) {
 			$this->$key = $value;
 		}
 	}
 
 	/**
-	 * Save to database
+	 * Save to database.
 	 *
-	 * @param MW_WP_Form_Setting $Setting
+	 * @param MW_WP_Form_Setting $Setting MW_WP_Form_Setting object.
 	 * @return int
 	 */
 	public function save( $Setting ) {
@@ -279,19 +275,20 @@ class MW_WP_Form_Mail {
 	}
 
 	/**
-	 * Return saved mail ID
+	 * Return saved mail ID.
 	 *
 	 * @return int
 	 */
-	public function get_saved_mail_id(){
+	public function get_saved_mail_id() {
 		if ( $this->Mail_Parser ) {
 			return $this->Mail_Parser->get_saved_mail_id();
 		}
 	}
 
 	/**
-	 * Logging that MW WP Form sending mail
+	 * Logging that MW WP Form sending mail.
 	 *
+	 * @param string $headers Mail headers.
 	 * @return bool
 	 */
 	protected function _put_mail_log( $headers ) {
@@ -305,7 +302,7 @@ class MW_WP_Form_Mail {
 		$temp_dir = trailingslashit( $temp_dir['dir'] );
 		$temp_dir = apply_filters( 'mwform_log_directory', $temp_dir );
 
-		$contents  = "====================";
+		$contents  = '====================';
 		$contents .= "\n\n";
 		$contents .= 'Send Date: %1$s';
 		$contents .= "\n";
@@ -336,7 +333,7 @@ class MW_WP_Form_Mail {
 
 		$contents = sprintf(
 			$contents,
-			date( 'M j Y, H:i:s' ),
+			date_i18n( 'M j Y, H:i:s' ),
 			$this->to,
 			$this->sender,
 			$this->reply_to,
@@ -350,7 +347,7 @@ class MW_WP_Form_Mail {
 
 		$is_mail_sended = file_put_contents( $temp_dir . '/mw-wp-form-debug.log', $contents, FILE_APPEND );
 
-		if ( false === $is_mail_sended) {
+		if ( false === $is_mail_sended ) {
 			return false;
 		}
 

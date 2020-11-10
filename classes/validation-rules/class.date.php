@@ -1,28 +1,28 @@
 <?php
 /**
- * Name       : MW WP Form Validation Rule Date
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : July 21, 2014
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Validation_Rule_Date
  */
 class MW_WP_Form_Validation_Rule_Date extends MW_WP_Form_Abstract_Validation_Rule {
 
 	/**
-	 * Validation rule name
+	 * Validation rule name.
+	 *
 	 * @var string
 	 */
 	protected $name = 'date';
 
 	/**
-	 * Validation process
+	 * Validation process.
 	 *
-	 * @param string $name
-	 * @param array $option
-	 * @return string Error message
+	 * @param string $name    Validation name.
+	 * @param array  $options Validation options.
+	 * @return string
 	 */
 	public function rule( $name, array $options = array() ) {
 		$value = $this->Data->get( $name );
@@ -32,9 +32,9 @@ class MW_WP_Form_Validation_Rule_Date extends MW_WP_Form_Abstract_Validation_Rul
 		}
 
 		$defaults = array(
-			'message' => __( 'This is not the format of a date.', 'mw-wp-form' )
+			'message' => __( 'This is not the format of a date.', 'mw-wp-form' ),
 		);
-		$options = array_merge( $defaults, $options );
+		$options  = array_merge( $defaults, $options );
 
 		$timestamp = strtotime( $value );
 		if ( ! $timestamp ) {
@@ -44,9 +44,9 @@ class MW_WP_Form_Validation_Rule_Date extends MW_WP_Form_Abstract_Validation_Rul
 			return $options['message'];
 		}
 
-		$year  = date( 'Y', $timestamp );
-		$month = date( 'm', $timestamp );
-		$day   = date( 'd', $timestamp );
+		$year      = date_i18n( 'Y', $timestamp );
+		$month     = date_i18n( 'm', $timestamp );
+		$day       = date_i18n( 'd', $timestamp );
 		$checkdate = checkdate( $month, $day, $year );
 
 		if ( ! $timestamp || ! $checkdate || preg_match( '/^[a-zA-Z]$/', $value ) || preg_match( '/^\s+$/', $value ) ) {
@@ -55,9 +55,9 @@ class MW_WP_Form_Validation_Rule_Date extends MW_WP_Form_Abstract_Validation_Rul
 	}
 
 	/**
-	 * Convert Japanese notation date to time stamp
+	 * Convert Japanese notation date to time stamp.
 	 *
-	 * @param string $jpdate yyyy年mm月dd日
+	 * @param string $jpdate yyyy年mm月dd日.
 	 * @return string|false
 	 */
 	public function convert_jpdate_to_timestamp( $jpdate ) {
@@ -69,10 +69,10 @@ class MW_WP_Form_Validation_Rule_Date extends MW_WP_Form_Abstract_Validation_Rul
 	}
 
 	/**
-	 * Add setting field to validation rule setting panel
+	 * Add setting field to validation rule setting panel.
 	 *
-	 * @param numeric $key ID of validation rule
-	 * @param array $value Content of validation rule
+	 * @param numeric $key ID of validation rule.
+	 * @param array   $value Content of validation rule.
 	 * @return void
 	 */
 	public function admin( $key, $value ) {

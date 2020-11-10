@@ -1,13 +1,12 @@
 <?php
 /**
- * Name       : MW WP Form Data
- * Version    : 3.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : October 10, 2013
- * Modified   : June 1, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Data
  */
 class MW_WP_Form_Data {
 
@@ -20,7 +19,15 @@ class MW_WP_Form_Data {
 	 * @var MW_WP_Form_Sesion
 	 */
 	protected $Session;
+
+	/**
+	 * @var MW_WP_Form_Sesion
+	 */
 	protected $Session_meta;
+
+	/**
+	 * @var MW_WP_Form_Sesion
+	 */
 	protected $Session_validation_error;
 
 	/**
@@ -36,14 +43,24 @@ class MW_WP_Form_Data {
 	/**
 	 * @var array
 	 */
-	protected $variables         = array();
-	protected $meta              = array();
+	protected $variables = array();
+
+	/**
+	 * @var array
+	 */
+	protected $meta = array();
+
+	/**
+	 * @var array
+	 */
 	protected $validation_errors = array();
 
 	/**
-	 * @param string $form_key
-	 * @param array $POST $_POST
-	 * @param array $FILES $_FILES
+	 * Constructor.
+	 *
+	 * @param string $form_key Form key.
+	 * @param array  $POST     $_POST.
+	 * @param array  $FILES    $_FILES.
 	 */
 	private function __construct( $form_key, array $POST = array(), array $FILES = array() ) {
 		$this->Session                  = new MW_WP_Form_Session( $form_key );
@@ -75,8 +92,6 @@ class MW_WP_Form_Data {
 
 	/**
 	 * Save posted data to session
-	 *
-	 * @return void
 	 */
 	public function _save_to_session() {
 		$this->Session->clear_values();
@@ -90,11 +105,11 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Instantiation MW_WP_Form_Data
+	 * Instantiation MW_WP_Form_Data.
 	 *
- 	 * @param string $form_key
- 	 * @param array $POST $_POST
- 	 * @param array $FILES $_FILES
+	 * @param string $form_key Form key.
+	 * @param array  $POST     $_POST.
+	 * @param array  $FILES    $_FILES.
 	 * @return MW_WP_Form_Data
 	 */
 	public static function connect( $form_key, $POST = null, $FILES = null ) {
@@ -114,6 +129,13 @@ class MW_WP_Form_Data {
 		return self::$Instances[ $form_key ];
 	}
 
+	/**
+	 * Get instance.
+	 *
+	 * @param string $form_key Form key.
+	 * @param array  $POST     $_POST.
+	 * @param array  $FILES    $_FILES.
+	 */
 	public static function getInstance( $form_key = null, $POST = null, $FILES = null ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Data::getInstance()',
@@ -130,7 +152,7 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Return form key
+	 * Return form key.
 	 *
 	 * @return string
 	 */
@@ -141,19 +163,16 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Set form key
+	 * Set form key.
 	 *
-	 * @param string $form_key
-	 * @return void
+	 * @param string $form_key Form key.
 	 */
 	protected function _set_form_key( $form_key ) {
 		$this->meta['form_key'] = $form_key;
 	}
 
 	/**
-	 * Set $_POST variables
-	 *
-	 * @return void
+	 * Set $_POST variables.
 	 */
 	protected function _set_request_valiables() {
 		if ( ! empty( $this->POST ) ) {
@@ -162,15 +181,13 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Set $_FILES variables
-	 *
-	 * @return void
+	 * Set $_FILES variables.
 	 */
 	protected function _set_files_valiables() {
 		$files = array();
 		foreach ( $this->FILES as $name => $file ) {
 			if ( ! isset( $this->POST[ $name ] ) || ! empty( $file['name'] ) ) {
-				if ( $file['error'] == UPLOAD_ERR_OK && is_uploaded_file( $file['tmp_name'] ) ) {
+				if ( UPLOAD_ERR_OK === $file['error'] && is_uploaded_file( $file['tmp_name'] ) ) {
 					$this->set( $name, $file['name'] );
 				} else {
 					$this->set( $name, '' );
@@ -189,9 +206,9 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * 送信データからどのページを表示すべきかの状態を判定して返す
-	 * Return post condition based on posted data
-	 * But this post condition is not the page to actually display (e.g. validation error)
+	 * 送信データからどのページを表示すべきかの状態を判定して返す.
+	 * Return post condition based on posted data.
+	 * But this post condition is not the page to actually display (e.g. validation error).
 	 *
 	 * @return string back|confirm|complete|input
 	 */
@@ -211,7 +228,7 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Get values
+	 * Get values.
 	 *
 	 * @return array
 	 */
@@ -220,21 +237,20 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Set the value
+	 * Set the value.
 	 *
-	 * @param string $name
-	 * @param string $value
+	 * @param string $name  Field name.
+	 * @param string $value Posted value.
 	 * @return void
 	 */
-	public function set( $name, $value ){
+	public function set( $name, $value ) {
 		$this->variables[ $name ] = $value;
 	}
 
 	/**
-	 * Set values
+	 * Set values.
 	 *
-	 * @param array $array
-	 * @return void
+	 * @param array $array Posted data.
 	 */
 	public function sets( array $array ) {
 		foreach ( $array as $name => $value ) {
@@ -243,10 +259,9 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Clear the value
+	 * Clear the value.
 	 *
-	 * @param string $name
-	 * @return void
+	 * @param string $name Field name.
 	 */
 	public function clear_value( $name ) {
 		if ( isset( $this->variables[ $name ] ) ) {
@@ -255,9 +270,7 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Clear all values
-	 *
-	 * @return void
+	 * Clear all values.
 	 */
 	public function clear_values() {
 		$this->variables         = array();
@@ -266,10 +279,10 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Push the value
+	 * Push the value.
 	 *
-	 * @param string $name
-	 * @param string $value
+	 * @param string $name  Field name.
+	 * @param string $value Posted value.
 	 * @return void
 	 */
 	public function push( $name, $value ) {
@@ -279,17 +292,17 @@ class MW_WP_Form_Data {
 			if ( is_array( $this->variables[ $name ] ) ) {
 				$this->variables[ $name ][] = $value;
 			} else {
-				$this->variables[ $name ] = array( $this->variables[ $name ] );
+				$this->variables[ $name ]   = array( $this->variables[ $name ] );
 				$this->variables[ $name ][] = $value;
 			}
 		}
 	}
 
 	/**
-	 * Return Formatted (transmittable) data. Auto discrimination name value or label
+	 * Return Formatted (transmittable) data. Auto discrimination name value or label.
 	 *
-	 * @param string $name
-	 * @param array $children
+	 * @param string $name     Field name.
+	 * @param array  $children Children.
 	 * @return string|null
 	 */
 	public function get( $name, array $children = array() ) {
@@ -337,9 +350,9 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Get the raw value
+	 * Get the raw value.
 	 *
-	 * @param string $name
+	 * @param string $name Field name.
 	 * @return string|null
 	 */
 	public function get_raw( $name ) {
@@ -388,9 +401,9 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Return posted data specify the name (In addition to value, separator and data etc are linked)
+	 * Return posted data specify the name (In addition to value, separator and data etc are linked).
 	 *
-	 * @param string $name
+	 * @param string $name Field name.
 	 * @return mixed
 	 */
 	public function get_post_value_by_key( $name ) {
@@ -400,10 +413,10 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Return value when only in $children
+	 * Return value when only in $children.
 	 *
-	 * @param string $name
-	 * @param array $children
+	 * @param string $name     Field name.
+	 * @param array  $children Children.
 	 * @return string
 	 */
 	public function get_in_children( $name, array $children ) {
@@ -420,10 +433,10 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Return raw value when only in $children
+	 * Return raw value when only in $children.
 	 *
-	 * @param string $name
-	 * @param array $children
+	 * @param string $name     Field name.
+	 * @param array  $children Children.
 	 * @return string
 	 */
 	public function get_raw_in_children( $name, array $children ) {
@@ -440,9 +453,9 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Return posted separator value
+	 * Return posted separator value.
 	 *
-	 * @param string $name
+	 * @param string $name Field name.
 	 * @return string
 	 */
 	public function get_separator_value( $name ) {
@@ -453,10 +466,10 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Return formatted label from array. If doesn't have separator, return null
+	 * Return formatted label from array. If doesn't have separator, return null.
 	 *
-	 * @param string $name
-	 * @param array $children
+	 * @param string $name     Field name.
+	 * @param array  $children Children.
 	 * @return string|null
 	 */
 	public function get_separated_value( $name, array $children ) {
@@ -486,7 +499,7 @@ class MW_WP_Form_Data {
 
 		$rightData = array();
 		foreach ( $value['data'] as $child ) {
-			if ( isset( $children[ $child ] ) && !in_array( $children[ $child ], $rightData ) ) {
+			if ( isset( $children[ $child ] ) && ! in_array( $children[ $child ], $rightData, true ) ) {
 				$rightData[] = $children[ $child ];
 			}
 		}
@@ -495,10 +508,10 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Return formatted name value from array. If doesn't have separator, return null
+	 * Return formatted name value from array. If doesn't have separator, return null.
 	 *
-	 * @param string $name
-	 * @param array $children 選択肢
+	 * @param string $name     Field name.
+	 * @param array  $children Children.
 	 * @return string|null
 	 */
 	public function get_separated_raw_value( $name, array $children ) {
@@ -528,7 +541,7 @@ class MW_WP_Form_Data {
 
 		$rightData = array();
 		foreach ( $value['data'] as $child ) {
-			if ( isset( $children[ $child ] ) && !in_array( $child, $rightData ) ) {
+			if ( isset( $children[ $child ] ) && ! in_array( $child, $rightData, true ) ) {
 				$rightData[] = $child;
 			}
 		}
@@ -536,11 +549,10 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Return formatted label from array. If doesn't have separator, return null
-	 * If it is all empty don't implode, even if there is even one value return
+	 * Return formatted label from array. If doesn't have separator, return null.
+	 * If it is all empty don't implode, even if there is even one value return.
 	 *
-	 * @param string $name
-	 * @param string $separator
+	 * @param string $name Field name.
 	 * @return string|null
 	 */
 	protected function get_separated_value_not_children_set( $name ) {
@@ -573,9 +585,7 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Delete name of upload failed file or name of deleted file from UPLOAD_FILE_KEYS
-	 *
-	 * @return void
+	 * Delete name of upload failed file or name of deleted file from UPLOAD_FILE_KEYS.
 	 */
 	public function regenerate_upload_file_keys() {
 		$upload_file_keys = $this->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
@@ -593,10 +603,9 @@ class MW_WP_Form_Data {
 		}
 		$upload_file_keys = array_values( array_unique( $upload_file_keys ) );
 
-		$wp_upload_dir = wp_upload_dir();
 		foreach ( $upload_file_keys as $key => $upload_file_key ) {
 			$upload_file_url = $this->get_post_value_by_key( $upload_file_key );
-			$filepath = MWF_Functions::fileurl_to_path( $upload_file_url );
+			$filepath        = MWF_Functions::fileurl_to_path( $upload_file_url );
 			if ( ! $upload_file_url || ! file_exists( $filepath ) ) {
 				unset( $upload_file_keys[ $key ] );
 			}
@@ -606,9 +615,9 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Store uploaded files in UPLOAD_FILE_KEYS
+	 * Store uploaded files in UPLOAD_FILE_KEYS.
 	 *
-	 * @param array $uploaded_files Array of uploaded file url
+	 * @param array $uploaded_files Array of uploaded file url.
 	 */
 	public function push_uploaded_file_keys( array $uploaded_files = array() ) {
 		$upload_file_keys = $this->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
@@ -619,24 +628,23 @@ class MW_WP_Form_Data {
 
 		foreach ( $uploaded_files as $key => $upload_file ) {
 			$this->set( $key, $upload_file );
-			if ( is_array( $upload_file_keys ) && ! in_array( $key, $upload_file_keys ) ) {
+			if ( is_array( $upload_file_keys ) && ! in_array( $key, $upload_file_keys, true ) ) {
 				$this->push( MWF_Config::UPLOAD_FILE_KEYS, $key );
 			}
 		}
 	}
 
 	/**
-	 * Set view flg that is shows the screen to be displayed
+	 * Set view flg that is shows the screen to be displayed.
 	 *
-	 * @param string null|input|confirm|complete
-	 * @return void
+	 * @param string $view_flg null|input|confirm|complete.
 	 */
 	public function set_view_flg( $view_flg ) {
 		$this->meta['view_flg'] = $view_flg;
 	}
 
 	/**
-	 * Return view flg that is shows the screen to be displayed
+	 * Return view flg that is shows the screen to be displayed.
 	 *
 	 * @return string null|input|confirm|complete
 	 */
@@ -647,17 +655,16 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Set saved mail id
+	 * Set saved mail id.
 	 *
-	 * @param int $saved_mail_id
-	 * @return void
+	 * @param int $saved_mail_id Saved mail ID.
 	 */
 	public function set_saved_mail_id( $saved_mail_id ) {
 		$this->meta['saved_mail_id'] = $saved_mail_id;
 	}
 
 	/**
-	 * Return saved mail id
+	 * Return saved mail id.
 	 *
 	 * @return int|null
 	 */
@@ -668,16 +675,14 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Set send error flg
-	 *
-	 * @return void
+	 * Set send error flg.
 	 */
 	public function set_send_error() {
 		$this->meta[ MWF_Config::SEND_ERROR ] = true;
 	}
 
 	/**
-	 * Return send error flg
+	 * Return send error flg.
 	 *
 	 * @return boolean
 	 */
@@ -688,37 +693,36 @@ class MW_WP_Form_Data {
 	}
 
 	/**
-	 * Nonce check
+	 * Nonce check.
 	 *
 	 * @return bool
 	 */
 	protected function _is_valid_token() {
 		$request_token = $this->get_post_value_by_key( MWF_Config::TOKEN_NAME );
-		$values        = $this->gets();
 		$form_key      = $this->get_form_key();
 		return ( isset( $request_token ) && wp_verify_nonce( $request_token, $form_key ) );
 	}
 
 	/**
-	 * Set the error message
+	 * Set the error message.
 	 *
-	 * @param string $name
-	 * @param string $rule
-	 * @param string $message
+	 * @param string $name    Field name.
+	 * @param string $rule    Validation name.
+	 * @param string $message Validation error message.
 	 */
 	public function set_validation_error( $name, $rule, $message ) {
 		if ( ! is_string( $message ) ) {
 			exit( 'The Validate error message must be string!' );
 		}
-		$errors = $this->get_validation_error( $name );
-		$errors[ $rule ] = $message;
+		$errors                           = $this->get_validation_error( $name );
+		$errors[ $rule ]                  = $message;
 		$this->validation_errors[ $name ] = $errors;
 	}
 
 	/**
-	 * Return error messages the one form field
+	 * Return error messages the one form field.
 	 *
-	 * @param string $name
+	 * @param string $name Field name.
 	 * @return array
 	 */
 	public function get_validation_error( $name ) {

@@ -1,18 +1,17 @@
 <?php
 /**
- * Name       : MW WP Form Validation Rules
- * Version    : 1.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : June 1, 2017
- * Modified   :
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Validation_Rules
  */
 class MW_WP_Form_Validation_Rules {
 
 	/**
-	 * @var array Array of MW_WP_Form_Validation_Rules
+	 * @var array Array of MW_WP_Form_Validation_Rules.
 	 */
 	protected static $Instances;
 
@@ -22,7 +21,8 @@ class MW_WP_Form_Validation_Rules {
 	protected $form_key;
 
 	/**
-	 * Array of validation rules. Definition is necessary to fix the order
+	 * Array of validation rules. Definition is necessary to fix the order.
+	 *
 	 * @var array
 	 */
 	protected static $validation_rules = array(
@@ -51,7 +51,9 @@ class MW_WP_Form_Validation_Rules {
 	);
 
 	/**
-	 * @param string $form_key
+	 * Constructor.
+	 *
+	 * @param string $form_key Form key.
 	 */
 	private function __construct( $form_key ) {
 		$this->form_key = $form_key;
@@ -66,6 +68,12 @@ class MW_WP_Form_Validation_Rules {
 		}
 	}
 
+	/**
+	 * Instantiation.
+	 *
+	 * @param string $form_key Form key.
+	 * @return MW_WP_Form_Validation_Rules
+	 */
 	public static function instantiation( $form_key ) {
 		if ( isset( self::$Instances[ $form_key ] ) ) {
 			return self::$Instances[ $form_key ];
@@ -78,7 +86,7 @@ class MW_WP_Form_Validation_Rules {
 	/**
 	 * Instantiation of validation rules. Set in the array through the hook.
 	 *
-	 * @return $validation_rules Array of MW_WP_Form_Abstract_Validation_Rule
+	 * @return array
 	 */
 	public function get_validation_rules() {
 		self::$validation_rules = apply_filters(
@@ -102,9 +110,9 @@ class MW_WP_Form_Validation_Rules {
 	}
 
 	/**
-	 * Return class name from filename of validation rule
+	 * Return class name from filename of validation rule.
 	 *
-	 * @param string $filename
+	 * @param string $filename File name.
 	 * @return string
 	 */
 	protected static function _get_class_name_from_validation_rule_filename( $filename ) {

@@ -1,5 +1,6 @@
-dist: trusty
+dist: xenial
 language: php
+services: docker
 
 notifications:
   email:
@@ -8,7 +9,7 @@ notifications:
 
 php:
   - 5.6
-  - 7.1
+  - 7.3
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0
@@ -23,9 +24,9 @@ cache:
   - "$HOME/.composer/cache"
 
 install:
+- nvm install 12
+- npm install
 - composer install
 
-before_script:
-  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-
-script: composer test
+script:
+- npm run test

@@ -1,48 +1,50 @@
 <?php
 /**
- * Name       : MW WP Form Chart Controller
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : January 1, 2015
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Chart_Controller
  */
 class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 
 	/**
-	 * Post type of saved inquiry data to display in this chart
+	 * Post type of saved inquiry data to display in this chart.
+	 *
 	 * @var string
 	 */
 	protected $formkey;
 
 	/**
-	 * Settings of the form
+	 * Settings of the form.
+	 *
 	 * @var array
 	 */
 	protected $postdata = array();
 
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		if ( ! empty( $_GET['formkey'] ) ) {
 			$this->formkey = $_GET['formkey'];
 		}
 
 		$contact_data_post_types = MW_WP_Form_Contact_Data_Setting::get_form_post_types();
-		if ( ! in_array( $this->formkey, $contact_data_post_types ) ) {
+		if ( ! in_array( $this->formkey, $contact_data_post_types, true ) ) {
 			exit;
 		}
-		add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue_scripts') );
+		add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue_scripts' ) );
 
 		$screen = get_current_screen();
 		add_action( 'load-' . $screen->id, array( $this, '_save' ) );
-		add_action( $screen->id          , array( $this, '_index' ) );
+		add_action( $screen->id, array( $this, '_index' ) );
 	}
 
 	/**
-	 * Enqueue assets
-	 *
-	 * @return void
+	 * Enqueue assets.
 	 */
 	public function _admin_enqueue_scripts() {
 		global $wp_scripts;
@@ -95,9 +97,7 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * Save
-	 *
-	 * @return void
+	 * Save.
 	 */
 	public function _save() {
 		if ( ! isset( $_POST[ MWF_Config::NAME . '-chart-nonce-field' ] ) ) {
@@ -116,7 +116,7 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 			return;
 		}
 
-		$option_name = MWF_Config::NAME . '-chart-' . $this->formkey;
+		$option_name      = MWF_Config::NAME . '-chart-' . $this->formkey;
 		$sanitized_values = $this->_sanitize( $_POST[ $option_name ] );
 		update_option( $option_name, $sanitized_values );
 		wp_redirect(
@@ -128,9 +128,7 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 	}
 
 	/**
-	 * Display chart page
-	 *
-	 * @return void
+	 * Display chart page.
 	 */
 	public function _index() {
 		$post_type = $this->formkey;
@@ -139,10 +137,13 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 		if ( empty( $args ) || ! is_array( $args ) ) {
 			$args = array();
 		}
-		$args = array_merge( $args, array(
-			'posts_per_page' => -1,
-			'post_type'      => $post_type,
-		) );
+		$args = array_merge(
+			$args,
+			array(
+				'posts_per_page' => -1,
+				'post_type'      => $post_type,
+			)
+		);
 
 		$form_posts = get_posts( $args );
 
@@ -155,7 +156,7 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 					if ( preg_match( '/^_/', $post_custom_key ) ) {
 						continue;
 					}
-					$post_meta = get_post_meta( $post->ID, $post_custom_key, true );
+					$post_meta                                       = get_post_meta( $post->ID, $post_custom_key, true );
 					$custom_keys[ $post_custom_key ][ $post_meta ][] = $post->ID;
 				}
 			}
@@ -175,18 +176,21 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 		// 空の隠れフィールド（コピー元）を挿入
 		array_unshift( $postdata, $default_keys );
 
-		$this->_render( 'chart/index', array(
-			'post_type'   => $post_type,
-			'form_posts'  => $form_posts,
-			'custom_keys' => $custom_keys,
-			'postdata'    => $postdata,
-		) );
+		$this->_render(
+			'chart/index',
+			array(
+				'post_type'   => $post_type,
+				'form_posts'  => $form_posts,
+				'custom_keys' => $custom_keys,
+				'postdata'    => $postdata,
+			)
+		);
 	}
 
 	/**
-	 * Sanitize for settings
+	 * Sanitize for settings.
 	 *
-	 * @param array $input Posted data from chart settings page
+	 * @param array $input Posted data from chart settings page.
 	 * @return array
 	 */
 	public function _sanitize( $input ) {

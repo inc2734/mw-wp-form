@@ -1,18 +1,18 @@
 <?php
 /**
- * Name       : MW WP Form Abstract Validation Rule
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : July 19, 2014
- * Modified   : May 30, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Abstract_Validation_Rule
  */
 abstract class MW_WP_Form_Abstract_Validation_Rule {
 
 	/**
-	 * Validation rule name
+	 * Validation rule name.
+	 *
 	 * @var string
 	 */
 	protected $name;
@@ -22,6 +22,11 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	 */
 	protected $Data;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param MW_WP_Form_Data $Data MW_WP_Form_Data object.
+	 */
 	public function __construct( MW_WP_Form_Data $Data = null ) {
 		if ( ! $this->get_name() ) {
 			exit( 'MW_WP_Form_Abstract_Validation_Rule::$name must override.' );
@@ -35,9 +40,9 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	}
 
 	/**
-	 * Generate array of validation rules
+	 * Generate array of validation rules.
 	 *
-	 * @param array $validation_rules rray of MW_WP_Form_Abstract_Validation_Rule
+	 * @param array $validation_rules Array of MW_WP_Form_Abstract_Validation_Rule.
 	 * @return array
 	 */
 	public function _mwform_validation_rules( array $validation_rules ) {
@@ -46,33 +51,41 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	}
 
 	/**
-	 * Inject MW_WP_Form_Data
+	 * Inject MW_WP_Form_Data.
 	 *
 	 * @deprecated
-	 * @param MW_WP_Form_Data $Data
-	 * @return void
+	 *
+	 * @param MW_WP_Form_Data $Data MW_WP_Form_Data object.
 	 */
 	public function set_Data( MW_WP_Form_Data $Data ) {
 		$this->Data = $Data;
 	}
 
 	/**
-	 * Return true when set $this->Data
+	 * Return true when set $this->Data.
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function is_set_Data() {
 		return ( is_a( $this->Data, 'MW_WP_Form_Data' ) );
 	}
 
 	/**
-	 * Return validation rule name
+	 * Return validation rule name.
 	 *
-	 * @return string Validation rule name
+	 * @return string
 	 */
 	public function get_name() {
 		return $this->name;
 	}
+
+	/**
+	 * Return validation rule name.
+	 *
+	 * @deprecated
+	 *
+	 * @return string
+	 */
 	public function getName() {
 		MWF_Functions::deprecated_message(
 			get_class() . '::getName()',
@@ -82,20 +95,19 @@ abstract class MW_WP_Form_Abstract_Validation_Rule {
 	}
 
 	/**
-	 * Validation process
+	 * Validation process.
 	 *
-	 * @param string $name
-	 * @param array $option
-	 * @return string Error message
+	 * @param string $name    Validation name.
+	 * @param array  $options Validation options.
+	 * @return string
 	 */
 	abstract public function rule( $name, array $options = array() );
 
 	/**
-	 * Add setting field to validation rule setting panel
+	 * Add setting field to validation rule setting panel.
 	 *
-	 * @param numeric $key ID of validation rule
-	 * @param array $value Content of validation rule
-	 * @return void
+	 * @param int   $key   ID of validation rule.
+	 * @param array $value Content of validation rule.
 	 */
 	abstract public function admin( $key, $value );
 }

@@ -1,23 +1,26 @@
 <?php
 /**
- * Name       : MW WP Form Form
- * Version    : 2.0.0
- * Author     : Takashi Kitajima
- * Author URI : https://2inc.org
- * Created    : September 25, 2012
- * Modified   : June 1, 2017
- * License    : GPLv2 or later
- * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * @package mw-wp-form
+ * @author inc2734
+ * @license GPL-2.0+
+ */
+
+/**
+ * MW_WP_Form_Form
  */
 class MW_WP_Form_Form {
 
 	/**
-	 * Return raw value
+	 * Return raw value.
 	 *
-	 * @param string $name
+	 * @param string $name Field name.
 	 * @return mixed
 	 */
-	public function get_raw( $name ) {
+	public function get_raw(
+		// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		$name
+		// phpcs:enable
+	) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_raw()',
 			'MW_WP_Form_Data::get_raw()'
@@ -25,13 +28,17 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return raw value if it is in $children
+	 * Return raw value if it is in $children.
 	 *
-	 * @param string $name
-	 * @param array $children
-	 * @return string
+	 * @param string $name     Field name.
+	 * @param array  $children Children.
 	 */
-	public function get_raw_in_children( $name, array $children ) {
+	public function get_raw_in_children(
+		// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		$name,
+		array $children
+		// phpcs:enable
+	) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_raw_in_children()',
 			'MW_WP_Form_Data::get_raw_in_children()'
@@ -39,12 +46,15 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return value for zip
+	 * Return value for zip.
 	 *
-	 * @param string $name
-	 * @return string
+	 * @param string $name Field name.
 	 */
-	public function get_zip_value( $name ) {
+	public function get_zip_value(
+		// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		$name
+		// phpcs:enable
+	) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_zip_value()',
 			'MW_WP_Form_Data::get_separated_value()'
@@ -52,12 +62,15 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return value for tel
+	 * Return value for tel.
 	 *
-	 * @param string $name
-	 * @return string
+	 * @param string $name Field name.
 	 */
-	public function get_tel_value( $name ) {
+	public function get_tel_value(
+		// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		$name
+		// phpcs:enable
+	) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_tel_value()',
 			'MW_WP_Form_Data::get_separated_value()'
@@ -65,13 +78,17 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return value for checkbox
+	 * Return value for checkbox.
 	 *
-	 * @param string $name
-	 * @param array $data
-	 * @return string
+	 * @param string $name Field name.
+	 * @param array  $data Posted value.
 	 */
-	public function get_checked_value( $name, array $data ) {
+	public function get_checked_value(
+		// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		$name,
+		array $data
+		// phpcs:enable
+	) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_checked_value()',
 			'MW_WP_Form_Data::get_separated_value()'
@@ -79,13 +96,17 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return value for radio
+	 * Return value for radio.
 	 *
-	 * @param string $name
-	 * @param array $data
-	 * @return string
+	 * @param string $name Field name.
+	 * @param array  $data Posted value.
 	 */
-	public function get_radio_value( $name, array $data ) {
+	public function get_radio_value(
+		// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		$name,
+		array $data
+		// phpcs:enable
+	) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_radio_value()',
 			'MW_WP_Form_Data::get_in_children()'
@@ -93,13 +114,17 @@ class MW_WP_Form_Form {
 	}
 
 	/**
- 	 * Return value for selectbox
+	 * Return value for selectbox.
 	 *
-	 * @param string $name
-	 * @param array $data
-	 * @return string
+	 * @param string $name Field name.
+	 * @param array  $data Posted value.
 	 */
-	public function get_selected_value( $name, array $data ) {
+	public function get_selected_value(
+		// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		$name,
+		array $data
+		// phpcs:enable
+	) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_selected_value()',
 			'MW_WP_Form_Data::get_in_children()'
@@ -107,13 +132,17 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return formatted raw value (e.g. for checkbox)
+	 * Return formatted raw value (e.g. for checkbox).
 	 *
-	 * @param string $name
-	 * @param array $children
-	 * @return string
+	 * @param string $name     Field name.
+	 * @param array  $children Children.
 	 */
-	public function get_separated_raw_value( $name, array $children = array() ) {
+	public function get_separated_raw_value(
+		// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		$name,
+		array $children = array()
+		// phpcs:enable
+	) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_separated_raw_value()',
 			'MW_WP_Form_Data::get_separated_raw_value()'
@@ -121,10 +150,10 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return hidden field for separator
+	 * Return hidden field for separator.
 	 *
-	 * @param string $name
-	 * @param string $separator
+	 * @param string $name      Field name.
+	 * @param string $separator Separator.
 	 * @return string
 	 */
 	public function separator( $name, $separator ) {
@@ -134,12 +163,15 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return separator value
+	 * Return separator value.
 	 *
-	 * @param string $name
-	 * @return string
+	 * @param string $name Field name.
 	 */
-	public function get_separator_value( $name ) {
+	public function get_separator_value(
+		// phpcs:disable VariableAnalysis.CodeAnalysis.VariableAnalysis.UnusedVariable
+		$name
+		// phpcs:enable
+	) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::get_separator_value()',
 			'MW_WP_Form_Data::get_separator_value()'
@@ -147,10 +179,10 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return hidden field for setting children
+	 * Return hidden field for setting children.
 	 *
-	 * @param string $name
-	 * @param array $children
+	 * @param string $name     Field name.
+	 * @param array  $children Children.
 	 * @return string
 	 */
 	public function children( $name, array $children ) {
@@ -159,42 +191,49 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Render template
+	 * Render template.
 	 *
-	 * @param string $template directory/filename (no extension)
+	 * @param string $template directory/filename (no extension).
+	 * @param array  $args Argments.
 	 * @return string
 	 */
 	protected function _render( $template, array $args = array() ) {
 		$template_path = locate_template( 'mw-wp-form/form-fields/' . $template . '.php' );
 		if ( ! $template_path ) {
-			$template_path  = plugin_dir_path( __FILE__ ) . '../../templates/form-fields/' . $template . '.php';
+			$template_path = plugin_dir_path( __FILE__ ) . '../../templates/form-fields/' . $template . '.php';
 			if ( ! file_exists( $template_path ) ) {
 				return;
 			}
 		}
 
-		foreach ( $args as $key => $val) {
+		foreach ( $args as $key => $val ) {
 			unset( $args[ $key ] );
 			$args[ str_replace( '-', '_', $key ) ] = $val;
 		}
 
+		// phpcs:disable WordPress.PHP.DontExtract.extract_extract
 		extract( $args );
+		// phpcs:enable
+
 		ob_start();
 		include( $template_path );
 		return ob_get_clean();
 	}
 
 	/**
-	 * Return form staring tag
+	 * Return form staring tag.
 	 *
-	 * @param array $options
+	 * @param array $options Start tag attributes.
 	 * @return string
 	 */
 	public function start( $options = array() ) {
-		$options = array_merge( array(
-			'action'  => '',
-			'enctype' => 'multipart/form-data',
-		), $options );
+		$options = array_merge(
+			array(
+				'action'  => '',
+				'enctype' => 'multipart/form-data',
+			),
+			$options
+		);
 
 		return sprintf(
 			'<form method="post" action="%s" enctype="%s">',
@@ -204,39 +243,42 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return form ending tag
+	 * Return form ending tag.
 	 *
 	 * @return string
 	 */
 	public function end() {
-		$html = '';
-		$html = apply_filters( 'mwform_form_end_html', $html );
+		$html  = '';
+		$html  = apply_filters( 'mwform_form_end_html', $html );
 		$html .= '</form>';
 		return $html;
 	}
 
 	/**
-	 * Return input[type=text]
+	 * Return input[type=text].
 	 *
-	 * @param string $name
-	 * @param array $options
+	 * @param string $name    Field name.
+	 * @param array  $options Options.
 	 * @return string
 	 */
 	public function text( $name, $options = array() ) {
 		$defaults = array(
-			'id'          => null,
-			'class'       => null,
-			'size'        => 60,
-			'maxlength'   => null,
-			'value'       => '',
-			'placeholder' => null,
+			'id'                     => null,
+			'class'                  => null,
+			'size'                   => 60,
+			'maxlength'              => null,
+			'value'                  => '',
+			'placeholder'            => null,
 			'conv-half-alphanumeric' => null,
 		);
 
 		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name' => $name,
-		) );
+		$options = array_merge(
+			$options,
+			array(
+				'name' => $name,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'text', $options )
@@ -244,26 +286,29 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return input[type=email]
+	 * Return input[type=email].
 	 *
-	 * @param string $name
-	 * @param array $options
+	 * @param string $name    Field name.
+	 * @param array  $options Options.
 	 * @return string
 	 */
 	public function email( $name, $options = array() ) {
 		$defaults = array(
-			'id'          => null,
-			'class'       => null,
-			'size'        => 60,
-			'maxlength'   => null,
-			'value'       => '',
-			'placeholder' => null,
+			'id'                     => null,
+			'class'                  => null,
+			'size'                   => 60,
+			'maxlength'              => null,
+			'value'                  => '',
+			'placeholder'            => null,
 			'conv-half-alphanumeric' => null,
 		);
-		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name' => $name,
-		) );
+		$options  = shortcode_atts( $defaults, $options );
+		$options  = array_merge(
+			$options,
+			array(
+				'name' => $name,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'email', $options )
@@ -271,26 +316,29 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return input[type=url]
+	 * Return input[type=url].
 	 *
-	 * @param string $name
-	 * @param array $options
+	 * @param string $name    Field name.
+	 * @param array  $options Options.
 	 * @return string
 	 */
 	public function url( $name, $options = array() ) {
 		$defaults = array(
-			'id'          => null,
-			'class'       => null,
-			'size'        => 60,
-			'maxlength'   => null,
-			'value'       => '',
-			'placeholder' => null,
+			'id'                     => null,
+			'class'                  => null,
+			'size'                   => 60,
+			'maxlength'              => null,
+			'value'                  => '',
+			'placeholder'            => null,
 			'conv-half-alphanumeric' => null,
 		);
-		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name' => $name,
-		) );
+		$options  = shortcode_atts( $defaults, $options );
+		$options  = array_merge(
+			$options,
+			array(
+				'name' => $name,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'url', $options )
@@ -298,10 +346,10 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return input[type=range]
+	 * Return input[type=range].
 	 *
-	 * @param string $name
-	 * @param array $options
+	 * @param string $name    Field name.
+	 * @param array  $options Options.
 	 * @return string
 	 */
 	public function range( $name, $options = array() ) {
@@ -313,10 +361,13 @@ class MW_WP_Form_Form {
 			'max'   => 100,
 			'step'  => 1,
 		);
-		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name' => $name,
-		) );
+		$options  = shortcode_atts( $defaults, $options );
+		$options  = array_merge(
+			$options,
+			array(
+				'name' => $name,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'range', $options )
@@ -324,10 +375,10 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return input[type=number]
+	 * Return input[type=number].
 	 *
-	 * @param string $name
-	 * @param array $options
+	 * @param string $name    Field name.
+	 * @param array  $options Options.
 	 * @return string
 	 */
 	public function number( $name, $options = array() ) {
@@ -340,10 +391,13 @@ class MW_WP_Form_Form {
 			'step'        => 1,
 			'placeholder' => null,
 		);
-		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name' => $name,
-		) );
+		$options  = shortcode_atts( $defaults, $options );
+		$options  = array_merge(
+			$options,
+			array(
+				'name' => $name,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'number', $options )
@@ -351,24 +405,27 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return input[type=hidden]
+	 * Return input[type=hidden].
 	 *
-	 * @param string $name
-	 * @param string $value
+	 * @param string $name  Field name.
+	 * @param array  $value Field value.
 	 * @return string
 	 */
 	public function hidden( $name, $value ) {
-		return $this->_render( 'hidden', array(
-			'name'  => $name,
-			'value' => $value,
-		) );
+		return $this->_render(
+			'hidden',
+			array(
+				'name'  => $name,
+				'value' => $value,
+			)
+		);
 	}
 
 	/**
-	 * Return input[type=password]
+	 * Return input[type=password].
 	 *
-	 * @param string $name
-	 * @param array $options
+	 * @param string $name    Field name.
+	 * @param array  $options Options.
 	 * @return string
 	 */
 	public function password( $name, $options = array() ) {
@@ -380,10 +437,13 @@ class MW_WP_Form_Form {
 			'value'       => '',
 			'placeholder' => null,
 		);
-		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name' => $name,
-		) );
+		$options  = shortcode_atts( $defaults, $options );
+		$options  = array_merge(
+			$options,
+			array(
+				'name' => $name,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'password', $options )
@@ -391,19 +451,19 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return zip field
+	 * Return zip field.
 	 *
-	 * @param string $name
-	 * @param array $options
+	 * @param string $name    Field name.
+	 * @param array  $options Options.
 	 * @return string
 	 */
 	public function zip( $name, $options = array() ) {
 		$defaults = array(
-			'class' => null,
+			'class'                  => null,
 			'conv-half-alphanumeric' => null,
-			'value' => '',
+			'value'                  => '',
 		);
-		$options = shortcode_atts( $defaults, $options );
+		$options  = shortcode_atts( $defaults, $options );
 
 		$children  = array();
 		$separator = '-';
@@ -422,45 +482,48 @@ class MW_WP_Form_Form {
 		}
 
 		return $this->remove_newline_space(
-			$this->_render( 'zip', array(
-				'separator' => $separator,
-				'fields'    => array(
-					array(
-						'name'      => $name . '[data][0]',
-						'class'     => $options['class'],
-						'size'      => 4,
-						'maxlength' => 3,
-						'value'     => $values[0],
-						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+			$this->_render(
+				'zip',
+				array(
+					'separator' => $separator,
+					'fields'    => array(
+						array(
+							'name'                   => $name . '[data][0]',
+							'class'                  => $options['class'],
+							'size'                   => 4,
+							'maxlength'              => 3,
+							'value'                  => $values[0],
+							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+						),
+						array(
+							'name'                   => $name . '[data][1]',
+							'class'                  => $options['class'],
+							'size'                   => 5,
+							'maxlength'              => 4,
+							'value'                  => $values[1],
+							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+						),
 					),
-					array(
-						'name'      => $name . '[data][1]',
-						'class'     => $options['class'],
-						'size'      => 5,
-						'maxlength' => 4,
-						'value'     => $values[1],
-						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-					),
-				),
-			) )
+				)
+			)
 			. $this->separator( $name, $separator )
 		);
 	}
 
 	/**
-	 * Return tel field
+	 * Return tel field.
 	 *
-	 * @param string $name
-	 * @param array $options
+	 * @param string $name    Field name.
+	 * @param array  $options Options.
 	 * @return string
 	 */
 	public function tel( $name, $options = array() ) {
 		$defaults = array(
-			'class' => null,
+			'class'                  => null,
 			'conv-half-alphanumeric' => null,
-			'value' => '',
+			'value'                  => '',
 		);
-		$options = shortcode_atts( $defaults, $options );
+		$options  = shortcode_atts( $defaults, $options );
 
 		$children  = array();
 		$separator = '-';
@@ -473,50 +536,53 @@ class MW_WP_Form_Form {
 
 		$values = array( '', '', '' );
 		foreach ( $children as $key => $val ) {
-			if ( $key === 0 || $key === 1 || $key === 2 ) {
+			if ( 0 === $key || 1 === $key || 2 === $key ) {
 				$values[ $key ] = $val;
 			}
 		}
 
 		return $this->remove_newline_space(
-			$this->_render( 'tel', array(
-				'separator' => $separator,
-				'fields'    => array(
-					array(
-						'name'      => $name . '[data][0]',
-						'class'     => $options['class'],
-						'size'      => 6,
-						'maxlength' => 5,
-						'value'     => $values[0],
-						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+			$this->_render(
+				'tel',
+				array(
+					'separator' => $separator,
+					'fields'    => array(
+						array(
+							'name'                   => $name . '[data][0]',
+							'class'                  => $options['class'],
+							'size'                   => 6,
+							'maxlength'              => 5,
+							'value'                  => $values[0],
+							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+						),
+						array(
+							'name'                   => $name . '[data][1]',
+							'class'                  => $options['class'],
+							'size'                   => 5,
+							'maxlength'              => 4,
+							'value'                  => $values[1],
+							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+						),
+						array(
+							'name'                   => $name . '[data][2]',
+							'class'                  => $options['class'],
+							'size'                   => 5,
+							'maxlength'              => 4,
+							'value'                  => $values[2],
+							'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
+						),
 					),
-					array(
-						'name'      => $name . '[data][1]',
-						'class'     => $options['class'],
-						'size'      => 5,
-						'maxlength' => 4,
-						'value'     => $values[1],
-						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-					),
-					array(
-						'name'      => $name . '[data][2]',
-						'class'     => $options['class'],
-						'size'      => 5,
-						'maxlength' => 4,
-						'value'     => $values[2],
-						'conv-half-alphanumeric' => $options['conv-half-alphanumeric'],
-					),
-				),
-			) )
+				)
+			)
 			. $this->separator( $name, $separator )
 		);
 	}
 
 	/**
-	 * Return textarea
+	 * Return textarea.
 	 *
-	 * @param string $name
-	 * @param array $options
+	 * @param string $name    Field name.
+	 * @param array  $options Options.
 	 * @return string
 	 */
 	public function textarea( $name, $options = array() ) {
@@ -528,10 +594,13 @@ class MW_WP_Form_Form {
 			'value'       => '',
 			'placeholder' => null,
 		);
-		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name' => $name,
-		) );
+		$options  = shortcode_atts( $defaults, $options );
+		$options  = array_merge(
+			$options,
+			array(
+				'name' => $name,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'textarea', $options )
@@ -539,11 +608,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return selectbox
+	 * Return selectbox.
 	 *
-	 * @param string $name
-	 * @param array $children
-	 * @param array $options
+	 * @param string $name     Field name.
+	 * @param array  $children Children.
+	 * @param array  $options  Options.
 	 * @return string
 	 */
 	public function select( $name, $children = array(), $options = array() ) {
@@ -552,11 +621,14 @@ class MW_WP_Form_Form {
 			'id'    => null,
 			'value' => '',
 		);
-		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name'     => $name,
-			'children' => $children,
-		) );
+		$options  = shortcode_atts( $defaults, $options );
+		$options  = array_merge(
+			$options,
+			array(
+				'name'     => $name,
+				'children' => $children,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'select', $options )
@@ -564,11 +636,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return input[type=radio]
+	 * Return input[type=radio].
 	 *
-	 * @param string $name
-	 * @param array $children
-	 * @param array $options
+	 * @param string $name     Field name.
+	 * @param array  $children Children.
+	 * @param array  $options  Options.
 	 * @return string
 	 */
 	public function radio( $name, $children = array(), $options = array() ) {
@@ -578,9 +650,9 @@ class MW_WP_Form_Form {
 			'value'      => '',
 			'vertically' => null,
 		);
-		$options = shortcode_atts( $defaults, $options );
+		$options  = shortcode_atts( $defaults, $options );
 
-		$i = 0;
+		$i      = 0;
 		$fields = array();
 		foreach ( $children as $key => $label ) {
 			$i ++;
@@ -592,9 +664,12 @@ class MW_WP_Form_Form {
 			);
 		}
 
-		$options = array_merge( $options, array(
-			'fields' => $fields,
-		) );
+		$options = array_merge(
+			$options,
+			array(
+				'fields' => $fields,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'radio', $options )
@@ -602,12 +677,12 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return input[checkbox]
+	 * Return input[checkbox].
 	 *
-	 * @param string $name
-	 * @param array $children
-	 * @param array $options
-	 * @param string $separator
+	 * @param string $name      Field name.
+	 * @param array  $children  Children.
+	 * @param array  $options   Options.
+	 * @param string $separator Separator.
 	 * @return string
 	 */
 	public function checkbox( $name, $children = array(), $options = array(), $separator = ',' ) {
@@ -617,7 +692,7 @@ class MW_WP_Form_Form {
 			'value'      => '',
 			'vertically' => null,
 		);
-		$options = shortcode_atts( $defaults, $options );
+		$options  = shortcode_atts( $defaults, $options );
 
 		if ( ! is_array( $options['value'] ) ) {
 			if ( MWF_Functions::is_empty( $options['value'] ) ) {
@@ -627,7 +702,7 @@ class MW_WP_Form_Form {
 			}
 		}
 
-		$i = 0;
+		$i      = 0;
 		$fields = array();
 		foreach ( $children as $key => $label ) {
 			$i ++;
@@ -639,9 +714,12 @@ class MW_WP_Form_Form {
 			);
 		}
 
-		$options = array_merge( $options, array(
-			'fields' => $fields,
-		) );
+		$options = array_merge(
+			$options,
+			array(
+				'fields' => $fields,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'checkbox', $options ) . $this->separator( $name, $separator )
@@ -649,22 +727,25 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return input[type=submit]
+	 * Return input[type=submit].
 	 *
-	 * @param string $name
-	 * @param string $value
-	 * @param array $options
+	 * @param string $name    Field name.
+	 * @param string $value   Field value.
+	 * @param array  $options Options.
 	 * @return string
 	 */
 	public function submit( $name, $value, $options = array() ) {
 		$defaults = array(
 			'class' => null,
 		);
-		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name'  => $name,
-			'value' => $value,
-		) );
+		$options  = shortcode_atts( $defaults, $options );
+		$options  = array_merge(
+			$options,
+			array(
+				'name'  => $name,
+				'value' => $value,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'submit', $options )
@@ -672,24 +753,27 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return button[type=submit]
+	 * Return button[type=submit].
 	 *
-	 * @param string $name
-	 * @param string $value
-	 * @param array $options
-	 * @param string $element_content
+	 * @param string $name            Field name.
+	 * @param string $value           Field value.
+	 * @param array  $options         Options.
+	 * @param string $element_content Field content.
 	 * @return string
 	 */
 	public function button_submit( $name, $value, $options = array(), $element_content = '' ) {
 		$defaults = array(
 			'class' => null,
 		);
-		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name'            => $name,
-			'value'           => $value,
-			'element_content' => $element_content,
-		) );
+		$options  = shortcode_atts( $defaults, $options );
+		$options  = array_merge(
+			$options,
+			array(
+				'name'            => $name,
+				'value'           => $value,
+				'element_content' => $element_content,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'button_submit', $options )
@@ -697,22 +781,25 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return input[type=button]
+	 * Return input[type=button].
 	 *
-	 * @param string $name
-	 * @param string $value
-	 * @param array $options
+	 * @param string $name    Field name.
+	 * @param string $value   Field value.
+	 * @param array  $options Options.
 	 * @return string
 	 */
 	public function button( $name, $value, $options = array() ) {
 		$defaults = array(
 			'class' => null,
 		);
-		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name'  => $name,
-			'value' => $value,
-		) );
+		$options  = shortcode_atts( $defaults, $options );
+		$options  = array_merge(
+			$options,
+			array(
+				'name'  => $name,
+				'value' => $value,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'button', $options )
@@ -720,24 +807,27 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return button
+	 * Return button.
 	 *
-	 * @param string $name
-	 * @param string $value
-	 * @param array $options
-	 * @param string $element_content
+	 * @param string $name            Field name.
+	 * @param string $value           Field value.
+	 * @param array  $options         Options.
+	 * @param string $element_content Field content.
 	 * @return string
 	 */
 	public function button_button( $name, $value, $options = array(), $element_content = '' ) {
 		$defaults = array(
 			'class' => null,
 		);
-		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name'            => $name,
-			'value'           => $value,
-			'element_content' => $element_content,
-		) );
+		$options  = shortcode_atts( $defaults, $options );
+		$options  = array_merge(
+			$options,
+			array(
+				'name'            => $name,
+				'value'           => $value,
+				'element_content' => $element_content,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'button_button', $options )
@@ -745,10 +835,10 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return datepicker
+	 * Return datepicker.
 	 *
-	 * @param string $name
-	 * @param string $options
+	 * @param string $name    Field name.
+	 * @param string $options Options.
 	 * @return string
 	 */
 	public function datepicker( $name, $options = array() ) {
@@ -760,10 +850,13 @@ class MW_WP_Form_Form {
 			'value'       => '',
 			'placeholder' => null,
 		);
-		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name' => $name,
-		) );
+		$options  = shortcode_atts( $defaults, $options );
+		$options  = array_merge(
+			$options,
+			array(
+				'name' => $name,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'datepicker', $options )
@@ -771,10 +864,10 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return monthpicker
+	 * Return monthpicker.
 	 *
-	 * @param string $name
-	 * @param string $options
+	 * @param string $name    Field name.
+	 * @param string $options Options.
 	 * @return string
 	 */
 	public function monthpicker( $name, $options = array() ) {
@@ -786,10 +879,13 @@ class MW_WP_Form_Form {
 			'value'       => '',
 			'placeholder' => null,
 		);
-		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name' => $name,
-		) );
+		$options  = shortcode_atts( $defaults, $options );
+		$options  = array_merge(
+			$options,
+			array(
+				'name' => $name,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'monthpicker', $options )
@@ -797,10 +893,10 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return input[type=file]
+	 * Return input[type=file].
 	 *
-	 * @param string $name
-	 * @param array $options
+	 * @param string $name    Field name.
+	 * @param string $options Options.
 	 * @return string
 	 */
 	public function file( $name, $options = array() ) {
@@ -808,10 +904,13 @@ class MW_WP_Form_Form {
 			'id'    => null,
 			'class' => null,
 		);
-		$options = shortcode_atts( $defaults, $options );
-		$options = array_merge( $options, array(
-			'name' => $name,
-		) );
+		$options  = shortcode_atts( $defaults, $options );
+		$options  = array_merge(
+			$options,
+			array(
+				'name' => $name,
+			)
+		);
 
 		return $this->remove_newline_space(
 			$this->_render( 'file', $options )
@@ -819,10 +918,11 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * タグの属性を最適化して生成する
+	 * タグの属性を最適化して生成する.
 	 *
 	 * @deprecated
-	 * @param array $_attributes キーが属性名、要素が属性値の配列。要素が null のときは無視する
+	 *
+	 * @param array $_attributes キーが属性名、要素が属性値の配列。要素が null のときは無視する.
 	 */
 	public function generate_attributes( array $_attributes ) {
 		$attributes = array();
@@ -842,10 +942,10 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Return ID attribute
+	 * Return ID attribute.
 	 *
-	 * @param string $id
-	 * @param string $suffix
+	 * @param string $id     The id attribute.
+	 * @param string $suffix Suffix.
 	 * @return string
 	 */
 	protected function _get_attr_id( $id, $suffix = '' ) {
@@ -860,19 +960,37 @@ class MW_WP_Form_Form {
 	}
 
 	/**
-	 * Removed linefeed codes, tabs and spaces
+	 * Removed linefeed codes, tabs and spaces.
 	 *
-	 * @param string $string
+	 * @param string $string Target string.
 	 * @return string
 	 */
 	public function remove_newline_space( $string ) {
-		return preg_replace_callback('/<([^<>]+?)>/', array( $this, '_remove_newline_space_callback' ), $string );
+		return preg_replace_callback(
+			'/<([^<>]+?)>/',
+			array( $this, '_remove_newline_space_callback' ),
+			$string
+		);
 	}
+
+	/**
+	 * Callback for remove_newline_space.
+	 *
+	 * @param array $matches $matches of remove_newline_space.
+	 * @return string
+	 */
 	protected function _remove_newline_space_callback( $matches ) {
 		$matches[0] = str_replace( array( "\r\n", "\r", "\n", "\t" ), ' ', $matches[0] );
 		$matches[0] = preg_replace( '/[\t ]+/', ' ', $matches[0] );
 		return $matches[0];
 	}
+
+	/**
+	 * Removed linefeed codes, tabs and spaces.
+	 *
+	 * @param string $string Target string.
+	 * @return string
+	 */
 	public static function remove_linefeed_space( $string ) {
 		MWF_Functions::deprecated_message(
 			'MW_WP_Form_Form::remove_linefeed_space()',
