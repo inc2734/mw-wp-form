@@ -231,14 +231,15 @@ class MW_WP_Form_Setting {
 		}
 
 		$this->post_id = $post_id;
-		$values        = get_post_meta( $post_id, MWF_Config::NAME, true );
+
+		$form_key     = MWF_Functions::get_form_key_from_form_id( $this->post_id );
+		$this->extend = apply_filters( 'mwform_settings_extend_fields', $this->extend );
+		$this->extend = apply_filters( 'mwform_settings_extend_fields_' . $form_key, $this->extend );
+
+		$values = get_post_meta( $this->post_id, MWF_Config::NAME, true );
 		if ( ! is_array( $values ) ) {
 			return;
 		}
-
-		$form_key     = MWF_Functions::get_form_key_from_form_id( $post_id );
-		$this->extend = apply_filters( 'mwform_settings_extend_fields', $this->extend );
-		$this->extend = apply_filters( 'mwform_settings_extend_fields_' . $form_key, $this->extend );
 
 		$this->sets( $values );
 	}
