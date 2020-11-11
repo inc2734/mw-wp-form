@@ -4,7 +4,7 @@ Donate link: https://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 4.0
 Tested up to: 5.2.4
-Stable tag: 4.2.0
+Stable tag: 4.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,8 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 * Add filter hook `mwform_template_render_mw-wp-form-xxx`.
 * Add filter hook `mwform_settings_extend_fields`.
 * Add filter hook `mwform_settings_extend_fields_mw-wp-form-xxx`.
+* Fix monthpicker bug.
+* Add wp-env.
 
 = 4.2.0 =
 * Fixed a bug that memo is not saved.
