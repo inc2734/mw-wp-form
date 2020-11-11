@@ -15,8 +15,9 @@ class MW_WP_Form_Controller {
 	 *
 	 * @param string $template {directory name}/{file name (no need extension)}.
 	 * @param array  $args     Array of data you want to assign.
+	 * @param string $form_key Form key.
 	 */
-	protected function _render( $template, array $args = array() ) {
+	protected function _render( $template, array $args = array(), $form_key = null ) {
 		// phpcs:disable WordPress.PHP.DontExtract.extract_extract
 		extract( $args );
 		// phpcs:enable
@@ -28,6 +29,13 @@ class MW_WP_Form_Controller {
 			return;
 		}
 
+		ob_start();
 		include( $template_path );
+		$html = ob_get_clean();
+		$html = apply_filters( 'mwform_template_render', $html, $template, $args );
+		if ( $form_key ) {
+			$html = apply_filters( 'mwform_template_render_' . $form_key, $html, $template, $args );
+		}
+		echo $html;
 	}
 }

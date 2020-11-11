@@ -299,11 +299,16 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * Render complete message meta box.
 	 */
 	public function _complete_message() {
+		global $post;
+
+		$form_key = MWF_Functions::get_form_key_from_form_id( $post->ID );
+
 		$this->_render(
 			'admin/complete-message',
 			array(
 				'content' => $this->_get_option( 'complete_message' ),
-			)
+			),
+			$form_key
 		);
 	}
 
@@ -311,6 +316,10 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * Render URL setting meta box.
 	 */
 	public function _url() {
+		global $post;
+
+		$form_key = MWF_Functions::get_form_key_from_form_id( $post->ID );
+
 		$this->_render(
 			'admin/url',
 			array(
@@ -318,7 +327,8 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 				'confirmation_url'     => $this->_get_option( 'confirmation_url' ),
 				'complete_url'         => $this->_get_option( 'complete_url' ),
 				'validation_error_url' => $this->_get_option( 'validation_error_url' ),
-			)
+			),
+			$form_key
 		);
 	}
 
@@ -352,7 +362,8 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 				'validation'       => $validation,
 				'validation_rules' => $Validation_Rules->get_validation_rules(),
 				'validation_keys'  => $validation_keys,
-			)
+			),
+			$form_key
 		);
 	}
 
@@ -379,6 +390,10 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * Render reply mail meta box.
 	 */
 	public function _mail_options() {
+		global $post;
+
+		$form_key = MWF_Functions::get_form_key_from_form_id( $post->ID );
+
 		$mail_sender = $this->_get_option( 'mail_sender' );
 		if ( is_null( $mail_sender ) ) {
 			$mail_sender = get_bloginfo( 'name' );
@@ -398,7 +413,8 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 				'mail_from'             => $this->_get_option( 'mail_from' ),
 				'mail_content'          => $this->_get_option( 'mail_content' ),
 				'automatic_reply_email' => $this->_get_option( 'automatic_reply_email' ),
-			)
+			),
+			$form_key
 		);
 	}
 
@@ -406,6 +422,10 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * Render admin mail meta box.
 	 */
 	public function _admin_mail_options() {
+		global $post;
+
+		$form_key = MWF_Functions::get_form_key_from_form_id( $post->ID );
+
 		$mail_to = $this->_get_option( 'mail_to' );
 		if ( is_null( $mail_to ) ) {
 			$mail_to = get_bloginfo( 'admin_email' );
@@ -433,7 +453,8 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 				'mail_return_path'    => $this->_get_option( 'mail_return_path' ),
 				'admin_mail_from'     => $this->_get_option( 'admin_mail_from' ),
 				'admin_mail_content'  => $this->_get_option( 'admin_mail_content' ),
-			)
+			),
+			$form_key
 		);
 	}
 
@@ -441,6 +462,10 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 	 * Render settings meta box.
 	 */
 	public function _settings() {
+		global $post;
+
+		$form_key = MWF_Functions::get_form_key_from_form_id( $post->ID );
+
 		$this->_render(
 			'admin/settings',
 			array(
@@ -451,7 +476,8 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 				'akismet_author_email' => $this->_get_option( 'akismet_author_email' ),
 				'akismet_author_url'   => $this->_get_option( 'akismet_author_url' ),
 				'tracking_number'      => $this->_get_option( MWF_Config::TRACKINGNUMBER ),
-			)
+			),
+			$form_key
 		);
 	}
 

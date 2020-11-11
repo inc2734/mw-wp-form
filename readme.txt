@@ -73,6 +73,12 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 == Changelog ==
 
+= 4.3.0 =
+* Add filter hook `mwform_template_render`.
+* Add filter hook `mwform_template_render_mw-wp-form-xxx`.
+* Add filter hook `mwform_settings_extend_fields`.
+* Add filter hook `mwform_settings_extend_fields_mw-wp-form-xxx`.
+
 = 4.2.0 =
 * Fixed a bug that memo is not saved.
 * The select element can be used in tag generator dialog box.

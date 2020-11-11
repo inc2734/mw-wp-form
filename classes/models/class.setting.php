@@ -214,6 +214,13 @@ class MW_WP_Form_Setting {
 	protected $scroll = false;
 
 	/**
+	 * Extended properties.
+	 *
+	 * @var array
+	 */
+	protected $extend = array();
+
+	/**
 	 * Constructor.
 	 *
 	 * @param int $post_id Post ID.
@@ -228,6 +235,10 @@ class MW_WP_Form_Setting {
 		if ( ! is_array( $values ) ) {
 			return;
 		}
+
+		$form_key     = MWF_Functions::get_form_key_from_form_id( $post_id );
+		$this->extend = apply_filters( 'mwform_settings_extend_fields', $this->extend );
+		$this->extend = apply_filters( 'mwform_settings_extend_fields_' . $form_key, $this->extend );
 
 		$this->sets( $values );
 	}

@@ -183,7 +183,8 @@ class MW_WP_Form_Chart_Controller extends MW_WP_Form_Controller {
 				'form_posts'  => $form_posts,
 				'custom_keys' => $custom_keys,
 				'postdata'    => $postdata,
-			)
+			),
+			$this->formkey
 		);
 	}
 
