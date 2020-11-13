@@ -155,7 +155,7 @@ class MW_WP_Form_Contact_Data_Controller extends MW_WP_Form_Controller {
 			array(
 				'post'                 => $post,
 				'post_type'            => $post->post_type,
-				'Contact_Data_Setting' => new MW_WP_Form_Contact_Data_Setting( get_the_ID() ),
+				'contact_data_setting' => new MW_WP_Form_Contact_Data_Setting( get_the_ID() ),
 			)
 		);
 	}
