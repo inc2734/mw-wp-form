@@ -41,6 +41,7 @@ class MW_WP_Form_Field_Textarea extends MW_WP_Form_Abstract_Form_Field {
 			'name'        => '',
 			'id'          => null,
 			'class'       => null,
+			'maxlength'   => null,
 			'cols'        => 50,
 			'rows'        => 5,
 			'value'       => '',
@@ -65,6 +66,7 @@ class MW_WP_Form_Field_Textarea extends MW_WP_Form_Abstract_Form_Field {
 			array(
 				'id'          => $this->atts['id'],
 				'class'       => $this->atts['class'],
+				'maxlength'   => $this->atts['maxlength'],
 				'cols'        => $this->atts['cols'],
 				'rows'        => $this->atts['rows'],
 				'value'       => $value,
@@ -111,6 +113,11 @@ class MW_WP_Form_Field_Textarea extends MW_WP_Form_Abstract_Form_Field {
 			<strong>class</strong>
 			<?php $class = $this->get_value_for_generator( 'class', $options ); ?>
 			<input type="text" name="class" value="<?php echo esc_attr( $class ); ?>" />
+		</p>
+		<p>
+			<strong>maxlength</strong>
+			<?php $maxlength = $this->get_value_for_generator( 'maxlength', $options ); ?>
+			<input type="text" name="maxlength" value="<?php echo esc_attr( $maxlength ); ?>" />
 		</p>
 		<p>
 			<strong>cols</strong>

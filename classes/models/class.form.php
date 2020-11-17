@@ -589,6 +589,7 @@ class MW_WP_Form_Form {
 		$defaults = array(
 			'id'          => null,
 			'class'       => null,
+			'maxlength'   => null,
 			'cols'        => 50,
 			'rows'        => 5,
 			'value'       => '',
