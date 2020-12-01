@@ -3,7 +3,7 @@ bin
 tests
 _tests
 .gitignore
-.travis.yml
+.github
 phpunit.xml.dist
 phpcs.ruleset.xml
 vendor
