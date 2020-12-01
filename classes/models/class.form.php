@@ -227,9 +227,11 @@ class MW_WP_Form_Form {
 	 * @return string
 	 */
 	public function start( $options = array() ) {
+		$action  = '';
+		$action  = apply_filters( 'mwform_form_start_attr_action', $action );
 		$options = array_merge(
 			array(
-				'action'  => '',
+				'action'  => $action,
 				'enctype' => 'multipart/form-data',
 			),
 			$options
