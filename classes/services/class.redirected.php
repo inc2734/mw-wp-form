@@ -171,7 +171,7 @@ class MW_WP_Form_Redirected {
 		}
 
 		if ( ! empty( $query_string ) ) {
-			return $url . '?' . http_build_query( $query_string, null, '&' );
+			return $url . '?' . build_query( $query_string );
 		}
 
 		return $url;
