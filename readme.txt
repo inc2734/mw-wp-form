@@ -1,10 +1,10 @@
 === MW WP Form ===
-Contributors: inc2734, ryu263, tomothumb, nanniku, mt8.biz, NExt-Season, kuck1u, mypacecreator, mh35, grace-create, musus, wildworks
+Contributors: inc2734, ryu263, tomothumb, nanniku, mt8.biz, NExt-Season, kuck1u, mypacecreator, mh35, grace-create, musus, wildworks, likr, yudai524, noldorinfo
 Donate link: https://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 4.0
-Tested up to: 5.5
-Stable tag: 4.4.0
+Tested up to: 6.0
+Stable tag: 4.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -49,7 +49,10 @@ Source: https://developers.google.com/chart/
 * [herikutu](https://github.com/herikutu)
 * [tsucharoku](https://github.com/tsucharoku)
 * [Tetsuaki Hamano](https://github.com/t-hamano) ( [t-hamano](https://profiles.wordpress.org/wildworks/) )
-* [Susumu Seino](https://github.com/musus) ( [t-hamano](https://profiles.wordpress.org/musus/) )
+* [Susumu Seino](https://github.com/musus) ( [Susumu Seino](https://profiles.wordpress.org/musus/) )
+* [Yosuke Onoue](https://github.com/likr) ( [likr](https://profiles.wordpress.org/likr/) )
+* [Yudai Konishi](https://github.com/yudai524) ( [Yudai Konishi](https://profiles.wordpress.org/yudai524/) )
+* [takekoshi](https://github.com/noldorinfo) ( [takekoshi](https://profiles.wordpress.org/noldorinfo/) )
 
 == Installation ==
 
@@ -73,6 +76,11 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 5. Supports chart display of saved inquiry data.
 
 == Changelog ==
+
+= 4.4.1 =
+* Fixed a bug that caused forms to be cached when Batcache was enabled.
+* Fix infinite redirections with asterisks.
+* Add audio/x-wav etc. as mimetype for wav.
 
 = 4.4.0 =
 * Add filter hook `mwform_form_start_attr_action`.
