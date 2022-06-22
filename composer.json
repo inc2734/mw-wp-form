@@ -1,4 +1,5 @@
 {
+  "name": "inc2734/mw-wp-form",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "authors": [

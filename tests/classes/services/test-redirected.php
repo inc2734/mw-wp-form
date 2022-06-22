@@ -237,6 +237,7 @@ class MW_WP_Form_Redirected_Test extends WP_UnitTestCase {
 		$_GET = array(
 			'foo'     => 'bar',
 			'post_id' => 1,
+			'with_asterisk' => 'foo*bar',
 		);
 
 		$Setting = new MW_WP_Form_Setting( $form_id );
@@ -250,37 +251,37 @@ class MW_WP_Form_Redirected_Test extends WP_UnitTestCase {
 		$is_valid       = false;
 		$post_condition = 'back';
 		$Redirected = new MW_WP_Form_Redirected( $form_key, $Setting, $is_valid, $post_condition );
-		$this->assertEquals( home_url( '/contact/error/?foo=bar&post_id=1' ), $Redirected->get_url() );
+		$this->assertEquals( home_url( '/contact/error/?foo=bar&post_id=1&with_asterisk=foo*bar' ), $Redirected->get_url() );
 
 		// Pattern: ! $is_valid, confirm
 		$is_valid       = false;
 		$post_condition = 'confirm';
 		$Redirected = new MW_WP_Form_Redirected( $form_key, $Setting, $is_valid, $post_condition );
-		$this->assertEquals( home_url( '/contact/error/?foo=bar&post_id=1' ), $Redirected->get_url() );
+		$this->assertEquals( home_url( '/contact/error/?foo=bar&post_id=1&with_asterisk=foo*bar' ), $Redirected->get_url() );
 
 		// Pattern: ! $is_valid, complete
 		$is_valid       = false;
 		$post_condition = 'complete';
 		$Redirected = new MW_WP_Form_Redirected( $form_key, $Setting, $is_valid, $post_condition );
-		$this->assertEquals( home_url( '/contact/error/?foo=bar&post_id=1' ), $Redirected->get_url() );
+		$this->assertEquals( home_url( '/contact/error/?foo=bar&post_id=1&with_asterisk=foo*bar' ), $Redirected->get_url() );
 
 		// Pattern: $is_valid, back
 		$is_valid       = true;
 		$post_condition = 'back';
 		$Redirected = new MW_WP_Form_Redirected( $form_key, $Setting, $is_valid, $post_condition );
-		$this->assertEquals( home_url( '/contact/?foo=bar&post_id=1' ), $Redirected->get_url() );
+		$this->assertEquals( home_url( '/contact/?foo=bar&post_id=1&with_asterisk=foo*bar' ), $Redirected->get_url() );
 
 		// Pattern: $is_valid, confirm
 		$is_valid       = true;
 		$post_condition = 'confirm';
 		$Redirected = new MW_WP_Form_Redirected( $form_key, $Setting, $is_valid, $post_condition );
-		$this->assertEquals( home_url( '/contact/confirm/?foo=bar&post_id=1' ), $Redirected->get_url() );
+		$this->assertEquals( home_url( '/contact/confirm/?foo=bar&post_id=1&with_asterisk=foo*bar' ), $Redirected->get_url() );
 
 		// Pattern: $is_valid, complete
 		$is_valid       = true;
 		$post_condition = 'complete';
 		$Redirected = new MW_WP_Form_Redirected( $form_key, $Setting, $is_valid, $post_condition );
-		$this->assertEquals( home_url( '/contact/complete/?foo=bar&post_id=1' ), $Redirected->get_url() );
+		$this->assertEquals( home_url( '/contact/complete/?foo=bar&post_id=1&with_asterisk=foo*bar' ), $Redirected->get_url() );
 	}
 
 	/**
