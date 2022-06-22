@@ -42,24 +42,3 @@ span#formkey_field {
 .wp-admin li.donation div.donation p {
 	margin: 3px 0;
 }
-
-/**
- * .column-mwform_form_key
- */
-.fixed .column-title {
-	width: 30%;
-}
-.fixed .column-mwform_form_key {
-	width: 30%;
-}
-.fixed .column-date {
-	width: 20%;
-}
-@media screen and (max-width: 782px) {
-	.fixed .column-title {
-		width: auto;
-	}
-	.fixed .column-mwform_form_key {
-		display: none;
-	}
-}

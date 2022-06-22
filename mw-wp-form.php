@@ -244,4 +244,4 @@ class MW_WP_Form {
 	}
 }
 
-$mw_wp_form = new MW_WP_Form();
+new MW_WP_Form();

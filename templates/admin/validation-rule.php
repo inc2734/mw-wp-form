@@ -25,7 +25,7 @@
 			<table border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td colspan="2">
-						<?php foreach ( $validation_rules as $validation_rule => $instance ) : ?>
+						<?php foreach ( $validation_rules as $instance ) : ?>
 							<?php $instance->admin( $key, $value ); ?>
 						<?php endforeach; ?>
 					</td>
