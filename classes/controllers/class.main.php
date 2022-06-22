@@ -85,7 +85,7 @@ class MW_WP_Form_Main_Controller {
 	 */
 	public function _nocache_headers( $headers ) {
 		$headers['X-Accel-Expires'] = 0;
-		$headers['Cache-Control']   = 'private, no-store, no-cache, must-revalidate';
+		$headers['Cache-Control']   = 'private, no-store, no-cache, must-revalidate, max-age=0';
 		return $headers;
 	}
 
