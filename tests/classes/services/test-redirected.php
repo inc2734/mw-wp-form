@@ -238,7 +238,7 @@ class MW_WP_Form_Redirected_Test extends WP_UnitTestCase {
 			'foo'     => 'bar',
 			'post_id' => 1,
 			'with_asterisk' => 'foo*bar',
-			'with_space' => 'with space',
+			'with_space' => 'foo bar',
 			'multibyte' => 'マルチバイト',
 		);
 
@@ -253,37 +253,37 @@ class MW_WP_Form_Redirected_Test extends WP_UnitTestCase {
 		$is_valid       = false;
 		$post_condition = 'back';
 		$Redirected = new MW_WP_Form_Redirected( $form_key, $Setting, $is_valid, $post_condition );
-		$this->assertEquals( home_url( '/contact/error/?foo=bar&post_id=1&with_asterisk=foo%2Abar&with_space=foo+bar&multibyte=%E3%83%9E%E3%83%AB%E3%83%81%E3%83%90%E3%82%A4%E3%83%88' ), $Redirected->get_url() );
+		$this->assertEquals( home_url( '/contact/error/?foo=bar&post_id=1&with_asterisk=foo%2Abar&with_space=foo%20bar&multibyte=%E3%83%9E%E3%83%AB%E3%83%81%E3%83%90%E3%82%A4%E3%83%88' ), $Redirected->get_url() );
 
 		// Pattern: ! $is_valid, confirm
 		$is_valid       = false;
 		$post_condition = 'confirm';
 		$Redirected = new MW_WP_Form_Redirected( $form_key, $Setting, $is_valid, $post_condition );
-		$this->assertEquals( home_url( '/contact/error/?foo=bar&post_id=1&with_asterisk=foo%2Abar&with_space=foo+bar&multibyte=%E3%83%9E%E3%83%AB%E3%83%81%E3%83%90%E3%82%A4%E3%83%88' ), $Redirected->get_url() );
+		$this->assertEquals( home_url( '/contact/error/?foo=bar&post_id=1&with_asterisk=foo%2Abar&with_space=foo%20bar&multibyte=%E3%83%9E%E3%83%AB%E3%83%81%E3%83%90%E3%82%A4%E3%83%88' ), $Redirected->get_url() );
 
 		// Pattern: ! $is_valid, complete
 		$is_valid       = false;
 		$post_condition = 'complete';
 		$Redirected = new MW_WP_Form_Redirected( $form_key, $Setting, $is_valid, $post_condition );
-		$this->assertEquals( home_url( '/contact/error/?foo=bar&post_id=1&with_asterisk=foo%2Abar&with_space=foo+bar&multibyte=%E3%83%9E%E3%83%AB%E3%83%81%E3%83%90%E3%82%A4%E3%83%88' ), $Redirected->get_url() );
+		$this->assertEquals( home_url( '/contact/error/?foo=bar&post_id=1&with_asterisk=foo%2Abar&with_space=foo%20bar&multibyte=%E3%83%9E%E3%83%AB%E3%83%81%E3%83%90%E3%82%A4%E3%83%88' ), $Redirected->get_url() );
 
 		// Pattern: $is_valid, back
 		$is_valid       = true;
 		$post_condition = 'back';
 		$Redirected = new MW_WP_Form_Redirected( $form_key, $Setting, $is_valid, $post_condition );
-		$this->assertEquals( home_url( '/contact/?foo=bar&post_id=1&with_asterisk=foo%2Abar&with_space=foo+bar&multibyte=%E3%83%9E%E3%83%AB%E3%83%81%E3%83%90%E3%82%A4%E3%83%88' ), $Redirected->get_url() );
+		$this->assertEquals( home_url( '/contact/?foo=bar&post_id=1&with_asterisk=foo%2Abar&with_space=foo%20bar&multibyte=%E3%83%9E%E3%83%AB%E3%83%81%E3%83%90%E3%82%A4%E3%83%88' ), $Redirected->get_url() );
 
 		// Pattern: $is_valid, confirm
 		$is_valid       = true;
 		$post_condition = 'confirm';
 		$Redirected = new MW_WP_Form_Redirected( $form_key, $Setting, $is_valid, $post_condition );
-		$this->assertEquals( home_url( '/contact/confirm/?foo=bar&post_id=1&with_asterisk=foo%2Abar&with_space=foo+bar&multibyte=%E3%83%9E%E3%83%AB%E3%83%81%E3%83%90%E3%82%A4%E3%83%88' ), $Redirected->get_url() );
+		$this->assertEquals( home_url( '/contact/confirm/?foo=bar&post_id=1&with_asterisk=foo%2Abar&with_space=foo%20bar&multibyte=%E3%83%9E%E3%83%AB%E3%83%81%E3%83%90%E3%82%A4%E3%83%88' ), $Redirected->get_url() );
 
 		// Pattern: $is_valid, complete
 		$is_valid       = true;
 		$post_condition = 'complete';
 		$Redirected = new MW_WP_Form_Redirected( $form_key, $Setting, $is_valid, $post_condition );
-		$this->assertEquals( home_url( '/contact/complete/?foo=bar&post_id=1&with_asterisk=foo%2Abar&with_space=foo+bar&multibyte=%E3%83%9E%E3%83%AB%E3%83%81%E3%83%90%E3%82%A4%E3%83%88' ), $Redirected->get_url() );
+		$this->assertEquals( home_url( '/contact/complete/?foo=bar&post_id=1&with_asterisk=foo%2Abar&with_space=foo%20bar&multibyte=%E3%83%9E%E3%83%AB%E3%83%81%E3%83%90%E3%82%A4%E3%83%88' ), $Redirected->get_url() );
 	}
 
 	/**
