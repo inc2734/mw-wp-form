@@ -12,7 +12,7 @@ composer.lock
 .phpunit.xml.dist
 .phpcs.xml.xml
 .wp-env.json
-.wp-env-override.json
+.wp-env.override.json
 package.json
 package-lock.json
 node_modules

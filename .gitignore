@@ -3,3 +3,4 @@ _tests/
 languages/
 node_modules/
 sql/
+.wp-env.override.json
