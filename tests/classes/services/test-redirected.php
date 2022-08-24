@@ -235,11 +235,11 @@ class MW_WP_Form_Redirected_Test extends WP_UnitTestCase {
 		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
 
 		$_GET = array(
-			'foo'     => 'bar',
-			'post_id' => 1,
+			'foo'           => 'bar',
+			'post_id'       => 1,
 			'with_asterisk' => 'foo*bar',
-			'with_space' => 'foo bar',
-			'multibyte' => 'マルチバイト',
+			'with_space'    => 'foo bar',
+			'multibyte'     => 'マルチバイト',
 		);
 
 		$Setting = new MW_WP_Form_Setting( $form_id );
