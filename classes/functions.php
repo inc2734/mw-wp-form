@@ -56,7 +56,7 @@ class MWF_Functions {
 		$temp_dir = trailingslashit( $temp_dir['dir'] );
 		$filename = basename( $fileurl );
 		if ( strstr( $filename, "\0" ) ) {
-			return ;
+			return;
 		}
 
 		return $temp_dir . $filename;
@@ -78,7 +78,7 @@ class MWF_Functions {
 		$temp_url = trailingslashit( $temp_dir['url'] );
 		$filename = basename( $filepath );
 		if ( strstr( $filename, "\0" ) ) {
-			return ;
+			return;
 		}
 
 		return $temp_url . $filename;

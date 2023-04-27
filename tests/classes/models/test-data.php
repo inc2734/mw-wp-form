@@ -610,10 +610,10 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 	 * @group regenerate_upload_file_keys
 	 */
 	public function regenerate_upload_file_keys() {
-		$wp_upload_dir = wp_upload_dir();
-		system( "chmod 777 " . $wp_upload_dir['basedir'] );
-		system( "mkdir -p " . $wp_upload_dir['path'] );
-		file_put_contents( $wp_upload_dir['path'] . '/1.txt', 1 );
+		$File = new MW_WP_Form_File();
+		$File->create_temp_dir();
+		$temp_dir = $File->get_temp_dir();
+		file_put_contents( $temp_dir['dir'] . '/1.txt', 1 );
 
 		// Pattern: ! array
 		$Data = $this->_instantiation_Data( array(
@@ -626,7 +626,7 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		$Data = $this->_instantiation_Data( array(
 			MWF_Config::UPLOAD_FILE_KEYS => array( 'name-1', 'name-1' ),
 		) );
-		$Data->set( 'name-1', $wp_upload_dir['url'] . '/1.txt' );
+		$Data->set( 'name-1', $temp_dir['url'] . '/1.txt' );
 		$Data->regenerate_upload_file_keys();
 		$this->assertEquals( array( 'name-1' ), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
 
@@ -641,7 +641,7 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		$Data = $this->_instantiation_Data( array(
 			MWF_Config::UPLOAD_FILE_KEYS => array( 'name-1', 'name-1' ),
 		) );
-		$Data->set( 'name-1', $wp_upload_dir['url'] . '/2.txt' );
+		$Data->set( 'name-1', $temp_dir['url'] . '/2.txt' );
 		$Data->regenerate_upload_file_keys();
 		$this->assertEquals( array(), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
 
@@ -649,12 +649,12 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 		$Data = $this->_instantiation_Data( array(
 			MWF_Config::UPLOAD_FILE_KEYS => array( 'name-1' ),
 		) );
-		$Data->set( 'name-1', $wp_upload_dir['url'] . '/1.txt' );
+		$Data->set( 'name-1', $temp_dir['url'] . '/1.txt' );
 		$Data->regenerate_upload_file_keys();
 		$this->assertEquals( array( 'name-1' ), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
 
 		// shutdown process
-		unlink( $wp_upload_dir['path'] . '/1.txt' );
+		unlink( $temp_dir['dir'] . '/1.txt' );
 	}
 
 	/**

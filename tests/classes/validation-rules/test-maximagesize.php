@@ -47,11 +47,11 @@ class MW_WP_Form_Validation_Rule_MaxImageSize_Test extends WP_UnitTestCase {
 	}
 
 	protected function _save_image() {
-		$wp_upload_dir = wp_upload_dir();
-		system( "chmod 777 " . $wp_upload_dir['basedir'] );
-		system( "mkdir -p " . $wp_upload_dir['path'] );
+		$File = new MW_WP_Form_File();
+		$File->create_temp_dir();
+		$temp_dir = $File->get_temp_dir();
 		$resource_id = imagecreatetruecolor( 500, 500 );
-		$filepath = $wp_upload_dir['path'] . '/1.png';
+		$filepath = $temp_dir['dir'] . '/1.png';
 		imagepng( $resource_id, $filepath );
 		return $filepath;
 	}

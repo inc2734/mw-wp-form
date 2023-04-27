@@ -56,11 +56,12 @@ class MWF_Functions_Test extends WP_UnitTestCase {
 	 * @group fileurl_to_path
 	 */
 	public function fileurl_to_path() {
-		$wp_upload_dir = wp_upload_dir();
-		$this->assertNull( MWF_Functions::fileurl_to_path( '/dummy.txt' ) );
+		$File     = new MW_WP_Form_File();
+		$temp_dir = $File->get_temp_dir();
+		$this->assertNull( MWF_Functions::fileurl_to_path( $temp_dir['dir'] . '/dummy.txt' ) );
 		$this->assertEquals(
-			$wp_upload_dir['path'] . '/dummy.txt',
-			MWF_Functions::fileurl_to_path( $wp_upload_dir['url'] . '/dummy.txt' )
+			$temp_dir['dir'] . '/dummy.txt',
+			MWF_Functions::fileurl_to_path( $temp_dir['url'] . '/dummy.txt' )
 		);
 	}
 
@@ -69,11 +70,12 @@ class MWF_Functions_Test extends WP_UnitTestCase {
 	 * @group filepath_to_url
 	 */
 	public function filepath_to_url() {
-		$wp_upload_dir = wp_upload_dir();
-		$this->assertNull( MWF_Functions::filepath_to_url( $wp_upload_dir['url'] . '/dummy.txt' ) );
+		$File     = new MW_WP_Form_File();
+		$temp_dir = $File->get_temp_dir();
+		$this->assertNull( MWF_Functions::filepath_to_url( $temp_dir['url'] . '/dummy.txt' ) );
 		$this->assertEquals(
-			$wp_upload_dir['url'] . '/dummy.txt',
-			MWF_Functions::filepath_to_url( $wp_upload_dir['path'] . '/dummy.txt' )
+			$temp_dir['url'] . '/dummy.txt',
+			MWF_Functions::filepath_to_url( $temp_dir['dir'] . '/dummy.txt' )
 		);
 	}
 

@@ -239,9 +239,9 @@ class MW_WP_Form_Main_Controller {
 	 * @return boolean
 	 */
 	protected function _send() {
-		$Mail         = new MW_WP_Form_Mail();
-		$form_key     = $this->Data->get_form_key();
-		$attachments  = $this->_get_attachments();
+		$Mail        = new MW_WP_Form_Mail();
+		$form_key    = $this->Data->get_form_key();
+		$attachments = $this->_get_attachments();
 
 		// 送信された画像・ファイルの URL はメールに記載しない。記載するのはアップロード後のファイル名のみ。
 		foreach ( $attachments as $key => $attachment ) {
