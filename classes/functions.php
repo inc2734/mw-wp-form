@@ -51,16 +51,15 @@ class MWF_Functions {
 			return;
 		}
 
-		$wp_upload_dir = wp_upload_dir();
-		$baseurl       = preg_replace( '/^https?:\/\/(.+)$/', '$1', $wp_upload_dir['baseurl'] );
-		$fileurl       = preg_replace( '/^https?:\/\/(.+)$/', '$1', $fileurl );
-		$filepath      = str_replace(
-			$baseurl,
-			$wp_upload_dir['basedir'],
-			$fileurl
-		);
+		$File     = new MW_WP_Form_File();
+		$temp_dir = $File->get_temp_dir();
+		$temp_dir = trailingslashit( $temp_dir['dir'] );
+		$filename = basename( $fileurl );
+		if ( strstr( $filename, "\0" ) ) {
+			return ;
+		}
 
-		return $filepath;
+		return $temp_dir . $filename;
 	}
 
 	/**
@@ -74,17 +73,15 @@ class MWF_Functions {
 			return;
 		}
 
-		$wp_upload_dir = wp_upload_dir();
-		$fileurl       = str_replace(
-			$wp_upload_dir['basedir'],
-			$wp_upload_dir['baseurl'],
-			$filepath
-		);
-		if ( is_ssl() ) {
-			$fileurl = preg_replace( '/^https?:\/\//', 'https://', $fileurl );
+		$File     = new MW_WP_Form_File();
+		$temp_dir = $File->get_temp_dir();
+		$temp_url = trailingslashit( $temp_dir['url'] );
+		$filename = basename( $filepath );
+		if ( strstr( $filename, "\0" ) ) {
+			return ;
 		}
 
-		return $fileurl;
+		return $temp_url . $filename;
 	}
 
 	/**
@@ -340,6 +337,12 @@ class MWF_Functions {
 						'application/mspowerpoint',
 						'application/powerpoint',
 						'application/ppt',
+					);
+					break;
+				case 'pdf':
+					$wp_check_filetype['type'] = array(
+						$wp_check_filetype['type'],
+						'application/x-empty',
 					);
 					break;
 			}

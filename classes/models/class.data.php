@@ -608,6 +608,7 @@ class MW_WP_Form_Data {
 			$filepath        = MWF_Functions::fileurl_to_path( $upload_file_url );
 			if ( ! $upload_file_url || ! file_exists( $filepath ) ) {
 				unset( $upload_file_keys[ $key ] );
+				$this->set( $upload_file_key, '' );
 			}
 		}
 
@@ -628,6 +629,7 @@ class MW_WP_Form_Data {
 
 		foreach ( $uploaded_files as $key => $upload_file ) {
 			$this->set( $key, $upload_file );
+
 			if ( is_array( $upload_file_keys ) && ! in_array( $key, $upload_file_keys, true ) ) {
 				$this->push( MWF_Config::UPLOAD_FILE_KEYS, $key );
 			}

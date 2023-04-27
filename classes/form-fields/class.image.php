@@ -70,11 +70,11 @@ class MW_WP_Form_Field_Image extends MW_WP_Form_Abstract_Form_Field {
 			if ( file_exists( $filepath ) ) {
 				$_ret .= sprintf(
 					'<div class="%s_image">
-						<img src="%s" alt="" />
+						%s
 						%s
 					</div>',
 					esc_attr( MWF_Config::NAME ),
-					esc_attr( $value ),
+					esc_html( basename( $filepath ) ),
 					$this->Form->hidden( $this->atts['name'], $value )
 				);
 			}
@@ -97,11 +97,11 @@ class MW_WP_Form_Field_Image extends MW_WP_Form_Abstract_Form_Field {
 			if ( file_exists( $filepath ) ) {
 				return sprintf(
 					'<div class="%s_image">
-						<img src="%s" alt="" />
+						%s
 						%s
 					</div>',
 					esc_attr( MWF_Config::NAME ),
-					esc_attr( $value ),
+					esc_html( basename( $filepath ) ),
 					$this->Form->hidden( $this->atts['name'], $value )
 				);
 			}

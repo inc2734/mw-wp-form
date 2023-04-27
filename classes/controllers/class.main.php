@@ -242,14 +242,45 @@ class MW_WP_Form_Main_Controller {
 		$Mail         = new MW_WP_Form_Mail();
 		$form_key     = $this->Data->get_form_key();
 		$attachments  = $this->_get_attachments();
-		$Mail_Service = new MW_WP_Form_Mail_Service( $Mail, $form_key, $this->Setting, $attachments );
 
-		// データベース非保存の場合はファイルも保存されないので、メールで URL が飛ばないように消す
-		if ( ! $this->Setting->get( 'usedb' ) ) {
-			foreach ( $attachments as $key => $attachment ) {
-				$this->Data->clear_value( $key );
-			}
+		// 送信された画像・ファイルの URL はメールに記載しない。記載するのはアップロード後のファイル名のみ。
+		foreach ( $attachments as $key => $attachment ) {
+			$this->Data->set( $key, basename( $attachment ) );
 		}
+
+		// データベースに保存する場合は、添付ファイルを uploads ディレクトリに移動
+		if ( $this->Setting->get( 'usedb' ) ) {
+			$new_attachments = array();
+
+			foreach ( $attachments as $key => $attachment ) {
+				$form_key       = $this->Data->get_form_key();
+				$new_upload_dir = apply_filters(
+					'mwform_upload_dir_' . $form_key,
+					'',
+					clone $this->Data,
+					$key
+				);
+
+				$new_filename = apply_filters(
+					'mwform_upload_filename_' . $form_key,
+					'',
+					clone $this->Data,
+					$key
+				);
+
+				$filepath = MWF_Functions::move_temp_file_to_upload_dir(
+					$attachment,
+					$new_upload_dir,
+					$new_filename
+				);
+
+				$new_attachments[ $key ] = $filepath;
+			}
+
+			$attachments = $new_attachments;
+		}
+
+		$Mail_Service = new MW_WP_Form_Mail_Service( $Mail, $form_key, $this->Setting, $attachments );
 
 		// Send admin mail
 		$is_admin_mail_sended = $Mail_Service->send_admin_mail();
@@ -306,29 +337,16 @@ class MW_WP_Form_Main_Controller {
 				continue;
 			}
 
-			$form_key       = $this->Data->get_form_key();
-			$new_upload_dir = apply_filters(
-				'mwform_upload_dir_' . $form_key,
-				'',
-				clone $this->Data,
-				$key
-			);
+			$File     = new MW_WP_Form_File();
+			$temp_dir = $File->get_temp_dir();
+			if ( 0 !== strpos( realpath( $filepath ), $temp_dir['dir'] ) ) {
+				continue;
+			}
 
-			$new_filename = apply_filters(
-				'mwform_upload_filename_' . $form_key,
-				'',
-				clone $this->Data,
-				$key
-			);
+			if ( strstr( $filepath, "\0" ) ) {
+				continue;
+			}
 
-			$filepath = MWF_Functions::move_temp_file_to_upload_dir(
-				$filepath,
-				$new_upload_dir,
-				$new_filename
-			);
-
-			$new_upload_file_url = MWF_Functions::filepath_to_url( $filepath );
-			$this->Data->set( $key, $new_upload_file_url );
 			$attachments[ $key ] = $filepath;
 		}
 

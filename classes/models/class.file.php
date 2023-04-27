@@ -147,10 +147,14 @@ class MW_WP_Form_File {
 		$temp_dir = $temp_dir['dir'];
 
 		if ( file_exists( $temp_dir ) ) {
+			$this->_create_htaccess( $temp_dir );
 			return is_writable( $temp_dir );
 		}
 
 		$is_created = wp_mkdir_p( trailingslashit( $temp_dir ) );
+		if ( $is_created ) {
+			$this->_create_htaccess( $temp_dir );
+		}
 		$is_created = chmod( $temp_dir, 0733 );
 
 		return $is_created;
@@ -225,5 +229,34 @@ class MW_WP_Form_File {
 		}
 
 		closedir( $handle );
+	}
+
+	/**
+	 * Create .htaccess.
+	 *
+	 * @param string $save_dir The directory where .htaccess is created.
+	 * @return boolean
+	 * @throws \RuntimeException If the creation of .htaccess fails.
+	 */
+	protected function _create_htaccess( $save_dir ) {
+		$htaccess = path_join( $save_dir, '.htaccess' );
+		if ( file_exists( $htaccess ) ) {
+			return true;
+		}
+
+		$handle = fopen( $htaccess, 'w' );
+		if ( ! $handle ) {
+			throw new \RuntimeException( '[MW WP Form] .htaccess can\'t create.' );
+		}
+
+		if ( false === fwrite( $handle, "Deny from all\n" ) ) {
+			throw new \RuntimeException( '[MW WP Form] .htaccess can\'t write.' );
+		}
+
+		if ( ! fclose( $handle ) ) {
+			throw new \RuntimeException( '[MW WP Form] .htaccess can\'t close.' );
+		}
+
+		return true;
 	}
 }
