@@ -38,7 +38,7 @@ class MW_WP_Form_Validation_Rule_FileSize extends MW_WP_Form_Abstract_Validation
 			}
 		} else {
 			$upload_file_keys = $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS );
-			$filepath         = MWF_Functions::fileurl_to_path( $this->Data->get( $name ) );
+			$filepath         = MWF_Functions::generate_uploaded_filepath_from_filename( $this->Data->get( $name ) );
 			if (
 				is_array( $upload_file_keys )
 				&& in_array( $name, $upload_file_keys, true )

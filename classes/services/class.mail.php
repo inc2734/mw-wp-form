@@ -105,6 +105,11 @@ class MW_WP_Form_Mail_Service {
 			$this->_save( $Mail_admin_for_save );
 		}
 
+		// If not usedb, remove files after sending admin mail
+		if ( ! $this->Setting->get( 'usedb' ) ) {
+			$this->_delete_files();
+		}
+
 		return $is_admin_mail_sended;
 	}
 
@@ -243,6 +248,17 @@ class MW_WP_Form_Mail_Service {
 			$this->Data->gets(),
 			clone $this->Data
 		);
+	}
+
+	/**
+	 * Delete attachment files.
+	 */
+	protected function _delete_files() {
+		foreach ( $this->attachments as $file ) {
+			if ( file_exists( $file ) ) {
+				unlink( $file );
+			}
+		}
 	}
 
 	/**

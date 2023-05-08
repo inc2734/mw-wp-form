@@ -173,12 +173,11 @@ class MW_WP_Form_Exec_Shortcode {
 		global $post;
 		$post = get_post( $this->form_id );
 		setup_postdata( $post );
+		// @todo 共通化 main._file_upload()
 		$content = apply_filters( 'mwform_post_content_raw_' . $this->form_key, get_the_content(), $this->Data );
 		$content = $this->_wpautop( $content );
-		$content = sprintf(
-			'[mwform]%s[/mwform]',
-			apply_filters( 'mwform_post_content_' . $this->form_key, $content, $this->Data )
-		);
+		$content = apply_filters( 'mwform_post_content_' . $this->form_key, $content, $this->Data );
+		$content = sprintf( '[mwform]%s[/mwform]', $content );
 		wp_reset_postdata();
 		return $content;
 	}
@@ -209,10 +208,11 @@ class MW_WP_Form_Exec_Shortcode {
 		$content = str_replace( '{' . MWF_Config::TRACKINGNUMBER . '}', '{' . MWF_Config::TRACKINGNUMBER . '_for_complete_page}', $content );
 		$content = $this->_wpautop( $content );
 		$content = $Parser->replace_for_mail_content( $content );
+		$content = apply_filters( 'mwform_complete_content_' . $this->form_key, $content, $this->Data );
 
 		$content = sprintf(
 			'[mwform_complete_message]%s[/mwform_complete_message]',
-			apply_filters( 'mwform_complete_content_' . $this->form_key, $content, $this->Data )
+			$content
 		);
 		return $content;
 	}

@@ -36,8 +36,6 @@ class MW_WP_Form_File {
 	 * @return array
 	 */
 	public function upload( array $files = array() ) {
-		$this->_clean_temp_dir();
-
 		$uploaded_files = array();
 		foreach ( $files as $name => $file ) {
 			$uploaded_file = $this->_single_file_upload( $name );
@@ -160,49 +158,22 @@ class MW_WP_Form_File {
 		return $is_created;
 	}
 
-	/**
-	 * Delete temp directory.
-	 *
-	 * @param string $sub_dir Sub directory path.
-	 */
-	public function remove_temp_dir( $sub_dir = '' ) {
+	public function do_empty_temp_dir( $force = false ) {
 		$temp_dir = $this->get_temp_dir();
 		$temp_dir = $temp_dir['dir'];
-		if ( $sub_dir ) {
-			$temp_dir = trailingslashit( $temp_dir ) . $sub_dir;
-		}
+		return $this->_clean_temp_dir( $force );
+	}
 
-		if ( ! file_exists( $temp_dir ) ) {
-			return;
-		}
-
-		$handle = opendir( $temp_dir );
-		if ( false === $handle ) {
-			return;
-		}
-
-		// phpcs:disable WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
-		while ( false !== ( $file = readdir( $handle ) ) ) {
-		// phpcs:enable
-			if ( '.' === $file || '..' === $file ) {
-				continue;
-			}
-
-			if ( is_dir( trailingslashit( $temp_dir ) . $file ) ) {
-				$this->remove_temp_dir( $file );
-			} else {
-				unlink( trailingslashit( $temp_dir ) . $file );
-			}
-		}
-
-		closedir( $handle );
-		rmdir( $temp_dir );
+	public function remove_temp_dir() {
+		$this->do_empty_temp_dir( true );
+		$temp_dir = $this->get_temp_dir();
+		rmdir( $temp_dir['dir'] );
 	}
 
 	/**
 	 * Delete files in temp directory.
 	 */
-	protected function _clean_temp_dir() {
+	protected function _clean_temp_dir( $force = false ) {
 		$temp_dir = $this->get_temp_dir();
 		$temp_dir = $temp_dir['dir'];
 
@@ -223,7 +194,7 @@ class MW_WP_Form_File {
 			}
 
 			$stat = stat( trailingslashit( $temp_dir ) . $filename );
-			if ( $stat['mtime'] + 3600 < time() ) {
+			if ( $force || $stat['mtime'] + 60 * 15 < time() ) {
 				unlink( trailingslashit( $temp_dir ) . $filename );
 			}
 		}

@@ -53,29 +53,27 @@ class MWF_Functions_Test extends WP_UnitTestCase {
 
 	/**
 	 * @test
-	 * @group fileurl_to_path
+	 * @group generate_uploaded_fileurl_from_filename
 	 */
-	public function fileurl_to_path() {
+	public function generate_uploaded_fileurl_from_filename() {
 		$File     = new MW_WP_Form_File();
 		$temp_dir = $File->get_temp_dir();
-		$this->assertNull( MWF_Functions::fileurl_to_path( $temp_dir['dir'] . '/dummy.txt' ) );
 		$this->assertEquals(
-			$temp_dir['dir'] . '/dummy.txt',
-			MWF_Functions::fileurl_to_path( $temp_dir['url'] . '/dummy.txt' )
+			$temp_dir['url'] . '/dummy.txt',
+			MWF_Functions::generate_uploaded_fileurl_from_filename( 'dummy.txt' )
 		);
 	}
 
 	/**
 	 * @test
-	 * @group filepath_to_url
+	 * @group generate_uploaded_filepath_from_filename
 	 */
-	public function filepath_to_url() {
+	public function generate_uploaded_filepath_from_filename() {
 		$File     = new MW_WP_Form_File();
 		$temp_dir = $File->get_temp_dir();
-		$this->assertNull( MWF_Functions::filepath_to_url( $temp_dir['url'] . '/dummy.txt' ) );
 		$this->assertEquals(
-			$temp_dir['url'] . '/dummy.txt',
-			MWF_Functions::filepath_to_url( $temp_dir['dir'] . '/dummy.txt' )
+			$temp_dir['dir'] . '/dummy.txt',
+			MWF_Functions::generate_uploaded_filepath_from_filename( 'dummy.txt' )
 		);
 	}
 

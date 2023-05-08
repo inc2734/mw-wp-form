@@ -41,47 +41,47 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Convert file URL to file path.
+	 * Generate file path based on temp directory.
 	 *
-	 * @param string $fileurl File URL.
+	 * @param string $filename The file basename.
 	 * @return string
 	 */
-	public static function fileurl_to_path( $fileurl ) {
-		if ( ! preg_match( '/^https?:\/\//', $fileurl ) ) {
-			return;
-		}
-
+	public static function generate_uploaded_fileurl_from_filename( $filename ) {
+		$filename = basename( $filename );
 		$File     = new MW_WP_Form_File();
 		$temp_dir = $File->get_temp_dir();
-		$temp_dir = trailingslashit( $temp_dir['dir'] );
-		$filename = basename( $fileurl );
-		if ( strstr( $filename, "\0" ) ) {
-			return;
+
+		if ( strstr( $filename, '/' ) || strstr( $filename, '\\' ) ) {
+			return false;
 		}
 
-		return $temp_dir . $filename;
+		if ( strstr( $filename, "\0" ) ) {
+			return false;
+		}
+
+		return path_join( $temp_dir['url'], $filename );
 	}
 
 	/**
-	 * Convert file path to file URL.
+	 * Generate file URL based on temp directory.
 	 *
-	 * @param string $filepath File path.
+	 * @param string $filename The file basename.
 	 * @return string
 	 */
-	public static function filepath_to_url( $filepath ) {
-		if ( preg_match( '/^https?:\/\//', $filepath ) ) {
-			return;
-		}
-
+	public static function generate_uploaded_filepath_from_filename( $filename ) {
+		$filename = basename( $filename );
 		$File     = new MW_WP_Form_File();
 		$temp_dir = $File->get_temp_dir();
-		$temp_url = trailingslashit( $temp_dir['url'] );
-		$filename = basename( $filepath );
-		if ( strstr( $filename, "\0" ) ) {
-			return;
+
+		if ( strstr( $filename, '/' ) || strstr( $filename, '\\' ) ) {
+			return false;
 		}
 
-		return $temp_url . $filename;
+		if ( strstr( $filename, "\0" ) ) {
+			return false;
+		}
+
+		return path_join( $temp_dir['dir'], $filename );
 	}
 
 	/**

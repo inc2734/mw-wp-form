@@ -66,7 +66,7 @@ class MW_WP_Form_Field_File extends MW_WP_Form_Abstract_Form_Field {
 			&& is_array( $upload_file_keys )
 			&& in_array( $this->atts['name'], $upload_file_keys, true )
 		) {
-			$filepath = MWF_Functions::fileurl_to_path( $value );
+			$filepath = MWF_Functions::generate_uploaded_filepath_from_filename( $value );
 			if ( file_exists( $filepath ) ) {
 				$_ret .= sprintf(
 					'<div class="%s_file">
@@ -74,7 +74,7 @@ class MW_WP_Form_Field_File extends MW_WP_Form_Abstract_Form_Field {
 						%s
 					</div>',
 					esc_attr( MWF_Config::NAME ),
-					esc_html( basename( $filepath ) ),
+					esc_html( $value ),
 					$this->Form->hidden( $this->atts['name'], $value )
 				);
 			}
@@ -93,7 +93,7 @@ class MW_WP_Form_Field_File extends MW_WP_Form_Abstract_Form_Field {
 	protected function confirm_page() {
 		$value = $this->Data->get_raw( $this->atts['name'] );
 		if ( $value ) {
-			$filepath = MWF_Functions::fileurl_to_path( $value );
+			$filepath = MWF_Functions::generate_uploaded_filepath_from_filename( $value );
 			if ( file_exists( $filepath ) ) {
 				return sprintf(
 					'<div class="%s_file">
@@ -101,7 +101,7 @@ class MW_WP_Form_Field_File extends MW_WP_Form_Abstract_Form_Field {
 						%s
 					</div>',
 					esc_attr( MWF_Config::NAME ),
-					esc_html( basename( $filepath ) ),
+					esc_html( $value ),
 					$this->Form->hidden( $this->atts['name'], $value )
 				);
 			}

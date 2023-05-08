@@ -604,9 +604,9 @@ class MW_WP_Form_Data {
 		$upload_file_keys = array_values( array_unique( $upload_file_keys ) );
 
 		foreach ( $upload_file_keys as $key => $upload_file_key ) {
-			$upload_file_url = $this->get_post_value_by_key( $upload_file_key );
-			$filepath        = MWF_Functions::fileurl_to_path( $upload_file_url );
-			if ( ! $upload_file_url || ! file_exists( $filepath ) ) {
+			$upload_filename = $this->get_post_value_by_key( $upload_file_key );
+			$filepath        = MWF_Functions::generate_uploaded_filepath_from_filename( $upload_filename );
+			if ( ! $upload_filename || ! file_exists( $filepath ) ) {
 				unset( $upload_file_keys[ $key ] );
 				$this->set( $upload_file_key, '' );
 			}
@@ -628,12 +628,31 @@ class MW_WP_Form_Data {
 		}
 
 		foreach ( $uploaded_files as $key => $upload_file ) {
-			$this->set( $key, $upload_file );
+			$this->set( $key, basename( $upload_file ) );
 
 			if ( is_array( $upload_file_keys ) && ! in_array( $key, $upload_file_keys, true ) ) {
 				$this->push( MWF_Config::UPLOAD_FILE_KEYS, $key );
 			}
 		}
+	}
+
+	/**
+	 * Add permitted key of $_FILES.
+	 *
+	 * @param string $key The key of $_FILES.
+	 */
+	public function set_file_key( $key ) {
+		$this->meta['file_keys'][ $key ] = $key;
+	}
+
+	/**
+	 * Get permitted key of $_FILES.
+	 *
+	 * @param string $key The key of $_FILES.
+	 * @return string|false
+	 */
+	public function get_file_key( $key ) {
+		return isset( $this->meta['file_keys'][ $key ] ) ? $this->meta['file_keys'][ $key ] : false;
 	}
 
 	/**

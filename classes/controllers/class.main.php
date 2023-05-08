@@ -327,12 +327,12 @@ class MW_WP_Form_Main_Controller {
 		}
 
 		foreach ( $upload_file_keys as $key ) {
-			$upload_file_url = $this->Data->get_post_value_by_key( $key );
-			if ( ! $upload_file_url ) {
+			$upload_filename = $this->Data->get_post_value_by_key( $key );
+			if ( ! $upload_filename ) {
 				continue;
 			}
 
-			$filepath = MWF_Functions::fileurl_to_path( $upload_file_url );
+			$filepath = MWF_Functions::generate_uploaded_filepath_from_filename( $upload_filename );
 			if ( ! file_exists( $filepath ) ) {
 				continue;
 			}
@@ -364,8 +364,38 @@ class MW_WP_Form_Main_Controller {
 		if ( ! is_array( $upload_files ) ) {
 			$upload_files = array();
 		}
+
+		// @todo 共通化 exec-shortcode._get_input_page_content()
+		global $post;
+		$form_id = MWF_Functions::get_form_id_from_form_key( $this->Data->get_form_key() );
+		$post    = get_post( $form_id );
+		setup_postdata( $post );
+		$content = apply_filters( 'mwform_post_content_raw_' . $this->Data->get_form_key(), get_the_content(), $this->Data );
+		// $content = $this->_wpautop( $content );
+		$content = apply_filters( 'mwform_post_content_' . $this->Data->get_form_key(), $content, $this->Data );
+		wp_reset_postdata();
+
+		// ファイルアップロード可能な name を制限する
+		$permitted_file_keys = array();
+		preg_match_all(
+			'|\[mwform_image ?[^\]]* +name="([^"]*)"\]|ms',
+			$content,
+			$image_matches
+		);
+		foreach ( $image_matches[1] as $key ) {
+			$permitted_file_keys[ $key ] = $key;
+		}
+		preg_match_all(
+			'|\[mwform_file ?[^\]]* +name="([^"]*)"\]|ms',
+			$content,
+			$file_matches
+		);
+		foreach ( $file_matches[1] as $key ) {
+			$permitted_file_keys[ $key ] = $key;
+		}
+
 		foreach ( $upload_files as $key => $file ) {
-			if ( $this->Validation->is_valid_field( $key ) ) {
+			if ( $this->Validation->is_valid_field( $key ) && in_array( $key, $permitted_file_keys, true ) ) {
 				$files[ $key ] = $file;
 			} elseif ( isset( $files[ $key ] ) ) {
 				unset( $files[ $key ] );

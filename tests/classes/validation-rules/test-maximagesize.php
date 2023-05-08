@@ -33,7 +33,7 @@ class MW_WP_Form_Validation_Rule_MaxImageSize_Test extends WP_UnitTestCase {
 		$Rule     = new MW_WP_Form_Validation_Rule_MaxImageSize( $Data );
 
 		$Data->set( MWF_Config::UPLOAD_FILE_KEYS, array( 'image' ) );
-		$Data->set( 'image', MWF_Functions::filepath_to_url( $this->filepath ) );
+		$Data->set( 'image', MWF_Functions::generate_uploaded_fileurl_from_filename( $this->filepath ) );
 
 		$this->assertNull( $Rule->rule( 'image', array( 'width' => 600, 'height' => 600 ) ) );
 

@@ -49,14 +49,14 @@ class MW_WP_Form_Validation_Rule_MaxImageSize extends MW_WP_Form_Abstract_Valida
 
 		if ( ! in_array( $name, $upload_file_keys, true ) && array_key_exists( $name, $upload_files ) ) {
 			// Check after upload
-			$file_path = $upload_files[ $name ]['tmp_name'];
+			$filepath = $upload_files[ $name ]['tmp_name'];
 		} else {
 			// Check if uploaded
-			$file_path = MWF_Functions::fileurl_to_path( $value );
+			$filepath = MWF_Functions::generate_uploaded_filepath_from_filename( $value );
 		}
 
-		if ( file_exists( $file_path ) && exif_imagetype( $file_path ) ) {
-			$imagesize = getimagesize( $file_path );
+		if ( file_exists( $filepath ) && exif_imagetype( $filepath ) ) {
+			$imagesize = getimagesize( $filepath );
 		} else {
 			if ( ! in_array( $name, $upload_file_keys, true ) ) {
 				$is_error = true;
