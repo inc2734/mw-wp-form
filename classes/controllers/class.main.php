@@ -378,20 +378,31 @@ class MW_WP_Form_Main_Controller {
 		// ファイルアップロード可能な name を制限する
 		$permitted_file_keys = array();
 		preg_match_all(
-			'|\[mwform_image ?[^\]]* +name="([^"]*)"\]|ms',
+			'|\[mwform_image [^\]]*?\]|ms',
 			$content,
 			$image_matches
 		);
-		foreach ( $image_matches[1] as $key ) {
-			$permitted_file_keys[ $key ] = $key;
+		foreach ( $image_matches as $image_shortcodes ) {
+			foreach ( $image_shortcodes as $image_shortcode ) {
+				preg_match( '/name="([^"]+?)"/', $image_shortcode, $match );
+				if ( $match ) {
+					$permitted_file_keys[ $match[1] ] = $match[1];
+				}
+			}
 		}
+
 		preg_match_all(
-			'|\[mwform_file ?[^\]]* +name="([^"]*)"\]|ms',
+			'|\[mwform_file [^\]]*?\]|ms',
 			$content,
 			$file_matches
 		);
-		foreach ( $file_matches[1] as $key ) {
-			$permitted_file_keys[ $key ] = $key;
+		foreach ( $file_matches as $file_shortcodes ) {
+			foreach ( $file_shortcodes as $file_shortcode ) {
+				preg_match( '/name="([^"]+?)"/', $file_shortcode, $match );
+				if ( $match ) {
+					$permitted_file_keys[ $match[1] ] = $match[1];
+				}
+			}
 		}
 
 		foreach ( $upload_files as $key => $file ) {
