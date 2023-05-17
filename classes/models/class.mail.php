@@ -106,7 +106,7 @@ class MW_WP_Form_Mail {
 		if ( defined( 'MWFORM_DEBUG' ) && true === MWFORM_DEBUG ) {
 			$is_mail_sended = $this->_put_mail_log( $headers );
 		} else {
-			$is_mail_sended = wp_mail( $this->to, $this->subject, $this->body, $headers, $this->attachments );
+			$is_mail_sended = wp_mail( $this->to, $this->subject, $this->body, $headers, array_values( $this->attachments ) );
 		}
 
 		remove_action( 'phpmailer_init', array( $this, '_set_return_path' ) );
