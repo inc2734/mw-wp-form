@@ -57,6 +57,10 @@ class MW_WP_Form_Exec_Shortcode {
 	 */
 	public function initialize( $attributes ) {
 		$this->form_id  = $this->_get_form_id_by_mwform_formkey( $attributes );
+		if ( ! $this->form_id ) {
+			return;
+		}
+
 		$this->form_key = MWF_Functions::get_form_key_from_form_id( $this->form_id );
 
 		/**
@@ -388,7 +392,7 @@ class MW_WP_Form_Exec_Shortcode {
 			$post = get_post( $attributes['key'] );
 		}
 
-		if ( ! empty( $post ) && isset( $post->ID ) ) {
+		if ( ! empty( $post ) && isset( $post->ID ) && 'publish' === $post->post_status ) {
 			return $post->ID;
 		}
 	}
