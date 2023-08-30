@@ -53,32 +53,6 @@ class MWF_Functions_Test extends WP_UnitTestCase {
 
 	/**
 	 * @test
-	 * @group generate_uploaded_fileurl_from_filename
-	 */
-	public function generate_uploaded_fileurl_from_filename() {
-		$File     = new MW_WP_Form_File();
-		$temp_dir = $File->get_temp_dir();
-		$this->assertEquals(
-			$temp_dir['url'] . '/dummy.txt',
-			MWF_Functions::generate_uploaded_fileurl_from_filename( 'dummy.txt' )
-		);
-	}
-
-	/**
-	 * @test
-	 * @group generate_uploaded_filepath_from_filename
-	 */
-	public function generate_uploaded_filepath_from_filename() {
-		$File     = new MW_WP_Form_File();
-		$temp_dir = $File->get_temp_dir();
-		$this->assertEquals(
-			$temp_dir['dir'] . '/dummy.txt',
-			MWF_Functions::generate_uploaded_filepath_from_filename( 'dummy.txt' )
-		);
-	}
-
-	/**
-	 * @test
 	 * @group move_temp_file_to_upload_dir
 	 */
 	public function move_temp_file_to_upload_dir() {

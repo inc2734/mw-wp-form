@@ -32,13 +32,14 @@ class MW_WP_Form_File {
 	/**
 	 * Upload all files.
 	 *
+	 * @param int $form_id The form ID.
 	 * @param array $files Array of upload files.
 	 * @return array
 	 */
-	public function upload( array $files = array() ) {
+	public function upload( $form_id, array $files = array() ) {
 		$uploaded_files = array();
 		foreach ( $files as $name => $file ) {
-			$uploaded_file = $this->_single_file_upload( $name );
+			$uploaded_file = $this->_single_file_upload( $form_id, $name, $file );
 			if ( ! $uploaded_file ) {
 				continue;
 			}
@@ -51,183 +52,52 @@ class MW_WP_Form_File {
 	/**
 	 * 指定したファイルをアップロード.
 	 *
+	 * @param int $form_id The form ID.
 	 * @param string $name Field name.
+	 * @param array A value of $_FIELS
 	 * @return string
 	 */
-	protected function _single_file_upload( $name ) {
-		$this->create_temp_dir();
-
-		if ( ! is_array( $_FILES ) || ! isset( $_FILES[ $name ] ) ) {
-			return;
-		}
-
-		$file = $_FILES[ $name ];
-		return $this->_file_upload( $file );
-	}
-
-	/**
-	 * Upload process.
-	 *
-	 * @param arary $file $_FILES['name'].
-	 * @return string
-	 */
-	protected function _file_upload( $file ) {
+	protected function _single_file_upload( $form_id, $name, $file ) {
 		if ( empty( $file['tmp_name'] ) ) {
 			return false;
 		}
 
-		if (
-			! MWF_Functions::check_file_type( $file['tmp_name'], $file['name'] )
-			|| ! UPLOAD_ERR_OK === $file['error']
-			|| ! is_uploaded_file( $file['tmp_name'] )
-		) {
-			return false;
-		}
+		$error = $file['error'];
 
-		$extension   = pathinfo( $file['name'], PATHINFO_EXTENSION );
-		$uploadfile  = $this->_set_upload_file_name( $extension );
-		$is_uploaded = move_uploaded_file( $file['tmp_name'], $uploadfile['file'] );
-		if ( ! $is_uploaded ) {
-			return false;
-		}
-
-		return $uploadfile['url'];
-	}
-
-	/**
-	 * Generate temp file name.
-	 * If doesn't generate temp directory, using upload directory.
-	 *
-	 * @param string $extension ext.
-	 * @return array
-	 */
-	protected function _set_upload_file_name( $extension ) {
-		$basename   = uniqid( rand() );
-		$temp_dir   = $this->get_temp_dir();
-		$upload_dir = $temp_dir['dir'];
-		$upload_url = $temp_dir['url'];
-
-		if ( ! is_writable( $temp_dir['dir'] ) ) {
-			$wp_upload_dir = wp_upload_dir();
-			$upload_dir    = $wp_upload_dir['path'];
-			$upload_url    = $wp_upload_dir['url'];
-		}
-
-		$filename           = wp_unique_filename( trailingslashit( $upload_dir ), $basename . '.' . $extension );
-		$uploadfile         = array();
-		$uploadfile['file'] = trailingslashit( $upload_dir ) . $filename;
-		$uploadfile['url']  = trailingslashit( $upload_url ) . $filename;
-
-		return $uploadfile;
-	}
-
-	/**
-	 * Return array of temp directory. Return directory even if it does not exist.
-	 *
-	 * @return array
-	 */
-	public function get_temp_dir() {
-		$wp_upload_dir   = wp_upload_dir();
-		$temp_dir_name   = '/' . MWF_Config::NAME . '_uploads';
-		$temp_dir        = array();
-		$temp_dir['dir'] = $wp_upload_dir['basedir'] . $temp_dir_name;
-		$temp_dir['url'] = $wp_upload_dir['baseurl'] . $temp_dir_name;
-		return $temp_dir;
-	}
-
-	/**
-	 * Create temp directory.
-	 *
-	 * @return bool
-	 */
-	public function create_temp_dir() {
-		$temp_dir = $this->get_temp_dir();
-		$temp_dir = $temp_dir['dir'];
-
-		if ( file_exists( $temp_dir ) ) {
-			$this->_create_htaccess( $temp_dir );
-			return is_writable( $temp_dir );
-		}
-
-		$is_created = wp_mkdir_p( trailingslashit( $temp_dir ) );
-		if ( $is_created ) {
-			$this->_create_htaccess( $temp_dir );
-		}
-		$is_created = chmod( $temp_dir, 0733 );
-
-		return $is_created;
-	}
-
-	public function do_empty_temp_dir( $force = false ) {
-		$temp_dir = $this->get_temp_dir();
-		$temp_dir = $temp_dir['dir'];
-		return $this->_clean_temp_dir( $force );
-	}
-
-	public function remove_temp_dir() {
-		$this->do_empty_temp_dir( true );
-		$temp_dir = $this->get_temp_dir();
-		rmdir( $temp_dir['dir'] );
-	}
-
-	/**
-	 * Delete files in temp directory.
-	 */
-	protected function _clean_temp_dir( $force = false ) {
-		$temp_dir = $this->get_temp_dir();
-		$temp_dir = $temp_dir['dir'];
-
-		if ( ! file_exists( $temp_dir ) ) {
-			return;
-		}
-
-		$handle = opendir( $temp_dir );
-		if ( false === $handle ) {
-			return;
-		}
-
-		// phpcs:disable WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition
-		while ( false !== ( $filename = readdir( $handle ) ) ) {
-		// phpcs:enable
-			if ( '.' === $filename && '..' === $filename || is_dir( trailingslashit( $temp_dir ) . $filename ) ) {
-				continue;
+		try {
+			if ( UPLOAD_ERR_OK !== $error && UPLOAD_ERR_NO_FILE !== $error ||
+				! MWF_Functions::check_file_type( $file['tmp_name'], $file['name'] ) ) {
+				if ( UPLOAD_ERR_INI_SIZE === $error || UPLOAD_ERR_FORM_SIZE === $error ) {
+					throw new \RuntimeException( '[MW WP Form] File size of the uploaded file is too large.' );
+				}
+				throw new \RuntimeException( '[MW WP Form] An error occurred during file upload.' );
 			}
+		} catch ( \Exception $e ) {
+			error_log( $e->getMessage() );
+		}
 
-			$stat = stat( trailingslashit( $temp_dir ) . $filename );
-			if ( $force || $stat['mtime'] + 60 * 15 < time() ) {
-				unlink( trailingslashit( $temp_dir ) . $filename );
+		try {
+			$new_user_file_dir = MW_WP_Form_Directory::generate_user_file_dirpath( $form_id, $name );
+			if ( ! wp_mkdir_p( $new_user_file_dir ) ) {
+				throw new \RuntimeException( '[MW WP Form] Creation of a temporary directory for file upload failed.' );
 			}
+		} catch ( \Exception $e ) {
+			error_log( $e->getMessage() );
 		}
 
-		closedir( $handle );
-	}
+		MW_WP_Form_Directory::do_empty( $new_user_file_dir, true );
 
-	/**
-	 * Create .htaccess.
-	 *
-	 * @param string $save_dir The directory where .htaccess is created.
-	 * @return boolean
-	 * @throws \RuntimeException If the creation of .htaccess fails.
-	 */
-	protected function _create_htaccess( $save_dir ) {
-		$htaccess = path_join( $save_dir, '.htaccess' );
-		if ( file_exists( $htaccess ) ) {
-			return true;
+		$filename = sanitize_file_name( sprintf( '%1$s-%2$s', $name, $file['name'] ) );
+		$filepath = MW_WP_Form_Directory::generate_user_filepath( $form_id, $name, $filename );
+
+		try {
+			if ( ! move_uploaded_file( $file['tmp_name'], $filepath ) ) {
+				throw new \RuntimeException( '[MW WP Form] There was an error saving the uploaded file.' );
+			}
+		} catch ( \Exception $e ) {
+			error_log( $e->getMessage() );
 		}
 
-		$handle = fopen( $htaccess, 'w' );
-		if ( ! $handle ) {
-			throw new \RuntimeException( '[MW WP Form] .htaccess can\'t create.' );
-		}
-
-		if ( false === fwrite( $handle, "Deny from all\n" ) ) {
-			throw new \RuntimeException( '[MW WP Form] .htaccess can\'t write.' );
-		}
-
-		if ( ! fclose( $handle ) ) {
-			throw new \RuntimeException( '[MW WP Form] .htaccess can\'t close.' );
-		}
-
-		return true;
+		return $filename;
 	}
 }

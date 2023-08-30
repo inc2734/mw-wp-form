@@ -61,6 +61,8 @@ class MW_WP_Form {
 	public function _initialize() {
 		load_plugin_textdomain( 'mw-wp-form' );
 
+		MW_WP_Form_Csrf::save_token();
+
 		add_action( 'after_setup_theme', array( $this, '_after_setup_theme' ), 11 );
 		add_action( 'init', array( $this, '_register_post_type' ) );
 		add_action( 'template_redirect', array( $this, '_do_empty_temp_dir' ) );
@@ -239,16 +241,19 @@ class MW_WP_Form {
 			}
 		}
 
-		$file = new MW_WP_Form_File();
-		$file->remove_temp_dir();
+		try {
+			MW_WP_Form_Directory::do_empty( MW_WP_Form_Directory::get(), true );
+			MW_WP_Form_Directory::remove( MW_WP_Form_Directory::get( false ) );
+		} catch ( \Exception $e ) {
+			error_log( $e->getMessage() );
+		}
 
 		delete_option( MWF_Config::NAME );
 	}
 
 	public function _do_empty_temp_dir() {
 		try {
-			$File = new MW_WP_Form_File();
-			$File->do_empty_temp_dir();
+			MW_WP_Form_Directory::do_empty( MW_WP_Form_Directory::get() );
 		} catch ( \Exception $e ) {
 			error_log( $e->getMessage() );
 		}

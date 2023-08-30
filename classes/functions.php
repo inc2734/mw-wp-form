@@ -41,50 +41,6 @@ class MWF_Functions {
 	}
 
 	/**
-	 * Generate file path based on temp directory.
-	 *
-	 * @param string $filename The file basename.
-	 * @return string
-	 */
-	public static function generate_uploaded_fileurl_from_filename( $filename ) {
-		$filename = basename( $filename );
-		$File     = new MW_WP_Form_File();
-		$temp_dir = $File->get_temp_dir();
-
-		if ( strstr( $filename, '/' ) || strstr( $filename, '\\' ) ) {
-			return false;
-		}
-
-		if ( strstr( $filename, "\0" ) ) {
-			return false;
-		}
-
-		return path_join( $temp_dir['url'], $filename );
-	}
-
-	/**
-	 * Generate file URL based on temp directory.
-	 *
-	 * @param string $filename The file basename.
-	 * @return string
-	 */
-	public static function generate_uploaded_filepath_from_filename( $filename ) {
-		$filename = basename( $filename );
-		$File     = new MW_WP_Form_File();
-		$temp_dir = $File->get_temp_dir();
-
-		if ( strstr( $filename, '/' ) || strstr( $filename, '\\' ) ) {
-			return false;
-		}
-
-		if ( strstr( $filename, "\0" ) ) {
-			return false;
-		}
-
-		return path_join( $temp_dir['dir'], $filename );
-	}
-
-	/**
 	 * Unify line feed code to \n.
 	 *
 	 * @param sring $string String.

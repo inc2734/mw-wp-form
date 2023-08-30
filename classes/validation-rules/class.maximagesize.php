@@ -52,7 +52,8 @@ class MW_WP_Form_Validation_Rule_MaxImageSize extends MW_WP_Form_Abstract_Valida
 			$filepath = $upload_files[ $name ]['tmp_name'];
 		} else {
 			// Check if uploaded
-			$filepath = MWF_Functions::generate_uploaded_filepath_from_filename( $value );
+			$form_id  = MWF_Functions::get_form_id_from_form_key( $this->Data->get_form_key() );
+			$filepath = MW_WP_Form_Directory::generate_user_filepath( $form_id, $name, $value );
 		}
 
 		if ( file_exists( $filepath ) && exif_imagetype( $filepath ) ) {

@@ -408,7 +408,6 @@ class MW_WP_Form_Exec_Shortcode {
 			return $html;
 		}
 
-		$html .= wp_nonce_field( $this->form_key, MWF_Config::TOKEN_NAME, true, false );
 		$html .= sprintf(
 			'<input type="hidden" name="%1$s" value="%2$s" />',
 			esc_attr( MWF_Config::NAME . '-form-id' ),
@@ -417,8 +416,8 @@ class MW_WP_Form_Exec_Shortcode {
 
 		$html .= sprintf(
 			'<input type="hidden" name="%1$s" value="%2$s" />',
-			esc_attr( MWF_Config::NAME . '-form-verify-token' ),
-			esc_attr( $this->Setting->generate_form_verify_token() )
+			esc_attr( MWF_Config::TOKEN_NAME ),
+			esc_attr( MW_WP_Form_Csrf::token() )
 		);
 		return $html;
 	}

@@ -5,6 +5,7 @@ class MW_WP_Form_Validation_Rule_MaxImageSize_Test extends WP_UnitTestCase {
 
 	public function set_up() {
 		parent::set_up();
+		$this->form_id  = $this->_create_form();
 		$this->filepath = $this->_save_image();
 	}
 
@@ -27,13 +28,12 @@ class MW_WP_Form_Validation_Rule_MaxImageSize_Test extends WP_UnitTestCase {
 	 * @group rule
 	 */
 	public function rule() {
-		$form_id  = $this->_create_form();
-		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
+		$form_key = MWF_Functions::get_form_key_from_form_id( $this->form_id );
 		$Data     = MW_WP_Form_Data::connect( $form_key );
 		$Rule     = new MW_WP_Form_Validation_Rule_MaxImageSize( $Data );
 
 		$Data->set( MWF_Config::UPLOAD_FILE_KEYS, array( 'image' ) );
-		$Data->set( 'image', MWF_Functions::generate_uploaded_fileurl_from_filename( $this->filepath ) );
+		$Data->set( 'image', basename( $this->filepath ) );
 
 		$this->assertNull( $Rule->rule( 'image', array( 'width' => 600, 'height' => 600 ) ) );
 
@@ -47,11 +47,11 @@ class MW_WP_Form_Validation_Rule_MaxImageSize_Test extends WP_UnitTestCase {
 	}
 
 	protected function _save_image() {
-		$File = new MW_WP_Form_File();
-		$File->create_temp_dir();
-		$temp_dir = $File->get_temp_dir();
+		$name        = 'image';
 		$resource_id = imagecreatetruecolor( 500, 500 );
-		$filepath = $temp_dir['dir'] . '/1.png';
+		$dir         = MW_WP_Form_Directory::generate_user_file_dirpath( $this->form_id, $name );
+		wp_mkdir_p( $dir );
+		$filepath = $dir . '/1.png';
 		imagepng( $resource_id, $filepath );
 		return $filepath;
 	}

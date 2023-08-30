@@ -295,11 +295,7 @@ class MW_WP_Form_Mail {
 		// Update properties
 		wp_mail( '', $this->subject, '', $headers, array() );
 
-		$File = new MW_WP_Form_File();
-		$File->create_temp_dir();
-
-		$temp_dir = $File->get_temp_dir();
-		$temp_dir = trailingslashit( $temp_dir['dir'] );
+		$temp_dir = MW_WP_Form_Directory::get();
 		$temp_dir = apply_filters( 'mwform_log_directory', $temp_dir );
 
 		$contents  = '====================';

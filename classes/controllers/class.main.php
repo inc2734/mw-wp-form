@@ -137,14 +137,14 @@ class MW_WP_Form_Main_Controller {
 
 			do_action( 'mwform_start_main_process', $form_key );
 
-			$form_verify_token = $_POST[ MWF_Config::NAME . '-form-verify-token' ];
-			$this->Setting     = new MW_WP_Form_Setting( (int) $form_id );
-			$this->Data        = MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
-			$post_condition    = $this->Data->get_post_condition();
-			$this->Validation  = new MW_WP_Form_Validation( $form_key );
-			$Redirected        = new MW_WP_Form_Redirected( $form_key, $this->Setting, $this->Validation->is_valid(), $post_condition );
+			$this->Setting    = new MW_WP_Form_Setting( (int) $form_id );
+			$this->Data       = MW_WP_Form_Data::connect( $form_key, $_POST, $_FILES );
+			$post_condition   = $this->Data->get_post_condition();
+			$this->Validation = new MW_WP_Form_Validation( $form_key );
+			$Redirected       = new MW_WP_Form_Redirected( $form_key, $this->Setting, $this->Validation->is_valid(), $post_condition );
 
-			if ( $this->Setting->generate_form_verify_token() !== $form_verify_token ) {
+			$form_verify_token = $_POST[ MWF_Config::TOKEN_NAME ];
+			if ( ! MW_WP_Form_Csrf::validate( $form_verify_token ) ) {
 				wp_safe_redirect( $Redirected->redirect() );
 				exit;
 			}
@@ -332,18 +332,9 @@ class MW_WP_Form_Main_Controller {
 				continue;
 			}
 
-			$filepath = MWF_Functions::generate_uploaded_filepath_from_filename( $upload_filename );
+			$form_id  = MWF_Functions::get_form_id_from_form_key( $this->Data->get_form_key() );
+			$filepath = MW_WP_Form_Directory::generate_user_filepath( $form_id, $key, $upload_filename );
 			if ( ! file_exists( $filepath ) ) {
-				continue;
-			}
-
-			$File     = new MW_WP_Form_File();
-			$temp_dir = $File->get_temp_dir();
-			if ( 0 !== strpos( realpath( $filepath ), $temp_dir['dir'] ) ) {
-				continue;
-			}
-
-			if ( strstr( $filepath, "\0" ) ) {
 				continue;
 			}
 
@@ -358,7 +349,6 @@ class MW_WP_Form_Main_Controller {
 	 * Regenerate form data according to the actual upload situation.
 	 */
 	protected function _file_upload() {
-		$File         = new MW_WP_Form_File();
 		$files        = array();
 		$upload_files = $this->Data->get_post_value_by_key( MWF_Config::UPLOAD_FILES );
 		if ( ! is_array( $upload_files ) ) {
@@ -412,7 +402,9 @@ class MW_WP_Form_Main_Controller {
 				unset( $files[ $key ] );
 			}
 		}
-		$uploaded_files = $File->upload( $files );
+
+		$File           = new MW_WP_Form_File();
+		$uploaded_files = $File->upload( $form_id, $files );
 		$this->Data->push_uploaded_file_keys( $uploaded_files );
 		$this->Data->regenerate_upload_file_keys();
 	}

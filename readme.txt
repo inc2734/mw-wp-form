@@ -77,6 +77,18 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 
 == Changelog ==
 
+= 5.0.0 =
+* Fixed a form access control vulnerability.
+* Enhanced file upload security.
+* Changed uploaded file name from "random number" to "{name attribute value}-{original file name}".
+* Update CSRF check.
+* Remove method: MW_WP_Form::get_temp_dir()
+* Remove method: MW_WP_Form::create_temp_dir()
+* Remove method: MW_WP_Form::do_empty_temp_dir()
+* Remove method: MW_WP_Form::remove_temp_dir()
+* Remove method: MWF_Functions::generate_uploaded_fileurl_from_filename()
+* Remove method: MWF_Functions::generate_uploaded_filepath_from_filename()
+
 = 4.4.5 =
 * Fixed a bug in WordPress 6.2 that the file name of a file sent from file fields or image fields and attached to it becomes "name".
 

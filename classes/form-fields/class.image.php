@@ -66,7 +66,8 @@ class MW_WP_Form_Field_Image extends MW_WP_Form_Abstract_Form_Field {
 			&& is_array( $upload_file_keys )
 			&& in_array( $this->atts['name'], $upload_file_keys, true )
 		) {
-			$filepath = MWF_Functions::generate_uploaded_filepath_from_filename( $value );
+			$form_id  = MWF_Functions::get_form_id_from_form_key( $this->Data->get_form_key() );
+			$filepath = MW_WP_Form_Directory::generate_user_filepath( $form_id, $this->atts['name'], $value );
 			if ( file_exists( $filepath ) ) {
 				$_ret .= sprintf(
 					'<div class="%s_image">
@@ -93,7 +94,8 @@ class MW_WP_Form_Field_Image extends MW_WP_Form_Abstract_Form_Field {
 	protected function confirm_page() {
 		$value = $this->Data->get_raw( $this->atts['name'] );
 		if ( $value ) {
-			$filepath = MWF_Functions::generate_uploaded_filepath_from_filename( $value );
+			$form_id  = MWF_Functions::get_form_id_from_form_key( $this->Data->get_form_key() );
+			$filepath = MW_WP_Form_Directory::generate_user_filepath( $form_id, $this->atts['name'], $value );
 			if ( file_exists( $filepath ) ) {
 				return sprintf(
 					'<div class="%s_image">

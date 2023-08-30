@@ -215,12 +215,13 @@ class MW_WP_Form_Data {
 	public function get_post_condition() {
 		$backButton    = $this->get_post_value_by_key( MWF_Config::BACK_BUTTON );
 		$confirmButton = $this->get_post_value_by_key( MWF_Config::CONFIRM_BUTTON );
+		$request_token = $this->get_post_value_by_key( MWF_Config::TOKEN_NAME );
 
 		if ( $backButton ) {
 			return 'back';
 		} elseif ( $confirmButton ) {
 			return 'confirm';
-		} elseif ( ! $confirmButton && ! $backButton && $this->_is_valid_token() ) {
+		} elseif ( ! $confirmButton && ! $backButton && $request_token ) {
 			return 'complete';
 		}
 
@@ -605,7 +606,8 @@ class MW_WP_Form_Data {
 
 		foreach ( $upload_file_keys as $key => $upload_file_key ) {
 			$upload_filename = $this->get_post_value_by_key( $upload_file_key );
-			$filepath        = MWF_Functions::generate_uploaded_filepath_from_filename( $upload_filename );
+			$form_id         = MWF_Functions::get_form_id_from_form_key( $this->get_form_key() );
+			$filepath        = MW_WP_Form_Directory::generate_user_filepath( $form_id, $upload_file_key, $upload_filename );
 			if ( ! $upload_filename || ! file_exists( $filepath ) ) {
 				unset( $upload_file_keys[ $key ] );
 				$this->set( $upload_file_key, '' );
@@ -711,17 +713,6 @@ class MW_WP_Form_Data {
 		if ( isset( $this->meta[ MWF_Config::SEND_ERROR ] ) ) {
 			return $this->meta[ MWF_Config::SEND_ERROR ];
 		}
-	}
-
-	/**
-	 * Nonce check.
-	 *
-	 * @return bool
-	 */
-	protected function _is_valid_token() {
-		$request_token = $this->get_post_value_by_key( MWF_Config::TOKEN_NAME );
-		$form_key      = $this->get_form_key();
-		return ( isset( $request_token ) && wp_verify_nonce( $request_token, $form_key ) );
 	}
 
 	/**

@@ -116,13 +116,6 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 	 * @group save
 	 */
 	public function save__saved_when_null_but_attachement_files_are_not_saved() {
-		$MW_WP_Form_File = new MW_WP_Form_File;
-		$temp_dir = $MW_WP_Form_File->get_temp_dir();
-		$temp_dir = $temp_dir['dir'];
-		system( "chmod 777 " . WP_CONTENT_DIR . '/uploads' );
-		$MW_WP_Form_File->create_temp_dir();
-		file_put_contents( $temp_dir . '/attachment_1.txt', 'hoge' );
-		file_put_contents( $temp_dir . '/attachment_2.txt', 'fuga' );
 
 		$form_id  = $this->_create_form();
 		$form_key = MWF_Functions::get_form_key_from_form_id( $form_id );
@@ -131,11 +124,18 @@ class MW_WP_Form_Mail_Parser_Test extends WP_UnitTestCase {
 			'attachment_1' => null,
 		) );
 
+		$temp_dir_1 = MW_WP_Form_Directory::generate_user_file_dirpath( $form_id, 'attachment_1' );
+		$temp_dir_2 = MW_WP_Form_Directory::generate_user_file_dirpath( $form_id, 'attachment_2' );
+		wp_mkdir_p( $temp_dir_1 );
+		wp_mkdir_p( $temp_dir_2 );
+		file_put_contents( $temp_dir_1 . '/attachment_1.txt', 'hoge' );
+		file_put_contents( $temp_dir_2 . '/attachment_2.txt', 'fuga' );
+
 		$Mail = new MW_WP_Form_Mail();
 		$Mail->body = '{attachment_1}';
 		$Mail->attachments = array(
-			'attachment_1' => $temp_dir . '/attachment_1.txt',
-			'attachment_2' => $temp_dir . '/attachment_2.txt',
+			'attachment_1' => $temp_dir_1 . '/attachment_1.txt',
+			'attachment_2' => $temp_dir_2 . '/attachment_2.txt',
 		);
 
 		$Mail_Parser = new MW_WP_Form_Mail_Parser( $Mail, $Setting );

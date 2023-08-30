@@ -19,11 +19,8 @@ class MW_WP_Form_Test extends WP_UnitTestCase {
 			)
 		);
 
-		$MW_WP_Form_File = new MW_WP_Form_File;
-		$temp_dir = $MW_WP_Form_File->get_temp_dir();
-		$temp_dir = $temp_dir['dir'];
 		system( "chmod 777 " . WP_CONTENT_DIR . '/uploads' );
-		$MW_WP_Form_File->create_temp_dir();
+		$temp_dir = MW_WP_Form_Directory::get();
 		$this->assertEquals( true, file_exists( $temp_dir ) );
 
 		update_option( MWF_Config::NAME, 'dummy' );

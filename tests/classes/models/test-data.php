@@ -610,51 +610,73 @@ class MW_WP_Form_Data_Test extends WP_UnitTestCase {
 	 * @group regenerate_upload_file_keys
 	 */
 	public function regenerate_upload_file_keys() {
-		$File = new MW_WP_Form_File();
-		$File->create_temp_dir();
-		$temp_dir = $File->get_temp_dir();
-		file_put_contents( $temp_dir['dir'] . '/1.txt', 1 );
-
 		// Pattern: ! array
 		$Data = $this->_instantiation_Data( array(
 			MWF_Config::UPLOAD_FILE_KEYS => 'dummy',
 		) );
+		$form_id = MWF_Functions::get_form_id_from_form_key( $Data->get_form_key() );
+		$name    = 'name-1';
+		$dirpath = MW_WP_Form_Directory::generate_user_file_dirpath( $form_id, $name );
+		wp_mkdir_p( $dirpath );
+		file_put_contents( $dirpath . '/1.txt', 1 );
 		$Data->regenerate_upload_file_keys();
 		$this->assertEquals( array(), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
+		unlink( $dirpath . '/1.txt' );
 
 		// Pattern: ! unique
 		$Data = $this->_instantiation_Data( array(
 			MWF_Config::UPLOAD_FILE_KEYS => array( 'name-1', 'name-1' ),
 		) );
-		$Data->set( 'name-1', $temp_dir['url'] . '/1.txt' );
+		$form_id = MWF_Functions::get_form_id_from_form_key( $Data->get_form_key() );
+		$name    = 'name-1';
+		$dirpath = MW_WP_Form_Directory::generate_user_file_dirpath( $form_id, $name );
+		wp_mkdir_p( $dirpath );
+		file_put_contents( $dirpath . '/1.txt', 1 );
+		$Data->set( 'name-1', '1.txt' );
 		$Data->regenerate_upload_file_keys();
 		$this->assertEquals( array( 'name-1' ), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
+		unlink( $dirpath . '/1.txt' );
 
 		// Pattern: file url is empty
 		$Data = $this->_instantiation_Data( array(
 			MWF_Config::UPLOAD_FILE_KEYS => array( 'name-1' ),
 		) );
+		$form_id = MWF_Functions::get_form_id_from_form_key( $Data->get_form_key() );
+		$name    = 'name-1';
+		$dirpath = MW_WP_Form_Directory::generate_user_file_dirpath( $form_id, $name );
+		wp_mkdir_p( $dirpath );
+		file_put_contents( $dirpath . '/1.txt', 1 );
 		$Data->regenerate_upload_file_keys();
 		$this->assertEquals( array(), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
+		unlink( $dirpath . '/1.txt' );
 
 		// Pattern: ! file_exists
 		$Data = $this->_instantiation_Data( array(
 			MWF_Config::UPLOAD_FILE_KEYS => array( 'name-1', 'name-1' ),
 		) );
-		$Data->set( 'name-1', $temp_dir['url'] . '/2.txt' );
+		$form_id = MWF_Functions::get_form_id_from_form_key( $Data->get_form_key() );
+		$name    = 'name-1';
+		$dirpath = MW_WP_Form_Directory::generate_user_file_dirpath( $form_id, $name );
+		wp_mkdir_p( $dirpath );
+		file_put_contents( $dirpath . '/1.txt', 1 );
+		$Data->set( 'name-1', '2.txt' );
 		$Data->regenerate_upload_file_keys();
 		$this->assertEquals( array(), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
+		unlink( $dirpath . '/1.txt' );
 
 		// Pattern: file_exists
 		$Data = $this->_instantiation_Data( array(
 			MWF_Config::UPLOAD_FILE_KEYS => array( 'name-1' ),
 		) );
-		$Data->set( 'name-1', $temp_dir['url'] . '/1.txt' );
+		$form_id = MWF_Functions::get_form_id_from_form_key( $Data->get_form_key() );
+		$name    = 'name-1';
+		$dirpath = MW_WP_Form_Directory::generate_user_file_dirpath( $form_id, $name );
+		wp_mkdir_p( $dirpath );
+		file_put_contents( $dirpath . '/1.txt', 1 );
+		$Data->set( 'name-1', '1.txt' );
 		$Data->regenerate_upload_file_keys();
 		$this->assertEquals( array( 'name-1' ), $Data->get_post_value_by_key( MWF_Config::UPLOAD_FILE_KEYS ) );
-
-		// shutdown process
-		unlink( $temp_dir['dir'] . '/1.txt' );
+		unlink( $dirpath . '/1.txt' );
 	}
 
 	/**
