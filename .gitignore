@@ -5,3 +5,4 @@ node_modules/
 sql/
 .wp-env.override.json
 .DS_Store
+.phpunit.result.cache

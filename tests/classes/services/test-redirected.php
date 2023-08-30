@@ -10,10 +10,10 @@ class MW_WP_Form_Redirected_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * tearDown
+	 * tear_down
 	 */
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		_delete_all_data();
 	}
 

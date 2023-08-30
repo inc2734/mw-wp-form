@@ -3,13 +3,13 @@ class MW_WP_Form_Validation_Rule_MaxImageSize_Test extends WP_UnitTestCase {
 
 	protected $filepath;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		$this->filepath = $this->_save_image();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		_delete_all_data();
 		unlink( $this->filepath );
 	}

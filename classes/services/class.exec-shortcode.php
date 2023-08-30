@@ -56,7 +56,7 @@ class MW_WP_Form_Exec_Shortcode {
 	 * @return string
 	 */
 	public function initialize( $attributes ) {
-		$this->form_id  = $this->_get_form_id_by_mwform_formkey( $attributes );
+		$this->form_id = $this->_get_form_id_by_mwform_formkey( $attributes );
 		if ( ! $this->form_id ) {
 			return;
 		}

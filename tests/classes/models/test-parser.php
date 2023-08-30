@@ -9,8 +9,8 @@ class MW_WP_Form_Parser_Test extends WP_UnitTestCase {
 		);
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 		_delete_all_data();
 	}
 
