@@ -52,14 +52,14 @@ class MW_WP_Form_Validation_Rule_Eq extends MW_WP_Form_Abstract_Validation_Rule 
 	 */
 	public function admin( $key, $value ) {
 		$target = '';
-		if ( is_array( $value[ $this->getName() ] ) && isset( $value[ $this->getName() ]['target'] ) ) {
-			$target = $value[ $this->getName() ]['target'];
+		if ( is_array( $value[ $this->get_name() ] ) && isset( $value[ $this->get_name() ]['target'] ) ) {
+			$target = $value[ $this->get_name() ]['target'];
 		}
 		?>
 		<table>
 			<tr>
 				<td><?php esc_html_e( 'The key at same value', 'mw-wp-form' ); ?></td>
-				<td><input type="text" value="<?php echo esc_attr( $target ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][target]" /></td>
+				<td><input type="text" value="<?php echo esc_attr( $target ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->get_name() ); ?>][target]" /></td>
 			</tr>
 		</table>
 		<?php

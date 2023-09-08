@@ -66,12 +66,12 @@ class MW_WP_Form_Validation_Rule_Between extends MW_WP_Form_Abstract_Validation_
 	public function admin( $key, $value ) {
 		$min = '';
 		$max = '';
-		if ( is_array( $value[ $this->getName() ] ) ) {
-			if ( isset( $value[ $this->getName() ]['min'] ) ) {
-				$min = $value[ $this->getName() ]['min'];
+		if ( is_array( $value[ $this->get_name() ] ) ) {
+			if ( isset( $value[ $this->get_name() ]['min'] ) ) {
+				$min = $value[ $this->get_name() ]['min'];
 			}
-			if ( isset( $value[ $this->getName() ]['max'] ) ) {
-				$max = $value[ $this->getName() ]['max'];
+			if ( isset( $value[ $this->get_name() ]['max'] ) ) {
+				$max = $value[ $this->get_name() ]['max'];
 			}
 		}
 		?>
@@ -79,9 +79,9 @@ class MW_WP_Form_Validation_Rule_Between extends MW_WP_Form_Abstract_Validation_
 			<tr>
 				<td><?php esc_html_e( 'The range of the number of characters', 'mw-wp-form' ); ?></td>
 				<td>
-					<input type="text" value="<?php echo esc_attr( $min ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][min]" />
+					<input type="text" value="<?php echo esc_attr( $min ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->get_name() ); ?>][min]" />
 					〜
-					<input type="text" value="<?php echo esc_attr( $max ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][max]" />
+					<input type="text" value="<?php echo esc_attr( $max ); ?>" size="3" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->get_name() ); ?>][max]" />
 				</td>
 			</tr>
 		</table>

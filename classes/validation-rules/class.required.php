@@ -47,7 +47,7 @@ class MW_WP_Form_Validation_Rule_Required extends MW_WP_Form_Abstract_Validation
 	 */
 	public function admin( $key, $value ) {
 		?>
-		<label><input type="checkbox" <?php checked( $value[ $this->getName() ], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>]" value="1" /><?php esc_html_e( 'No empty( with checkbox )', 'mw-wp-form' ); ?></label>
+		<label><input type="checkbox" <?php checked( $value[ $this->get_name() ], 1 ); ?> name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->get_name() ); ?>]" value="1" /><?php esc_html_e( 'No empty( with checkbox )', 'mw-wp-form' ); ?></label>
 		<?php
 	}
 }

@@ -85,12 +85,12 @@ class MW_WP_Form_Validation_Rule_MaxImageSize extends MW_WP_Form_Abstract_Valida
 	public function admin( $key, $value ) {
 		$width  = '';
 		$height = '';
-		if ( is_array( $value[ $this->getName() ] ) ) {
-			if ( isset( $value[ $this->getName() ]['width'] ) ) {
-				$width = $value[ $this->getName() ]['width'];
+		if ( is_array( $value[ $this->get_name() ] ) ) {
+			if ( isset( $value[ $this->get_name() ]['width'] ) ) {
+				$width = $value[ $this->get_name() ]['width'];
 			}
-			if ( isset( $value[ $this->getName() ]['height'] ) ) {
-				$height = $value[ $this->getName() ]['height'];
+			if ( isset( $value[ $this->get_name() ]['height'] ) ) {
+				$height = $value[ $this->get_name() ]['height'];
 			}
 		}
 		?>
@@ -98,9 +98,9 @@ class MW_WP_Form_Validation_Rule_MaxImageSize extends MW_WP_Form_Abstract_Valida
 			<tr>
 				<td><?php esc_html_e( 'Maximum image size', 'mw-wp-form' ); ?></td>
 				<td>
-					<input type="text" value="<?php echo esc_attr( $width ); ?>" size="4" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][width]" />
+					<input type="text" value="<?php echo esc_attr( $width ); ?>" size="4" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->get_name() ); ?>][width]" />
 					&times;
-					<input type="text" value="<?php echo esc_attr( $height ); ?>" size="4" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][height]" />
+					<input type="text" value="<?php echo esc_attr( $height ); ?>" size="4" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->get_name() ); ?>][height]" />
 				</td>
 			</tr>
 		</table>

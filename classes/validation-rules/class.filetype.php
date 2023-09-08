@@ -57,14 +57,14 @@ class MW_WP_Form_Validation_Rule_FileType extends MW_WP_Form_Abstract_Validation
 	 */
 	public function admin( $key, $value ) {
 		$types = '';
-		if ( is_array( $value[ $this->getName() ] ) && isset( $value[ $this->getName() ]['types'] ) ) {
-			$types = $value[ $this->getName() ]['types'];
+		if ( is_array( $value[ $this->get_name() ] ) && isset( $value[ $this->get_name() ]['types'] ) ) {
+			$types = $value[ $this->get_name() ]['types'];
 		}
 		?>
 		<table>
 			<tr>
 				<td><?php esc_html_e( 'Permitted Extension', 'mw-wp-form' ); ?></td>
-				<td><input type="text" value="<?php echo esc_attr( $types ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->getName() ); ?>][types]" /> <span class="mwf_note"><?php esc_html_e( 'Example:jpg or jpg,txt,…', 'mw-wp-form' ); ?></span></td>
+				<td><input type="text" value="<?php echo esc_attr( $types ); ?>" name="<?php echo MWF_Config::NAME; ?>[validation][<?php echo $key; ?>][<?php echo esc_attr( $this->get_name() ); ?>][types]" /> <span class="mwf_note"><?php esc_html_e( 'Example:jpg or jpg,txt,…', 'mw-wp-form' ); ?></span></td>
 			</tr>
 		</table>
 		<?php
