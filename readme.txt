@@ -3,8 +3,8 @@ Contributors: inc2734, ryu263, tomothumb, nanniku, mt8.biz, NExt-Season, kuck1u,
 Donate link: https://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 4.0
-Tested up to: 6.2
-Stable tag: 4.4.5
+Tested up to: 6.3
+Stable tag: 5.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,7 @@ Do you have questions or issues with MW WP Form? Use these support channels appr
 == Changelog ==
 
 = 5.0.0 =
+* Requires PHP 7.4.
 * Fixed a form access control vulnerability.
 * Enhanced file upload security.
 * Changed uploaded file name from "random number" to "{name attribute value}-{original file name}".
