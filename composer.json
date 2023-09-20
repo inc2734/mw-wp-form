@@ -1,12 +1,12 @@
 {
-  "name": "inc2734/mw-wp-form",
+  "name": "websoudan/mw-wp-form",
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "authors": [
     {
-      "name": "Takashi Kitajima",
-      "email": "inc@2inc.org",
-      "homepage": "https://2inc.org"
+      "name": "websoudan",
+      "email": "mw-wp-form@web-soudan.co.jp",
+      "homepage": "https://web-soudan.co.jp/"
     }
   ],
   "require-dev": {

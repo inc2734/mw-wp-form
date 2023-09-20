@@ -48,13 +48,6 @@
 }
 
 /**
- * #mw-wp-form_addon
- */
-#mw-wp-form_addon .button {
-	margin-top: 5px;
-}
-
-/**
  * フォーム識別子
  */
 span#formkey_field {

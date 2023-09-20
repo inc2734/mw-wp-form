@@ -1,7 +1,7 @@
 <?php
 /**
  * @package mw-wp-form
- * @author inc2734
+ * @author websoudan
  * @license GPL-2.0+
  */
 
@@ -15,27 +15,8 @@ class MW_WP_Form_Admin_List_Controller extends MW_WP_Form_Controller {
 	 */
 	public function __construct() {
 		$screen = get_current_screen();
-		add_filter( 'views_' . $screen->id, array( $this, '_donate_link' ) );
 		add_action( 'admin_head', array( $this, '_add_columns' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue_scripts' ) );
-	}
-
-	/**
-	 * Return Donate link html.
-	 *
-	 * @param array $views An array of available list table views.
-	 * @return array
-	 */
-	public function _donate_link( $views ) {
-		$donation = array(
-			'donation' =>
-				'<div class="donation"><p>' .
-				__( 'Your contribution is needed for making this plugin better.', 'mw-wp-form' ) .
-				' <a href="https://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40" class="button">' .
-				__( 'Donate', 'mw-wp-form' ) . '</a></p></div>',
-		);
-		$views    = array_merge( $donation, $views );
-		return $views;
 	}
 
 	/**

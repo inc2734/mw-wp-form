@@ -1,6 +1,6 @@
 === MW WP Form ===
 Contributors: inc2734, ryu263, tomothumb, nanniku, mt8.biz, NExt-Season, kuck1u, mypacecreator, mh35, grace-create, musus, wildworks, likr, yudai524, noldorinfo
-Donate link: https://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
+Original Donate link: https://www.amazon.co.jp/registry/wishlist/39ANKRNSTNW40
 Tags: plugin, form, confirm, preview, shortcode, mail, chart, graph, html, contact form, form creation, form creator, form manager, form builder, custom form
 Requires at least: 4.0
 Tested up to: 6.3
@@ -11,6 +11,9 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 MW WP Form is shortcode base contact form plugin. This plugin have many features. For example you can use many validation rules, inquiry data saving, and chart aggregation using saved inquiry data.
 
 == Description ==
+
+**This plugin currently has only the minimum required maintenance releases.**
+**Main maintainer has been handed over from @inc2734 to @websoudan.**
 
 MW WP Form can create mail form with a confirmation screen using shortcode.
 
@@ -23,11 +26,11 @@ MW WP Form can create mail form with a confirmation screen using shortcode.
 
 = Official =
 
-https://plugins.2inc.org/mw-wp-form/
+https://mw-wp-form.web-soudan.co.jp
 
 = GitHub =
 
-https://github.com/inc2734/mw-wp-form
+https://github.com/web-soudan/mw-wp-form
 
 = The following third-party resources =
 
@@ -64,7 +67,7 @@ Source: https://developers.google.com/chart/
 
 Do you have questions or issues with MW WP Form? Use these support channels appropriately.
 
-1. [Official](https://plugins.2inc.org/mw-wp-form/)
+1. [Official](https://mw-wp-form.web-soudan.co.jp)
 1. [Support Forum](https://wordpress.org/support/plugin/mw-wp-form)
 
 == Screenshots ==

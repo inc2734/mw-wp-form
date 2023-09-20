@@ -1,7 +1,7 @@
 <?php
 /**
  * @package mw-wp-form
- * @author inc2734
+ * @author websoudan
  * @license GPL-2.0+
  */
 
@@ -62,14 +62,6 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			array( $this, '_validation_rule' ),
 			MWF_Config::NAME,
 			'normal'
-		);
-
-		add_meta_box(
-			MWF_Config::NAME . '_addon',
-			__( 'Add-ons', 'mw-wp-form' ),
-			array( $this, '_add_ons' ),
-			MWF_Config::NAME,
-			'side'
 		);
 
 		add_meta_box(
@@ -365,13 +357,6 @@ class MW_WP_Form_Admin_Controller extends MW_WP_Form_Controller {
 			),
 			$form_key
 		);
-	}
-
-	/**
-	 * Render add-on meta box.
-	 */
-	public function _add_ons() {
-		$this->_render( 'admin/add-ons' );
 	}
 
 	/**
