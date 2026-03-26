@@ -15,7 +15,7 @@
 		"yoast/phpunit-polyfills": "^1.0"
   },
   "require": {
-    "php": ">=7.4"
+    "php": ">=8.0"
   },
   "config": {
     "process-timeout": 0,

@@ -145,7 +145,21 @@ class MW_WP_Form_Directory {
 			return false;
 		}
 
-		$filepath = path_join( $user_file_dir, $filename );
+		$normalized_filename = wp_normalize_path( $filename );
+		if (
+			wp_basename( $normalized_filename ) !== $normalized_filename ||
+			strstr( $normalized_filename, "\0" )
+		) {
+			throw new \RuntimeException( '[MW WP Form] Invalid file reference requested.' );
+		}
+
+		$filepath      = path_join( $user_file_dir, $filename );
+		$filepath      = wp_normalize_path( $filepath );
+		$user_file_dir = trailingslashit( wp_normalize_path( $user_file_dir ) );
+
+		if ( 0 !== strpos( $filepath, $user_file_dir ) ) {
+			throw new \RuntimeException( '[MW WP Form] Invalid file reference requested.' );
+		}
 
 		if ( str_contains( $filepath, '../' ) || str_contains( $filepath, '..' . DIRECTORY_SEPARATOR ) ) {
 			throw new \RuntimeException( '[MW WP Form] Invalid file reference requested.' );
