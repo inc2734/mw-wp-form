@@ -26,6 +26,17 @@ class MWF_Functions_Test extends WP_UnitTestCase {
 
 	/**
 	 * @test
+	 * @group convert_eol
+	 */
+	public function convert_eol() {
+		$this->assertSame( "aaa\nbbb\nccc", MWF_Functions::convert_eol( "aaa\r\nbbb\rccc" ) );
+		$this->assertSame( "aaa\nbbb", MWF_Functions::convert_eol( "aaa\nbbb" ) );
+		$this->assertSame( '', MWF_Functions::convert_eol( '' ) );
+		$this->assertSame( '', MWF_Functions::convert_eol( null ) );
+	}
+
+	/**
+	 * @test
 	 * @group array_clean
 	 */
 	public function array_clean() {
