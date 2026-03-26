@@ -148,7 +148,6 @@ class MW_WP_Form_Directory {
 		$normalized_filename = wp_normalize_path( $filename );
 		if (
 			wp_basename( $normalized_filename ) !== $normalized_filename ||
-			preg_match( '#^(?:[a-zA-Z]:/|/)#', $normalized_filename ) ||
 			strstr( $normalized_filename, "\0" )
 		) {
 			throw new \RuntimeException( '[MW WP Form] Invalid file reference requested.' );
