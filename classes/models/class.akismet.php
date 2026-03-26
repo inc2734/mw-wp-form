@@ -107,7 +107,7 @@ class MW_WP_Form_Akismet {
 			$akismet[ $key ] = $value;
 		}
 
-		$query_string = http_build_query( $akismet, null, '&' );
+		$query_string = http_build_query( $akismet, '', '&' );
 		if ( is_callable( array( 'Akismet', 'http_post' ) ) ) {
 			$response = Akismet::http_post( $query_string, 'comment-check' );
 		} else {
