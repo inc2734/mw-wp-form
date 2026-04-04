@@ -43,11 +43,11 @@ class MWF_Functions {
 	/**
 	 * Unify line feed code to \n.
 	 *
-	 * @param sring $string String.
+	 * @param string|null $string String.
 	 * @return string
 	 */
 	public static function convert_eol( $string ) {
-		return preg_replace( "/\r\n|\r|\n/", "\n", $string );
+		return is_string( $string ) ? preg_replace( "/\r\n|\r|\n/", "\n", $string ) : '';
 	}
 
 	/**
